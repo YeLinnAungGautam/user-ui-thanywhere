@@ -84,7 +84,7 @@ const logoutHandle = async () => {
       </div>
     </div>
     <div class="flex justify-center items-center">
-      <router-link to="/">
+      <router-link to="/customers">
         <div
           class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
         >

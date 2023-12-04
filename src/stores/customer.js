@@ -2,14 +2,16 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 export const useCustomerStore = defineStore("customer", {
-  state: () => ({ customer: null, loading: false }),
+  state: () => ({ customer: null, customers: null, loading: false }),
   getters: {},
   actions: {
     async getSimpleListAction(params) {
       try {
         this.loading = true;
-        const response = await axios.get("/customers?limit=1000&page=1");
-        this.customer = response.data.result;
+        const response = await axios.get("/customers?limit=1000&page=1", {
+          params: params,
+        });
+        this.customers = response.data.result;
         this.loading = false;
 
         return response.data;

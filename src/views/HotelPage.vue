@@ -6,13 +6,17 @@ import NavbarVue from "../components/Navbar.vue";
 import { useHotelStore } from "../stores/hotel";
 import Pagination from "../components/Pagination.vue";
 import HotelsItemVue from "../components/HotelsItem.vue";
+import { useCityStore } from "../stores/city";
 
 const router = useRouter();
 const hotelStore = useHotelStore();
+const cityStore = useCityStore();
 
 const { hotels, hotel, loading } = storeToRefs(hotelStore);
+const { cities } = storeToRefs(cityStore);
 
 const chooseType = ref([]);
+const choosePlace = ref([]);
 
 const goRoom = (id) => {
   router.push({
@@ -33,6 +37,9 @@ const changePage = async (url) => {
   console.log(url);
   let data = {
     search: search.value,
+    max_price: price.value,
+    city_id: city_id.value,
+    place: place.value,
   };
   await hotelStore.getChangePage(url, data);
   // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -44,16 +51,23 @@ const getList = async () => {
   for (let i = 0; i < res.result.data.length; i++) {
     chooseType.value.push(res.result.data[i].name);
   }
+  for (let i = 0; i < res.result.data.length; i++) {
+    choosePlace.value.push(res.result.data[i].place);
+  }
 };
 
-// const showEdit = () => {
-//   console.log("hello");
-// };
+const priceShow = ref(false);
+const price = ref("");
+const search = ref("");
+const city_id = ref("");
+const place = ref("");
 const clear = () => {
   search.value = "";
+  price.value = "";
+  priceShow.value = false;
+  city_id.value = "";
+  place.value = "";
 };
-
-const search = ref("");
 
 const changes = async (message) => {
   if ((message = "Hotel Deleted")) {
@@ -65,11 +79,21 @@ const changes = async (message) => {
 
 onMounted(async () => {
   await hotelStore.getListAction();
+  await cityStore.getSimpleListAction();
   await getList();
 });
 
 watch(search, async (newValue) => {
   await hotelStore.getListAction({ search: search.value });
+});
+watch(price, async (newValue) => {
+  await hotelStore.getListAction({ max_price: price.value });
+});
+watch(city_id, async (newValue) => {
+  await hotelStore.getListAction({ city_id: city_id.value });
+});
+watch(place, async (newValue) => {
+  await hotelStore.getListAction({ place: place.value });
 });
 </script>
 
@@ -127,7 +151,7 @@ watch(search, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!search"
+            v-if="!search && !price && !city_id && !place"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -141,7 +165,7 @@ watch(search, async (newValue) => {
             />
           </svg>
           <img
-            v-if="search"
+            v-if="search || price || city_id || place"
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -162,28 +186,54 @@ watch(search, async (newValue) => {
       <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
+          :options="cities?.data"
           label="name"
+          v-model="city_id"
           :clearable="false"
-          :reduce="(d) => d.name"
+          :reduce="(d) => d.id"
           placeholder="City"
         ></v-select>
         <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
+          :options="choosePlace"
           label="name"
+          v-model="place"
           :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Area"
+          :reduce="(d) => d"
+          placeholder="Place"
         ></v-select>
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Price"
-        ></v-select>
+        <div
+          @click="priceShow = true"
+          class="bg-white rounded-full border border-main min-w-[100px] text-main px-4 py-1"
+        >
+          <div class="flex justify-between items-center" v-if="!priceShow">
+            price
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.9"
+              stroke="currentColor"
+              class="w-4 h-4 font-bold"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          </div>
+          <div v-if="priceShow" class="pt-1 flex justify-center items-center">
+            <input
+              type="range"
+              v-model="price"
+              min="0"
+              class="bg-main"
+              max="10000"
+            />
+            {{ price }}
+          </div>
+        </div>
       </div>
       <div
         class="relative flex justify-center items-center py-[50%]"

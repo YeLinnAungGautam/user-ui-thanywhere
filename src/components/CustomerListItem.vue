@@ -2,17 +2,17 @@
 import { ref, defineProps, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
-import { useHotelStore } from "../stores/hotel";
+import { useCustomerStore } from "../stores/customer";
 import { useToastStore } from "../stores/toast";
 import { useAuthStore } from "../stores/auth";
 
 const props = defineProps({
   id: Number,
-  hotels: Object,
+  customers: Object,
 });
 
 const router = useRouter();
-const hotelStore = useHotelStore();
+const customerStore = useCustomerStore();
 const toastStore = useToastStore();
 const authStore = useAuthStore();
 
@@ -29,7 +29,7 @@ const goRoom = (id, name) => {
 };
 const goEdit = (id) => {
   router.push({
-    name: "hotel_edit",
+    name: "customer-edit",
     params: {
       id: id,
     },
@@ -52,38 +52,23 @@ const deleteHotel = async (id) => {
     confirmButtonText: "Confirm",
   }).then(async (result) => {
     if (result.isConfirmed) {
-      const response = await hotelStore.deleteAction(id);
+      const response = await customerStore.deleteAction(id);
       toastStore.showToast({
         icon: "success",
         title: "Sucess Deleted",
       });
-      await hotelStore.getListAction();
+      await customerStore.getListAction();
 
-      emit("change", "Hotel Deleted");
+      emit("change", " Deleted");
     }
   });
 };
 </script>
 
 <template>
-  <div class="space-y-2 relative overflow-hidden rounded-lg">
-    <div
-      class="h-[200px] sm:h-[250px] md:h-[220px] lg:h-[300px] w-full overflow-hidden rounded-lg"
-      @click="goRoom(id, hotels.name)"
-    >
-      <img
-        :src="hotels.images[0].image"
-        alt=""
-        class="object-cover"
-        v-if="hotels.images.length != 0"
-      />
-      <img
-        src="../../public/hotels.jpg"
-        alt=""
-        class="object-cover"
-        v-if="hotels.images.length == 0"
-      />
-    </div>
+  <div
+    class="space-y-2 relative overflow-hidden bg-white/10 rounded-lg shadow-custom"
+  >
     <div
       class="absolute top-[-7px] right-0 z-50 bg-main/80 text-white rounded-es-3xl p-2"
       @click="showSetting"
@@ -104,11 +89,11 @@ const deleteHotel = async (id) => {
       </svg>
     </div>
     <div
-      class="absolute right-0 z-50 bg-main/80 text-white rounded-full p-2"
+      class="absolute z-50 bg-main/80 text-white rounded-full p-2"
       :class="
         showEdit
-          ? ' translation duration-150 top-[50px]'
-          : 'top-[-100px] translation duration-150'
+          ? ' translation duration-150 top-[10px] right-[50px]'
+          : 'top-[10px] right-[-50px] translation duration-150'
       "
       @click="goEdit(id)"
     >
@@ -128,11 +113,11 @@ const deleteHotel = async (id) => {
       </svg>
     </div>
     <div
-      class="absolute right-0 z-50 bg-main/80 text-white rounded-full p-2"
+      class="absolute z-50 bg-main/80 text-white rounded-full p-2"
       :class="
         showEdit
-          ? ' translation duration-150 top-[100px]'
-          : ' top-[-100px] translation duration-150'
+          ? ' translation duration-150 top-[10px] right-[100px]'
+          : ' top-[10px] right-[-50px] translation duration-150'
       "
       v-if="authStore.isSuperAdmin"
       @click="deleteHotel(id)"
@@ -153,22 +138,15 @@ const deleteHotel = async (id) => {
       </svg>
     </div>
 
-    <div class="flex justify-between items-center gap-2">
-      <div class="space-y-1 mt-2">
-        <p class="text-xl pl-2 font-semibold text-main">
-          {{ hotels.name }}
-        </p>
-        <p class="text-sm pl-2">{{ hotels.place }}</p>
-        <p class="text-sm pl-2">{{ hotels.city_name }}</p>
-        <p class="text-sm pl-2 text-main">Allowment Available</p>
-      </div>
-      <div class="text-end">
-        <p class="text-3xl sm:text-4xl pl-2 font-semibold text-main">
-          {{ hotels.lowest_room_price }}<span class="text-lg"> THB</span>
-        </p>
-        <p class="text-xl pl-2 font-semibold text-main">
-          {{ hotels?.rooms.length }} rooms
-        </p>
+    <div class="py-4">
+      <div class="space-y-2 mt-2">
+        <div class="flex justify-start items-start">
+          <div class="space-y-2">
+            <p class="text-base pl-2 font-semibold text-main">
+              {{ customers.name }}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

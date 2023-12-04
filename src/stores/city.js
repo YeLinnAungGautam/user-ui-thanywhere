@@ -2,7 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 export const useCityStore = defineStore("city", {
-  state: () => ({ cities: null, loading: false }),
+  state: () => ({ cities: null, city: null, loading: false }),
   getters: {},
   actions: {
     async getSimpleListAction(params) {

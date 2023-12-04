@@ -21,6 +21,10 @@ const emit = defineEmits();
 const goTicket = (id, name) => {
   router.push({
     name: "ticket",
+    params: {
+      id: id,
+      name: name,
+    },
   });
 };
 const goEdit = (id) => {

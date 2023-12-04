@@ -4,19 +4,15 @@ import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 import Pagination from "../components/Pagination.vue";
-import { useVantourStore } from "../stores/vantour";
-import VantourListItem from "../components/VantourListItem.vue";
-import { useCityStore } from "../stores/city";
+import { useCustomerStore } from "../stores/customer";
+import CustomerListItem from "../components/CustomerListItem.vue";
 
 const router = useRouter();
-const vantourStore = useVantourStore();
-const cityStore = useCityStore();
+const customerStore = useCustomerStore();
 
-const { vantours, vantour, loading } = storeToRefs(vantourStore);
-const { cities } = storeToRefs(cityStore);
+const { customer, loading } = storeToRefs(customerStore);
 
 const chooseType = ref([]);
-const choosePlace = ref([]);
 
 const goRoom = (id) => {
   router.push({
@@ -30,32 +26,31 @@ const goBack = () => {
   router.go(-1);
 };
 const createPage = () => {
-  router.push({ name: "vantours-create" });
+  router.push({ name: "customer-create" });
 };
 
 const changePage = async (url) => {
   console.log(url);
   let data = {
     search: search.value,
-    city_id: city_id.value,
   };
-  await vantourStore.getChangePage(url, data);
+  await customerStore.getChangePage(url, data);
   // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 };
 
 const getList = async () => {
-  const res = await vantourStore.getSimpleListAction();
+  const res = await customerStore.getSimpleListAction();
 
   for (let i = 0; i < res.result.data.length; i++) {
     chooseType.value.push(res.result.data[i].name);
-    choosePlace.value.push(res.result.data[i].place);
   }
 };
 
-const city_id = ref("");
+// const showEdit = () => {
+//   console.log("hello");
+// };
 const clear = () => {
   search.value = "";
-  city_id = "";
 };
 
 const search = ref("");
@@ -63,22 +58,17 @@ const search = ref("");
 const changes = async (message) => {
   if ((message = "Deleted")) {
     search.value = "";
-    await vantourStore.getListAction();
+    await customerStore.getListAction();
   }
 };
 
-const showPricePage = ref(false);
-
 onMounted(async () => {
-  await vantourStore.getListAction();
+  await customerStore.getListAction();
   await getList();
 });
 
 watch(search, async (newValue) => {
-  await vantourStore.getListAction({ search: search.value });
-});
-watch(city_id, async (newValue) => {
-  await vantourStore.getListAction({ city_id: city_id.value });
+  await customerStore.getListAction({ search: search.value });
 });
 </script>
 
@@ -127,7 +117,7 @@ watch(city_id, async (newValue) => {
           </svg>
         </div>
         <p class="text-main text-2xl font-semibold w-full text-center">
-          Van Tours
+          Customers
         </p>
       </div>
       <div
@@ -136,7 +126,7 @@ watch(city_id, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!search || !city_id"
+            v-if="!search"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -150,7 +140,7 @@ watch(city_id, async (newValue) => {
             />
           </svg>
           <img
-            v-if="search && city_id"
+            v-if="search"
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -168,25 +158,32 @@ watch(city_id, async (newValue) => {
         ></v-select>
         <!-- @option:selected="chooseName()" -->
       </div>
-      <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
+      <!-- <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="cities?.data"
+          :options="chooseType"
           label="name"
-          v-model="city_id"
           :clearable="false"
-          :reduce="(d) => d.id"
-          placeholder="City "
+          :reduce="(d) => d.name"
+          placeholder="Filter "
         ></v-select>
-        <!-- <v-select
+        <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="choosePlace"
+          :options="chooseType"
           label="name"
           :clearable="false"
-          :reduce="(d) => d"
-          placeholder="Place"
-        ></v-select> -->
-      </div>
+          :reduce="(d) => d.name"
+          placeholder="Filter"
+        ></v-select>
+        <v-select
+          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
+          :options="chooseType"
+          label="name"
+          :clearable="false"
+          :reduce="(d) => d.name"
+          placeholder="Filter"
+        ></v-select>
+      </div> -->
       <div
         class="relative flex justify-center items-center py-[50%]"
         v-if="loading"
@@ -200,10 +197,10 @@ watch(city_id, async (newValue) => {
         class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
         v-if="!loading"
       >
-        <div v-for="(vantour, index) in vantours?.data" :key="index">
-          <VantourListItem
-            :id="vantour.id"
-            :vantours="vantour"
+        <div v-for="(customer, index) in customer?.data" :key="index">
+          <CustomerListItem
+            :id="customer.id"
+            :customers="customer"
             @change="changes"
           />
         </div>
@@ -211,7 +208,7 @@ watch(city_id, async (newValue) => {
       <div>
         <Pagination
           v-if="!loading"
-          :data="vantours"
+          :data="customer"
           @change-page="changePage"
         />
       </div>

@@ -32,6 +32,11 @@ import AirlineEditPageView from "./views/AirLineEditPage.vue";
 import TicketPageView from "./views/AirlineTicket.vue";
 import TicketCreatePageView from "./views/AirTicketCreatePage.vue";
 import TicketEditPageView from "./views/AirTicketEditPage.vue";
+import VantoursCarListPageView from "./views/VantourCarListPage.vue";
+import AirportCarListPageView from "./views/AirportCarListPage.vue";
+import CustomerPageView from "./views/CustmerPage.vue";
+import CustomerCreatePageView from "./views/CustomerCreatePage.vue";
+import CustomerEditPageView from "./views/CustomerEditPage.vue";
 
 const routes = [
   {
@@ -103,6 +108,11 @@ const routes = [
     component: VantoursPageView,
   },
   {
+    path: "/products/vantours/carList/:id",
+    name: "vantours-carlist",
+    component: VantoursCarListPageView,
+  },
+  {
     path: "/products/vantours/create",
     name: "vantours-create",
     component: VantoursCreatePageView,
@@ -116,6 +126,11 @@ const routes = [
     path: "/products/airport",
     name: "airport",
     component: AirportPageView,
+  },
+  {
+    path: "/products/airport/carList/:id",
+    name: "airport-carlist",
+    component: AirportCarListPageView,
   },
   {
     path: "/products/airport/create",
@@ -188,7 +203,7 @@ const routes = [
     component: AirlineEditPageView,
   },
   {
-    path: "/products/airline/ticket",
+    path: "/products/airline/ticket/:id/:name",
     name: "ticket",
     component: TicketPageView,
   },
@@ -201,6 +216,21 @@ const routes = [
     path: "/products/airline/ticket/edit/:id",
     name: "ticket-edit",
     component: TicketEditPageView,
+  },
+  {
+    path: "/customers",
+    name: "customer",
+    component: CustomerPageView,
+  },
+  {
+    path: "/customers/create",
+    name: "customer-create",
+    component: CustomerCreatePageView,
+  },
+  {
+    path: "/customers/edit/:id",
+    name: "customer-edit",
+    component: CustomerEditPageView,
   },
 ];
 

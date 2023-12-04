@@ -17,6 +17,7 @@ const formData = ref({
   id: "",
   name: "",
   hotel_id: null,
+  is_extra: 0,
   description: "",
   images: [],
   room_price: "",
@@ -73,7 +74,7 @@ const addNewHandler = async () => {
       name: "",
       hotel_id: null,
       description: "",
-
+      is_extra: 0,
       room_price: "",
       cost: "",
     };

@@ -74,8 +74,56 @@ const deleteRoom = async (id) => {
 
 <template>
   <div class="bg-white border-b">
-    <div class="py-4 px-4 grid grid-cols-2 gap-3">
-      <div class="col-span-1 space-y-2">
+    <div
+      class="py-4 px-4 grid grid-cols-2 gap-3 relative"
+      @click="showEdit = !showEdit"
+    >
+      <div
+        class="flex justify-center gap-2 absolute top-0 w-full h-full col-span-2 items-center"
+        :class="showEdit ? 'bg-black/20' : ''"
+      >
+        <div
+          class="bg-white p-1 rounded-full text-black border shadow-md border-black/20 animate__animated animate__fadeIn"
+          v-if="showEdit"
+          @click="deleteRoom(id)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+            />
+          </svg>
+        </div>
+        <div
+          class="bg-white p-1 rounded-full text-black border shadow-md border-black/20 animate__animated animate__fadeIn"
+          v-if="showEdit"
+          @click="showDropDownHandle"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="col-span-1 space-y-2 py-2">
         <p class="font-semibold">
           {{ customer_name }}
         </p>
@@ -85,68 +133,6 @@ const deleteRoom = async (id) => {
         <p class="font-semibold text-black/50 text-sm">
           PAST : {{ past_crm_id ? past_crm_id : "-" }}
         </p>
-        <div class="flex justify-start gap-2 pt-3">
-          <div
-            class="bg-white p-1 rounded-full text-black border shadow-md border-black/20"
-            @click="showSetting"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-              />
-            </svg>
-          </div>
-
-          <div
-            class="bg-white p-1 rounded-full text-black border shadow-md border-black/20 animate__animated animate__fadeIn"
-            v-if="showEdit"
-            @click="deleteRoom(id)"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-              />
-            </svg>
-          </div>
-          <div
-            class="bg-white p-1 rounded-full text-black border shadow-md border-black/20 animate__animated animate__fadeIn"
-            v-if="showEdit"
-            @click="showDropDownHandle"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-5 h-5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-              />
-            </svg>
-          </div>
-        </div>
       </div>
       <div class="col-span-1 space-y-2 text-end">
         <p class="font-semibold">THB {{ sub_total }}</p>
@@ -158,19 +144,19 @@ const deleteRoom = async (id) => {
             <p v-if="!payment_status">-</p>
             <p
               v-if="payment_status == 'fully_paid'"
-              class="font-semibold text-green bg-green/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+              class="font-semibold text-green bg-green/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
             >
               {{ payment_status }}
             </p>
             <p
               v-if="payment_status == 'not_paid'"
-              class="font-semibold text-red text-[10px] py-[0.5px] inline-block px-2 bg-red/20 text-center rounded-lg"
+              class="font-semibold text-red text-[12px] py-[2px] inline-block px-2 bg-red/20 text-center rounded-lg"
             >
               {{ payment_status }}
             </p>
             <p
               v-if="payment_status == 'partially_paid'"
-              class="font-semibold text-main text-[10px] py-[0.5px] inline-block px-2 bg-main/20 text-center rounded-lg"
+              class="font-semibold text-main text-[12px] py-[2px] inline-block px-2 bg-main/20 text-center rounded-lg"
             >
               {{ payment_status }}
             </p>
@@ -179,19 +165,19 @@ const deleteRoom = async (id) => {
             <p v-if="!reservation_status">-</p>
             <p
               v-if="reservation_status == 'confirmed'"
-              class="font-semibold text-green bg-green/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+              class="font-semibold text-green bg-green/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
             >
               {{ reservation_status }}
             </p>
             <p
               v-if="reservation_status == 'declined'"
-              class="font-semibold text-red bg-red/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+              class="font-semibold text-red bg-red/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
             >
               {{ reservation_status }}
             </p>
             <p
               v-if="reservation_status == 'awaiting'"
-              class="font-semibold text-main bg-main/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+              class="font-semibold text-main bg-main/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
             >
               {{ reservation_status }}
             </p>
@@ -231,19 +217,19 @@ const deleteRoom = async (id) => {
               <p v-if="!i.booking?.payment_status">-</p>
               <p
                 v-if="i.booking?.payment_status == 'fully_paid'"
-                class="font-semibold text-green bg-green/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+                class="font-semibold text-green bg-green/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
               >
                 {{ i.booking?.payment_status }}
               </p>
               <p
                 v-if="i.booking?.payment_status == 'not_paid'"
-                class="font-semibold text-red bg-red/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+                class="font-semibold text-red bg-red/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
               >
                 {{ i.booking?.payment_status }}
               </p>
               <p
                 v-if="i.booking?.payment_status == 'partially_paid'"
-                class="font-semibold text-main bg-main/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+                class="font-semibold text-main bg-main/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
               >
                 {{ i.booking?.payment_status }}
               </p>
@@ -252,19 +238,19 @@ const deleteRoom = async (id) => {
               <p v-if="!i.booking?.reservation_status">-</p>
               <p
                 v-if="i.booking?.reservation_status == 'confirmed'"
-                class="font-semibold text-green bg-green/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+                class="font-semibold text-green bg-green/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
               >
                 {{ i.booking?.reservation_status }}
               </p>
               <p
                 v-if="i.booking?.reservation_status == 'declined'"
-                class="font-semibold text-red bg-red/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+                class="font-semibold text-red bg-red/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
               >
                 {{ i.booking?.reservation_status }}
               </p>
               <p
                 v-if="i.booking?.reservation_status == 'awaiting'"
-                class="font-semibold text-main bg-main/20 text-center rounded-lg text-[10px] py-[0.5px] inline-block px-2"
+                class="font-semibold text-main bg-main/20 text-center rounded-lg text-[12px] py-[2px] inline-block px-2"
               >
                 {{ i.booking?.reservation_status }}
               </p>

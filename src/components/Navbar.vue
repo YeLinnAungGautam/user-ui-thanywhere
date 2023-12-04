@@ -1,4 +1,13 @@
-<script setup></script>
+<script setup>
+import { onMounted } from "vue";
+import { useAuthStore } from "../stores/auth";
+
+const authStore = useAuthStore();
+
+onMounted(async () => {
+  await authStore.getMe();
+});
+</script>
 
 <template>
   <div class="">

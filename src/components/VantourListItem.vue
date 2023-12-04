@@ -27,6 +27,14 @@ const goRoom = (id, name) => {
     },
   });
 };
+const goList = (id) => {
+  router.push({
+    name: "vantours-carlist",
+    params: {
+      id: id,
+    },
+  });
+};
 const goEdit = (id) => {
   router.push({
     name: "vantours-edit",
@@ -35,6 +43,8 @@ const goEdit = (id) => {
     },
   });
 };
+
+// const showPricePage = ref(false);
 
 const showEdit = ref(false);
 const showSetting = () => {
@@ -154,23 +164,40 @@ const deleteHotel = async (id) => {
 
     <div class="pt-2">
       <div class="space-y-2 mt-2">
-        <p class="text-lg pl-2 font-semibold text-main">
-          {{ vantours.name }}
-        </p>
-        <div
-          class="text-sm font-semibold flex justify-between items-center gap-3 mx-2 px-2 border border-black/50 py-1 rounded"
-          v-for="(c, index) in vantours?.cars"
-          :key="index"
-        >
-          <p>{{ c.name }}</p>
-          <p>{{ c.price }} THB</p>
+        <div class="flex justify-between items-center">
+          <p class="text-lg pl-2 font-semibold text-main">
+            {{ vantours.name }}
+          </p>
+          <svg
+            @click="goList(id)"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 text-main"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"
+            />
+          </svg>
         </div>
+
         <div
           class="text-base text-main pl-2 font-semibold flex justify-start items-center gap-2 flex-wrap"
         >
           <p v-for="(city, index) in vantours?.cities" :key="index">
             {{ city.name }} ,
           </p>
+          <!-- <p>{{ vantours?.cars.length }}</p> -->
+        </div>
+        <div
+          class="text-base flex justify-between items-center pl-2 font-semibold pr-3 text-main gap-2 flex-wrap"
+        >
+          <p>cars</p>
+          <p class="text-3xl">{{ vantours?.cars.length }}</p>
         </div>
       </div>
     </div>
