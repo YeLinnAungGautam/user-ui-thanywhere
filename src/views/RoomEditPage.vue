@@ -1,0 +1,298 @@
+<script setup>
+import { storeToRefs } from "pinia";
+import { onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import NavbarVue from "../components/Navbar.vue";
+import { useHotelStore } from "../stores/hotel";
+import { useToastStore } from "../stores/toast";
+import { useRoomStore } from "../stores/room";
+
+const router = useRouter();
+const route = useRoute();
+const hotelStore = useHotelStore();
+const { hotel } = storeToRefs(hotelStore);
+const toastStore = useToastStore();
+const roomStore = useRoomStore();
+
+const formData = ref({
+  id: "",
+  name: "",
+  hotel_id: null,
+  description: "",
+  images: [],
+  room_price: "",
+  cost: "",
+});
+
+const goBack = () => {
+  router.go(-1);
+};
+
+const errors = ref(null);
+
+const imagesInput = ref(null);
+const imagesPreview = ref([]);
+
+const openFileImagePicker = () => {
+  imagesInput.value.click();
+};
+
+const handlerImagesFileChange = (e) => {
+  console.log(e.target.files);
+  let selectedFile = e.target.files;
+  if (selectedFile) {
+    for (let index = 0; index < selectedFile.length; index++) {
+      formData.value.images.push(selectedFile[index]);
+      imagesPreview.value.push(URL.createObjectURL(selectedFile[index]));
+    }
+  }
+};
+
+const removeImageSelectImage = (index) => {
+  formData.value.images.splice(index, 1);
+  imagesPreview.value.splice(index, 1);
+};
+
+const updateHandler = async () => {
+  const frmData = new FormData();
+  frmData.append("name", formData.value.name);
+  frmData.append("hotel_id", formData.value.hotel_id);
+  frmData.append("description", formData.value.description);
+
+  frmData.append("room_price", formData.value.room_price);
+  frmData.append("cost", formData.value.cost);
+  if (formData.value.images.length > 0) {
+    for (let i = 0; i < formData.value.images.length; i++) {
+      let file = formData.value.images[i];
+      frmData.append("images[" + i + "]", file);
+    }
+  }
+  frmData.append("_method", "PUT");
+  try {
+    const response = await roomStore.updateAction(frmData, route.params.id);
+    formData.value = {
+      id: "",
+      name: "",
+      hotel_id: null,
+      description: "",
+
+      room_price: "",
+      cost: "",
+    };
+    errors.value = null;
+
+    toastStore.showToast({
+      icon: "success",
+      title: response.message,
+    });
+    goBack();
+  } catch (error) {
+    if (error.response) {
+      toastStore.showToast({
+        icon: "error",
+        title: error.response.data.message,
+      });
+    }
+  }
+};
+
+const images = ref([]);
+const getDetail = async (id) => {
+  const response = await roomStore.getDetailAction(id);
+  const data = response.result;
+  formData.value.name = data.name;
+  formData.value.hotel_id = data.hotel.id;
+  formData.value.room_price = data.room_price;
+  formData.value.cost = data.cost;
+  formData.value.description = data.description;
+  images.value = data.images;
+};
+
+onMounted(async () => {
+  getDetail(route.params.id);
+  await hotelStore.getSimpleListAction();
+});
+</script>
+
+<template>
+  <div class="bg-white">
+    <NavbarVue />
+    <div class="py-5 px-4 space-y-4">
+      <div class="relative">
+        <div
+          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          @click="goBack"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
+          </svg>
+          Back
+        </div>
+
+        <p class="text-main text-2xl font-semibold w-full text-center">
+          Room Edit
+        </p>
+      </div>
+      <div>
+        <form
+          @submit.prevent="updateHandler"
+          class="mt-4 px-4 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2"
+        >
+          <div class="space-y-2">
+            <label for="name" class="text-sm text-gray-800">Name</label>
+            <input
+              type="text"
+              v-model="formData.name"
+              id="name"
+              class="w-full h-10 px-4 text-sm py-2 text-gray-900 border border-main rounded-md bg-white focus:outline-none focus:border-gray-300"
+            />
+          </div>
+          <div class="space-y-2 mt-0 sm:mt-1">
+            <p class="text-sm text-gray-800">Hotel</p>
+            <v-select
+              v-model="formData.hotel_id"
+              class="w-full h-10 text-sm border-main border rounded bg-white focus:outline-none focus:border-none"
+              :options="hotel?.data"
+              label="name"
+              :clearable="false"
+              :reduce="(hotel) => hotel.id"
+              placeholder="Choose Hotel"
+            ></v-select>
+          </div>
+
+          <div class="space-y-2">
+            <label for="room_price" class="text-sm text-gray-800"
+              >Room Price</label
+            >
+            <input
+              type="text"
+              v-model="formData.room_price"
+              id="room_price"
+              class="w-full h-10 px-4 text-sm py-2 text-gray-900 border border-main rounded-md bg-white focus:outline-none focus:border-gray-300"
+            />
+          </div>
+          <div class="space-y-2">
+            <label for="room_price" class="text-sm text-gray-800">Cost</label>
+            <input
+              type="number"
+              v-model="formData.cost"
+              id="cost"
+              class="w-full h-10 px-4 text-sm py-2 text-gray-900 border border-main rounded-md bg-white focus:outline-none focus:border-gray-300"
+            />
+          </div>
+          <div class="space-y-2">
+            <label for="description" class="text-sm text-gray-800"
+              >Description</label
+            >
+            <textarea
+              v-model="formData.description"
+              rows="3"
+              id="description"
+              class="w-full h-[150px] px-4 text-sm py-2 text-gray-900 border border-main rounded-md bg-white focus:outline-none focus:border-gray-300"
+            />
+          </div>
+          <div class="bg-white/60 text-sm rounded-lg shadow-sm mb-5">
+            <div class="flex items-center justify-between gap-3 mb-3">
+              <p>Images</p>
+              <div>
+                <button
+                  class="text-sm text-blue-600"
+                  @click.prevent="openFileImagePicker"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.8"
+                    stroke="currentColor"
+                    class="w-8 h-8 text-red"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <input
+                multiple
+                type="file"
+                ref="imagesInput"
+                class="hidden"
+                @change="handlerImagesFileChange"
+                accept="image/*"
+              />
+            </div>
+            <div
+              class="grid grid-cols-3 gap-2"
+              v-if="imagesPreview.length != 0"
+            >
+              <div
+                class="relative"
+                v-for="(image, index) in imagesPreview"
+                :key="index"
+              >
+                <button
+                  @click.prevent="removeImageSelectImage(index)"
+                  class="rounded-full text-sm text-red-600 items-center justify-center flex absolute top-[-0.9rem] right-[-0.7rem]"
+                >
+                  <XCircleIcon class="w-8 h-8 font-semibold" />
+                </button>
+
+                <img class="h-auto w-full rounded" :src="image" alt="" />
+              </div>
+            </div>
+            <div
+              class="grid grid-cols-3 gap-2 mb-6 bg-white rounded-md shadow"
+              v-if="imagesPreview.length == 0"
+            >
+              <div
+                class="relative"
+                v-for="(image, index) in images"
+                :key="index"
+              >
+                <img class="h-auto w-full rounded" :src="image.image" alt="" />
+              </div>
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="text-end flex justify-end items-center col-span-1 sm:col-span-2 mt-3"
+          >
+            <div
+              class="flex justify-end items-center space-x-4 px-4 py-2 rounded border-main bg-main text-white border"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p class="">Update</p>
+            </div>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>

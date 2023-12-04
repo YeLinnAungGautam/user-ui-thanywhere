@@ -1,0 +1,29 @@
+<template>
+  <div>
+    <main>
+      <div class="bg-image">
+        <div
+          class="main-content bg-opacity-50 backdrop-filter backdrop-blur-xl font-poppins"
+        >
+          <!-- <transition name="fade" mode="out-in">
+            <RouterView />
+          </transition> -->
+          <router-view v-slot="{ Component }">
+            <transition
+              name="fade"
+              mode="out-in"
+              enter-active-class="animate__animated animate__fadeIn"
+              leave-active-class="animate__animated animate__fadeOut"
+            >
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </div>
+      </div>
+    </main>
+  </div>
+</template>
+
+<script setup>
+import { RouterLink, RouterView } from "vue-router";
+</script>

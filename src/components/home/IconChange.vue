@@ -1,0 +1,119 @@
+<script setup>
+import { Squares2X2Icon } from "@heroicons/vue/24/outline";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../../stores/auth";
+import { useToastStore } from "../../stores/toast";
+
+const authStore = useAuthStore();
+const toastStore = useToastStore();
+const router = useRouter();
+
+const logoutHandle = async () => {
+  const res = await authStore.logout();
+  toastStore.showToast({
+    icon: "success",
+    title: res.message,
+  });
+  router.push({ name: "login" });
+};
+</script>
+
+<template>
+  <div class="grid grid-cols-3 sm:grid-cols-4 gap-8 px-8 py-10">
+    <div class="flex justify-center items-center">
+      <router-link to="/analytics">
+        <div
+          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+        >
+          <img
+            src="../../../public/dashboard-svgrepo-com.svg"
+            class="w-9 h-9 text-main"
+            alt=""
+          />
+        </div>
+        <p class="text-center mt-5 text-black text-base font-semibold">
+          Analytics
+        </p>
+      </router-link>
+    </div>
+    <div class="flex justify-center items-center">
+      <router-link to="/sales">
+        <div
+          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+        >
+          <img
+            src="../../../public/money-receive-svgrepo-com.svg"
+            class="w-9 h-9 text-main"
+            alt=""
+          />
+        </div>
+        <p class="text-center mt-5 text-black text-base font-semibold">Sales</p>
+      </router-link>
+    </div>
+    <div class="flex justify-center items-center">
+      <router-link to="/products">
+        <div
+          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+        >
+          <img
+            src="../../../public/hot-air-balloon-svgrepo-com.svg"
+            class="w-9 h-9 text-main"
+            alt=""
+          />
+        </div>
+        <p class="text-center mt-5 text-black text-base font-semibold">
+          Products
+        </p>
+      </router-link>
+    </div>
+
+    <div class="flex justify-center items-center">
+      <div>
+        <div
+          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+        >
+          <img
+            src="../../../public/letter-opened-svgrepo-com.svg"
+            class="w-9 h-9 text-main"
+            alt=""
+          />
+        </div>
+        <p class="text-center mt-5 text-black text-base font-semibold">
+          Bookings
+        </p>
+      </div>
+    </div>
+    <div class="flex justify-center items-center">
+      <router-link to="/">
+        <div
+          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+        >
+          <img
+            src="../../../public/people-nearby-svgrepo-com.svg"
+            class="w-9 h-9 text-main"
+            alt=""
+          />
+        </div>
+        <p class="text-center mt-5 text-black text-base font-semibold">
+          Customers
+        </p>
+      </router-link>
+    </div>
+    <div class="flex justify-center items-center">
+      <div @click="logoutHandle">
+        <div
+          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+        >
+          <img
+            src="../../../public/logout-svgrepo-com.svg"
+            class="w-9 h-9 text-main"
+            alt=""
+          />
+        </div>
+        <p class="text-center mt-5 text-black text-base font-semibold">
+          Logout
+        </p>
+      </div>
+    </div>
+  </div>
+</template>
