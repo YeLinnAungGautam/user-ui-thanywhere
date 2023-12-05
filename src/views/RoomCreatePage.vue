@@ -6,6 +6,7 @@ import NavbarVue from "../components/Navbar.vue";
 import { useHotelStore } from "../stores/hotel";
 import { useToastStore } from "../stores/toast";
 import { useRoomStore } from "../stores/room";
+import { Switch } from "@headlessui/vue";
 
 const router = useRouter();
 const hotelStore = useHotelStore();
@@ -23,6 +24,8 @@ const formData = ref({
   room_price: "",
   cost: "",
 });
+
+const enabled = ref(false);
 
 const goBack = () => {
   router.go(-1);
@@ -57,7 +60,7 @@ const addNewHandler = async () => {
   frmData.append("name", formData.value.name);
   frmData.append("hotel_id", formData.value.hotel_id);
   frmData.append("description", formData.value.description);
-
+  frmData.append("is_extra", enabled.value ? 1 : 0);
   frmData.append("room_price", formData.value.room_price);
   frmData.append("cost", formData.value.cost);
   if (formData.value.images.length > 0) {
@@ -79,7 +82,7 @@ const addNewHandler = async () => {
       cost: "",
     };
     errors.value = null;
-
+    enabled.value = false;
     toastStore.showToast({
       icon: "success",
       title: response.message,
@@ -167,6 +170,23 @@ onMounted(async () => {
               id="room_price"
               class="w-full h-10 px-4 text-sm py-2 text-gray-900 border border-main rounded-md bg-white focus:outline-none focus:border-gray-300"
             />
+          </div>
+          <div class="space-y-2 flex justify-start items-center gap-4">
+            <label for="room_price" class="text-sm text-gray-800"
+              >Is extra ?</label
+            >
+            <Switch
+              v-model="enabled"
+              :class="enabled ? ' bg-main' : 'bg-black'"
+              class="relative inline-flex h-[28px] w-[64px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+            >
+              <span class="sr-only">Use setting</span>
+              <span
+                aria-hidden="true"
+                :class="enabled ? 'translate-x-9' : 'translate-x-0'"
+                class="pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+              />
+            </Switch>
           </div>
           <div class="space-y-2">
             <label for="room_price" class="text-sm text-gray-800">Cost</label>

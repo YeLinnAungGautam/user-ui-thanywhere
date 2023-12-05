@@ -6,6 +6,7 @@ import NavbarVue from "../components/Navbar.vue";
 import { useHotelStore } from "../stores/hotel";
 import { useToastStore } from "../stores/toast";
 import { useRoomStore } from "../stores/room";
+import { Switch } from "@headlessui/vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -20,6 +21,7 @@ const formData = ref({
   hotel_id: null,
   description: "",
   images: [],
+  is_extra: "",
   room_price: "",
   cost: "",
 });
@@ -28,6 +30,7 @@ const goBack = () => {
   router.go(-1);
 };
 
+const enabled = ref(false);
 const errors = ref(null);
 
 const imagesInput = ref(null);
@@ -58,7 +61,7 @@ const updateHandler = async () => {
   frmData.append("name", formData.value.name);
   frmData.append("hotel_id", formData.value.hotel_id);
   frmData.append("description", formData.value.description);
-
+  frmData.append("is_extra", enabled.value ? 1 : 0);
   frmData.append("room_price", formData.value.room_price);
   frmData.append("cost", formData.value.cost);
   if (formData.value.images.length > 0) {
@@ -75,7 +78,7 @@ const updateHandler = async () => {
       name: "",
       hotel_id: null,
       description: "",
-
+      is_extra: "",
       room_price: "",
       cost: "",
     };
@@ -106,6 +109,7 @@ const getDetail = async (id) => {
   formData.value.cost = data.cost;
   formData.value.description = data.description;
   images.value = data.images;
+  enabled.value = data.is_extra == 1 ? true : false;
 };
 
 onMounted(async () => {
@@ -181,6 +185,23 @@ onMounted(async () => {
               id="room_price"
               class="w-full h-10 px-4 text-sm py-2 text-gray-900 border border-main rounded-md bg-white focus:outline-none focus:border-gray-300"
             />
+          </div>
+          <div class="space-y-2 flex justify-start items-center gap-4">
+            <label for="room_price" class="text-sm text-gray-800"
+              >Is extra ?</label
+            >
+            <Switch
+              v-model="enabled"
+              :class="enabled ? ' bg-main' : 'bg-black'"
+              class="relative inline-flex h-[28px] w-[64px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+            >
+              <span class="sr-only">Use setting</span>
+              <span
+                aria-hidden="true"
+                :class="enabled ? 'translate-x-9' : 'translate-x-0'"
+                class="pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+              />
+            </Switch>
           </div>
           <div class="space-y-2">
             <label for="room_price" class="text-sm text-gray-800">Cost</label>
