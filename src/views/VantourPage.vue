@@ -7,13 +7,16 @@ import Pagination from "../components/Pagination.vue";
 import { useVantourStore } from "../stores/vantour";
 import VantourListItem from "../components/VantourListItem.vue";
 import { useCityStore } from "../stores/city";
+import { useCarStore } from "../stores/car";
 
 const router = useRouter();
 const vantourStore = useVantourStore();
 const cityStore = useCityStore();
+const carStore = useCarStore();
 
 const { vantours, vantour, loading } = storeToRefs(vantourStore);
 const { cities } = storeToRefs(cityStore);
+const { cars } = storeToRefs(carStore);
 
 const chooseType = ref([]);
 const choosePlace = ref([]);
@@ -38,6 +41,7 @@ const changePage = async (url) => {
   let data = {
     search: search.value,
     city_id: city_id.value,
+    car_id: car_id.value,
   };
   await vantourStore.getChangePage(url, data);
   // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -53,9 +57,11 @@ const getList = async () => {
 };
 
 const city_id = ref("");
+const car_id = ref("");
 const clear = () => {
   search.value = "";
   city_id = "";
+  car_id = "";
 };
 
 const search = ref("");
@@ -72,6 +78,8 @@ const showPricePage = ref(false);
 onMounted(async () => {
   await vantourStore.getListAction();
   await getList();
+  await carStore.getSimpleListAction();
+  await cityStore.getSimpleListAction();
 });
 
 watch(search, async (newValue) => {
@@ -79,6 +87,9 @@ watch(search, async (newValue) => {
 });
 watch(city_id, async (newValue) => {
   await vantourStore.getListAction({ city_id: city_id.value });
+});
+watch(car_id, async (newValue) => {
+  await vantourStore.getListAction({ car_id: car_id.value });
 });
 </script>
 
@@ -136,7 +147,7 @@ watch(city_id, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!search || !city_id"
+            v-if="!search || !city_id || !car_id"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -150,7 +161,7 @@ watch(city_id, async (newValue) => {
             />
           </svg>
           <img
-            v-if="search && city_id"
+            v-if="search && city_id && car_id"
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -178,14 +189,15 @@ watch(city_id, async (newValue) => {
           :reduce="(d) => d.id"
           placeholder="City "
         ></v-select>
-        <!-- <v-select
+        <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="choosePlace"
+          :options="cars?.data"
           label="name"
+          v-model="car_id"
           :clearable="false"
-          :reduce="(d) => d"
-          placeholder="Place"
-        ></v-select> -->
+          :reduce="(d) => d.id"
+          placeholder="Car "
+        ></v-select>
       </div>
       <div
         class="relative flex justify-center items-center py-[50%]"
