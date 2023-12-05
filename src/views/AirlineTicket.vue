@@ -158,7 +158,7 @@ watch(airline_name, async (newValue) => {
           placeholder="Search"
         ></v-select>
       </div>
-      <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
+      <!-- <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
           :options="chooseType"
@@ -175,7 +175,7 @@ watch(airline_name, async (newValue) => {
           :reduce="(d) => d.name"
           placeholder="Pax"
         ></v-select>
-      </div>
+      </div> -->
       <div
         class="relative flex justify-center items-center py-[50%]"
         v-if="loading"

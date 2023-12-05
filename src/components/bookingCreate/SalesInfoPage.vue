@@ -106,28 +106,21 @@ const choosePaymentBank = () => {
 };
 
 const formData = ref({
-  payment_notes: "",
-  customer_id: "",
   sold_from: "",
   payment_method: "",
   bank_name: "",
   payment_status: "",
   booking_date: "",
   payment_currency: "",
-  items: [],
   money_exchange_rate: "",
-  crm_id: "",
-  discount: "0",
-  comment: "",
-  receipt_image: [],
-  confirmation_letter: [],
   due_date: "",
-  deposit: 0,
   balance_due_date: "",
-  past_user_id: "",
-  is_past_info: "",
-  past_crm_id: "",
 });
+
+const getFunction = () => {
+  console.log(formData.value);
+  emit("formData", formData.value);
+};
 </script>
 
 <template>
@@ -154,6 +147,7 @@ const formData = ref({
         Back
       </div>
       <div class="px-4 w-full space-y-2">
+        <p class="text-sm text-red text-end">noted # need to fill all data</p>
         <div class="space-y-2">
           <label for="name" class="text-sm text-gray-800">Sale Date</label>
           <input
@@ -163,11 +157,23 @@ const formData = ref({
             class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
           />
         </div>
+
+        <div class="space-y-2">
+          <label for="name" class="text-sm text-gray-800"
+            >Balance Due Date</label
+          >
+          <input
+            type="date"
+            v-model="formData.balance_due_date"
+            id="name"
+            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+          />
+        </div>
         <div class="space-y-2">
           <label for="name" class="text-sm text-gray-800">Sold From</label>
           <v-select
             v-model="formData.sold_from"
-            class="style-chooser w-full min-h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="style-chooser w-full min-h-10 text-sm px-4 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             :options="soldFrom"
             label="name"
             :clearable="false"
@@ -181,7 +187,7 @@ const formData = ref({
           >
           <v-select
             v-model="formData.payment_currency"
-            class="style-chooser w-full min-h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="style-chooser w-full min-h-10 text-sm px-4 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             :options="payment_currency"
             @option:selected="choosePaymentBank"
             label="name"
@@ -190,11 +196,35 @@ const formData = ref({
             placeholder="choose payment currency"
           ></v-select>
         </div>
+        <div>
+          <p class="mb-2 text-sm" v-if="paymentValid">Money Exchange Rate</p>
+
+          <input
+            v-model="formData.money_exchange_rate"
+            v-if="paymentValid"
+            type="number"
+            id="title"
+            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+          />
+          <!-- <input
+            v-if="!paymentValid"
+            disabled
+            type="number"
+            id="title"
+            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white/10 focus:outline-none focus:border-gray-300"
+          /> -->
+          <p
+            v-if="errors?.money_exchange_rate"
+            class="mt-1 text-sm text-red-600"
+          >
+            {{ errors.money_exchange_rate[0] }}
+          </p>
+        </div>
         <div class="space-y-2">
           <label for="name" class="text-sm text-gray-800">Bank Name</label>
           <v-select
             v-model="formData.bank_name"
-            class="style-chooser w-full min-h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="style-chooser w-full min-h-10 text-sm px-4 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             :options="payment"
             label="name"
             :clearable="false"
@@ -206,7 +236,7 @@ const formData = ref({
           <label for="name" class="text-sm text-gray-800">Payment Method</label>
           <v-select
             v-model="formData.payment_method"
-            class="style-chooser w-full min-h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="style-chooser w-full min-h-10 text-sm px-4 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             :options="paymentArray"
             label="name"
             :clearable="false"
@@ -214,18 +244,27 @@ const formData = ref({
             placeholder="choose payment method"
           ></v-select>
         </div>
-        <div class="space-y-2">
-          <label for="name" class="text-sm text-gray-800">Payment Status</label>
-          <input
-            v-model="formData.payment_status"
-            :class="{
-              'bg-white rounded-lg': formData.payment_status !== '',
-            }"
-            type="text"
-            disabled
-            id="title"
-            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
-          />
+        <div class="flex justify-end items-center pt-4">
+          <div
+            class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-main bg-main text-white border"
+            @click="getFunction"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <p class="">Change</p>
+          </div>
         </div>
       </div>
     </div>

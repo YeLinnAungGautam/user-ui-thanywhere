@@ -137,7 +137,7 @@ onMounted(async () => {
           <p class="text-sm pl-2">{{ entrances?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2"
+          class="space-y-2 opacity-40"
           v-if="search == 'inclusive' || search == 'all' || search == ''"
         >
           <img src="../../public/inclusive.jpg" alt="" class="rounded-lg" />

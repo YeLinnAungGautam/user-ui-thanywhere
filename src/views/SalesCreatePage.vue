@@ -132,7 +132,9 @@ onMounted(async () => {
           <div class="grid grid-cols-2 gap-3 bg-white pl-4 pr-6 py-2">
             <p>Sale Date</p>
             <p>10-1-2023</p>
-            <p>Sale Date</p>
+            <p>Balance Due Date</p>
+            <p>10-1-2023</p>
+            <p>Sold From</p>
             <p>facebook</p>
             <p>Payment Currency</p>
             <p>THB</p>
