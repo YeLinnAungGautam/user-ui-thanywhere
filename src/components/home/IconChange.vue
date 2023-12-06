@@ -39,7 +39,7 @@ const logoutHandle = async () => {
     <div class="flex justify-center items-center">
       <router-link to="/sales">
         <div
-          class="bg-white opacity-40 flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
         >
           <img
             src="../../../public/money-receive-svgrepo-com.svg"

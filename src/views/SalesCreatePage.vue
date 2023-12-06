@@ -14,6 +14,7 @@ import SalesListShowVue from "../components/bookingCreate/SalesListShow.vue";
 import { XCircleIcon } from "@heroicons/vue/24/outline";
 import { useToastStore } from "../stores/toast";
 import { useBookingStore } from "../stores/booking";
+import EditSaleItemVue from "../components/bookingCreate/EditSaleItem.vue";
 
 const router = useRouter();
 const enabled = ref(false);
@@ -52,6 +53,17 @@ const formData = ref({
 const showCustomer = ref(false);
 const showInfo = ref(false);
 const showCreateSale = ref(false);
+const showEditSale = ref(false);
+const editListId = ref("");
+
+const editValue = ref({});
+const saleEditPage = (i, index) => {
+  console.log(i);
+  editListId.value = index;
+  console.log(editListId.value);
+  showEditSale.value = true;
+  editValue.value = i;
+};
 
 const sub_total = computed(() => {
   let totalsub = 0;
@@ -113,6 +125,13 @@ const changesCreateSale = (message) => {
     showCreateSale.value = false;
   }
 };
+const changesEditSale = (message) => {
+  if (message == "changes") {
+    showEditSale.value = false;
+    editValue.value = {};
+    editListId.value = "";
+  }
+};
 const changeGetForm = (data) => {
   console.log(data);
   formData.value.balance_due_date = data.balance_due_date;
@@ -135,6 +154,13 @@ const changeGetItem = (data) => {
   formitem.value = {};
   console.log(formData.value.items, "this is push items");
   showCreateSale.value = false;
+};
+const changeItemList = (data) => {
+  console.log(data, "this is change item value");
+  showEditSale.value = false;
+  editValue.value = {};
+  formData.value.items[editListId.value] = data;
+  editListId.value = "";
 };
 
 const addNewitem = () => {
@@ -604,7 +630,9 @@ onMounted(async () => {
             :serviceDate="i.service_date"
             :quantity="i.quantity"
             :selling="i.selling_price"
+            :totalAmount="i.total_amount"
             @delete="getDeleteFunction"
+            @click="saleEditPage(i, index)"
           />
         </div>
         <div
@@ -792,6 +820,16 @@ onMounted(async () => {
         <CreateSalesItem
           @change="changesCreateSale"
           @formData="changeGetItem"
+        />
+      </div>
+      <div
+        class="absolute top-[90px] left-0 w-screen min-h-full overflow-scroll bg-gray z-10 animate__animated animate__fadeIn"
+        v-if="showEditSale"
+      >
+        <EditSaleItemVue
+          :data="editValue"
+          @change="changesEditSale"
+          @formData="changeItemList"
         />
       </div>
     </div>

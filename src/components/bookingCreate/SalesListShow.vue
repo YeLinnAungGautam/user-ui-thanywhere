@@ -54,7 +54,7 @@
           <small>service date : {{ serviceDate }}</small>
         </div>
       </div>
-      <p class="text-lg font-semibold">THB {{ selling * quantity }}</p>
+      <p class="text-lg font-semibold">THB {{ totalAmount }}</p>
     </div>
   </div>
 </template>
@@ -96,6 +96,7 @@ const props = defineProps({
   serviceDate: String,
   selling: [Number, String],
   quantity: Number,
+  totalAmount: Number,
 });
 
 const emit = defineEmits();
