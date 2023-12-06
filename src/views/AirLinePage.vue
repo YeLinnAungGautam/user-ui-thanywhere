@@ -1,11 +1,12 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 import Pagination from "../components/Pagination.vue";
 import { useAirLineStore } from "../stores/airline";
 import AirLineItem from "../components/AirLineItem.vue";
+import NoDataPageVue from "../components/NoDataPage.vue";
 
 const router = useRouter();
 const airlineStore = useAirLineStore();
@@ -31,10 +32,10 @@ const createPage = () => {
 
 const changePage = async (url) => {
   console.log(url);
-  let data = {
-    search: search.value,
-  };
-  await airlineStore.getChangePage(url, data);
+  // let data = {
+  //   search: search.value,
+  // };
+  await airlineStore.getChangePage(url, watchSystem.value);
   // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 };
 
@@ -51,9 +52,13 @@ const getList = async () => {
 // };
 const clear = () => {
   search.value = "";
+  priceShow.value = false;
+  max_price.value = "";
 };
 
 const search = ref("");
+const priceShow = ref(false);
+const max_price = ref("");
 
 const changes = async (message) => {
   if ((message = "Deleted")) {
@@ -62,13 +67,28 @@ const changes = async (message) => {
   }
 };
 
+const watchSystem = computed(() => {
+  const result = {};
+
+  if (search.value != "" && search.value != undefined) {
+    result.search = search.value;
+  }
+  if (max_price.value != "" && max_price.value != undefined) {
+    result.max_price = max_price.value;
+  }
+  return result;
+});
+
 onMounted(async () => {
   await airlineStore.getListAction();
   await getList();
 });
 
 watch(search, async (newValue) => {
-  await airlineStore.getListAction({ search: search.value });
+  await airlineStore.getListAction(watchSystem.value);
+});
+watch(max_price, async (newValue) => {
+  await airlineStore.getListAction(watchSystem.value);
 });
 </script>
 
@@ -126,7 +146,7 @@ watch(search, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!search"
+            v-if="!search && !max_price"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -140,7 +160,7 @@ watch(search, async (newValue) => {
             />
           </svg>
           <img
-            v-if="search"
+            v-if="search || max_price"
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -158,32 +178,40 @@ watch(search, async (newValue) => {
         ></v-select>
         <!-- @option:selected="chooseName()" -->
       </div>
-      <!-- <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Filter "
-        ></v-select>
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Filter"
-        ></v-select>
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Filter"
-        ></v-select>
-      </div> -->
+      <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
+        <div
+          @click="priceShow = true"
+          class="bg-white rounded-full border border-main min-w-[100px] text-main px-4 py-1"
+        >
+          <div class="flex justify-between items-center" v-if="!priceShow">
+            price
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.9"
+              stroke="currentColor"
+              class="w-4 h-4 font-bold"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          </div>
+          <div v-if="priceShow" class="pt-1 flex justify-center items-center">
+            <input
+              type="range"
+              v-model="max_price"
+              min="0"
+              class="bg-main"
+              max="1000"
+            />
+            {{ max_price }}
+          </div>
+        </div>
+      </div>
       <div
         class="relative flex justify-center items-center py-[50%]"
         v-if="loading"
@@ -199,6 +227,17 @@ watch(search, async (newValue) => {
       >
         <div v-for="(airline, index) in airlines?.data" :key="index">
           <AirLineItem :id="airline.id" :airlines="airline" @change="changes" />
+        </div>
+      </div>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
+        v-if="!loading"
+      >
+        <div
+          class="space-y-2 col-span-1 md:col-span-2"
+          v-if="airlines?.data.length == 0"
+        >
+          <NoDataPageVue />
         </div>
       </div>
       <div>

@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 import Pagination from "../components/Pagination.vue";
@@ -38,12 +38,12 @@ const createPage = () => {
 
 const changePage = async (url) => {
   console.log(url);
-  let data = {
-    search: search.value,
-    city_id: city_id.value,
-    car_id: car_id.value,
-  };
-  await vantourStore.getChangePage(url, data);
+  // let data = {
+  //   search: search.value,
+  //   city_id: city_id.value,
+  //   car_id: car_id.value,
+  // };
+  await vantourStore.getChangePage(url, watchSystem.value);
   // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 };
 
@@ -56,15 +56,15 @@ const getList = async () => {
   }
 };
 
-const city_id = ref("");
-const car_id = ref("");
 const clear = () => {
   search.value = "";
-  city_id = "";
-  car_id = "";
+  city_id.value = "";
+  car_id.value = "";
 };
 
 const search = ref("");
+const city_id = ref("");
+const car_id = ref("");
 
 const changes = async (message) => {
   if ((message = "Deleted")) {
@@ -75,6 +75,21 @@ const changes = async (message) => {
 
 const showPricePage = ref(false);
 
+const watchSystem = computed(() => {
+  const result = {};
+
+  if (search.value != "" && search.value != undefined) {
+    result.search = search.value;
+  }
+  if (city_id.value != "" && city_id.value != undefined) {
+    result.city_id = city_id.value;
+  }
+  if (car_id.value != "" && car_id.value != undefined) {
+    result.car_id = car_id.value;
+  }
+  return result;
+});
+
 onMounted(async () => {
   await vantourStore.getListAction();
   await getList();
@@ -83,13 +98,13 @@ onMounted(async () => {
 });
 
 watch(search, async (newValue) => {
-  await vantourStore.getListAction({ search: search.value });
+  await vantourStore.getListAction(watchSystem.value);
 });
 watch(city_id, async (newValue) => {
-  await vantourStore.getListAction({ city_id: city_id.value });
+  await vantourStore.getListAction(watchSystem.value);
 });
 watch(car_id, async (newValue) => {
-  await vantourStore.getListAction({ car_id: car_id.value });
+  await vantourStore.getListAction(watchSystem.value);
 });
 </script>
 
@@ -147,7 +162,7 @@ watch(car_id, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!search || !city_id || !car_id"
+            v-if="!search && !city_id && !car_id"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -161,7 +176,7 @@ watch(car_id, async (newValue) => {
             />
           </svg>
           <img
-            v-if="search && city_id && car_id"
+            v-if="search || city_id || car_id"
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -179,7 +194,7 @@ watch(car_id, async (newValue) => {
         ></v-select>
         <!-- @option:selected="chooseName()" -->
       </div>
-      <!-- <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
+      <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
           :options="cities?.data"
@@ -198,7 +213,7 @@ watch(car_id, async (newValue) => {
           :reduce="(d) => d.id"
           placeholder="Car "
         ></v-select>
-      </div> -->
+      </div>
       <div
         class="relative flex justify-center items-center py-[50%]"
         v-if="loading"

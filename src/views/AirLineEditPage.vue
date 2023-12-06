@@ -136,7 +136,7 @@ onMounted(async () => {
               >Starting Balance</label
             >
             <input
-              type="text"
+              type="number"
               v-model="formData.starting_balance"
               id="name"
               class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white/50 focus:outline-none focus:border-gray-300"

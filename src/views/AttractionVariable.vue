@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 import VariationItem from "../components/VariationItem.vue";
@@ -26,6 +26,8 @@ const chooseType = ref([
 
 const variation_id = ref("");
 const variation_name = ref("");
+const priceShow = ref(false);
+const max_price = ref("");
 
 const createPage = () => {
   router.push({
@@ -40,14 +42,16 @@ const goBack = () => {
 const clear = () => {
   variation_id.value = "";
   variation_name.value = "";
+  max_price.value = "";
+  priceShow.value = false;
 };
 
 const changePage = async (url) => {
   console.log(url);
-  let data = {
-    variation_id: variation_id.value,
-  };
-  await roomStore.getChangePage(url, data);
+  // let data = {
+  //   variation_id: variation_id.value,
+  // };
+  await roomStore.getChangePage(url, watchSystem.value);
 };
 
 const changes = async (message) => {
@@ -56,6 +60,18 @@ const changes = async (message) => {
   }
 };
 
+const watchSystem = computed(() => {
+  const result = {};
+
+  if (variation_id.value != "" && variation_id.value != undefined) {
+    result.entrance_ticket_id = variation_id.value;
+  }
+  if (max_price.value != "" && max_price.value != undefined) {
+    result.max_price = max_price.value;
+  }
+  return result;
+});
+
 onMounted(async () => {
   variation_id.value = route.params.id;
   variation_name.value = route.params.name;
@@ -63,10 +79,10 @@ onMounted(async () => {
 });
 
 watch(variation_id, async (newValue) => {
-  await variationStore.getListAction({
-    entrance_ticket_id: variation_id.value,
-  });
-  console.log(variation_id.value);
+  await variationStore.getListAction(watchSystem.value);
+});
+watch(max_price, async (newValue) => {
+  await variationStore.getListAction(watchSystem.value);
 });
 </script>
 
@@ -124,7 +140,7 @@ watch(variation_id, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!variation_id"
+            v-if="!variation_id && !max_price"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -138,7 +154,7 @@ watch(variation_id, async (newValue) => {
             />
           </svg>
           <img
-            v-if="variation_id"
+            v-if="variation_id || max_price"
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -162,24 +178,40 @@ watch(variation_id, async (newValue) => {
           placeholder="Search"
         ></v-select>
       </div>
-      <!-- <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Price"
-        ></v-select>
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Pax"
-        ></v-select>
-      </div> -->
+      <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
+        <div
+          @click="priceShow = true"
+          class="bg-white rounded-full border border-main min-w-[100px] text-main px-4 py-1"
+        >
+          <div class="flex justify-between items-center" v-if="!priceShow">
+            price
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.9"
+              stroke="currentColor"
+              class="w-4 h-4 font-bold"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          </div>
+          <div v-if="priceShow" class="pt-1 flex justify-center items-center">
+            <input
+              type="range"
+              v-model="max_price"
+              min="0"
+              class="bg-main"
+              max="10000"
+            />
+            {{ max_price }}
+          </div>
+        </div>
+      </div>
       <div
         class="relative flex justify-center items-center py-[50%]"
         v-if="loading"
@@ -211,7 +243,7 @@ watch(variation_id, async (newValue) => {
       >
         <div
           class="space-y-2 col-span-1 md:col-span-2"
-          v-if="rooms?.data.length == 0"
+          v-if="variations?.data.length == 0"
         >
           <NoDataPage />
         </div>

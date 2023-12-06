@@ -1,16 +1,23 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 import Pagination from "../components/Pagination.vue";
 import { useAirportStore } from "../stores/airport";
 import AirportItemVue from "../components/AirportItem.vue";
+import { useCityStore } from "../stores/city";
+import { useCarStore } from "../stores/car";
+import NoDataPageVue from "../components/NoDataPage.vue";
 
 const router = useRouter();
 const airportStore = useAirportStore();
+const cityStore = useCityStore();
+const carStore = useCarStore();
 
 const { airports, airport, loading } = storeToRefs(airportStore);
+const { cities } = storeToRefs(cityStore);
+const { cars } = storeToRefs(carStore);
 
 const chooseType = ref([]);
 
@@ -31,10 +38,10 @@ const createPage = () => {
 
 const changePage = async (url) => {
   console.log(url);
-  let data = {
-    search: search.value,
-  };
-  await airportStore.getChangePage(url, data);
+  // let data = {
+  //   search: search.value,
+  // };
+  await airportStore.getChangePage(url, watchSystem.value);
   // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 };
 
@@ -51,24 +58,53 @@ const getList = async () => {
 // };
 const clear = () => {
   search.value = "";
+  city_id.value = "";
+  car_id.value = "";
 };
 
 const search = ref("");
+const city_id = ref("");
+const car_id = ref("");
 
 const changes = async (message) => {
   if ((message = "Deleted")) {
     search.value = "";
+    city_id = "";
+    car_id = "";
     await airportStore.getListAction();
   }
 };
 
+const watchSystem = computed(() => {
+  const result = {};
+
+  if (search.value != "" && search.value != undefined) {
+    result.search = search.value;
+  }
+  if (city_id.value != "" && city_id.value != undefined) {
+    result.city_id = city_id.value;
+  }
+  if (car_id.value != "" && car_id.value != undefined) {
+    result.car_id = car_id.value;
+  }
+  return result;
+});
+
 onMounted(async () => {
   await airportStore.getListAction();
+  await cityStore.getSimpleListAction();
+  await carStore.getSimpleListAction();
   await getList();
 });
 
 watch(search, async (newValue) => {
-  await airportStore.getListAction({ search: search.value });
+  await airportStore.getListAction(watchSystem.value);
+});
+watch(city_id, async (newValue) => {
+  await airportStore.getListAction(watchSystem.value);
+});
+watch(car_id, async (newValue) => {
+  await airportStore.getListAction(watchSystem.value);
 });
 </script>
 
@@ -126,7 +162,7 @@ watch(search, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!search"
+            v-if="!search && !city_id && !car_id"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -140,7 +176,7 @@ watch(search, async (newValue) => {
             />
           </svg>
           <img
-            v-if="search"
+            v-if="search || city_id || car_id"
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -158,32 +194,34 @@ watch(search, async (newValue) => {
         ></v-select>
         <!-- @option:selected="chooseName()" -->
       </div>
-      <!-- <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
+      <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
+          :options="cities?.data"
           label="name"
           :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Filter "
+          v-model="city_id"
+          :reduce="(d) => d.id"
+          placeholder="City "
         ></v-select>
         <v-select
+          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
+          :options="cars?.data"
+          label="name"
+          :clearable="false"
+          v-model="car_id"
+          :reduce="(d) => d.id"
+          placeholder="Car"
+        ></v-select>
+        <!-- <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
           :options="chooseType"
           label="name"
           :clearable="false"
           :reduce="(d) => d.name"
           placeholder="Filter"
-        ></v-select>
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Filter"
-        ></v-select>
-      </div> -->
+        ></v-select> -->
+      </div>
       <div
         class="relative flex justify-center items-center py-[50%]"
         v-if="loading"
@@ -203,6 +241,17 @@ watch(search, async (newValue) => {
             :airports="airport"
             @change="changes"
           />
+        </div>
+      </div>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
+        v-if="!loading"
+      >
+        <div
+          class="space-y-2 col-span-1 md:col-span-2"
+          v-if="airports?.data.length == 0"
+        >
+          <NoDataPageVue />
         </div>
       </div>
       <div>

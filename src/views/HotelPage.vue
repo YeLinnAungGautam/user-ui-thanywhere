@@ -1,12 +1,13 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 import { useHotelStore } from "../stores/hotel";
 import Pagination from "../components/Pagination.vue";
 import HotelsItemVue from "../components/HotelsItem.vue";
 import { useCityStore } from "../stores/city";
+import NoDataPageVue from "../components/NoDataPage.vue";
 
 const router = useRouter();
 const hotelStore = useHotelStore();
@@ -35,13 +36,13 @@ const createPage = () => {
 
 const changePage = async (url) => {
   console.log(url);
-  let data = {
-    search: search.value,
-    max_price: price.value,
-    city_id: city_id.value,
-    place: place.value,
-  };
-  await hotelStore.getChangePage(url, data);
+  // let data = {
+  //   search: search.value,
+  //   max_price: price.value,
+  //   city_id: city_id.value,
+  //   place: place.value,
+  // };
+  await hotelStore.getChangePage(url, watchSystem.value);
   // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 };
 
@@ -77,6 +78,24 @@ const changes = async (message) => {
   }
 };
 
+const watchSystem = computed(() => {
+  const result = {};
+
+  if (search.value != "" && search.value != undefined) {
+    result.search = search.value;
+  }
+  if (price.value != "" && price.value != undefined) {
+    result.max_price = price.value;
+  }
+  if (city_id.value != "" && city_id.value != undefined) {
+    result.city_id = city_id.value;
+  }
+  if (place.value != "" && place.value != undefined) {
+    result.place = place.value;
+  }
+  return result;
+});
+
 onMounted(async () => {
   await hotelStore.getListAction();
   await cityStore.getSimpleListAction();
@@ -84,16 +103,16 @@ onMounted(async () => {
 });
 
 watch(search, async (newValue) => {
-  await hotelStore.getListAction({ search: search.value });
+  await hotelStore.getListAction(watchSystem.value);
 });
 watch(price, async (newValue) => {
-  await hotelStore.getListAction({ max_price: price.value });
+  await hotelStore.getListAction(watchSystem.value);
 });
 watch(city_id, async (newValue) => {
-  await hotelStore.getListAction({ city_id: city_id.value });
+  await hotelStore.getListAction(watchSystem.value);
 });
 watch(place, async (newValue) => {
-  await hotelStore.getListAction({ place: place.value });
+  await hotelStore.getListAction(watchSystem.value);
 });
 </script>
 
@@ -250,6 +269,17 @@ watch(place, async (newValue) => {
       >
         <div v-for="(hotel, index) in hotels?.data" :key="index">
           <HotelsItemVue :id="hotel.id" :hotels="hotel" @change="changes" />
+        </div>
+      </div>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
+        v-if="!loading"
+      >
+        <div
+          class="space-y-2 col-span-1 md:col-span-2"
+          v-if="hotels?.data.length == 0"
+        >
+          <NoDataPageVue />
         </div>
       </div>
       <div>

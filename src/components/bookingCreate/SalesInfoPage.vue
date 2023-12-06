@@ -1,9 +1,20 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { ref, defineProps, defineEmits, onMounted, watch } from "vue";
+import { Switch } from "@headlessui/vue";
+import { useAuthStore } from "../../stores/auth";
+import { useAdminStore } from "../../stores/admin";
 
-const props = defineProps({});
+const props = defineProps({
+  data: Object,
+});
 
+const authStore = useAuthStore();
+const adminStore = useAdminStore();
+
+const { admin } = storeToRefs(adminStore);
+
+const enabled = ref(false);
 const emit = defineEmits();
 
 const showInfo = () => {
@@ -115,12 +126,38 @@ const formData = ref({
   money_exchange_rate: "",
   due_date: "",
   balance_due_date: "",
+  past_user_id: "",
+  is_past_info: "",
+  past_crm_id: "",
 });
 
 const getFunction = () => {
   console.log(formData.value);
+  if (enabled.value) {
+    formData.value.is_past_info = 1;
+  } else {
+    formData.value.is_past_info = 0;
+  }
   emit("formData", formData.value);
 };
+
+onMounted(async () => {
+  if (props.data) {
+    formData.value.balance_due_date = props.data.balance_due_date;
+    formData.value.booking_date = props.data.booking_date;
+    formData.value.money_exchange_rate = props.data.money_exchange_rate;
+    formData.value.payment_currency = props.data.payment_currency;
+    formData.value.payment_method = props.data.payment_method;
+    formData.value.sold_from = props.data.sold_from;
+    formData.value.bank_name = props.data.bank_name;
+    if (props.data.is_past_info == 1) {
+      enabled.value = true;
+      formData.value.past_crm_id = props.data.past_crm_id;
+      formData.value.past_user_id = props.data.past_user_id;
+    }
+  }
+  await adminStore.getSimpleListAction();
+});
 </script>
 
 <template>
@@ -206,13 +243,6 @@ const getFunction = () => {
             id="title"
             class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
           />
-          <!-- <input
-            v-if="!paymentValid"
-            disabled
-            type="number"
-            id="title"
-            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white/10 focus:outline-none focus:border-gray-300"
-          /> -->
           <p
             v-if="errors?.money_exchange_rate"
             class="mt-1 text-sm text-red-600"
@@ -244,6 +274,47 @@ const getFunction = () => {
             placeholder="choose payment method"
           ></v-select>
         </div>
+        <div class="space-y-2" v-if="authStore.isCashier">
+          <label for="name" class="text-sm text-gray-800">Is Past Info</label>
+          <div>
+            <Switch
+              v-model="enabled"
+              :class="enabled ? ' bg-main' : 'bg-black'"
+              class="relative inline-flex h-[28px] w-[64px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+            >
+              <span class="sr-only">Use setting</span>
+              <span
+                aria-hidden="true"
+                :class="enabled ? 'translate-x-9' : 'translate-x-0'"
+                class="pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+              />
+            </Switch>
+          </div>
+        </div>
+        <div class="spy-2" v-if="enabled">
+          <p class="mb-2 text-sm">Past CRM ID</p>
+
+          <input
+            v-model="formData.past_crm_id"
+            type="text"
+            id="title"
+            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+          />
+        </div>
+        <div class="spy-2" v-if="enabled">
+          <p class="mb-2 text-sm">Past User ID</p>
+
+          <v-select
+            v-model="formData.past_user_id"
+            class="style-chooser w-full min-h-10 text-sm px-4 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            :options="admin?.data"
+            label="name"
+            :clearable="false"
+            :reduce="(d) => d.id"
+            placeholder="choose customer"
+          ></v-select>
+        </div>
+
         <div class="flex justify-end items-center pt-4">
           <div
             class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-main bg-main text-white border"
@@ -263,7 +334,7 @@ const getFunction = () => {
                 d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <p class="">Change</p>
+            <p class="">Add</p>
           </div>
         </div>
       </div>

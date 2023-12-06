@@ -1,15 +1,15 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-export const useAirportStore = defineStore("airport", {
-  state: () => ({ airports: null, airport: null, loading: false }),
+export const useAdminStore = defineStore("admin", {
+  state: () => ({ admin: null, loading: false }),
   getters: {},
   actions: {
     async getSimpleListAction(params) {
       try {
         this.loading = true;
-        const response = await axios.get("/airport-pickups?limit=1000&page=1");
-        this.airport = response.data.result;
+        const response = await axios.get("/admins?limit=1000&page=1");
+        this.admin = response.data.result;
         this.loading = false;
 
         return response.data;
@@ -18,30 +18,24 @@ export const useAirportStore = defineStore("airport", {
         throw error;
       }
     },
-    async getChangePage(url, params) {
-      console.log(params, "this is params ");
+    async getChangePage(url) {
       this.loading = true;
       const urlSearchParams = new URLSearchParams(new URL(url).search);
       const pageValue = urlSearchParams.get("page");
-      const response = await axios.get(
-        `/airport-pickups?limit=10&page=${pageValue}`,
-        {
-          params: params,
-        }
-      );
-      this.airports = response.data.result;
+      const response = await axios.get("/admins?limit=10&page=" + pageValue);
+      this.admin = response.data.result;
       this.loading = false;
       return response.data;
     },
     async getListAction(params) {
       try {
         this.loading = true;
-        const response = await axios.get("/airport-pickups", {
+        const response = await axios.get("/admins", {
           params: params,
         });
-        this.airports = response.data.result;
+        this.admin = response.data.result;
+
         this.loading = false;
-        console.log(response);
         return response.data;
       } catch (error) {
         this.loading = false;
@@ -50,7 +44,7 @@ export const useAirportStore = defineStore("airport", {
     },
     async addNewAction(data) {
       try {
-        const response = await axios.post("/airport-pickups", data);
+        const response = await axios.post("/admins", data);
         return response.data;
       } catch (error) {
         throw error;
@@ -59,7 +53,7 @@ export const useAirportStore = defineStore("airport", {
 
     async getDetailAction(id) {
       try {
-        const response = await axios.get("/airport-pickups/" + id);
+        const response = await axios.get("/admins/" + id);
         return response.data;
       } catch (error) {
         throw error;
@@ -67,7 +61,7 @@ export const useAirportStore = defineStore("airport", {
     },
     async updateAction(data, id) {
       try {
-        const response = await axios.post("/airport-pickups/" + id, data);
+        const response = await axios.post("/admins/" + id, data);
         return response.data;
       } catch (error) {
         throw error;
@@ -75,7 +69,7 @@ export const useAirportStore = defineStore("airport", {
     },
     async deleteAction(id) {
       try {
-        const response = await axios.delete("/airport-pickups/" + id);
+        const response = await axios.delete("/admins/" + id);
         console.log(response.data);
         return response.data;
       } catch (error) {

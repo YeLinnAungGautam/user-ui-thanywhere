@@ -1,16 +1,20 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 import { useEntranceStore } from "../stores/entrance";
 import Pagination from "../components/Pagination.vue";
 import AttractionListItem from "../components/AttractionListItem.vue";
+import { useCityStore } from "../stores/city";
+import NoDataPageVue from "../components/NoDataPage.vue";
 
 const router = useRouter();
 const entranceStore = useEntranceStore();
+const cityStore = useCityStore();
 
 const { entrances, entrance, loading } = storeToRefs(entranceStore);
+const { cities } = storeToRefs(cityStore);
 
 const chooseType = ref([]);
 
@@ -23,10 +27,11 @@ const createPage = () => {
 
 const changePage = async (url) => {
   console.log(url);
-  let data = {
-    search: search.value,
-  };
-  await entranceStore.getChangePage(url, data);
+  // let data = {
+  //   search: search.value,
+  //   city_id: city_id.value,
+  // };
+  await entranceStore.getChangePage(url, watchSystem.value);
   // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 };
 
@@ -43,25 +48,44 @@ const getList = async () => {
 // };
 const clear = () => {
   search.value = "";
+  city_id.value = "";
 };
 
 const search = ref("");
+const city_id = ref("");
 
 const changes = async (message) => {
   if ((message = "Hotel Deleted")) {
     search.value = "";
+    city_id.value = "";
     await getList();
     await entranceStore.getListAction();
   }
 };
 
+const watchSystem = computed(() => {
+  const result = {};
+
+  if (search.value != "" && search.value != undefined) {
+    result.search = search.value;
+  }
+  if (city_id.value != "" && city_id.value != undefined) {
+    result.city_id = city_id.value;
+  }
+  return result;
+});
+
 onMounted(async () => {
   await entranceStore.getListAction();
+  await cityStore.getSimpleListAction();
   await getList();
 });
 
 watch(search, async (newValue) => {
-  await entranceStore.getListAction({ search: search.value });
+  await entranceStore.getListAction(watchSystem.value);
+});
+watch(city_id, async (newValue) => {
+  await entranceStore.getListAction(watchSystem.value);
 });
 </script>
 
@@ -119,7 +143,7 @@ watch(search, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!search"
+            v-if="!search && !city_id"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -133,7 +157,7 @@ watch(search, async (newValue) => {
             />
           </svg>
           <img
-            v-if="search"
+            v-if="search || city_id"
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -151,16 +175,17 @@ watch(search, async (newValue) => {
         ></v-select>
         <!-- @option:selected="chooseName()" -->
       </div>
-      <!-- <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
+      <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
+          :options="cities?.data"
           label="name"
           :clearable="false"
-          :reduce="(d) => d.name"
+          v-model="city_id"
+          :reduce="(d) => d.id"
           placeholder="City"
         ></v-select>
-        <v-select
+        <!-- <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
           :options="chooseType"
           label="name"
@@ -175,8 +200,8 @@ watch(search, async (newValue) => {
           :clearable="false"
           :reduce="(d) => d.name"
           placeholder="Price"
-        ></v-select>
-      </div> -->
+        ></v-select> -->
+      </div>
       <div
         class="relative flex justify-center items-center py-[50%]"
         v-if="loading"
@@ -196,6 +221,17 @@ watch(search, async (newValue) => {
             :attractions="entrance"
             @change="changes"
           />
+        </div>
+      </div>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
+        v-if="!loading"
+      >
+        <div
+          class="space-y-2 col-span-1 md:col-span-2"
+          v-if="entrances?.data.length == 0"
+        >
+          <NoDataPageVue />
         </div>
       </div>
       <div>
