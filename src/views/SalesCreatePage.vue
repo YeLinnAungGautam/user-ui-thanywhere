@@ -135,7 +135,7 @@ const changesEditSale = (message) => {
 const removeItemList = (message) => {
   if (message == "remove") {
     showEditSale.value = false;
-    formData.value.items.splice(editListId, 1);
+    formData.value.items.splice(editListId.value, 1);
     editValue.value = {};
     editListId.value = "";
   }
