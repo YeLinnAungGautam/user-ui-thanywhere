@@ -132,6 +132,14 @@ const changesEditSale = (message) => {
     editListId.value = "";
   }
 };
+const removeItemList = (message) => {
+  if (message == "remove") {
+    showEditSale.value = false;
+    formData.value.items.splice(editListId, 1);
+    editValue.value = {};
+    editListId.value = "";
+  }
+};
 const changeGetForm = (data) => {
   console.log(data);
   formData.value.balance_due_date = data.balance_due_date;
@@ -631,7 +639,6 @@ onMounted(async () => {
             :quantity="i.quantity"
             :selling="i.selling_price"
             :totalAmount="i.total_amount"
-            @delete="getDeleteFunction"
             @click="saleEditPage(i, index)"
           />
         </div>
@@ -829,6 +836,7 @@ onMounted(async () => {
         <EditSaleItemVue
           :data="editValue"
           @change="changesEditSale"
+          @remove="removeItemList"
           @formData="changeItemList"
         />
       </div>

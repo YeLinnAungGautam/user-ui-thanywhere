@@ -303,6 +303,9 @@ const getFunction = () => {
   console.log(formitem.value);
   emit("formData", formitem.value);
 };
+const getRemoveFunction = () => {
+  emit("remove", "remove");
+};
 
 onMounted(() => {
   console.log(props.data, "this is props data");
@@ -675,7 +678,29 @@ onMounted(() => {
           </p>
         </div>
 
-        <div class="flex justify-end items-center py-4">
+        <div class="flex justify-end items-center py-4 gap-2">
+          <div
+            class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-red bg-red text-white border"
+            v-if="formitem.product_id && todayVali"
+            @click="getRemoveFunction"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+
+            <p class="">Remove</p>
+          </div>
           <div
             class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-main bg-main text-white border"
             v-if="formitem.product_id && todayVali"
