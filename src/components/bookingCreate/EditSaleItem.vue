@@ -534,10 +534,10 @@ onMounted(() => {
           />
         </div>
         <div class="space-y-2" v-if="formitem.product_type == '6'">
-          <p class="text-xs" @click="calculateRateRoom">
+          <p class="text-xs pt-2" @click="calculateRateRoom">
             Days
             <span class="text-xs text-red"
-              >click that label for auto calcute days</span
+              >(click that label for auto calcute days)</span
             >
           </p>
           <input
@@ -569,12 +569,12 @@ onMounted(() => {
           />
           <label
             for="name"
-            class="text-sm text-gray-800"
+            class="text-sm text-gray-800 pt-2"
             v-if="formitem.product_type == '6'"
             >Quantity</label
           >
           <p
-            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-transparent focus:outline-none focus:border-gray-300"
             v-if="formitem.product_type == '6'"
           >
             {{
@@ -672,7 +672,7 @@ onMounted(() => {
         <div class="space-y-2">
           <label for="name" class="text-sm text-gray-800">Total Amount</label>
           <p
-            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-transparent focus:outline-none focus:border-gray-300"
           >
             {{ sub_qty_total }}
           </p>

@@ -23,15 +23,15 @@ const logoutHandle = async () => {
     <div class="flex justify-center items-center">
       <router-link to="/analytics">
         <div
-          class="bg-white opacity-40 flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+          class="bg-white opacity-40 flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
         >
           <img
             src="../../../public/dashboard-svgrepo-com.svg"
-            class="w-9 h-9 text-main"
+            class="w-7 h-7 text-main"
             alt=""
           />
         </div>
-        <p class="text-center mt-5 text-black text-base font-semibold">
+        <p class="text-center mt-5 text-black text-sm font-semibold">
           Analytics
         </p>
       </router-link>
@@ -39,29 +39,29 @@ const logoutHandle = async () => {
     <div class="flex justify-center items-center">
       <router-link to="/sales">
         <div
-          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+          class="bg-white flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
         >
           <img
             src="../../../public/money-receive-svgrepo-com.svg"
-            class="w-9 h-9 text-main"
+            class="w-7 h-7 text-main"
             alt=""
           />
         </div>
-        <p class="text-center mt-5 text-black text-base font-semibold">Sales</p>
+        <p class="text-center mt-5 text-black text-sm font-semibold">Sales</p>
       </router-link>
     </div>
     <div class="flex justify-center items-center">
       <router-link to="/products">
         <div
-          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+          class="bg-white flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
         >
           <img
             src="../../../public/hot-air-balloon-svgrepo-com.svg"
-            class="w-9 h-9 text-main"
+            class="w-7 h-7 text-main"
             alt=""
           />
         </div>
-        <p class="text-center mt-5 text-black text-base font-semibold">
+        <p class="text-center mt-5 text-black text-sm font-semibold">
           Products
         </p>
       </router-link>
@@ -70,15 +70,15 @@ const logoutHandle = async () => {
     <div class="flex justify-center items-center">
       <div>
         <div
-          class="bg-white opacity-40 flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+          class="bg-white opacity-40 flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
         >
           <img
             src="../../../public/letter-opened-svgrepo-com.svg"
-            class="w-9 h-9 text-main"
+            class="w-7 h-7 text-main"
             alt=""
           />
         </div>
-        <p class="text-center mt-5 text-black text-base font-semibold">
+        <p class="text-center mt-5 text-black text-sm font-semibold">
           Bookings
         </p>
       </div>
@@ -86,15 +86,15 @@ const logoutHandle = async () => {
     <div class="flex justify-center items-center">
       <router-link to="/customers">
         <div
-          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+          class="bg-white flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
         >
           <img
             src="../../../public/people-nearby-svgrepo-com.svg"
-            class="w-9 h-9 text-main"
+            class="w-7 h-7 text-main"
             alt=""
           />
         </div>
-        <p class="text-center mt-5 text-black text-base font-semibold">
+        <p class="text-center mt-5 text-black text-sm font-semibold">
           Customers
         </p>
       </router-link>
@@ -102,17 +102,15 @@ const logoutHandle = async () => {
     <div class="flex justify-center items-center">
       <div @click="logoutHandle">
         <div
-          class="bg-white flex justify-center items-center w-[80px] h-[80px] rounded-full shadow-custom"
+          class="bg-white flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
         >
           <img
             src="../../../public/logout-svgrepo-com.svg"
-            class="w-9 h-9 text-main"
+            class="w-7 h-7 text-main"
             alt=""
           />
         </div>
-        <p class="text-center mt-5 text-black text-base font-semibold">
-          Logout
-        </p>
+        <p class="text-center mt-5 text-black text-sm font-semibold">Logout</p>
       </div>
     </div>
   </div>

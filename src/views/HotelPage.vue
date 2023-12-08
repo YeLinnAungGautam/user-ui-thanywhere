@@ -165,7 +165,7 @@ watch(place, async (newValue) => {
         </p>
       </div>
       <div
-        class="bg-main/10 py-2 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/10 py-1 pl-3 pr-2 rounded-3xl flex justify-between items-center"
       >
         <div class="mr-2" @click="clear">
           <svg
@@ -223,9 +223,10 @@ watch(place, async (newValue) => {
         ></v-select>
         <div
           @click="priceShow = true"
-          class="bg-white rounded-full border border-main min-w-[100px] text-main px-4 py-1"
+          v-if="!priceShow"
+          class="bg-white rounded-full border border-main min-w-[100px] text-main px-2 py-1"
         >
-          <div class="flex justify-between items-center" v-if="!priceShow">
+          <div class="flex justify-between items-center">
             price
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -242,16 +243,18 @@ watch(place, async (newValue) => {
               />
             </svg>
           </div>
-          <div v-if="priceShow" class="pt-1 flex justify-center items-center">
-            <input
-              type="range"
-              v-model="price"
-              min="0"
-              class="bg-main"
-              max="10000"
-            />
-            {{ price }}
-          </div>
+        </div>
+        <div
+          class="text-sm flex justify-center items-center gap-2"
+          v-if="priceShow"
+        >
+          <input
+            type="number"
+            v-model="price"
+            class="bg-white text-xs focus:ring-0 border-main rounded-full px-4 py-2 border max-w-[100px]"
+            placeholder=" price"
+          />
+          <p class="">Max</p>
         </div>
       </div>
       <div

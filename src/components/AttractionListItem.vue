@@ -78,7 +78,7 @@ const deleteHotel = async (id) => {
         v-if="attractions.cover_image != null"
       />
       <img
-        src="../../public/attraction.jpg"
+        src="../../public/default-image.jpg"
         alt=""
         class="object-cover"
         v-if="attractions.cover_image == null"
@@ -154,15 +154,19 @@ const deleteHotel = async (id) => {
     </div>
 
     <div class="flex justify-between items-center gap-2">
-      <div class="space-y-1 mt-2">
+      <div class="space-y-2 mt-2">
         <p class="text-xl pl-2 font-semibold text-main">
           {{ attractions.name }}
         </p>
         <div
-          class="text-sm text-black/80 pl-2 font-semibold flex justify-start items-center gap-2 flex-wrap"
+          class="text-xs text-black/80 pl-2 font-semibold flex justify-start items-center gap-2 flex-wrap"
         >
-          <p v-for="(city, index) in attractions?.cities" :key="index">
-            {{ city.name }} ,
+          <p
+            v-for="(city, index) in attractions?.cities"
+            :key="index"
+            class="bg-main p-1 text-white rounded"
+          >
+            {{ city.name }}
           </p>
         </div>
         <p class="text-sm pl-2">{{ attractions.description }}</p>
@@ -171,7 +175,8 @@ const deleteHotel = async (id) => {
       </div>
       <div class="text-end">
         <p class="text-4xl pl-2 font-semibold text-main">
-          {{ attractions?.variations.length }} <span class="text-lg">V</span>
+          {{ attractions?.variations.length }}
+          <span class="text-sm">ticket</span>
         </p>
         <!-- <p class="text-xl pl-2 font-semibold text-main">Totals</p> -->
       </div>

@@ -107,7 +107,9 @@ const removeFromPrice = (index) => {
   formData.value.prices.splice(index, 1);
 };
 
+const loadingStatus = ref(false);
 const onSubmitHandler = async () => {
+  loadingStatus.value = true;
   const frmData = new FormData();
   frmData.append("name", formData.value.name);
   frmData.append("sku_code", formData.value.sku_code);
@@ -158,6 +160,7 @@ const onSubmitHandler = async () => {
       feature_image: "",
     };
     errors.value = null;
+    loadingStatus.value = false;
     toastStore.showToast({
       icon: "success",
       title: response.message,

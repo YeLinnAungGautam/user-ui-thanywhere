@@ -88,14 +88,14 @@ const handlerImagesFileChange = (e) => {
   let selectedFile = e.target.files;
   if (selectedFile) {
     for (let index = 0; index < selectedFile.length; index++) {
-      formData.value.images.push(selectedFile[index]);
+      editData.value.images.push(selectedFile[index]);
       imagesPreview.value.push(URL.createObjectURL(selectedFile[index]));
     }
   }
 };
 
 const removeImageSelectImage = (index) => {
-  formData.value.images.splice(index, 1);
+  editData.value.images.splice(index, 1);
   imagesPreview.value.splice(index, 1);
 };
 

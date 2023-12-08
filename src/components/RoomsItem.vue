@@ -6,6 +6,10 @@ import Swal from "sweetalert2";
 import { useRoomStore } from "../stores/room";
 import { useToastStore } from "../stores/toast";
 import { useAuthStore } from "../stores/auth";
+import { defineComponent } from "vue";
+import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
+
+import "vue3-carousel/dist/carousel.css";
 
 const props = defineProps({
   id: Number,
@@ -61,14 +65,40 @@ const deleteRoom = async (id) => {
     <div
       class="h-[200px] sm:h-[250px] md:h-[220px] lg:h-[300px] w-full overflow-hidden rounded-lg"
     >
-      <img
+      <!-- <img
         :src="rooms.images[0].image"
         alt=""
         class="object-cover"
         v-if="rooms.images.length != 0"
-      />
+      /> -->
+      <div v-if="rooms?.images.length > 0">
+        <Carousel :wrap-around="true">
+          <Slide v-for="i in rooms?.images" :key="i.id">
+            <div class="carousel__item">
+              <div class="h-auto w-full overflow-hidden rounded-lg">
+                <img
+                  :src="i.image"
+                  alt=""
+                  class="object-cover"
+                  v-if="i.image != null"
+                />
+                <img
+                  src="../../public/default-image.jpg"
+                  alt=""
+                  class="object-cover"
+                  v-if="i.image == null"
+                />
+              </div>
+            </div>
+          </Slide>
+
+          <template #addons>
+            <Navigation />
+          </template>
+        </Carousel>
+      </div>
       <img
-        src="../../public/room.jpg"
+        src="../../public/default-image.jpg"
         alt=""
         class="object-cover"
         v-if="rooms.images.length == 0"

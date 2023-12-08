@@ -37,6 +37,7 @@ import AirportCarListPageView from "./views/AirportCarListPage.vue";
 import CustomerPageView from "./views/CustmerPage.vue";
 import CustomerCreatePageView from "./views/CustomerCreatePage.vue";
 import CustomerEditPageView from "./views/CustomerEditPage.vue";
+import SaleEditPageView from "./views/SalesEditPage.vue";
 
 const routes = [
   {
@@ -101,6 +102,11 @@ const routes = [
     path: "/sales/create",
     name: "sales-create",
     component: SaleCreatePageView,
+  },
+  {
+    path: "/sales/edit/:id",
+    name: "sales-edit",
+    component: SaleEditPageView,
   },
   {
     path: "/products/vantours",

@@ -188,7 +188,7 @@ onMounted(async () => {
           </div>
           <div class="space-y-2 flex justify-start items-center gap-4">
             <label for="room_price" class="text-sm text-gray-800"
-              >Is extra ?</label
+              >Is extra bed ?</label
             >
             <Switch
               v-model="enabled"

@@ -85,7 +85,7 @@ const deleteHotel = async (id) => {
         v-if="airports.cover_image != null"
       />
       <img
-        src="../../public/flightticket.jpg"
+        src="../../public/default-image.jpg"
         alt=""
         class="object-cover"
         v-if="airports.cover_image == null"
@@ -191,17 +191,21 @@ const deleteHotel = async (id) => {
           <p>{{ c.price }} THB</p>
         </div> -->
         <div
-          class="text-base text-main pl-2 font-semibold flex justify-start items-center gap-2 flex-wrap"
+          class="text-sm text-main pl-2 font-semibold flex justify-start items-center gap-2 flex-wrap"
         >
-          <p v-for="(city, index) in airports?.cities" :key="index">
-            {{ city.name }} ,
+          <p
+            v-for="(city, index) in airports?.cities"
+            :key="index"
+            class="bg-main text-white rounded p-1"
+          >
+            {{ city.name }}
           </p>
         </div>
         <div
           class="text-base flex justify-between items-center pl-2 font-semibold pr-3 text-main gap-2 flex-wrap"
         >
-          <p>cars</p>
-          <p class="text-3xl">{{ airports?.cars.length }}</p>
+          <p>Type of cars</p>
+          <p class="text-xl">{{ airports?.cars.length }} types</p>
         </div>
       </div>
     </div>

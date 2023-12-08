@@ -497,16 +497,16 @@ const getFunction = () => {
           />
         </div>
         <div class="space-y-2" v-if="formitem.product_type == '6'">
-          <p class="text-xs" @click="calculateRateRoom">
+          <p class="text-xs pt-2" @click="calculateRateRoom">
             Days
             <span class="text-xs text-red"
-              >click that label for auto calcute days</span
+              >(click that label for auto calcute days)</span
             >
           </p>
           <input
             type="number"
             disabled
-            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-transparent focus:outline-none focus:border-gray-300"
             id=""
             v-model="formitem.days"
             placeholder="days"
@@ -635,7 +635,7 @@ const getFunction = () => {
         <div class="space-y-2">
           <label for="name" class="text-sm text-gray-800">Total Amount</label>
           <p
-            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-transparent focus:outline-none focus:border-gray-300"
           >
             {{ sub_qty_total }}
           </p>
@@ -662,6 +662,26 @@ const getFunction = () => {
               />
             </svg>
             <p class="">Add</p>
+          </div>
+          <div
+            class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-black/50 bg-black/50 text-white border"
+            v-if="!formitem.product_id || !todayVali"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <p class="">Need to fill Data</p>
           </div>
         </div>
       </div>

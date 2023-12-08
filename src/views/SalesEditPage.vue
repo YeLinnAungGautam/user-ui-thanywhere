@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 import { Switch } from "@headlessui/vue";
 import SalesItemListVue from "../components/SalesItemList.vue";
@@ -15,13 +15,16 @@ import { XCircleIcon } from "@heroicons/vue/24/outline";
 import { useToastStore } from "../stores/toast";
 import { useBookingStore } from "../stores/booking";
 import EditSaleItemVue from "../components/bookingCreate/EditSaleItem.vue";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
+const route = useRoute();
 const enabled = ref(false);
 const customerStore = useCustomerStore();
 const bookingStore = useBookingStore();
 const adminStore = useAdminStore();
 const toastStore = useToastStore();
+const authStore = useAuthStore();
 
 const { customers } = storeToRefs(customerStore);
 const { admin } = storeToRefs(adminStore);
@@ -41,6 +44,7 @@ const formData = ref({
   discount: "0",
   comment: "",
   receipt_image: [],
+  receipt_images: [],
   confirmation_letter: [],
   due_date: "",
   deposit: 0,
@@ -210,7 +214,10 @@ const removeFeatureSelectImage = (index) => {
   console.log(formData.value.receipt_image, "this is remove");
 };
 
+const checkCondition = ref(false);
+
 const allowCreate = computed(() => {
+  console.log(checkCondition.value, "this is check");
   if (
     formData.value.items.length != 0 &&
     formData.value.deposit != 0 &&
@@ -219,47 +226,54 @@ const allowCreate = computed(() => {
     return true;
   } else if (formData.value.items.length != 0 && formData.value.deposit == 0) {
     return true;
+  } else if (formData.value.items.length != 0 && checkCondition.value) {
+    return true;
   } else {
     return false;
   }
 });
 
 const errors = ref(null);
+
 const onSubmitHandler = async () => {
   const frmData = new FormData();
-  frmData.append("customer_id", formData.value.customer_id);
+  frmData.append("_method", "PUT");
   frmData.append("payment_notes", formData.value.payment_notes);
+  frmData.append("customer_id", formData.value.customer_id);
   frmData.append("sold_from", formData.value.sold_from);
   frmData.append("payment_method", formData.value.payment_method);
   frmData.append("bank_name", formData.value.bank_name);
-
-  frmData.append("is_past_info", formData.value.is_past_info);
-  formData.value.past_crm_id
-    ? frmData.append("past_crm_id", formData.value.past_crm_id)
-    : "";
-  formData.value.past_user_id
-    ? frmData.append("past_user_id", formData.value.past_user_id)
-    : "";
+  console.log(enabled, "this is status");
+  // if (enabled.value == true) {
+  //   frmData.append("is_past_info", "1");
+  //   frmData.append("past_user_id", formData.value.past_user_id);
+  //   frmData.append("past_crm_id", formData.value.past_crm_id);
+  // } else {
+  //   frmData.append("is_past_info", "0");
+  // }
 
   frmData.append("payment_status", formData.value.payment_status);
   frmData.append("booking_date", formData.value.booking_date);
-  if (formData.value.money_exchange_rate) {
-    frmData.append("money_exchange_rate", formData.value.money_exchange_rate);
-  } else {
-    frmData.append("money_exchange_rate", 0);
-  }
+  frmData.append("money_exchange_rate", formData.value.money_exchange_rate);
+  console.log(formData.value.money_exchange_rate, "this is ex money");
+  // frmData.append("crm_id", formData.value.crm_id);
 
   if (formData.value.discount == "" || formData.value.discount == 0) {
     frmData.append("discount", 0);
   } else {
     frmData.append("discount", percentageValue.value);
   }
-
+  frmData.append("comment", formData.value.comment);
+  // frmData.append("receipt_image", formData.value.receipt_image);
   frmData.append("sub_total", sub_total.value);
   frmData.append("grand_total", grand_total.value);
   frmData.append("deposit", formData.value.deposit);
   frmData.append("payment_currency", formData.value.payment_currency);
-  frmData.append("balance_due", balance_due.value);
+  if (balance_due.value) {
+    frmData.append("balance_due", balance_due.value);
+  } else {
+    frmData.append("balance_due", 0);
+  }
   frmData.append("balance_due_date", formData.value.balance_due_date);
 
   if (formData.value.confirmation_letter.length > 0) {
@@ -268,39 +282,6 @@ const onSubmitHandler = async () => {
       frmData.append("items[" + i + "][confirmation_letter]", file);
     }
   }
-  for (var x = 0; x < formData.value.items.length; x++) {
-    if (formData.value.items[x].product_type == "1") {
-      frmData.append(
-        "items[" + x + "][product_type]",
-        `App\\Models\\PrivateVanTour`
-      );
-    } else if (formData.value.items[x].product_type == "2") {
-      frmData.append(
-        "items[" + x + "][product_type]",
-        `App\\Models\\GroupTour`
-      );
-    } else if (formData.value.items[x].product_type == "3") {
-      frmData.append(
-        "items[" + x + "][product_type]",
-        `App\\Models\\AirportPickup`
-      );
-    } else if (formData.value.items[x].product_type == "4") {
-      frmData.append(
-        "items[" + x + "][product_type]",
-        `App\\Models\\EntranceTicket`
-      );
-    } else if (formData.value.items[x].product_type == "5") {
-      frmData.append(
-        "items[" + x + "][product_type]",
-        `App\\Models\\Inclusive`
-      );
-    } else if (formData.value.items[x].product_type == "6") {
-      frmData.append("items[" + x + "][product_type]", `App\\Models\\Hotel`);
-    } else if (formData.value.items[x].product_type == "7") {
-      frmData.append("items[" + x + "][product_type]", `App\\Models\\Airline`);
-    }
-  }
-
   if (formData.value.receipt_image.length != 0) {
     for (let x = 0; x < formData.value.receipt_image.length; x++) {
       frmData.append(
@@ -309,25 +290,76 @@ const onSubmitHandler = async () => {
       );
     }
   }
-
+  for (var x = 0; x < formData.value.items.length; x++) {
+    if (
+      formData.value.items[x].product_type == "1" ||
+      formData.value.items[x].product_type == "App\\Models\\PrivateVanTour"
+    ) {
+      frmData.append(
+        "items[" + x + "][product_type]",
+        `App\\Models\\PrivateVanTour`
+      );
+    } else if (
+      formData.value.items[x].product_type == "2" ||
+      formData.value.items[x].product_type == "App\\Models\\GroupTour"
+    ) {
+      frmData.append(
+        "items[" + x + "][product_type]",
+        `App\\Models\\GroupTour`
+      );
+    } else if (
+      formData.value.items[x].product_type == "3" ||
+      formData.value.items[x].product_type == "App\\Models\\AirportPickup"
+    ) {
+      frmData.append(
+        "items[" + x + "][product_type]",
+        `App\\Models\\AirportPickup`
+      );
+    } else if (
+      formData.value.items[x].product_type == "4" ||
+      formData.value.items[x].product_type == "App\\Models\\EntranceTicket"
+    ) {
+      frmData.append(
+        "items[" + x + "][product_type]",
+        `App\\Models\\EntranceTicket`
+      );
+    } else if (
+      formData.value.items[x].product_type == "5" ||
+      formData.value.items[x].product_type == "App\\Models\\Inclusive"
+    ) {
+      frmData.append(
+        "items[" + x + "][product_type]",
+        `App\\Models\\Inclusive`
+      );
+    } else if (
+      formData.value.items[x].product_type == "6" ||
+      formData.value.items[x].product_type == "App\\Models\\Hotel"
+    ) {
+      frmData.append("items[" + x + "][product_type]", `App\\Models\\Hotel`);
+    } else if (
+      formData.value.items[x].product_type == "7" ||
+      formData.value.items[x].product_type == "App\\Models\\Airline"
+    ) {
+      frmData.append("items[" + x + "][product_type]", `App\\Models\\Airline`);
+    }
+  }
   for (var x = 0; x < formData.value.items.length; x++) {
     frmData.append(
       "items[" + x + "][product_id]",
       formData.value.items[x].product_id
     );
-    if (formData.value.items[x].is_inclusive) {
-      frmData.append(
-        "items[" + x + "][is_inclusive]",
-        formData.value.items[x].is_inclusive
-      );
-    }
-
-    if (formData.value.items[x].product_type != "6") {
+    if (
+      !formData.value.items[x].days ||
+      formData.value.items[x].days == undefined
+    ) {
       frmData.append(
         "items[" + x + "][amount]",
         formData.value.items[x].selling_price * formData.value.items[x].quantity
       );
-    } else if (formData.value.items[x].product_type == "6") {
+    } else if (
+      formData.value.items[x].days ||
+      formData.value.items[x].days != undefined
+    ) {
       frmData.append(
         "items[" + x + "][amount]",
         formData.value.items[x].selling_price *
@@ -335,168 +367,243 @@ const onSubmitHandler = async () => {
           formData.value.items[x].days
       );
     }
-
-    formData.value.items[x].pickup_location
-      ? frmData.append(
-          "items[" + x + "][pickup_location]",
-          formData.value.items[x].pickup_location
-        )
-      : "";
-
-    if (formData.value.items[x].pickup_time) {
-      frmData.append(
-        "items[" + x + "][pickup_time]",
-        formData.value.items[x].pickup_time
-      );
-    }
-    if (formData.value.items[x].customer_attachment) {
-      frmData.append(
-        "items[" + x + "][customer_attachment]",
-        formData.value.items[x].customer_attachment
-      );
-    }
-
-    if (formData.value.items[x].dropoff_location) {
-      frmData.append(
-        "items[" + x + "][dropoff_location]",
-        formData.value.items[x].dropoff_location
-      );
-    }
-    if (formData.value.items[x].checkin_date) {
-      frmData.append(
-        "items[" + x + "][checkin_date]",
-        formData.value.items[x].checkin_date
-      );
-    }
-    if (formData.value.items[x].room_number) {
-      frmData.append(
-        "items[" + x + "][room_number]",
-        formData.value.items[x].room_number
-      );
-    }
-    if (formData.value.items[x].checkout_date) {
-      frmData.append(
-        "items[" + x + "][checkout_date]",
-        formData.value.items[x].checkout_date
-      );
-    }
-    if (formData.value.items[x].route_plan) {
-      frmData.append(
-        "items[" + x + "][route_plan]",
-        formData.value.items[x].route_plan
-      );
-    }
-
+  }
+  for (var x = 0; x < formData.value.items.length; x++) {
     if (
-      formData.value.items[x].product_type === "6" &&
-      formData.value.items[x].room_id
+      formData.value.items[x].product_type == "7" &&
+      !formData.value.items[x].ticket_id
+    ) {
+      frmData.append(
+        "items[" + x + "][ticket_id]",
+        formData.value.items[x].car_id
+      );
+    } else if (
+      formData.value.items[x].product_type == "6" &&
+      !formData.value.items[x].room_id
+    ) {
+      frmData.append(
+        "items[" + x + "][room_id]",
+        formData.value.items[x].car_id
+      );
+    } else if (
+      formData.value.items[x].room_id != "" &&
+      formData.value.items[x].room_name != "" &&
+      formData.value.items[x].product_type != "5" &&
+      formData.value.items[x].product_type != "4" &&
+      formData.value.items[x].product_type != "3" &&
+      formData.value.items[x].product_type != "2" &&
+      formData.value.items[x].product_type != "1"
     ) {
       frmData.append(
         "items[" + x + "][room_id]",
         formData.value.items[x].room_id
       );
-    }
-    if (
+    } else if (
       formData.value.items[x].product_type != "4" &&
-      formData.value.items[x].product_type != "7"
+      !formData.value.items[x].variation_id
     ) {
+      frmData.append(
+        "items[" + x + "][car_id]",
+        formData.value.items[x].car_id
+      );
+    } else if (formData.value.items[x].product_type == "5") {
+      // frmData.append("items[" + x + "][car_id]", "0");
       if (formData.value.items[x].car_id) {
         frmData.append(
           "items[" + x + "][car_id]",
           formData.value.items[x].car_id
         );
       }
+    } else if (formData.value.items[x].product_type == "2") {
+      if (formData.value.items[x].car_id) {
+        frmData.append(
+          "items[" + x + "][car_id]",
+          formData.value.items[x].car_id
+        );
+      } else {
+        frmData.append("items[" + x + "][car_id]", 0);
+      }
     } else if (formData.value.items[x].product_type == "4") {
       frmData.append(
         "items[" + x + "][variation_id]",
         formData.value.items[x].car_id
       );
-    } else if (formData.value.items[x].product_type == "7") {
+    } else if (formData.value.items[x].variation_id != "") {
       frmData.append(
-        "items[" + x + "][ticket_id]",
-        formData.value.items[x].car_id
+        "items[" + x + "][variation_id]",
+        formData.value.items[x].variation_id
       );
     }
+  }
+
+  for (var x = 0; x < formData.value.items.length; x++) {
     frmData.append(
       "items[" + x + "][service_date]",
       formData.value.items[x].service_date
     );
+  }
+  for (var x = 0; x < formData.value.items.length; x++) {
     frmData.append(
       "items[" + x + "][quantity]",
       formData.value.items[x].quantity
     );
-    formData.value.days
+    // formData.value.items[x].cost_price
+    //   ? frmData.append(
+    //       "items[" + x + "][cost_price]",
+    //       formData.value.items[x].cost_price
+    //     )
+    //   : "";
+  }
+  for (var x = 0; x < formData.value.items.length; x++) {
+    formData.value.items[x].days
       ? frmData.append("items[" + x + "][days]", formData.value.items[x].days)
       : "";
-    if (formData.value.items[x].duration) {
-      frmData.append(
-        "items[" + x + "][duration]",
-        formData.value.items[x].duration
-      );
-    }
-    if (formData.value.items[x].special_request) {
-      frmData.append(
-        "items[" + x + "][special_request]",
-        formData.value.items[x].special_request
-      );
-    }
-    frmData.append(
-      "items[" + x + "][selling_price]",
-      formData.value.items[x].selling_price
-    );
-    if (formData.value.items[x].comment) {
-      frmData.append(
-        "items[" + x + "][comment]",
-        formData.value.items[x].comment
-      );
-    }
-    // console.log(formData.value.items[x].comment, "this is comment");
-    frmData.append(
-      "items[" + x + "][reservation_status]",
-      formData.value.items[x].reservation_status
-    );
-    frmData.append(
-      "items[" + x + "][payment_method]",
-      formData.value.items[x].payment_method
-    );
-    formData.value.items[x].payment_status
+  }
+  for (var x = 0; x < formData.value.items.length; x++) {
+    formData.value.items[x].pickup_location
       ? frmData.append(
-          "items[" + x + "][payment_status]",
-          formData.value.items[x].payment_status
+          "items[" + x + "][pickup_location]",
+          formData.value.items[x].pickup_location
         )
       : "";
-    // frmData.append(
-    //   "items[" + x + "][exchange_rate]",
-    //   formData.value.items[x].exchange_rate
-    // );
+  }
+  for (var x = 0; x < formData.value.items.length; x++) {
+    formData.value.items[x].checkin_date
+      ? frmData.append(
+          "items[" + x + "][checkin_date]",
+          formData.value.items[x].checkin_date
+        )
+      : "";
+    formData.value.items[x].room_number
+      ? frmData.append(
+          "items[" + x + "][room_number]",
+          formData.value.items[x].room_number
+        )
+      : "";
+  }
+  for (var x = 0; x < formData.value.items.length; x++) {
+    formData.value.items[x].checkout_date
+      ? frmData.append(
+          "items[" + x + "][checkout_date]",
+          formData.value.items[x].checkout_date
+        )
+      : "";
+  }
+  for (var x = 0; x < formData.value.items.length; x++) {
+    formData.value.items[x].pickup_time
+      ? frmData.append(
+          "items[" + x + "][pickup_time]",
+          formData.value.items[x].pickup_time
+        )
+      : "";
+    if (formData.value.items[x].customer_attachment) {
+      frmData.append(
+        "items[" + x + "][customer_attachment]",
+        formData.value.items[x].customer_attachment
+      );
+    }
+    if (formData.value.items[x].is_inclusive) {
+      frmData.append(
+        "items[" + x + "][is_inclusive]",
+        formData.value.items[x].is_inclusive
+      );
+    }
+    formData.value.items[x].dropoff_location
+      ? frmData.append(
+          "items[" + x + "][dropoff_location]",
+          formData.value.items[x].dropoff_location
+        )
+      : "";
+    formData.value.items[x].route_plan
+      ? frmData.append(
+          "items[" + x + "][route_plan]",
+          formData.value.items[x].route_plan
+        )
+      : "";
+    formData.value.items[x].duration
+      ? frmData.append(
+          "items[" + x + "][duration]",
+          formData.value.items[x].duration
+        )
+      : "";
+    formData.value.items[x].special_request
+      ? frmData.append(
+          "items[" + x + "][special_request]",
+          formData.value.items[x].special_request
+        )
+      : "";
+    formData.value.items[x].comment
+      ? frmData.append(
+          "items[" + x + "][comment]",
+          formData.value.items[x].comment
+        )
+      : "";
+    formData.value.items[x].selling_price
+      ? frmData.append(
+          "items[" + x + "][selling_price]",
+          formData.value.items[x].selling_price
+        )
+      : "";
     formData.value.items[x].exchange_rate
       ? frmData.append(
           "items[" + x + "][exchange_rate]",
           formData.value.items[x].exchange_rate
         )
       : "";
+    formData.value.items[x].cost_price
+      ? frmData.append(
+          "items[" + x + "][cost_price]",
+          formData.value.items[x].cost_price
+        )
+      : "";
+  }
+
+  for (var x = 0; x < formData.value.items.length; x++) {
+    frmData.append(
+      "items[" + x + "][reservation_status]",
+      formData.value.items[x].reservation_status
+    );
+  }
+  for (var x = 0; x < formData.value.items.length; x++) {
+    frmData.append(
+      "items[" + x + "][payment_method]",
+      formData.value.items[x].payment_method
+    );
+  }
+  for (var x = 0; x < formData.value.items.length; x++) {
+    frmData.append(
+      "items[" + x + "][payment_status]",
+      formData.value.items[x].payment_status
+    );
   }
 
   try {
-    const response = await bookingStore.addNewAction(frmData);
-    console.log(response, "create response");
+    const response = await bookingStore.updateAction(frmData, route.params.id);
     formData.value = {
       customer_id: "",
       sold_from: "",
       payment_method: "",
-      bank_name: "",
       payment_status: "",
       booking_date: "",
       items: [],
-      receipt_image: [],
+      reciept_image: [],
       money_exchange_rate: "",
       crm_id: "",
+      car_name: "",
       discount: "",
       comment: "",
+      receipt_image: [],
+      confirmation_letter: [],
+      due_date: "",
+      deposit: 0,
+      balance_due_date: "",
+      special_request: "",
       past_user_id: "",
       is_past_info: "",
       past_crm_id: "",
     };
+    balance_due.value = "";
+    featureImagePreview.value = [];
 
     errors.value = null;
     toastStore.showToast({
@@ -515,9 +622,247 @@ const onSubmitHandler = async () => {
   }
 };
 
+const checkType = (product) => {
+  if (product?.cars) {
+    return product.cars;
+  }
+  if (product?.variations) {
+    return product.variations;
+  }
+  if (product?.rooms) {
+    return product.rooms;
+  }
+  if (product?.tickets) {
+    return product.tickets;
+  }
+};
+
+const depositStoreValue = ref("");
+const allowImage = ref(true);
+const allowDeposite = computed(() => {
+  if (formData.value.deposit == 0) {
+    return false;
+  } else if (
+    formData.value.deposit == depositStoreValue.value &&
+    formData.value.deposit != 0
+  ) {
+    console.log("this is true");
+    allowImage.value = false;
+    return true;
+  } else {
+    allowImage.value = true;
+    return false;
+  }
+});
+
+const daysBetween = (a, b) => {
+  console.log(a, b);
+  if (a && b) {
+    const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+    const startDateTimestamp = new Date(a).getTime();
+    const endDateTimestamp = new Date(b).getTime();
+    let result = Math.abs(
+      Math.round((endDateTimestamp - startDateTimestamp) / oneDay)
+    );
+    console.log(formData.value.checkin_date, result, "this is result");
+    return result;
+  }
+};
+const choiceProductType = (type) => {
+  console.log(type);
+  if (type == "App\\Models\\PrivateVanTour") {
+    return "1";
+  }
+  if (type == "App\\Models\\GroupTour") {
+    return "2";
+  }
+  if (type == "App\\Models\\AirportPickup") {
+    return "3";
+  }
+  if (type == "App\\Models\\EntranceTicket") {
+    return "4";
+  }
+  if (type == "App\\Models\\Hotel") {
+    return "6";
+  }
+  if (type == "App\\Models\\Airline") {
+    return "7";
+  }
+};
+const totalAmountCheck = (q, s, d) => {
+  let totalsub = 0;
+  totalsub = q * s * d;
+  console.log(q, s, d, "this is total amount");
+  return totalsub;
+};
+
+const paymentStatus = ref("");
+const getDetail = async () => {
+  try {
+    const response = await bookingStore.getDetailAction(route.params.id);
+    console.log(response, "this is response get");
+    formData.value.customer_id = response.result.customer.id;
+    formData.value.payment_notes = response.result.payment_notes;
+    formData.value.sold_from = response.result.sold_from;
+    formData.value.payment_method = response.result.payment_method;
+    formData.value.bank_name = response.result.bank_name;
+
+    formData.value.payment_status = response.result.payment_status;
+    paymentStatus.value = response.result.payment_status;
+    formData.value.payment_currency = response.result.payment_currency;
+    formData.value.booking_date = response.result.booking_date;
+    formData.value.money_exchange_rate = response.result.money_exchange_rate;
+    formData.value.crm_id = response.result.crm_id;
+    formData.value.comment = response.result.comment;
+    formData.value.past_user_id = response.result.past_user_id
+      ? response.result.past_user_id
+      : "";
+    formData.value.past_crm_id = response.result.past_crm_id
+      ? response.result.past_crm_id
+      : "";
+    formData.value.is_past_info = response.result.is_past_info
+      ? response.result.is_past_info
+      : "";
+    enabled.value = response.result.is_past_info == 1 ? true : false;
+    console.log(enabled.value, formData.value.is_past_info, "this is shit");
+    formData.value.special_request = response.result.special_request;
+    depositStoreValue.value = response.result.deposit;
+    if (formData.value.discount != "" || formData.value.discount != null) {
+      formData.value.discount = response.result.discount;
+    } else {
+      formData.value.discount = 0;
+    }
+    formData.value.balance_due_date = response.result.balance_due_date;
+    formData.value.deposit = response.result.deposit;
+
+    for (let i = 0; i < response.result.receipts.length; i++) {
+      let data = {
+        id: response.result.receipts[i].id,
+        // image:
+        //   import.meta.env.VITE_API_URL_IMAGE +
+        //   response.result.receipts[i].image,
+        image:
+          "	https://api-blog.thanywhere.com/" +
+          response.result.receipts[i].image,
+      };
+      formData.value.receipt_images.push(data);
+    }
+    console.log(formData.value.receipt_images, "this is image");
+    for (const x in response.result.items) {
+      const itemData = {
+        // product_type: response.result.items[x].product_type,
+        product_type: choiceProductType(response.result.items[x].product_type),
+        crm_id: response.result.items[x].crm_id,
+        product_id: response.result.items[x].product_id,
+        service_date: response.result.items[x].service_date,
+        is_inclusive: response.result.items[x].is_inclusive,
+        quantity: response.result.items[x].quantity,
+        days: response.result.items[x].days
+          ? response.result.items[x].days
+          : "",
+        duration: response.result.items[x].duration,
+        selling_price: response.result.items[x].selling_price,
+        comment:
+          response.result.items[x].comment != "null"
+            ? response.result.items[x].comment
+            : "",
+        special_request:
+          response.result.items[x].special_request != "null"
+            ? response.result.items[x].special_request
+            : "",
+        reservation_status: response.result.items[x].reservation_status,
+        payment_method: response.result.items[x].payment_method,
+        payment_status: response.result.items[x].payment_status,
+        exchange_rate: response.result.items[x].exchange_rate,
+        cost_price: response.result.items[x].cost_price,
+        pickup_location:
+          response.result.items[x].pickup_location != "null"
+            ? response.result.items[x].pickup_location
+            : "",
+        pickup_time:
+          response.result.items[x].pickup_time != "null"
+            ? response.result.items[x].pickup_time
+            : "",
+        dropoff_location:
+          response.result.items[x].dropoff_location != "null"
+            ? response.result.items[x].dropoff_location
+            : "",
+        route_plan:
+          response.result.items[x].route_plan != "null"
+            ? response.result.items[x].route_plan
+            : "",
+        car_id: response.result.items[x].car
+          ? response.result.items[x].car.id
+          : "",
+        variation_id: response.result.items[x].variation
+          ? response.result.items[x].variation.id
+          : "",
+        car_name: response.result.items[x].car
+          ? response.result.items[x].car.name
+          : "",
+        variation_name: response.result.items[x].variation
+          ? response.result.items[x].variation.name
+          : "",
+        room_name: response.result.items[x].room
+          ? response.result.items[x].room.name
+          : "",
+        room_id: response.result.items[x].room
+          ? response.result.items[x].room.id
+          : "",
+        ticket_id: response.result.items[x].product?.tickets
+          ? response.result.items[x].product.tickets[0].id
+          : "",
+        variation_type: checkType(response.result.items[x].product),
+        checkin_date: response.result.items[x].checkin_date
+          ? response.result.items[x].checkin_date
+          : "",
+        room_number: response.result.items[x].room_number
+          ? response.result.items[x].room_number
+          : "",
+        checkout_date: response.result.items[x].checkout_date
+          ? response.result.items[x].checkout_date
+          : "",
+        days: daysBetween(
+          response.result.items[x].checkin_date,
+          response.result.items[x].checkout_date
+        ),
+
+        total_amount: response.result.items[x].checkin_date
+          ? totalAmountCheck(
+              response.result.items[x].quantity,
+              response.result.items[x].selling_price,
+              daysBetween(
+                response.result.items[x].checkin_date,
+                response.result.items[x].checkout_date
+              )
+            )
+          : response.result.items[x].selling_price *
+            response.result.items[x].quantity,
+      };
+      formData.value.items.push(itemData);
+      console.log(itemData.ticket_id, "this is id");
+    }
+
+    console.log(formData.value.items, "this is formData");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteImage = async (id) => {
+  await bookingStore.deleteBookingImage(id);
+  toastStore.showToast({
+    icon: "success",
+    title: "success delete receipt",
+  });
+  window.location.reload();
+  await getDetail();
+};
+
 onMounted(async () => {
   await customerStore.getSimpleListAction();
   await adminStore.getSimpleListAction();
+  await getDetail();
   console.log(customers.value);
 });
 </script>
@@ -549,7 +894,7 @@ onMounted(async () => {
         </div>
 
         <p class="text-main text-xl font-semibold w-full text-center">
-          Sales Create
+          Sales Edit & View
         </p>
       </div>
       <div class="space-y-5 pt-3 text-sm">
@@ -771,6 +1116,38 @@ onMounted(async () => {
               placeholder="enter payment notes here ..."
             ></textarea>
           </div>
+          <div class="mt-4 space-y-2">
+            <div v-for="(image, index) in formData.receipt_images" :key="index">
+              <div class="flex justify-between items-center">
+                <p class="mb-2 text-sm">Receipt Image {{ index + 1 }}</p>
+                <!-- <i
+                  v-if="authStore.isSuperAdmin"
+                  class="fa-solid fa-trash-can text-lg text-red-500"
+                  @click="deleteImage(image.id)"
+                ></i> -->
+                <XCircleIcon
+                  class="w-6 h-6 text-red"
+                  @click="deleteImage(image.id)"
+                />
+              </div>
+              <a :href="image.image" target="_blink">
+                <img :src="image.image" alt="" />
+              </a>
+            </div>
+          </div>
+          <div
+            v-if="allowDeposite"
+            class="flex items-center justify-end mt-4 mb-4 space-x-3 flex-nowrap"
+          >
+            <input
+              type="checkbox"
+              name=""
+              id=""
+              v-model="checkCondition"
+              class="w-6 h-6 bg-[#ff613c] border-gray-300 rounded-md"
+            />
+            <p class="text-xs">click want update when deposit not change</p>
+          </div>
           <div>
             <div
               class="flex justify-end items-center py-4"
@@ -794,11 +1171,9 @@ onMounted(async () => {
                     d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <p class="">Create Sale</p>
+                <p class="">Update Sale</p>
               </div>
             </div>
-          </div>
-          <div>
             <div
               class="flex justify-end items-center py-4"
               v-show="!allowCreate"
@@ -820,7 +1195,7 @@ onMounted(async () => {
                     d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <p class="">Need to add Data</p>
+                <p class="">Can't Update Now , Need to fill data</p>
               </div>
             </div>
           </div>

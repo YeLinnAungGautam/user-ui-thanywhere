@@ -21,8 +21,13 @@ const search = ref("");
 
 const checkValue = ref("");
 const change = (id) => {
-  checkValue.value = id;
-  emit("checked", checkValue.value);
+  if (checkValue.value != id) {
+    checkValue.value = id;
+    emit("checked", checkValue.value);
+    showCustomer();
+  } else {
+    console.log("again");
+  }
 };
 
 onMounted(async () => {

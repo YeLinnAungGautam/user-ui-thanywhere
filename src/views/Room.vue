@@ -123,7 +123,7 @@ watch(hotel_id, async (newValue) => {
         <p class="text-main text-2xl font-semibold w-full text-center">Rooms</p>
       </div>
       <div
-        class="bg-main/10 py-2 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/10 py-1 pl-3 pr-2 rounded-3xl flex justify-between items-center"
       >
         <div class="mr-2" @click="clear">
           <svg

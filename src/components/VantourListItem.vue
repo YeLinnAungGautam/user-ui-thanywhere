@@ -87,7 +87,7 @@ const deleteHotel = async (id) => {
         v-if="vantours.cover_image != null"
       />
       <img
-        src="../../public/privatevantour.jpg"
+        src="../../public/default-image.jpg"
         alt=""
         class="object-cover"
         v-if="vantours.cover_image == null"
@@ -163,7 +163,7 @@ const deleteHotel = async (id) => {
     </div>
 
     <div class="pt-2">
-      <div class="space-y-2 mt-2">
+      <div class="space-y-1 mt-1">
         <div class="flex justify-between items-center">
           <p class="text-lg pl-2 font-semibold text-main">
             {{ vantours.name }}
@@ -186,18 +186,28 @@ const deleteHotel = async (id) => {
         </div>
 
         <div
-          class="text-base text-main pl-2 font-semibold flex justify-start items-center gap-2 flex-wrap"
+          class="text-base pl-2 font-semibold flex justify-start items-center gap-2 flex-wrap"
         >
-          <p v-for="(city, index) in vantours?.cities" :key="index">
-            {{ city.name }} ,
+          <p
+            v-for="(city, index) in vantours?.cities"
+            :key="index"
+            class="inline-block bg-main text-white text-xs p-1 rounded"
+          >
+            {{ city.name }}
           </p>
           <!-- <p>{{ vantours?.cars.length }}</p> -->
         </div>
         <div
           class="text-base flex justify-between items-center pl-2 font-semibold pr-3 text-main gap-2 flex-wrap"
         >
-          <p>cars</p>
-          <p class="text-3xl">{{ vantours?.cars.length }}</p>
+          <p class="text-sm">Cars price</p>
+          <p class="text-3xl">{{ vantours.lowest_car_price }} THB</p>
+        </div>
+        <div
+          class="text-base flex justify-between items-center pl-2 font-semibold pr-3 text-main gap-2 flex-wrap"
+        >
+          <p class="text-sm">cars of type</p>
+          <p class="text-base">{{ vantours?.cars.length }} types</p>
         </div>
       </div>
     </div>

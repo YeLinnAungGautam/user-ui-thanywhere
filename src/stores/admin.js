@@ -50,6 +50,15 @@ export const useAdminStore = defineStore("admin", {
         throw error;
       }
     },
+    async rankAction(data) {
+      try {
+        const response = await axios.get("/current-sale-rank");
+        console.log(response);
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
 
     async getDetailAction(id) {
       try {

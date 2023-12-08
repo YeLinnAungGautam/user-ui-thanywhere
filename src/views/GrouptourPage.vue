@@ -145,7 +145,7 @@ watch(city_id, async (newValue) => {
         </p>
       </div>
       <div
-        class="bg-main/10 py-2 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/10 py-1 pl-3 pr-2 rounded-3xl flex justify-between items-center"
       >
         <div class="mr-2" @click="clear">
           <svg
