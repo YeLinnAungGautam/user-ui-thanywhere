@@ -303,7 +303,7 @@ watch(limit, async (newValue) => {
             <input
               v-model="balanceDueDate"
               type="date"
-              class="style-chooser bg-transparent rounded-full border border-main min-w-[120px] px-2 py-2 text-main text-sm"
+              class="style-chooser bg-transparent bg-white rounded-full border border-main min-w-[120px] px-2 py-2 text-main text-sm"
               placeholder="Search Date"
               title="service_date"
             />
@@ -315,7 +315,7 @@ watch(limit, async (newValue) => {
             <input
               v-model="saleDate"
               type="date"
-              class="style-chooser bg-transparent rounded-full border border-main min-w-[120px] px-2 py-2 text-main text-sm"
+              class="style-chooser bg-transparent bg-white rounded-full border border-main min-w-[120px] px-2 py-2 text-main text-sm"
               placeholder="Search Date"
               title="sale_date"
             />
@@ -329,7 +329,7 @@ watch(limit, async (newValue) => {
             </p>
             <select
               v-model="limit"
-              class="w-16 h-auto border-main p-2 border rounded-md focus:outline-none focus:ring-0"
+              class="w-16 h-auto border-main bg-white p-2 border rounded-md focus:outline-none focus:ring-0"
             >
               <option value="10">10</option>
               <option value="20">20</option>
