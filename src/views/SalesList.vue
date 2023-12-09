@@ -172,7 +172,7 @@ watch(limit, async (newValue) => {
             <input
               v-model="search"
               type="text"
-              class="bg-transparent rounded-full border border-main max-w-[150px] px-2 text-main py-2 text-sm"
+              class="bg-transparent rounded-full border border-main max-w-[120px] px-2 text-main py-2 text-sm"
               placeholder="bookings id.."
             />
           </div>
@@ -180,12 +180,12 @@ watch(limit, async (newValue) => {
             <input
               v-model="customerName"
               type="text"
-              class="bg-transparent rounded-full border border-main max-w-[150px] px-2 text-main py-2 text-sm"
+              class="bg-transparent rounded-full border border-main max-w-[120px] px-2 text-main py-2 text-sm"
               placeholder="Customer Name"
             />
           </div>
         </div>
-        <div class="mr-2 flex justify-end items-center gap-2">
+        <div class="mr-2 flex justify-end items-center gap-2 flex-wrap">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             @click="showSearchModal = true"
