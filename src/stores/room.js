@@ -74,5 +74,15 @@ export const useRoomStore = defineStore("room", {
         throw error;
       }
     },
+    async deleteImageAction(id, imageID) {
+      try {
+        const response = await axios.delete(
+          "/rooms/" + id + "/images/" + imageID
+        );
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
   },
 });

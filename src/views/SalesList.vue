@@ -120,15 +120,21 @@ watch(searchP, async (newValue) => {
 watch(bookingStatus, async (newValue) => {
   await bookingStore.getListAction(watchSystem.value);
 });
-watch(search, async (newValue) => {
+// watch(search, async (newValue) => {
+//   await bookingStore.getListAction(watchSystem.value);
+// });
+const SearchCrmId = async () => {
   await bookingStore.getListAction(watchSystem.value);
-});
+};
+const SearchCustomerName = async () => {
+  await bookingStore.getListAction(watchSystem.value);
+};
 watch(searchA, async (newValue) => {
   await bookingStore.getListAction(watchSystem.value);
 });
-watch(customerName, async (newValue) => {
-  await bookingStore.getListAction(watchSystem.value);
-});
+// watch(customerName, async (newValue) => {
+//   await bookingStore.getListAction(watchSystem.value);
+// });
 watch(balanceDueDate, async (newValue) => {
   await bookingStore.getListAction(watchSystem.value);
 });
@@ -171,6 +177,7 @@ watch(limit, async (newValue) => {
           <div>
             <input
               v-model="search"
+              @keyup.enter="SearchCrmId"
               type="text"
               class="bg-transparent rounded-full border border-main max-w-[120px] px-2 text-main py-2 text-sm"
               placeholder="bookings id.."
@@ -179,6 +186,7 @@ watch(limit, async (newValue) => {
           <div>
             <input
               v-model="customerName"
+              @keyup.enter="SearchCustomerName"
               type="text"
               class="bg-transparent rounded-full border border-main max-w-[120px] px-2 text-main py-2 text-sm"
               placeholder="Customer Name"

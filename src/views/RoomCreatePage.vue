@@ -7,6 +7,7 @@ import { useHotelStore } from "../stores/hotel";
 import { useToastStore } from "../stores/toast";
 import { useRoomStore } from "../stores/room";
 import { Switch } from "@headlessui/vue";
+import { XCircleIcon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 const hotelStore = useHotelStore();

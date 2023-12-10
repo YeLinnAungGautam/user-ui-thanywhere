@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 import RoomsItemVue from "../components/RoomsItem.vue";
@@ -18,11 +18,10 @@ const { hotel } = storeToRefs(hotelStore);
 const { rooms, loading } = storeToRefs(roomStore);
 
 const chooseType = ref([
-  { id: 1, name: "van tour" },
-  { id: 2, name: "group tour" },
-  { id: 3, name: "hotel" },
-  { id: 4, name: "attraction" },
+  { id: 1, name: "low_to_high" },
+  { id: 2, name: "high_to_low" },
 ]);
+const order_by_price = ref("");
 
 const hotel_id = ref("");
 const hotel_name = ref("");
@@ -46,14 +45,23 @@ const goBack = () => {
 const clear = () => {
   hotel_id.value = "";
   hotel_name.value = "";
+  order_by_price.value = "";
 };
+const watchSystem = computed(() => {
+  const result = {};
+
+  if (hotel_id.value != "" && hotel_id.value != undefined) {
+    result.hotel_id = hotel_id.value;
+  }
+  if (order_by_price.value != "" && order_by_price.value != undefined) {
+    result.order_by_price = order_by_price.value;
+  }
+  return result;
+});
 
 const changePage = async (url) => {
   console.log(url);
-  let data = {
-    hotel_id: hotel_id.value,
-  };
-  await roomStore.getChangePage(url, data);
+  await roomStore.getChangePage(url, watchSystem.value);
 };
 
 const changes = async (message) => {
@@ -71,8 +79,12 @@ onMounted(async () => {
 });
 
 watch(hotel_id, async (newValue) => {
-  await roomStore.getListAction({ hotel_id: hotel_id.value });
+  await roomStore.getListAction(watchSystem.value);
   console.log(hotel_id.value);
+});
+watch(order_by_price, async (newValue) => {
+  await roomStore.getListAction(watchSystem.value);
+  console.log(order_by_price.value);
 });
 </script>
 
@@ -128,7 +140,7 @@ watch(hotel_id, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!hotel_id"
+            v-if="!hotel_id && !order_by_price"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -142,7 +154,7 @@ watch(hotel_id, async (newValue) => {
             />
           </svg>
           <img
-            v-if="hotel_id"
+            v-if="hotel_id || order_by_price"
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -166,24 +178,25 @@ watch(hotel_id, async (newValue) => {
           placeholder="Search"
         ></v-select>
       </div>
-      <!-- <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
+      <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
+          class="style-chooser bg-white rounded-full border border-main min-w-[150px]"
           :options="chooseType"
+          v-model="order_by_price"
           label="name"
           :clearable="false"
           :reduce="(d) => d.name"
-          placeholder="Price"
+          placeholder="Sort by Price"
         ></v-select>
-        <v-select
+        <!-- <v-select
           class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
           :options="chooseType"
           label="name"
           :clearable="false"
           :reduce="(d) => d.name"
           placeholder="Pax"
-        ></v-select>
-      </div> -->
+        ></v-select> -->
+      </div>
       <div
         class="relative flex justify-center items-center py-[50%]"
         v-if="loading"

@@ -7,6 +7,7 @@ import { useHotelStore } from "../stores/hotel";
 import { useToastStore } from "../stores/toast";
 import { useRoomStore } from "../stores/room";
 import { Switch } from "@headlessui/vue";
+import { XCircleIcon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 const route = useRoute();
@@ -54,6 +55,16 @@ const handlerImagesFileChange = (e) => {
 const removeImageSelectImage = (index) => {
   formData.value.images.splice(index, 1);
   imagesPreview.value.splice(index, 1);
+};
+const removeImageUpdateImage = async (id) => {
+  const res = roomStore.deleteImageAction(route.params.id, id);
+  console.log(res, "delete image res");
+  toastStore.showToast({
+    icon: "success",
+    title: "image delete success",
+  });
+  images.value = [];
+  await getDetail(route.params.id);
 };
 
 const updateHandler = async () => {
@@ -284,6 +295,12 @@ onMounted(async () => {
                 v-for="(image, index) in images"
                 :key="index"
               >
+                <button
+                  @click.prevent="removeImageUpdateImage(image.id)"
+                  class="rounded-full text-sm text-red-600 items-center justify-center flex absolute top-[-0.5rem] right-[-0.3rem]"
+                >
+                  <XCircleIcon class="w-6 h-6 font-semibold" />
+                </button>
                 <img class="h-auto w-full rounded" :src="image.image" alt="" />
               </div>
             </div>

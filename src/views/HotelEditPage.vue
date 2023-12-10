@@ -6,6 +6,7 @@ import { useHotelStore } from "../stores/hotel";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import { useToastStore } from "../stores/toast";
+import { XCircleIcon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 const route = useRoute();
@@ -76,6 +77,15 @@ const handlerImagesFileChange = (e) => {
 const removeImageSelectImage = (index) => {
   formData.value.images.splice(index, 1);
   imagesPreview.value.splice(index, 1);
+};
+const removeImageUpdateImage = async (id) => {
+  const res = hotelStore.deleteImageAction(route.params.id, id);
+  console.log(res, "delete image res");
+  toastStore.showToast({
+    icon: "success",
+    title: "image delete success",
+  });
+  await getDetail(route.params.id);
 };
 
 const updateHandler = async () => {
@@ -346,14 +356,14 @@ onMounted(async () => {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.8"
+                    stroke-width="1.5"
                     stroke="currentColor"
-                    class="w-8 h-8 text-red"
+                    class="w-6 h-6 text-main mt-2"
                   >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
                 </button>
@@ -395,6 +405,12 @@ onMounted(async () => {
                 v-for="(image, index) in images"
                 :key="index"
               >
+                <button
+                  @click.prevent="removeImageUpdateImage(image.id)"
+                  class="rounded-full text-sm text-red-600 items-center justify-center flex absolute top-[-0.5rem] right-[-0.3rem]"
+                >
+                  <XCircleIcon class="w-6 h-6 font-semibold" />
+                </button>
                 <img class="h-auto w-full rounded" :src="image.image" alt="" />
               </div>
             </div>
