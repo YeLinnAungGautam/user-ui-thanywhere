@@ -5,7 +5,7 @@
   >
     <div class="">
       <nav class="inline-flex gap-3 w-full" aria-label="Pagination">
-        <button
+        <!-- <button
           v-for="page in pages"
           :key="page"
           @click.prevent="changePage(page.url)"
@@ -18,7 +18,27 @@
           class="relative z-10 inline-flex items-center w-10 h-10 justify-center text-xs rounded-full font-medium focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           {{ page.label }}
-        </button>
+        </button> -->
+        <p
+          class="inline-block mr-2 text-gray-500 text-main font-semibold text-base"
+        >
+          {{ data.meta.current_page }}
+        </p>
+        <select
+          v-model="selectedPage"
+          @change="changePage(selectedPage.url)"
+          class="bg-main rounded-full text-white text-sm divide-y divide-white"
+        >
+          <option
+            v-for="page in pages"
+            :key="page.label"
+            :value="page"
+            :selected="page.active"
+            class="text-white text-sm text-center"
+          >
+            {{ page.label }}
+          </option>
+        </select>
       </nav>
     </div>
     <div>
@@ -35,7 +55,7 @@
 <script setup>
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
   data: {
@@ -44,67 +64,37 @@ const props = defineProps({
   },
 });
 
+const selectedPage = ref("");
+const selectpageNumber = ref("");
+
 const emit = defineEmits(["changePage"]);
 
-// const pages = computed(() => {
-//   return props.data?.meta.links.map((page) => {
-//     let label = page.label;
-//     if (label === "&laquo; Previous") {
-//       label = "<";
-//     }
-//     if (label === "Next &raquo;") {
-//       label = ">";
-//     }
-//     return { ...page, label: label };
-//   });
-// });
 const pages = computed(() => {
-  const current = props.data?.meta.current_page;
-  const last = props.data?.meta.last_page;
-
-  if (!current || !last) {
-    return [];
-  }
-
-  const pageNumbers = [];
-
-  // Previous Page
-  if (current > 1) {
-    pageNumbers.push({
-      label: "<",
-      url: props.data?.meta.links.find(
-        (link) => link.label === "&laquo; Previous"
-      )?.url,
-      active: false,
-    });
-  }
-
-  // Current Page
-  pageNumbers.push({
-    label: current,
-    url: props.data?.meta.links.find(
-      (link) => link.label === current.toString()
-    )?.url,
-    active: true,
+  return props.data?.meta.links.map((page) => {
+    let label = page.label;
+    if (label === "&laquo; Previous") {
+      label = "<";
+    }
+    if (label === "Next &raquo;") {
+      label = ">";
+    }
+    return { ...page, label: label };
   });
-
-  // Next Page
-  if (current < last) {
-    pageNumbers.push({
-      label: ">",
-      url: props.data?.meta.links.find((link) => link.label === "Next &raquo;")
-        ?.url,
-      active: false,
-    });
-  }
-
-  return pageNumbers;
 });
 
 console.log("🚀 ~ file: Pagination.vue:54 ~ pages ~ pages:", pages.value);
 const changePage = async (url) => {
   emit("changePage", url);
 };
+
+onMounted(() => {
+  console.log(props?.data, "this is testing");
+  // for (let i = 0; i < pages.length; i++) {
+  //   if (pages[i].active) {
+  //     selectpageNumber.value = pages[i].label;
+  //   }
+  // }
+});
 </script>
 
 <style lang="scss" scoped></style>
