@@ -621,7 +621,7 @@ onMounted(() => {
             type="time"
             name=""
             v-model="formitem.pickup_time"
-            class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             id=""
           />
         </div>
