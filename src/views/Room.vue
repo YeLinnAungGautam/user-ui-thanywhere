@@ -224,18 +224,24 @@ watch(periodAjj, async (newValue) => {
           :reduce="(d) => d.name"
           placeholder="Pax"
         ></v-select> -->
-        <input
-          type="date"
-          v-model="start_date"
-          class="bg-white rounded-full border border-main min-w-[150px] text-xs px-2 py-2"
-          title="start date"
-        />
-        <input
-          type="date"
-          v-model="end_date"
-          class="bg-white rounded-full border border-main min-w-[150px] text-xs px-2 py-2"
-          title="end date"
-        />
+        <div class="relative">
+          <p class="absolute top-2 left-2">Start Date</p>
+          <input
+            type="date"
+            v-model="start_date"
+            class="bg-white rounded-full border border-main min-w-[150px] h-10 text-xs px-2 py-2"
+            title="start date"
+          />
+        </div>
+        <div class="relative">
+          <p class="absolute top-2 left-2">End Date</p>
+          <input
+            type="date"
+            v-model="end_date"
+            class="bg-white rounded-full border border-main min-w-[150px] h-10 text-xs px-2 py-2"
+            title="end date"
+          />
+        </div>
         <button
           class="px-2 py-1.5 bg-[#ff613c] rounded-full text-white"
           @click="searchFunction"
