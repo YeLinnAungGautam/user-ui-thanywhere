@@ -299,7 +299,7 @@ const sub_qty_total = computed(() => {
   }
 });
 
-const moreInfo = ref(false);
+const moreInfo = ref(true);
 
 const getFunction = () => {
   console.log(formitem.value);
@@ -656,7 +656,7 @@ const getFunction = () => {
         </div>
 
         <div class="flex justify-end items-center py-4 space-x-2">
-          <div
+          <!-- <div
             class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-main bg-white text-black border"
             @click="moreInfo = !moreInfo"
           >
@@ -676,7 +676,7 @@ const getFunction = () => {
             </svg>
 
             <p class="">More</p>
-          </div>
+          </div> -->
           <div
             class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-main bg-main text-white border"
             v-if="formitem.product_id && todayVali"

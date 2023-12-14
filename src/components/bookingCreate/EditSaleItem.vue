@@ -307,7 +307,7 @@ const getRemoveFunction = () => {
   emit("remove", "remove");
 };
 
-const moreInfo = ref(false);
+const moreInfo = ref(true);
 
 onMounted(() => {
   console.log(props.data, "this is props data");
@@ -693,7 +693,7 @@ onMounted(() => {
         </div>
 
         <div class="flex justify-end items-center flex-wrap py-4 gap-2">
-          <div
+          <!-- <div
             class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-red bg-white text-black border"
             @click="moreInfo = !moreInfo"
           >
@@ -713,7 +713,7 @@ onMounted(() => {
             </svg>
 
             <p class="">More</p>
-          </div>
+          </div> -->
           <div
             class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-red bg-red text-white border"
             v-if="formitem.product_id && todayVali"
