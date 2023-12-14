@@ -8,6 +8,8 @@ import { useToastStore } from "../stores/toast";
 import { useRoomStore } from "../stores/room";
 import { Switch } from "@headlessui/vue";
 import { XCircleIcon } from "@heroicons/vue/24/outline";
+import RoomPeriodItemVue from "../components/RoomPeriodItem.vue";
+import RoomPeriodItemCreate from "../components/RoomPeriodItemCreate.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -20,8 +22,10 @@ const formData = ref({
   id: "",
   name: "",
   hotel_id: null,
+  max_person: "",
   description: "",
   images: [],
+  period: [],
   is_extra: "",
   room_price: "",
   cost: "",
@@ -74,11 +78,36 @@ const updateHandler = async () => {
   frmData.append("description", formData.value.description);
   frmData.append("is_extra", enabled.value ? 1 : 0);
   frmData.append("room_price", formData.value.room_price);
+  frmData.append("max_person", formData.value.max_person);
   frmData.append("cost", formData.value.cost);
   if (formData.value.images.length > 0) {
     for (let i = 0; i < formData.value.images.length; i++) {
       let file = formData.value.images[i];
       frmData.append("images[" + i + "]", file);
+    }
+  }
+  if (formData.value.period.length > 0) {
+    for (let x = 0; x < formData.value.period.length; x++) {
+      frmData.append(
+        "periods[" + x + "][period_name]",
+        formData.value.period[x].period_name
+      );
+      frmData.append(
+        "periods[" + x + "][start_date]",
+        formData.value.period[x].start_date
+      );
+      frmData.append(
+        "periods[" + x + "][end_date]",
+        formData.value.period[x].end_date
+      );
+      frmData.append(
+        "periods[" + x + "][sale_price]",
+        formData.value.period[x].sale_price
+      );
+      frmData.append(
+        "periods[" + x + "][cost_price]",
+        formData.value.period[x].cost_price
+      );
     }
   }
   frmData.append("_method", "PUT");
@@ -88,6 +117,8 @@ const updateHandler = async () => {
       id: "",
       name: "",
       hotel_id: null,
+      max_person: "",
+      period: [],
       description: "",
       is_extra: "",
       room_price: "",
@@ -110,17 +141,51 @@ const updateHandler = async () => {
   }
 };
 
+const showPeriodCreate = ref(false);
+const addNewPrice = (data) => {
+  formData.value.period.push(data);
+  console.log(formData.value.period, "this is push");
+};
+
+const removeChange = (data) => {
+  removeFromPrice(data);
+};
+
+const removeFromPrice = (index) => {
+  formData.value.period.splice(index, 1);
+};
+
+const createCarPrice = (data) => {
+  addNewPrice(data);
+  showPeriodCreate.value = false;
+};
+
 const images = ref([]);
 const getDetail = async (id) => {
   const response = await roomStore.getDetailAction(id);
   const data = response.result;
+  console.log(data);
   formData.value.name = data.name;
   formData.value.hotel_id = data.hotel.id;
   formData.value.room_price = data.room_price;
   formData.value.cost = data.cost;
   formData.value.description = data.description;
+  formData.value.max_person = data.max_person;
   images.value = data.images;
   enabled.value = data.is_extra == 1 ? true : false;
+  if (data.room_periods.length > 0) {
+    for (let i = 0; i < data.room_periods.length; i++) {
+      // editImagesPreview.value.push(data.images[i]);
+      let dataArray = {
+        period_name: data.room_periods[i].period_name,
+        start_date: data.room_periods[i].start_date,
+        end_date: data.room_periods[i].end_date,
+        sale_price: data.room_periods[i].sale_price,
+        cost_price: data.room_periods[i].cost_price,
+      };
+      formData.value.period.push(dataArray);
+    }
+  }
 };
 
 onMounted(async () => {
@@ -130,7 +195,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-white">
+  <div class="bg-white relative">
     <NavbarVue />
     <div class="py-5 px-4 space-y-4">
       <div class="relative">
@@ -222,6 +287,46 @@ onMounted(async () => {
               id="cost"
               class="w-full h-10 px-4 text-sm py-2 text-gray-900 border border-main rounded-md bg-white focus:outline-none focus:border-gray-300"
             />
+          </div>
+          <div class="space-y-2">
+            <label for="room_price" class="text-sm text-gray-800"
+              >Max Person</label
+            >
+            <input
+              type="text"
+              v-model="formData.max_person"
+              id="cost"
+              class="w-full h-10 px-4 text-sm py-2 text-gray-900 border border-main rounded-md bg-white focus:outline-none focus:border-gray-300"
+            />
+          </div>
+          <div class="space-y-2">
+            <label
+              @click="showPeriodCreate = true"
+              for="room_price"
+              class="text-sm text-gray-800 flex justify-start gap-3 items-center font-semibold"
+              >Room Periods
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6 text-main mr-2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </label>
+            <div v-for="(i, index) in formData.period" :key="index">
+              <RoomPeriodItemVue
+                :items="i"
+                :id="index"
+                @remove="removeChange"
+              />
+            </div>
           </div>
           <div class="space-y-2">
             <label for="description" class="text-sm text-gray-800"
@@ -330,6 +435,35 @@ onMounted(async () => {
             </div>
           </button>
         </form>
+      </div>
+    </div>
+    <div
+      class="absolute top-0 w-screen h-full bg-gray z-20 animate__animated animate__fadeIn"
+      v-if="showPeriodCreate"
+    >
+      <div class="relative h-full">
+        <NavbarVue />
+        <div
+          class="flex justify-start items-center gap-2 py-4 px-4 text-main"
+          @click="showPeriodCreate = false"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
+          </svg>
+          Back
+        </div>
+        <RoomPeriodItemCreate @create="createCarPrice" />
       </div>
     </div>
   </div>

@@ -42,10 +42,23 @@ const goBack = () => {
   router.go(-1);
 };
 
+const start_date = ref("");
+const end_date = ref("");
+const periodAjj = ref("");
+
+const searchFunction = async () => {
+  if (start_date.value && end_date.value) {
+    periodAjj.value = `${start_date.value} , ${end_date.value}`;
+  }
+};
+
 const clear = () => {
   hotel_id.value = "";
   hotel_name.value = "";
   order_by_price.value = "";
+  start_date.value = "";
+  end_date.value = "";
+  periodAjj.value = "";
 };
 const watchSystem = computed(() => {
   const result = {};
@@ -55,6 +68,9 @@ const watchSystem = computed(() => {
   }
   if (order_by_price.value != "" && order_by_price.value != undefined) {
     result.order_by_price = order_by_price.value;
+  }
+  if (periodAjj.value != "" && periodAjj.value != undefined) {
+    result.period = periodAjj.value;
   }
   return result;
 });
@@ -85,6 +101,10 @@ watch(hotel_id, async (newValue) => {
 watch(order_by_price, async (newValue) => {
   await roomStore.getListAction(watchSystem.value);
   console.log(order_by_price.value);
+});
+watch(periodAjj, async (newValue) => {
+  await roomStore.getListAction(watchSystem.value);
+  console.log(periodAjj.value);
 });
 </script>
 
@@ -140,7 +160,13 @@ watch(order_by_price, async (newValue) => {
         <div class="mr-2" @click="clear">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            v-if="!hotel_id && !order_by_price"
+            v-if="
+              !hotel_id &&
+              !order_by_price &&
+              !start_date &&
+              !end_date &&
+              periodAjj
+            "
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
@@ -154,7 +180,9 @@ watch(order_by_price, async (newValue) => {
             />
           </svg>
           <img
-            v-if="hotel_id || order_by_price"
+            v-if="
+              hotel_id || order_by_price || start_date || end_date || periodAjj
+            "
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
             alt=""
@@ -196,6 +224,38 @@ watch(order_by_price, async (newValue) => {
           :reduce="(d) => d.name"
           placeholder="Pax"
         ></v-select> -->
+        <input
+          type="date"
+          v-model="start_date"
+          class="bg-white rounded-full border border-main min-w-[150px] text-xs px-2 py-2"
+          title="start date"
+        />
+        <input
+          type="date"
+          v-model="end_date"
+          class="bg-white rounded-full border border-main min-w-[150px] text-xs px-2 py-2"
+          title="end date"
+        />
+        <button
+          class="px-2 py-1.5 bg-[#ff613c] rounded-full text-white"
+          @click="searchFunction"
+          v-if="start_date && end_date"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            />
+          </svg>
+        </button>
       </div>
       <div
         class="relative flex justify-center items-center py-[50%]"

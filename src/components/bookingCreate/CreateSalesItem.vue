@@ -299,6 +299,8 @@ const sub_qty_total = computed(() => {
   }
 });
 
+const moreInfo = ref(false);
+
 const getFunction = () => {
   console.log(formitem.value);
   emit("formData", formitem.value);
@@ -556,7 +558,7 @@ const getFunction = () => {
             v-model="formitem.comment"
           ></textarea>
         </div>
-        <div class="space-y-2">
+        <div class="space-y-2" v-if="moreInfo">
           <label for="name" class="text-sm text-gray-800"
             >Special Request</label
           >
@@ -572,7 +574,10 @@ const getFunction = () => {
         </div>
         <div
           class="space-y-2"
-          v-if="formitem.product_type == '1' || formitem.product_type == '3'"
+          v-if="
+            (formitem.product_type == '1' || formitem.product_type == '3') &&
+            moreInfo
+          "
         >
           <label for="name" class="text-sm text-gray-800">Pickup Time</label>
           <input
@@ -585,7 +590,10 @@ const getFunction = () => {
         </div>
         <div
           class="space-y-2"
-          v-if="formitem.product_type == '1' || formitem.product_type == '3'"
+          v-if="
+            (formitem.product_type == '1' || formitem.product_type == '3') &&
+            moreInfo
+          "
         >
           <label for="name" class="text-sm text-gray-800"
             >Pickup Location</label
@@ -602,7 +610,10 @@ const getFunction = () => {
         </div>
         <div
           class="space-y-2"
-          v-if="formitem.product_type == '1' || formitem.product_type == '3'"
+          v-if="
+            (formitem.product_type == '1' || formitem.product_type == '3') &&
+            moreInfo
+          "
         >
           <label for="name" class="text-sm text-gray-800"
             >Dropoff Location</label
@@ -619,7 +630,10 @@ const getFunction = () => {
         </div>
         <div
           class="space-y-2"
-          v-if="formitem.product_type == '1' || formitem.product_type == '3'"
+          v-if="
+            (formitem.product_type == '1' || formitem.product_type == '3') &&
+            moreInfo
+          "
         >
           <label for="name" class="text-sm text-gray-800">Route Plan</label>
           <textarea
@@ -641,7 +655,28 @@ const getFunction = () => {
           </p>
         </div>
 
-        <div class="flex justify-end items-center py-4">
+        <div class="flex justify-end items-center py-4 space-x-2">
+          <div
+            class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-main bg-white text-black border"
+            @click="moreInfo = !moreInfo"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+              />
+            </svg>
+
+            <p class="">More</p>
+          </div>
           <div
             class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-main bg-main text-white border"
             v-if="formitem.product_id && todayVali"

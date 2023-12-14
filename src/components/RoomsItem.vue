@@ -178,7 +178,7 @@ const deleteRoom = async (id) => {
         <p class="text-lg pl-2 font-semibold text-main">
           {{ rooms.name }}
         </p>
-        <p class="text-sm pl-2">2 Person Max</p>
+        <p class="text-sm pl-2">{{ rooms.max_person }} Person Max</p>
         <!-- <p class="text-sm pl-2">Bangkok City</p>
         <p class="text-sm pl-2 text-main">Allowment Available</p> -->
       </div>

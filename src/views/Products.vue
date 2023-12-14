@@ -45,6 +45,9 @@ const goGrouptour = () => {
 const goAttraction = () => {
   router.push({ name: "attraction" });
 };
+const goInclusive = () => {
+  router.push({ name: "inclusive" });
+};
 
 const search = ref("");
 
@@ -139,6 +142,7 @@ onMounted(async () => {
         <div
           class="space-y-2 opacity-40"
           v-if="search == 'inclusive' || search == 'all' || search == ''"
+          @click="goInclusive"
         >
           <img src="../../public/inclusive.jpg" alt="" class="rounded-lg" />
           <p class="text-lg pl-2 font-semibold text-main">All-inclusive</p>

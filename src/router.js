@@ -38,6 +38,7 @@ import CustomerPageView from "./views/CustmerPage.vue";
 import CustomerCreatePageView from "./views/CustomerCreatePage.vue";
 import CustomerEditPageView from "./views/CustomerEditPage.vue";
 import SaleEditPageView from "./views/SalesEditPage.vue";
+import InclusivePageView from "./views/InclusivePage.vue";
 
 const routes = [
   {
@@ -237,6 +238,11 @@ const routes = [
     path: "/customers/edit/:id",
     name: "customer-edit",
     component: CustomerEditPageView,
+  },
+  {
+    path: "/products/inclusive",
+    name: "inclusive",
+    component: InclusivePageView,
   },
 ];
 
