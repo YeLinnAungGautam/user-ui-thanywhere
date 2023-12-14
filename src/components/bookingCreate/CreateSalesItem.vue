@@ -457,7 +457,7 @@ const getFunction = () => {
             v-model="formitem.service_date"
             @change="todayCheck"
             id="title"
-            class="min-w-[90%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             :class="todayVali == true ? 'text-blue-600' : 'text-red-600'"
           />
           <p class="text-xs text-red" v-if="!todayVali">after & today</p>
@@ -484,7 +484,7 @@ const getFunction = () => {
           <p class="text-xs">Checkin Date</p>
           <input
             type="date"
-            class="min-w-[90%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             id=""
             v-model="formitem.checkin_date"
           />
@@ -493,7 +493,7 @@ const getFunction = () => {
           <p class="text-xs">Checkout Date</p>
           <input
             type="date"
-            class="min-w-[90%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             id=""
             v-model="formitem.checkout_date"
           />

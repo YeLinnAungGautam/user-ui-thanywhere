@@ -191,7 +191,7 @@ onMounted(async () => {
             type="date"
             v-model="formData.booking_date"
             id="name"
-            class="min-w-[90%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
           />
         </div>
 
@@ -203,7 +203,7 @@ onMounted(async () => {
             type="date"
             v-model="formData.balance_due_date"
             id="name"
-            class="min-w-[90%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
           />
         </div>
         <div class="space-y-2">

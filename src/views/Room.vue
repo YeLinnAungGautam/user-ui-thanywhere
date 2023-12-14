@@ -225,7 +225,9 @@ watch(periodAjj, async (newValue) => {
           placeholder="Pax"
         ></v-select> -->
         <div class="relative">
-          <p class="absolute top-2 left-2" v-if="!start_date">Start Date</p>
+          <p class="absolute top-2 left-2 text-xs" v-if="!start_date">
+            Start Date
+          </p>
           <input
             type="date"
             v-model="start_date"
@@ -234,7 +236,7 @@ watch(periodAjj, async (newValue) => {
           />
         </div>
         <div class="relative">
-          <p class="absolute top-2 left-2" v-if="!end_date">End Date</p>
+          <p class="absolute top-2 left-2 text-xs" v-if="!end_date">End Date</p>
           <input
             type="date"
             v-model="end_date"
