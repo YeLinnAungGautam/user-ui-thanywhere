@@ -68,9 +68,9 @@ const logoutHandle = async () => {
     </div>
 
     <div class="flex justify-center items-center">
-      <div>
+      <router-link to="reservations">
         <div
-          class="bg-white opacity-40 flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
+          class="bg-white flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
         >
           <img
             src="../../../public/letter-opened-svgrepo-com.svg"
@@ -81,7 +81,7 @@ const logoutHandle = async () => {
         <p class="text-center mt-5 text-black text-sm font-semibold">
           Bookings
         </p>
-      </div>
+      </router-link>
     </div>
     <div class="flex justify-center items-center">
       <router-link to="/customers">

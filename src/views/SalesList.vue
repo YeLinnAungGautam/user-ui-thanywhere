@@ -179,7 +179,7 @@ watch(limit, async (newValue) => {
               v-model="search"
               @keyup.enter="SearchCrmId"
               type="text"
-              class="bg-transparent rounded-full border border-main max-w-[120px] px-2 text-main py-2 text-sm"
+              class="bg-transparent rounded-full border border-main max-w-[120px] px-2 text-main py-1 text-sm"
               placeholder="bookings id.."
             />
           </div>
@@ -188,7 +188,7 @@ watch(limit, async (newValue) => {
               v-model="customerName"
               @keyup.enter="SearchCustomerName"
               type="text"
-              class="bg-transparent rounded-full border border-main max-w-[120px] px-2 text-main py-2 text-sm"
+              class="bg-transparent rounded-full border border-main max-w-[120px] px-2 text-main py-1 text-sm"
               placeholder="Customer Name"
             />
           </div>
@@ -311,7 +311,7 @@ watch(limit, async (newValue) => {
             <input
               v-model="balanceDueDate"
               type="date"
-              class="style-chooser bg-transparent bg-white rounded-full border border-main min-w-[120px] px-2 py-2 text-main text-sm"
+              class="style-chooser bg-transparent bg-white rounded-full border border-main min-w-[120px] px-2 py-1 text-main text-sm"
               placeholder="Search Date"
               title="service_date"
             />
@@ -323,7 +323,7 @@ watch(limit, async (newValue) => {
             <input
               v-model="saleDate"
               type="date"
-              class="style-chooser bg-transparent bg-white rounded-full border border-main min-w-[120px] px-2 py-2 text-main text-sm"
+              class="style-chooser bg-transparent bg-white rounded-full border border-main min-w-[120px] px-2 py-1 text-main text-sm"
               placeholder="Search Date"
               title="sale_date"
             />

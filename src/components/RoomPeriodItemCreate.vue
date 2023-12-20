@@ -29,7 +29,7 @@ onMounted(async () => {});
 
 <template>
   <div class="px-6 pb-5 space-y-6">
-    <p class="text-center text-main font-semibold">Choose Room Period</p>
+    <p class="text-center text-main font-semibold">Choose Period</p>
     <div class="bg-white p-4 rounded-md shadow space-y-2 max-w-md mx-auto">
       <div class="space-y-2">
         <p class="text-sm">Period Name</p>

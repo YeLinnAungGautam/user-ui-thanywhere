@@ -63,7 +63,7 @@ div:where(.swal2-container) .swal2-html-container {
 
 .vs__search {
   color: #ff6300 !important;
-  font-size: 12px;
+  font-size: 14px !important;
 }
 
 .small-title-text {

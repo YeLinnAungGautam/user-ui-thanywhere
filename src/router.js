@@ -39,6 +39,14 @@ import CustomerCreatePageView from "./views/CustomerCreatePage.vue";
 import CustomerEditPageView from "./views/CustomerEditPage.vue";
 import SaleEditPageView from "./views/SalesEditPage.vue";
 import InclusivePageView from "./views/InclusivePage.vue";
+import ReservationsPageView from "./views/ReservationPage.vue";
+import ReservationUpdate from "./views/ReservationEditPage.vue";
+import RestaurantPageView from "./views/RestaurantPage.vue";
+import RestaurantCreatePageView from "./views/RestaurantCreatePage.vue";
+import RestaurantEditPageView from "./views/RestaurantEditPage.vue";
+import MealPageView from "./views/MealPage.vue";
+import MealCreatePageView from "./views/MealCreatePage.vue";
+import MealEditPageView from "./views/MealEditPage.vue";
 
 const routes = [
   {
@@ -243,6 +251,46 @@ const routes = [
     path: "/products/inclusive",
     name: "inclusive",
     component: InclusivePageView,
+  },
+  {
+    path: "/reservations",
+    name: "reservations",
+    component: ReservationsPageView,
+  },
+  {
+    path: "/reservation/update/:id",
+    name: "reservation-update",
+    component: ReservationUpdate,
+  },
+  {
+    path: "/restaurants",
+    name: "restaurant",
+    component: RestaurantPageView,
+  },
+  {
+    path: "/restaurants/create",
+    name: "restaurant-create",
+    component: RestaurantCreatePageView,
+  },
+  {
+    path: "/restaurants/edit/:id",
+    name: "restaurant-edit",
+    component: RestaurantEditPageView,
+  },
+  {
+    path: "/products/restaurant/meal/:id/:name",
+    name: "meal",
+    component: MealPageView,
+  },
+  {
+    path: "/products/restaurant/meal/create",
+    name: "meal-create",
+    component: MealCreatePageView,
+  },
+  {
+    path: "/products/restaurant/meal/edit/:id",
+    name: "meal-edit",
+    component: MealEditPageView,
   },
 ];
 

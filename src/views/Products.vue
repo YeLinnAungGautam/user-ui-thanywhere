@@ -8,6 +8,8 @@ import { useVantourStore } from "../stores/vantour";
 import { useAirportStore } from "../stores/airport";
 import { useGrouptourStore } from "../stores/grouptour";
 import { useEntranceStore } from "../stores/entrance";
+import { useRestaurantStore } from "../stores/restaurant";
+import { useAirLineStore } from "../stores/airline";
 
 const router = useRouter();
 const entranceStore = useEntranceStore();
@@ -15,12 +17,16 @@ const hotelStore = useHotelStore();
 const vantourStore = useVantourStore();
 const airportStore = useAirportStore();
 const grouptourStore = useGrouptourStore();
+const restaurantStore = useRestaurantStore();
+const airlineStore = useAirLineStore();
 
 const { hotels } = storeToRefs(hotelStore);
 const { vantours } = storeToRefs(vantourStore);
 const { airports } = storeToRefs(airportStore);
 const { grouptours } = storeToRefs(grouptourStore);
 const { entrances } = storeToRefs(entranceStore);
+const { restaurants } = storeToRefs(restaurantStore);
+const { airlines } = storeToRefs(airlineStore);
 
 const chooseType = ref([
   { id: 1, name: "van tour" },
@@ -30,6 +36,7 @@ const chooseType = ref([
   { id: 5, name: "airport pickup" },
   { id: 6, name: "group tour" },
   { id: 7, name: "airline" },
+  { id: 8, name: "restaurant" },
 ]);
 
 const goHotels = () => {
@@ -61,6 +68,8 @@ onMounted(async () => {
   await airportStore.getListAction();
   await grouptourStore.getListAction();
   await entranceStore.getListAction();
+  await airlineStore.getListAction();
+  await restaurantStore.getListAction();
   console.log(hotels.value);
 });
 </script>
@@ -173,7 +182,16 @@ onMounted(async () => {
         >
           <img src="../../public/flightticket.jpg" alt="" class="rounded-lg" />
           <p class="text-lg pl-2 font-semibold text-main">AirLine</p>
-          <p class="text-sm pl-2">50 Packages</p>
+          <p class="text-sm pl-2">{{ airlines?.meta.total }} Packages</p>
+        </div>
+        <div
+          class="space-y-2"
+          v-if="search == 'restaurant' || search == 'all' || search == ''"
+          @click="router.push({ name: 'restaurant' })"
+        >
+          <img src="../../public/restaurant.jpg" alt="" class="rounded-lg" />
+          <p class="text-lg pl-2 font-semibold text-main">Restaurant</p>
+          <p class="text-sm pl-2">{{ restaurants?.meta.total }} Packages</p>
         </div>
       </div>
     </div>

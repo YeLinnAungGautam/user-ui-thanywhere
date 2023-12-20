@@ -3,21 +3,21 @@ import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
-import RoomsItemVue from "../components/RoomsItem.vue";
-import { useHotelStore } from "../stores/hotel";
-import { useRoomStore } from "../stores/room";
+import MealItem from "../components/MealItem.vue";
+import { useRestaurantStore } from "../stores/restaurant";
+import { useMealStore } from "../stores/meal";
 import NoDataPage from "../components/NoDataPage.vue";
 import Pagination from "../components/Pagination.vue";
 
 const router = useRouter();
 const route = useRoute();
-const hotelStore = useHotelStore();
-const roomStore = useRoomStore();
+const restaurantStore = useRestaurantStore();
+const mealStore = useMealStore();
 
 const name = ref("kaung");
 
-const { hotel } = storeToRefs(hotelStore);
-const { rooms, loading } = storeToRefs(roomStore);
+const { restaurant } = storeToRefs(restaurantStore);
+const { meals, loading } = storeToRefs(mealStore);
 
 const chooseType = ref([
   { id: 1, name: "low_to_high" },
@@ -25,8 +25,8 @@ const chooseType = ref([
 ]);
 const order_by_price = ref("");
 
-const hotel_id = ref("");
-const hotel_name = ref("");
+const restaurant_id = ref("");
+const restaurant_name = ref("");
 
 // const goRoom = () => {
 //   router.push({
@@ -36,7 +36,7 @@ const hotel_name = ref("");
 
 const createPage = () => {
   router.push({
-    name: "room_create",
+    name: "meal-create",
   });
 };
 
@@ -55,8 +55,8 @@ const searchFunction = async () => {
 };
 
 const clear = () => {
-  hotel_id.value = "";
-  hotel_name.value = "";
+  restaurant_id.value = "";
+  restaurant_name.value = "";
   order_by_price.value = "";
   start_date.value = "";
   end_date.value = "";
@@ -65,8 +65,8 @@ const clear = () => {
 const watchSystem = computed(() => {
   const result = {};
 
-  if (hotel_id.value != "" && hotel_id.value != undefined) {
-    result.hotel_id = hotel_id.value;
+  if (restaurant_id.value != "" && restaurant_id.value != undefined) {
+    result.restaurant_id = restaurant_id.value;
   }
   if (order_by_price.value != "" && order_by_price.value != undefined) {
     result.order_by_price = order_by_price.value;
@@ -79,33 +79,33 @@ const watchSystem = computed(() => {
 
 const changePage = async (url) => {
   console.log(url);
-  await roomStore.getChangePage(url, watchSystem.value);
+  await mealStore.getChangePage(url, watchSystem.value);
 };
 
 const changes = async (message) => {
   if ((message = "Room Deleted")) {
-    hotel_id.value = "";
+    restaurant_id.value = "";
   }
 };
 
 onMounted(async () => {
-  hotel_id.value = route.params.id;
-  hotel_name.value = route.params.name;
-  await hotelStore.getSimpleListAction();
-  // await roomStore.getListAction();
-  // console.log(route.params.id, hotels.value, "this is params id");
+  restaurant_id.value = route.params.id;
+  restaurant_name.value = route.params.name;
+  await restaurantStore.getSimpleListAction();
+  // await mealStore.getListAction();
+  // console.log(route.params.id, restaurants.value, "this is params id");
 });
 
-watch(hotel_id, async (newValue) => {
-  await roomStore.getListAction(watchSystem.value);
-  console.log(hotel_id.value);
+watch(restaurant_id, async (newValue) => {
+  await mealStore.getListAction(watchSystem.value);
+  console.log(restaurant_id.value);
 });
 watch(order_by_price, async (newValue) => {
-  await roomStore.getListAction(watchSystem.value);
+  await mealStore.getListAction(watchSystem.value);
   console.log(order_by_price.value);
 });
 watch(periodAjj, async (newValue) => {
-  await roomStore.getListAction(watchSystem.value);
+  await mealStore.getListAction(watchSystem.value);
   console.log(periodAjj.value);
 });
 </script>
@@ -154,7 +154,7 @@ watch(periodAjj, async (newValue) => {
             />
           </svg>
         </div>
-        <p class="text-main text-2xl font-semibold w-full text-center">Rooms</p>
+        <p class="text-main text-2xl font-semibold w-full text-center">Meals</p>
       </div>
       <div
         class="bg-main/10 py-1 pl-3 pr-2 rounded-3xl flex justify-between items-center"
@@ -163,7 +163,7 @@ watch(periodAjj, async (newValue) => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             v-if="
-              !hotel_id &&
+              !restaurant_id &&
               !order_by_price &&
               !start_date &&
               !end_date &&
@@ -183,7 +183,11 @@ watch(periodAjj, async (newValue) => {
           </svg>
           <img
             v-if="
-              hotel_id || order_by_price || start_date || end_date || periodAjj
+              restaurant_id ||
+              order_by_price ||
+              start_date ||
+              end_date ||
+              periodAjj
             "
             src="../../public/clear-svgrepo-com (1).svg"
             class="w-6 h-6"
@@ -192,16 +196,16 @@ watch(periodAjj, async (newValue) => {
           <!-- <p class="text-main">Search</p> -->
         </div>
         <p
-          v-if="hotel_name"
+          v-if="restaurant_name"
           class="text-start ml-2 py-1 text-base text-main w-full"
         >
-          {{ hotel_name }}
+          {{ restaurant_name }}
         </p>
         <v-select
-          v-if="!hotel_name"
+          v-if="!restaurant_name"
           class="style-chooser w-full"
-          :options="hotel?.data"
-          v-model="hotel_id"
+          :options="restaurant?.data"
+          v-model="restaurant_id"
           label="name"
           :clearable="false"
           :reduce="(d) => d.id"
@@ -226,7 +230,7 @@ watch(periodAjj, async (newValue) => {
           :reduce="(d) => d.name"
           placeholder="Pax"
         ></v-select> -->
-        <div class="relative">
+        <!-- <div class="relative">
           <p class="absolute top-[30%] left-[30%] text-xs" v-if="!start_date">
             Start Date
           </p>
@@ -247,7 +251,7 @@ watch(periodAjj, async (newValue) => {
             class="bg-white rounded-full border border-main min-w-[150px] h-10 text-xs px-2 py-2"
             title="end date"
           />
-        </div>
+        </div> -->
         <button
           class="px-2 py-1.5 bg-[#ff613c] rounded-full text-white"
           @click="searchFunction"
@@ -284,10 +288,10 @@ watch(periodAjj, async (newValue) => {
       >
         <div
           class="space-y-2"
-          v-for="(room, index) in rooms?.data"
+          v-for="(meal, index) in meals?.data"
           :key="index"
         >
-          <RoomsItemVue :id="room.id" :rooms="room" @change="changes" />
+          <MealItem :id="meal.id" :rooms="meal" @change="changes" />
         </div>
       </div>
       <div
@@ -296,13 +300,13 @@ watch(periodAjj, async (newValue) => {
       >
         <div
           class="space-y-2 col-span-1 md:col-span-2"
-          v-if="rooms?.data.length == 0"
+          v-if="meals?.data.length == 0"
         >
           <NoDataPage />
         </div>
       </div>
       <div>
-        <Pagination v-if="!loading" :data="rooms" @change-page="changePage" />
+        <Pagination v-if="!loading" :data="meals" @change-page="changePage" />
       </div>
     </div>
   </div>
