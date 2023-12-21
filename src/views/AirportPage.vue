@@ -69,8 +69,8 @@ const car_id = ref("");
 const changes = async (message) => {
   if ((message = "Deleted")) {
     search.value = "";
-    city_id = "";
-    car_id = "";
+    city_id.value = "";
+    car_id.value = "";
     await airportStore.getListAction();
   }
 };
