@@ -82,16 +82,19 @@ const copyReservation = async () => {
     `;
   }
 
-  const textarea = document.createElement("textarea");
-  textarea.value = formattedOutput;
+  // const textarea = document.createElement("textarea");
+  // textarea.value = formattedOutput;
 
-  document.body.appendChild(textarea);
+  // document.body.appendChild(textarea);
 
-  textarea.select();
+  // textarea.select();
 
-  document.execCommand("copy");
+  // document.execCommand("copy");
+  setTimeout(() => {
+    navigator.clipboard.writeText(formattedOutput);
+  }, 0);
 
-  document.body.removeChild(textarea);
+  // document.body.removeChild(textarea);
   toastStore.showToast({
     icon: "success",
     title: "copy reservation is success",
