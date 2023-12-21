@@ -28,89 +28,12 @@ const getDetail = async () => {
   main.value = res.result;
 };
 
-// const copyReservation = async () => {
-//   const res = await reservationStore.copyReservationDetail(route.params.id);
-//   console.log(res);
-//   let formattedOutput;
-//   if (res.result.checkin_date != undefined) {
-//     formattedOutput = `
-//       Total Coast: ${res.result.total_coast} THB
-//       Bank Name: ${res.result.bank_name != "null" ? res.result.bank_name : "-"}
-//       Bank Account Number: ${
-//         res.result.bank_account_number != "null"
-//           ? res.result.bank_account_number
-//           : "-"
-//       }
-//       Account Name: ${
-//         res.result.account_name != "null" ? res.result.account_name : "-"
-//       }
-//       CRM ID: ${res.result.crm_id}
-//       Reservation Code: ${res.result.reservation_code}
-//       Hotel Name: ${
-//         res.result.hotel_name != "null" ? res.result.hotel_name : "-"
-//       }
-//       Total Rooms: ${
-//         res.result.total_rooms != "null" ? res.result.total_rooms : "-"
-//       }
-//       Total Nights: ${
-//         res.result.total_nights != "null" ? res.result.total_nights : "-"
-//       }
-//       Sale Price: ${res.result.sale_price} THB
-//       Check-in Date: ${
-//         res.result.checkin_date != "null" ? res.result.checkin_date : "-"
-//       }
-//       Checkout Date: ${
-//         res.result.checkout_date != "null" ? res.result.checkout_date : "-"
-//       } THB
-//     `;
-//   } else {
-//     formattedOutput = `
-//       Total Coast: ${res.result.total_coast} THB
-//       Bank Name: ${res.result.bank_name != "null" ? res.result.bank_name : "-"}
-//       Bank Account Number: ${
-//         res.result.bank_account_number != "null"
-//           ? res.result.bank_account_number
-//           : "-"
-//       }
-//       Account Name: ${res.result.account_name}
-//       CRM ID: ${res.result.crm_id}
-//       Reservation Code: ${res.result.reservation_code}
-//       Ticket Name: ${
-//         res.result.hotel_name != "null" ? res.result.hotel_name : "-"
-//       }
-//       Sale Price: ${res.result.sale_price} THB
-//     `;
-//   }
-
-//   // Create a textarea element to temporarily hold the string
-//   const textarea = document.createElement("textarea");
-//   textarea.value = formattedOutput;
-
-//   // Append the textarea to the document
-//   document.body.appendChild(textarea);
-
-//   // Select the text inside the textarea
-//   textarea.select();
-
-//   // Execute the copy command using the Clipboard API
-//   document.execCommand("copy");
-
-//   // Remove the textarea from the document
-//   document.body.removeChild(textarea);
-//   toastStore.showToast({
-//     icon: "success",
-//     title: "copy reservation is success",
-//   });
-// };
-
-const copyText = ref("");
-
 const copyReservation = async () => {
   const res = await reservationStore.copyReservationDetail(route.params.id);
   console.log(res);
-
+  let formattedOutput;
   if (res.result.checkin_date != undefined) {
-    copyText.value = `
+    formattedOutput = `
       Total Coast: ${res.result.total_coast} THB
       Bank Name: ${res.result.bank_name != "null" ? res.result.bank_name : "-"}
       Bank Account Number: ${
@@ -141,7 +64,7 @@ const copyReservation = async () => {
       } THB
     `;
   } else {
-    copyText.value = `
+    formattedOutput = `
       Total Coast: ${res.result.total_coast} THB
       Bank Name: ${res.result.bank_name != "null" ? res.result.bank_name : "-"}
       Bank Account Number: ${
@@ -159,14 +82,86 @@ const copyReservation = async () => {
     `;
   }
 
-  if (copyText.value) {
-    copy(copyText.value);
-    toastStore.showToast({
-      icon: "success",
-      title: "copy reservation is success",
-    });
-  }
+  const textarea = document.createElement("textarea");
+  textarea.value = formattedOutput;
+
+  document.body.appendChild(textarea);
+
+  textarea.select();
+
+  document.execCommand("copy");
+
+  document.body.removeChild(textarea);
+  toastStore.showToast({
+    icon: "success",
+    title: "copy reservation is success",
+  });
 };
+
+const copyText = ref("");
+
+// const copyReservation = async () => {
+//   const res = await reservationStore.copyReservationDetail(route.params.id);
+//   console.log(res);
+
+//   if (res.result.checkin_date != undefined) {
+//     copyText.value = `
+//       Total Coast: ${res.result.total_coast} THB
+//       Bank Name: ${res.result.bank_name != "null" ? res.result.bank_name : "-"}
+//       Bank Account Number: ${
+//         res.result.bank_account_number != "null"
+//           ? res.result.bank_account_number
+//           : "-"
+//       }
+//       Account Name: ${
+//         res.result.account_name != "null" ? res.result.account_name : "-"
+//       }
+//       CRM ID: ${res.result.crm_id}
+//       Reservation Code: ${res.result.reservation_code}
+//       Hotel Name: ${
+//         res.result.hotel_name != "null" ? res.result.hotel_name : "-"
+//       }
+//       Total Rooms: ${
+//         res.result.total_rooms != "null" ? res.result.total_rooms : "-"
+//       }
+//       Total Nights: ${
+//         res.result.total_nights != "null" ? res.result.total_nights : "-"
+//       }
+//       Sale Price: ${res.result.sale_price} THB
+//       Check-in Date: ${
+//         res.result.checkin_date != "null" ? res.result.checkin_date : "-"
+//       }
+//       Checkout Date: ${
+//         res.result.checkout_date != "null" ? res.result.checkout_date : "-"
+//       } THB
+//     `;
+//   } else {
+//     copyText.value = `
+//       Total Coast: ${res.result.total_coast} THB
+//       Bank Name: ${res.result.bank_name != "null" ? res.result.bank_name : "-"}
+//       Bank Account Number: ${
+//         res.result.bank_account_number != "null"
+//           ? res.result.bank_account_number
+//           : "-"
+//       }
+//       Account Name: ${res.result.account_name}
+//       CRM ID: ${res.result.crm_id}
+//       Reservation Code: ${res.result.reservation_code}
+//       Ticket Name: ${
+//         res.result.hotel_name != "null" ? res.result.hotel_name : "-"
+//       }
+//       Sale Price: ${res.result.sale_price} THB
+//     `;
+//   }
+
+//   if (copyText.value) {
+//     copy(copyText.value);
+//     toastStore.showToast({
+//       icon: "success",
+//       title: "copy reservation is success",
+//     });
+//   }
+// };
 
 const printPrivateVanTour = () => {
   window.open(
