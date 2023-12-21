@@ -10,9 +10,10 @@ import ProductTypePart from "../components/reservationPart/ProductTypePart.vue";
 import ReceiptImagePart from "../components/reservationPart/ReceiptImagePart.vue";
 import AddOtherInfo from "../components/reservationPart/AddOtherInfo.vue";
 import { useToastStore } from "../stores/toast";
-import { useClipboard, usePermission } from "@vueuse/core";
+// import { useClipboard, usePermission } from "@vueuse/core";
+import copy from "copy-to-clipboard";
 
-const { text, isSupported, copy } = useClipboard();
+// const { text, isSupported, copy } = useClipboard();
 // const permissionRead = usePermission("clipboard-read");
 // const permissionWrite = usePermission("clipboard-write");
 
@@ -90,9 +91,17 @@ const copyReservation = async () => {
   // textarea.select();
 
   // document.execCommand("copy");
-  setTimeout(() => {
-    navigator.clipboard.writeText(formattedOutput);
-  }, 0);
+  // setTimeout(() => {
+  //   navigator.clipboard.writeText(formattedOutput);
+  // }, 0);
+
+  copy(formattedOutput);
+
+  // Copy with options
+  // copy(formattedOutput, {
+  //   debug: true,
+  //   message: 'Press #{key} to copy',
+  // });
 
   // document.body.removeChild(textarea);
   toastStore.showToast({
