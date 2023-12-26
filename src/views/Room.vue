@@ -227,8 +227,11 @@ watch(periodAjj, async (newValue) => {
           placeholder="Pax"
         ></v-select> -->
         <div class="relative">
-          <p class="absolute top-[30%] left-[30%] text-xs" v-if="!start_date">
-            Start Date
+          <p
+            class="absolute text-main top-[25%] left-[16%] text-sm"
+            v-if="!start_date"
+          >
+            Checkin Date
           </p>
           <input
             type="date"
@@ -238,8 +241,11 @@ watch(periodAjj, async (newValue) => {
           />
         </div>
         <div class="relative">
-          <p class="absolute top-[30%] left-[30%] text-xs" v-if="!end_date">
-            End Date
+          <p
+            class="absolute text-main top-[25%] left-[16%] text-sm"
+            v-if="!end_date"
+          >
+            Checkout Date
           </p>
           <input
             type="date"
