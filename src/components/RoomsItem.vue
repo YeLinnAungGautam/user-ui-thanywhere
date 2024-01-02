@@ -182,11 +182,13 @@ const deleteRoom = async (id) => {
         <!-- <p class="text-sm pl-2">Bangkok City</p>
         <p class="text-sm pl-2 text-main">Allowment Available</p> -->
       </div>
-      <div class="text-start mt-2">
+      <div class="text-start mt-2 flex justify-between items-center">
         <p class="text-4xl pl-2 font-semibold text-main">
           {{ rooms.room_price }} THB
         </p>
-        <!-- <p class="text-xl pl-2 font-semibold text-main">3 Room Types</p> -->
+        <p class="text-xl pl-2 font-semibold text-main">
+          For {{ rooms.total_night }} Night
+        </p>
       </div>
     </div>
   </div>
