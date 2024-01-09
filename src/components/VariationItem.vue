@@ -90,6 +90,7 @@ const deleteRoom = async (id) => {
           : 'top-[-100px] translation duration-150'
       "
       @click="goEdit(id)"
+      v-if="!authStore.isAgent"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

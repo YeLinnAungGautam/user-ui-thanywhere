@@ -8,10 +8,12 @@ import Pagination from "../components/Pagination.vue";
 import RestaurantItemVue from "../components/RestaurantItem.vue";
 import { useCityStore } from "../stores/city";
 import NoDataPageVue from "../components/NoDataPage.vue";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const restaurantStore = useRestaurantStore();
 const cityStore = useCityStore();
+const authStore = useAuthStore();
 
 const { restaurants, restaurant, loading } = storeToRefs(restaurantStore);
 const { cities } = storeToRefs(cityStore);
@@ -144,6 +146,7 @@ watch(place, async (newValue) => {
         <div
           class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
           @click="createPage"
+          v-if="!authStore.isAgent"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

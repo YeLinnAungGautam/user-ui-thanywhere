@@ -34,9 +34,10 @@ onMounted(async () => {
     <div>
       <p class="text-white pt-10 font-semibold">{{ user?.name }}</p>
       <p class="text-white/80 text-sm">{{ user?.role }}</p>
-      <p class="text-xs text-white mt-10 pb-8">
+      <p class="text-xs text-white mt-10 pb-8" v-if="!authStore.isAgent">
         Today Ranking # <span class="text-base">{{ rank }}</span>
       </p>
+      <p class="text-xs text-white mt-10 pb-8" v-if="authStore.isAgent"></p>
     </div>
     <div>
       <img

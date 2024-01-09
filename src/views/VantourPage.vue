@@ -8,8 +8,10 @@ import { useVantourStore } from "../stores/vantour";
 import VantourListItem from "../components/VantourListItem.vue";
 import { useCityStore } from "../stores/city";
 import { useCarStore } from "../stores/car";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
+const authStore = useAuthStore();
 const vantourStore = useVantourStore();
 const cityStore = useCityStore();
 const carStore = useCarStore();
@@ -136,6 +138,7 @@ watch(car_id, async (newValue) => {
         <div
           class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
           @click="createPage"
+          v-if="!authStore.isAgent"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
-import { useVantourStore } from "../stores/vantour";
+import { useRoomStore } from "../stores/room";
 import NoDataPageVue from "../components/NoDataPage.vue";
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
@@ -11,16 +11,16 @@ import "vue3-carousel/dist/carousel.css";
 
 const router = useRouter();
 const route = useRoute();
-const vantourStore = useVantourStore();
+const roomStore = useRoomStore();
 
-const vantour = ref(null);
+const hotel = ref(null);
 const loading = ref(false);
 const detail = async () => {
   loading.value = true;
-  const res = await vantourStore.getDetailAction(route.params.id);
+  const res = await roomStore.getDetailAction(route.params.id);
   console.log(res);
   loading.value = false;
-  vantour.value = res.result;
+  hotel.value = res.result;
 };
 
 const goBack = () => {
@@ -59,13 +59,13 @@ onMounted(async () => {
         </div>
 
         <p class="text-main text-lg pt-1 font-semibold w-full text-center">
-          Vantour Detail
+          Room Detail
         </p>
       </div>
       <div class="pt-4" v-if="!loading">
-        <div v-if="vantour?.images.length > 0">
+        <div v-if="hotel?.images.length > 0">
           <Carousel :wrap-around="true" :autoplay="5000">
-            <Slide v-for="i in vantour?.images" :key="i.id">
+            <Slide v-for="i in hotel?.images" :key="i.id">
               <div class="carousel__item">
                 <div class="h-auto w-full overflow-hidden rounded-lg">
                   <img
@@ -90,7 +90,7 @@ onMounted(async () => {
             </template>
           </Carousel>
         </div>
-        <div v-if="vantour?.images.length == 0">
+        <div v-if="hotel?.images.length == 0">
           <div class="h-auto w-full overflow-hidden rounded-lg">
             <img
               src="../../public/default-image.jpg"
@@ -99,43 +99,54 @@ onMounted(async () => {
             />
           </div>
         </div>
-        <div class="space-y-2 px-2 text-lg font-semibold mt-3 text-main">
-          <p>{{ vantour?.name }}</p>
-          <p class="text-sm text-black font-normal">
-            {{ vantour?.long_description }}
-          </p>
+        <div class="space-y-4 px-2 text-lg font-semibold mt-3 text-main">
+          <p class="">{{ hotel?.name }}</p>
+          <p class="text-xs text-black font-normal">{{ hotel?.description }}</p>
+          <div class="grid grid-cols-2 gap-2">
+            <p class="border border-main text-xs text-start px-4 py-1">
+              Is Extra ?
+            </p>
+            <p
+              class="border border-main text-start px-4 py-1 font-normal text-xs"
+            >
+              {{ hotel?.is_extra == 0 ? "No" : "Yes" }}
+            </p>
+            <p class="border border-main text-xs text-start px-4 py-1">
+              Max Person
+            </p>
+            <p
+              class="border border-main text-start px-4 py-1 font-normal text-xs"
+            >
+              {{ hotel?.max_person }}
+            </p>
+            <p class="border border-main text-xs text-start px-4 py-1">Price</p>
+            <p
+              class="border border-main text-start px-4 py-1 font-normal text-xs"
+            >
+              {{ hotel?.room_price }} THB
+            </p>
+          </div>
         </div>
-        <div
-          class="text-base pl-2 mt-3 font-semibold flex justify-start items-center gap-2 flex-wrap"
-        >
-          <p
-            v-for="(city, index) in vantour?.cities"
-            :key="index"
-            class="inline-block bg-main text-white text-xs p-1 rounded"
-          >
-            {{ city.name }}
-          </p>
-          <!-- <p>{{ vantours?.cars.length }}</p> -->
-        </div>
-        <div class="space-y-2 px-2 text-lg mt-3 text-main">
-          <p class="text-sm text-main font-semibold">Route Plan</p>
-          <p class="text-sm text-black">
-            {{ vantour?.description }}
-          </p>
-        </div>
-        <div class="space-y-2 mb-5 mt-3">
-          <div
-            class="text-sm font-semibold grid grid-cols-2 gap-3 mx-2 px-2 border border-black/50 py-3 rounded shadow-custom"
-            v-for="(c, index) in vantour?.cars"
-            :key="index"
-          >
-            <p>{{ c.name }}</p>
 
-            <p class="text-end">{{ c.price }} THB</p>
-            <p>Max Person</p>
-            <p class="text-end">{{ c.max_person }}</p>
-            <p>Agent Price</p>
-            <p class="text-end">{{ c.agent_price }} THB</p>
+        <div class="px-2 pt-4 pb-6 space-y-4 text-main font-semibold">
+          <p>Room Periods</p>
+          <div
+            class="flex mb-5 pb-4 space-x-2 rounded-lg shadow-sm overflow-x-scroll"
+          >
+            <div
+              class="bg-white px-4 text-xs rounded shadow-md my-auto text-black min-w-[190px] space-y-1 h-[140px] border border-main"
+              v-for="(r, index) in hotel?.room_periods"
+              :key="index"
+            >
+              <div class="space-y-1 py-4">
+                <p class="text-main">Start Date</p>
+                <p class="font-normal">{{ r.start_date }}</p>
+                <p class="text-main">End Date</p>
+                <p class="font-normal">{{ r.end_date }}</p>
+                <p class="text-main">Sale Price</p>
+                <p class="font-normal">{{ r.sale_price }} THB</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

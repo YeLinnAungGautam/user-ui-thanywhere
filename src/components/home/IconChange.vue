@@ -20,7 +20,7 @@ const logoutHandle = async () => {
 
 <template>
   <div class="grid grid-cols-3 sm:grid-cols-4 gap-8 px-8 py-10">
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center items-center" v-if="!authStore.isAgent">
       <router-link to="/analytics">
         <div
           class="bg-white opacity-40 flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
@@ -36,7 +36,7 @@ const logoutHandle = async () => {
         </p>
       </router-link>
     </div>
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center items-center" v-if="!authStore.isAgent">
       <router-link to="/sales">
         <div
           class="bg-white flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
@@ -67,7 +67,7 @@ const logoutHandle = async () => {
       </router-link>
     </div>
 
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center items-center" v-if="!authStore.isAgent">
       <router-link to="reservations">
         <div
           class="bg-white flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"
@@ -83,7 +83,7 @@ const logoutHandle = async () => {
         </p>
       </router-link>
     </div>
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center items-center" v-if="!authStore.isAgent">
       <router-link to="/customers">
         <div
           class="bg-white flex justify-center items-center w-[70px] h-[70px] rounded-full shadow-custom"

@@ -8,16 +8,19 @@ import { useAirLineStore } from "../stores/airline";
 import { useAirTicketStore } from "../stores/airticket";
 import NoDataPage from "../components/NoDataPage.vue";
 import Pagination from "../components/Pagination.vue";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const route = useRoute();
 const airlineStore = useAirLineStore();
 const airticketStore = useAirTicketStore();
+const authStore = useAuthStore();
 
 const { airline } = storeToRefs(airlineStore);
 const { airtickets, airticket, loading } = storeToRefs(airticketStore);
 
 const airline_name = ref("");
+const airline_id = ref("");
 
 const chooseType = ref([
   { id: 1, name: "van tour" },
@@ -38,6 +41,7 @@ const goBack = () => {
 
 const clear = () => {
   airline_name.value = "";
+  airline_id.value = "";
 };
 
 const changePage = async (url) => {
@@ -58,11 +62,15 @@ onMounted(async () => {
   await airlineStore.getSimpleListAction();
   await airticketStore.getSimpleListAction();
   console.log(airline.value, "this is airline");
+  airline_id.value = route.params.id;
   airline_name.value = route.params.name;
 });
 
-watch(airline_name, async (newValue) => {
-  await airticketStore.getListAction({ search: airline_name.value });
+// watch(airline_name, async (newValue) => {
+//   await airticketStore.getListAction({ search: airline_name.value });
+// });
+watch(airline_id, async (newValue) => {
+  await airticketStore.getListAction({ airline_id: airline_id.value });
 });
 </script>
 
@@ -94,6 +102,7 @@ watch(airline_name, async (newValue) => {
         <div
           class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
           @click="createPage"
+          v-if="!authStore.isAgent"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -150,11 +159,11 @@ watch(airline_name, async (newValue) => {
         <v-select
           v-if="!airline_name"
           class="style-chooser w-full"
-          :options="airticket?.data"
-          v-model="airline_name"
-          label="price"
+          :options="airline?.data"
+          v-model="airline_id"
+          label="name"
           :clearable="false"
-          :reduce="(d) => d.price"
+          :reduce="(d) => d.id"
           placeholder="Search"
         ></v-select>
       </div>

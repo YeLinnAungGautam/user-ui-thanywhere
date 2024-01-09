@@ -7,9 +7,11 @@ import Pagination from "../components/Pagination.vue";
 import { useAirLineStore } from "../stores/airline";
 import AirLineItem from "../components/AirLineItem.vue";
 import NoDataPageVue from "../components/NoDataPage.vue";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const airlineStore = useAirLineStore();
+const authStore = useAuthStore();
 
 const { airlines, airline, loading } = storeToRefs(airlineStore);
 
@@ -120,6 +122,7 @@ watch(max_price, async (newValue) => {
         <div
           class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
           @click="createPage"
+          v-if="!authStore.isAgent"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

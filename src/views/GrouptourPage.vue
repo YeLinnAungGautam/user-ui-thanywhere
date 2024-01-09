@@ -8,10 +8,12 @@ import { useGrouptourStore } from "../stores/grouptour";
 import GrouptourListItem from "../components/GrouptourListItem.vue";
 import { useCityStore } from "../stores/city";
 import NoDataPageVue from "../components/NoDataPage.vue";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const grouptourStore = useGrouptourStore();
 const cityStore = useCityStore();
+const authStore = useAuthStore();
 
 const { grouptours, grouptour, loading } = storeToRefs(grouptourStore);
 const { cities } = storeToRefs(cityStore);
@@ -122,6 +124,7 @@ watch(city_id, async (newValue) => {
           Back
         </div>
         <div
+          v-if="!authStore.isAgent"
           class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
           @click="createPage"
         >

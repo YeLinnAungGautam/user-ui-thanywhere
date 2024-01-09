@@ -6,12 +6,14 @@ import NavbarVue from "../components/Navbar.vue";
 import RoomsItemVue from "../components/RoomsItem.vue";
 import { useHotelStore } from "../stores/hotel";
 import { useRoomStore } from "../stores/room";
+import { useAuthStore } from "../stores/auth";
 import NoDataPage from "../components/NoDataPage.vue";
 import Pagination from "../components/Pagination.vue";
 
 const router = useRouter();
 const route = useRoute();
 const hotelStore = useHotelStore();
+const authStore = useAuthStore();
 const roomStore = useRoomStore();
 
 const name = ref("kaung");
@@ -138,6 +140,7 @@ watch(periodAjj, async (newValue) => {
         <div
           class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
           @click="createPage"
+          v-if="!authStore.isAgent"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

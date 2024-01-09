@@ -8,10 +8,12 @@ import Pagination from "../components/Pagination.vue";
 import AttractionListItem from "../components/AttractionListItem.vue";
 import { useCityStore } from "../stores/city";
 import NoDataPageVue from "../components/NoDataPage.vue";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const entranceStore = useEntranceStore();
 const cityStore = useCityStore();
+const authStore = useAuthStore();
 
 const { entrances, entrance, loading } = storeToRefs(entranceStore);
 const { cities } = storeToRefs(cityStore);
@@ -115,6 +117,7 @@ watch(city_id, async (newValue) => {
           Back
         </div>
         <div
+          v-if="!authStore.isAgent"
           class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
           @click="createPage"
         >

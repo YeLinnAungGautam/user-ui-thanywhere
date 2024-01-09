@@ -8,9 +8,11 @@ import { useRestaurantStore } from "../stores/restaurant";
 import { useMealStore } from "../stores/meal";
 import NoDataPage from "../components/NoDataPage.vue";
 import Pagination from "../components/Pagination.vue";
+import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const route = useRoute();
+const authStore = useAuthStore();
 const restaurantStore = useRestaurantStore();
 const mealStore = useMealStore();
 
@@ -138,6 +140,7 @@ watch(periodAjj, async (newValue) => {
         <div
           class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
           @click="createPage"
+          v-if="!authStore.isAgent"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

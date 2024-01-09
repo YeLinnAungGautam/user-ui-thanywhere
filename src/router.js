@@ -7,6 +7,7 @@ import HotelPageView from "./views/HotelPage.vue";
 import RoomPageView from "./views/Room.vue";
 import HotelCreatePageView from "./views/HotelCreatePage.vue";
 import HotelEditPageView from "./views/HotelEditPage.vue";
+import HotelViewPageView from "./views/HotelViewPage.vue";
 import RoomCreatePageView from "./views/RoomCreatePage.vue";
 import RoomEditPageView from "./views/RoomEditPage.vue";
 import SaleListPageView from "./views/SalesList.vue";
@@ -47,6 +48,11 @@ import RestaurantEditPageView from "./views/RestaurantEditPage.vue";
 import MealPageView from "./views/MealPage.vue";
 import MealCreatePageView from "./views/MealCreatePage.vue";
 import MealEditPageView from "./views/MealEditPage.vue";
+import VantoursViewPageView from "./views/VantourViewPage.vue";
+import RoomViewPageView from "./views/RoomViewPage.vue";
+import AttractionViewPageView from "./views/EntranceViewPage.vue";
+import AirlineViewPageView from "./views/AirLineViewPage.vue";
+import RestaurantViewPageView from "./views/RestaurantViewPage.vue";
 
 const routes = [
   {
@@ -88,6 +94,11 @@ const routes = [
     component: HotelEditPageView,
   },
   {
+    path: "/products/hotels/view/:id",
+    name: "hotel_view",
+    component: HotelViewPageView,
+  },
+  {
     path: "/products/hotels/room/:id/:name",
     name: "room",
     component: RoomPageView,
@@ -101,6 +112,11 @@ const routes = [
     path: "/products/hotels/room/edit/:id",
     name: "room_edit",
     component: RoomEditPageView,
+  },
+  {
+    path: "/products/hotels/room/view/:id",
+    name: "room_view",
+    component: RoomViewPageView,
   },
   {
     path: "/sales",
@@ -136,6 +152,11 @@ const routes = [
     path: "/products/vantours/edit/:id",
     name: "vantours-edit",
     component: VantoursEditPageView,
+  },
+  {
+    path: "/products/vantours/view/:id",
+    name: "vantours-view",
+    component: VantoursViewPageView,
   },
   {
     path: "/products/airport",
@@ -188,6 +209,11 @@ const routes = [
     component: AttractionEditPageView,
   },
   {
+    path: "/products/attraction/view/:id",
+    name: "attraction-view",
+    component: AttractionViewPageView,
+  },
+  {
     path: "/products/attraction/variations/:id/:name",
     name: "variations",
     component: VariationPageView,
@@ -216,6 +242,11 @@ const routes = [
     path: "/products/airline/edit/:id",
     name: "airline-edit",
     component: AirlineEditPageView,
+  },
+  {
+    path: "/products/airline/view/:id",
+    name: "airline-view",
+    component: AirlineViewPageView,
   },
   {
     path: "/products/airline/ticket/:id/:name",
@@ -276,6 +307,11 @@ const routes = [
     path: "/restaurants/edit/:id",
     name: "restaurant-edit",
     component: RestaurantEditPageView,
+  },
+  {
+    path: "/restaurants/view/:id",
+    name: "restaurant-view",
+    component: RestaurantViewPageView,
   },
   {
     path: "/products/restaurant/meal/:id/:name",

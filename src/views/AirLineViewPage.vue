@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
-import { useVantourStore } from "../stores/vantour";
+import { useAirLineStore } from "../stores/airline";
 import NoDataPageVue from "../components/NoDataPage.vue";
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
@@ -11,16 +11,25 @@ import "vue3-carousel/dist/carousel.css";
 
 const router = useRouter();
 const route = useRoute();
-const vantourStore = useVantourStore();
+const airlineStore = useAirLineStore();
 
-const vantour = ref(null);
+const hotel = ref(null);
 const loading = ref(false);
 const detail = async () => {
   loading.value = true;
-  const res = await vantourStore.getDetailAction(route.params.id);
+  const res = await airlineStore.getDetailAction(route.params.id);
   console.log(res);
   loading.value = false;
-  vantour.value = res.result;
+  hotel.value = res.result;
+};
+
+const roomView = (id) => {
+  router.push({
+    name: "room_view",
+    params: {
+      id: id,
+    },
+  });
 };
 
 const goBack = () => {
@@ -59,13 +68,13 @@ onMounted(async () => {
         </div>
 
         <p class="text-main text-lg pt-1 font-semibold w-full text-center">
-          Vantour Detail
+          AirLine Detail
         </p>
       </div>
       <div class="pt-4" v-if="!loading">
-        <div v-if="vantour?.images.length > 0">
+        <!-- <div v-if="hotel?.images.length > 0">
           <Carousel :wrap-around="true" :autoplay="5000">
-            <Slide v-for="i in vantour?.images" :key="i.id">
+            <Slide v-for="i in hotel?.images" :key="i.id">
               <div class="carousel__item">
                 <div class="h-auto w-full overflow-hidden rounded-lg">
                   <img
@@ -89,53 +98,68 @@ onMounted(async () => {
               <Pagination />
             </template>
           </Carousel>
-        </div>
-        <div v-if="vantour?.images.length == 0">
+        </div> -->
+        <div>
           <div class="h-auto w-full overflow-hidden rounded-lg">
             <img
-              src="../../public/default-image.jpg"
+              src="../../public/flightticket.jpg"
               alt=""
               class="object-cover"
             />
           </div>
         </div>
-        <div class="space-y-2 px-2 text-lg font-semibold mt-3 text-main">
-          <p>{{ vantour?.name }}</p>
-          <p class="text-sm text-black font-normal">
-            {{ vantour?.long_description }}
-          </p>
+        <div class="space-y-4 px-2 text-lg font-semibold mt-3 text-main">
+          <p class="">{{ hotel?.name }}</p>
+          <p class="text-sm text-black">{{ hotel?.legal_name }}</p>
+          <div class="grid grid-cols-2 gap-2">
+            <p class="border border-main text-xs text-start px-4 py-1">
+              Starting balance
+            </p>
+            <p
+              class="border border-main text-start px-4 py-1 font-normal text-xs"
+            >
+              {{ hotel?.starting_balance }} THB
+            </p>
+          </div>
         </div>
-        <div
-          class="text-base pl-2 mt-3 font-semibold flex justify-start items-center gap-2 flex-wrap"
-        >
-          <p
-            v-for="(city, index) in vantour?.cities"
-            :key="index"
-            class="inline-block bg-main text-white text-xs p-1 rounded"
-          >
-            {{ city.name }}
-          </p>
-          <!-- <p>{{ vantours?.cars.length }}</p> -->
-        </div>
-        <div class="space-y-2 px-2 text-lg mt-3 text-main">
-          <p class="text-sm text-main font-semibold">Route Plan</p>
-          <p class="text-sm text-black">
-            {{ vantour?.description }}
-          </p>
-        </div>
-        <div class="space-y-2 mb-5 mt-3">
-          <div
-            class="text-sm font-semibold grid grid-cols-2 gap-3 mx-2 px-2 border border-black/50 py-3 rounded shadow-custom"
-            v-for="(c, index) in vantour?.cars"
-            :key="index"
-          >
-            <p>{{ c.name }}</p>
 
-            <p class="text-end">{{ c.price }} THB</p>
-            <p>Max Person</p>
-            <p class="text-end">{{ c.max_person }}</p>
-            <p>Agent Price</p>
-            <p class="text-end">{{ c.agent_price }} THB</p>
+        <div class="px-2 pt-4 pb-6 space-y-4 text-main font-semibold">
+          <p>Related Tickets</p>
+          <div
+            class="flex mb-5 pb-4 space-x-3 rounded-lg shadow-sm overflow-x-scroll"
+          >
+            <div
+              class="bg-white text-xs rounded shadow-md my-auto text-black min-w-[200px] space-y-1 h-auto border border-main"
+              v-for="(r, index) in hotel?.tickets"
+              :key="index"
+            >
+              <div class="h-[120px] w-full overflow-hidden">
+                <!-- <img
+                  v-if="r.images.length > 0"
+                  :src="r.images[0]?.image"
+                  alt=""
+                  class="object-cover w-full h-[120px]"
+                /> -->
+                <img
+                  src="../../public/flightticket.jpg"
+                  alt=""
+                  class="object-cover w-full h-[120px]"
+                />
+              </div>
+
+              <div class="h-[160px] space-y-1 py-4 px-4">
+                <p class="text-main">Ticket Name</p>
+                <p class="font-normal">{{ r.price }}</p>
+                <p class="text-main">Ticket Description</p>
+                <p class="font-normal">{{ r.description }}</p>
+              </div>
+              <!-- <div
+                class="col-span-2 bg-main pl-2 text-white py-2"
+                @click="roomView(r.id)"
+              >
+                More Info ...
+              </div> -->
+            </div>
           </div>
         </div>
       </div>

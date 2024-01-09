@@ -125,17 +125,17 @@ onMounted(async () => {
         </div>
         <div class="space-y-2 mb-5 mt-3">
           <div
-            class="text-sm font-semibold grid grid-cols-2 gap-3 mx-2 px-2 border border-black/50 py-3 rounded shadow-custom"
+            class="text-sm font-semibold grid grid-cols-2 gap-3 mx-2 px-3 border border-black/30 py-3 rounded"
             v-for="(c, index) in vantour?.cars"
             :key="index"
           >
             <p>{{ c.name }}</p>
 
-            <p class="text-end">{{ c.price }} THB</p>
+            <p class="text-end"></p>
             <p>Max Person</p>
             <p class="text-end">{{ c.max_person }}</p>
-            <p>Agent Price</p>
-            <p class="text-end">{{ c.agent_price }} THB</p>
+            <p>Price</p>
+            <p class="text-end">{{ c.price }} THB</p>
           </div>
         </div>
       </div>

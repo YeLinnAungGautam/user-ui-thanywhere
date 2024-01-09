@@ -30,13 +30,11 @@ const { airlines } = storeToRefs(airlineStore);
 
 const chooseType = ref([
   { id: 1, name: "van tour" },
-  { id: 2, name: "inclusive" },
-  { id: 3, name: "hotel" },
-  { id: 4, name: "attraction" },
-  { id: 5, name: "airport pickup" },
-  { id: 6, name: "group tour" },
-  { id: 7, name: "airline" },
-  { id: 8, name: "restaurant" },
+  { id: 2, name: "hotel" },
+  { id: 3, name: "attraction" },
+  { id: 4, name: "group tour" },
+  { id: 5, name: "airline" },
+  { id: 6, name: "restaurant" },
 ]);
 
 const goHotels = () => {
@@ -149,15 +147,6 @@ onMounted(async () => {
           <p class="text-sm pl-2">{{ entrances?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2 opacity-40"
-          v-if="search == 'inclusive' || search == 'all' || search == ''"
-          @click="goInclusive"
-        >
-          <img src="../../public/inclusive.jpg" alt="" class="rounded-lg" />
-          <p class="text-lg pl-2 font-semibold text-main">All-inclusive</p>
-          <p class="text-sm pl-2">50 Packages</p>
-        </div>
-        <div
           class="space-y-2"
           @click="goGrouptour"
           v-if="search == 'group tour' || search == 'all' || search == ''"
@@ -165,15 +154,6 @@ onMounted(async () => {
           <img src="../../public/grouptour.jpg" alt="" class="rounded-lg" />
           <p class="text-lg pl-2 font-semibold text-main">Group Tours</p>
           <p class="text-sm pl-2">{{ grouptours?.meta.total }} Packages</p>
-        </div>
-        <div
-          class="space-y-2"
-          v-if="search == 'airport pickup' || search == 'all' || search == ''"
-          @click="router.push({ name: 'airport' })"
-        >
-          <img src="../../public/flightticket.jpg" alt="" class="rounded-lg" />
-          <p class="text-lg pl-2 font-semibold text-main">Airport Pickup</p>
-          <p class="text-sm pl-2">{{ airports?.meta.total }} Packages</p>
         </div>
         <div
           class="space-y-2"
