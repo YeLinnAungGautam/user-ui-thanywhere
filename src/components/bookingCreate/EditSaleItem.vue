@@ -58,6 +58,7 @@ const formItemType = [
 ];
 
 const formitem = ref({
+  reservation_id: null,
   product_type: "",
   product_id: "",
   car_id: "",
@@ -311,6 +312,7 @@ const moreInfo = ref(true);
 
 onMounted(() => {
   console.log(props.data, "this is props data");
+  formitem.value.reservation_id = props.data.reservation_id;
   formitem.value.product_type = props.data.product_type;
   formitem.value.service_date = props.data.service_date;
   formitem.value.selling_price = props.data.selling_price;

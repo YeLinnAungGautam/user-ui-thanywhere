@@ -58,6 +58,7 @@ const formItemType = [
 ];
 
 const formitem = ref({
+  reservation_id: null,
   product_type: "",
   product_id: "",
   car_id: "",

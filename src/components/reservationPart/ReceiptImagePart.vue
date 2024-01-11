@@ -73,7 +73,7 @@ const days = computed(() => {
         />
       </svg>
 
-      <p>RECEIPT IMAGES</p>
+      <p>RECEIPT IMAGES : {{ main?.crm_id }}</p>
     </div>
     <div
       class="grid grid-cols-2 gap-4 bg-gray-200/50 py-4 px-4 bg-black/5 animate__animated animate__fadeIn"
@@ -87,14 +87,8 @@ const days = computed(() => {
           <p class="text-xs mb-2 mt-2 text-main">
             Receipt Image {{ index + 1 }}
           </p>
-          <a
-            :href="'https://api-blog.thanywhere.com' + image.image"
-            target="_blink"
-          >
-            <img
-              :src="'https://api-blog.thanywhere.com' + image.image"
-              alt=""
-            />
+          <a :href="image.image" target="_blink">
+            <img :src="image.image" alt="" />
           </a>
         </div>
       </div>

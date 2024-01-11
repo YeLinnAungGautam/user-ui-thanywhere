@@ -9,6 +9,7 @@ import { useCustomerStore } from "../stores/customer";
 import { useAdminStore } from "../stores/admin";
 import { storeToRefs } from "pinia";
 import SalesInfoPageVue from "../components/bookingCreate/SalesInfoPage.vue";
+import SalesInclusivePageVue from "../components/bookingCreate/SalesInclusivePage.vue";
 import CreateSalesItem from "../components/bookingCreate/CreateSalesItem.vue";
 import SalesListShowVue from "../components/bookingCreate/SalesListShow.vue";
 import { XCircleIcon } from "@heroicons/vue/24/outline";
@@ -48,7 +49,16 @@ const formData = ref({
   past_user_id: "",
   is_past_info: "",
   past_crm_id: "",
+  is_inclusive: "",
+  inclusive_name: "",
+  inclusive_quantity: "",
+  inclusive_rate: "",
+  inclusive_start_date: "",
+  inclusive_end_date: "",
 });
+
+const enabledIn = ref(false);
+const showInclusivePart = ref(false);
 
 const showCustomer = ref(false);
 const showInfo = ref(false);
@@ -66,15 +76,20 @@ const saleEditPage = (i, index) => {
 };
 
 const sub_total = computed(() => {
-  let totalsub = 0;
-  for (let i = 0; i < formData.value.items.length; i++) {
-    // if (!formData.value.items[i].is_inclusive) {
-    //   totalsub = totalsub + formData.value.items[i].total_amount;
-    // }
-    totalsub = totalsub + formData.value.items[i].total_amount;
+  if (formData.value.is_inclusive != 1) {
+    let totalsub = 0;
+    for (let i = 0; i < formData.value.items.length; i++) {
+      // if (!formData.value.items[i].is_inclusive) {
+      //   totalsub = totalsub + formData.value.items[i].total_amount;
+      // }
+      totalsub = totalsub + formData.value.items[i].total_amount;
+    }
+    return totalsub;
+  } else {
+    return formData.value.inclusive_rate * formData.value.inclusive_quantity;
   }
-  return totalsub;
 });
+
 const percentageValue = ref("");
 const grand_total = computed(() => {
   // console.log(sub_total.value, formData.value.discount);
@@ -120,6 +135,11 @@ const changesSalesInfo = (message) => {
     showInfo.value = false;
   }
 };
+const changesSalesInclusive = (message) => {
+  if (message == "changes") {
+    showInclusivePart.value = false;
+  }
+};
 const changesCreateSale = (message) => {
   if (message == "changes") {
     showCreateSale.value = false;
@@ -154,9 +174,24 @@ const changeGetForm = (data) => {
   formData.value.past_user_id = data.past_user_id;
   showInfo.value = false;
 };
+const changeGetInclusiveForm = (data) => {
+  console.log(data);
+  formData.value.is_inclusive = data.is_inclusive;
+  formData.value.inclusive_name = data.inclusive_name;
+  formData.value.inclusive_quantity = data.inclusive_quantity;
+  formData.value.inclusive_rate = data.inclusive_rate;
+  formData.value.inclusive_start_date = data.inclusive_start_date;
+  formData.value.inclusive_end_date = data.inclusive_end_date;
+  showInclusivePart.value = false;
+};
 const formitem = ref({});
 const changeGetItem = (data) => {
   console.log(data);
+  if (formData.value.is_inclusive == 1) {
+    formitem.value.is_inclusive = 1;
+  } else {
+    formitem.value.is_inclusive = "";
+  }
   formitem.value = data;
   addNewitem();
   formitem.value = {};
@@ -167,6 +202,11 @@ const changeItemList = (data) => {
   console.log(data, "this is change item value");
   showEditSale.value = false;
   editValue.value = {};
+  if (formData.value.is_inclusive == 1) {
+    formData.value.items[editListId.value].is_inclusive = 1;
+  } else {
+    formData.value.items[editListId.value].is_inclusive = "";
+  }
   formData.value.items[editListId.value] = data;
   editListId.value = "";
 };
@@ -253,6 +293,15 @@ const onSubmitHandler = async () => {
     frmData.append("discount", 0);
   } else {
     frmData.append("discount", percentageValue.value);
+  }
+
+  if (formData.value.is_inclusive == 1) {
+    frmData.append("is_inclusive", formData.value.is_inclusive);
+    frmData.append("inclusive_name", formData.value.inclusive_name);
+    frmData.append("inclusive_quantity", formData.value.inclusive_quantity);
+    frmData.append("inclusive_rate", formData.value.inclusive_rate);
+    frmData.append("inclusive_start_date", formData.value.inclusive_start_date);
+    frmData.append("inclusive_end_date", formData.value.inclusive_end_date);
   }
 
   frmData.append("sub_total", sub_total.value);
@@ -630,6 +679,59 @@ onMounted(async () => {
             <p v-if="formData.is_past_info == 1">{{ formData.past_crm_id }}</p>
           </div>
         </div>
+        <div class="text-sm">
+          <div
+            @click="showInclusivePart = true"
+            class="flex justify-between items-center text-sm bg-white px-4 py-2"
+          >
+            <p class="text-main text-sm">Booking Inclusive Part</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 text-main"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M8.25 4.5l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </div>
+          <div class="grid grid-cols-2 gap-3 bg-white pl-4 pr-6 pt-2 pb-4">
+            <p>Is Inclusive</p>
+            <div>
+              <p
+                class="px-2 py-1 inline-block rounded text-white float-right"
+                :class="formData.is_inclusive == 1 ? 'bg-green' : 'bg-main'"
+              >
+                {{ formData.is_inclusive == 1 ? "Yes" : "No" }}
+              </p>
+            </div>
+            <p v-if="formData.is_inclusive == 1">Inclusive Name</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_name }}
+            </p>
+            <p v-if="formData.is_inclusive == 1">Inclusive Quantity</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_quantity }}
+            </p>
+            <p v-if="formData.is_inclusive == 1">Inclusive Rate</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_rate }}
+            </p>
+            <p v-if="formData.is_inclusive == 1">Inclusive Start Date</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_start_date }}
+            </p>
+            <p v-if="formData.is_inclusive == 1">Inclusive End Date</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_end_date }}
+            </p>
+          </div>
+        </div>
         <div v-for="(i, index) in formData.items" :key="index">
           <SalesListShowVue
             :id="index"
@@ -864,6 +966,16 @@ onMounted(async () => {
           @change="changesEditSale"
           @remove="removeItemList"
           @formData="changeItemList"
+        />
+      </div>
+      <div
+        class="absolute top-[44px] left-0 w-screen min-h-full overflow-scroll bg-gray z-10 animate__animated animate__fadeIn"
+        v-if="showInclusivePart"
+      >
+        <SalesInclusivePageVue
+          @change="changesSalesInclusive"
+          @formData="changeGetInclusiveForm"
+          :data="formData"
         />
       </div>
     </div>

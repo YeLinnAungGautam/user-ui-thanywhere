@@ -16,6 +16,7 @@ import { useToastStore } from "../stores/toast";
 import { useBookingStore } from "../stores/booking";
 import EditSaleItemVue from "../components/bookingCreate/EditSaleItem.vue";
 import { useAuthStore } from "../stores/auth";
+import SalesInclusivePageVue from "../components/bookingCreate/SalesInclusivePage.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -70,14 +71,15 @@ const saleEditPage = (i, index) => {
 };
 
 const sub_total = computed(() => {
-  let totalsub = 0;
-  for (let i = 0; i < formData.value.items.length; i++) {
-    // if (!formData.value.items[i].is_inclusive) {
-    //   totalsub = totalsub + formData.value.items[i].total_amount;
-    // }
-    totalsub = totalsub + formData.value.items[i].total_amount;
+  if (formData.value.is_inclusive == 1) {
+    return formData.value.inclusive_quantity * formData.value.inclusive_rate;
+  } else {
+    let totalsub = 0;
+    for (let i = 0; i < formData.value.items.length; i++) {
+      totalsub = totalsub + formData.value.items[i].total_amount;
+    }
+    return totalsub;
   }
-  return totalsub;
 });
 const percentageValue = ref("");
 const grand_total = computed(() => {
@@ -144,6 +146,23 @@ const removeItemList = (message) => {
     editListId.value = "";
   }
 };
+const showInclusivePart = ref(false);
+const changesSalesInclusive = (message) => {
+  if (message == "changes") {
+    showInclusivePart.value = false;
+  }
+};
+const changeGetInclusiveForm = (data) => {
+  console.log(data);
+  formData.value.is_inclusive = data.is_inclusive;
+  formData.value.inclusive_name = data.inclusive_name;
+  formData.value.inclusive_quantity = data.inclusive_quantity;
+  formData.value.inclusive_rate = data.inclusive_rate;
+  formData.value.inclusive_start_date = data.inclusive_start_date;
+  formData.value.inclusive_end_date = data.inclusive_end_date;
+  showInclusivePart.value = false;
+};
+
 const changeGetForm = (data) => {
   console.log(data);
   formData.value.balance_due_date = data.balance_due_date;
@@ -251,6 +270,14 @@ const onSubmitHandler = async () => {
   // } else {
   //   frmData.append("is_past_info", "0");
   // }
+  if (formData.value.is_inclusive == 1) {
+    frmData.append("is_inclusive", formData.value.is_inclusive);
+    frmData.append("inclusive_name", formData.value.inclusive_name);
+    frmData.append("inclusive_quantity", formData.value.inclusive_quantity);
+    frmData.append("inclusive_rate", formData.value.inclusive_rate);
+    frmData.append("inclusive_start_date", formData.value.inclusive_start_date);
+    frmData.append("inclusive_end_date", formData.value.inclusive_end_date);
+  }
 
   frmData.append("payment_status", formData.value.payment_status);
   frmData.append("booking_date", formData.value.booking_date);
@@ -508,6 +535,14 @@ const onSubmitHandler = async () => {
         formData.value.items[x].is_inclusive
       );
     }
+    if (formData.value.items[x].reservation_id) {
+      frmData.append(
+        "items[" + x + "][reservation_id]",
+        formData.value.items[x].reservation_id
+      );
+    } else {
+      frmData.append("items[" + x + "][reservation_id]", null);
+    }
     formData.value.items[x].dropoff_location
       ? frmData.append(
           "items[" + x + "][dropoff_location]",
@@ -714,6 +749,13 @@ const getDetail = async () => {
     formData.value.money_exchange_rate = response.result.money_exchange_rate;
     formData.value.crm_id = response.result.crm_id;
     formData.value.comment = response.result.comment;
+    formData.value.is_inclusive = response.result.is_inclusive;
+    formData.value.inclusive_name = response.result.inclusive_name;
+    formData.value.inclusive_quantity = response.result.inclusive_quantity;
+    formData.value.inclusive_rate = response.result.inclusive_rate;
+    formData.value.inclusive_start_date = response.result.inclusive_start_date;
+    formData.value.inclusive_end_date = response.result.inclusive_end_date;
+
     formData.value.past_user_id = response.result.past_user_id
       ? response.result.past_user_id
       : "";
@@ -750,7 +792,7 @@ const getDetail = async () => {
     console.log(formData.value.receipt_images, "this is image");
     for (const x in response.result.items) {
       const itemData = {
-        // product_type: response.result.items[x].product_type,
+        reservation_id: response.result.items[x].id,
         product_type: choiceProductType(response.result.items[x].product_type),
         crm_id: response.result.items[x].crm_id,
         product_id: response.result.items[x].product_id,
@@ -1003,6 +1045,59 @@ onMounted(async () => {
             </div>
             <p v-if="formData.is_past_info == 1">Past Crm ID</p>
             <p v-if="formData.is_past_info == 1">{{ formData.past_crm_id }}</p>
+          </div>
+        </div>
+        <div class="text-sm">
+          <div
+            @click="showInclusivePart = true"
+            class="flex justify-between items-center text-sm bg-white px-4 py-2"
+          >
+            <p class="text-main text-sm">Booking Inclusive Part</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 text-main"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M8.25 4.5l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </div>
+          <div class="grid grid-cols-2 gap-3 bg-white pl-4 pr-6 pt-2 pb-4">
+            <p>Is Inclusive</p>
+            <div>
+              <p
+                class="px-2 py-1 inline-block rounded text-white float-right"
+                :class="formData.is_inclusive == 1 ? 'bg-green' : 'bg-main'"
+              >
+                {{ formData.is_inclusive == 1 ? "Yes" : "No" }}
+              </p>
+            </div>
+            <p v-if="formData.is_inclusive == 1">Inclusive Name</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_name }}
+            </p>
+            <p v-if="formData.is_inclusive == 1">Inclusive Quantity</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_quantity }}
+            </p>
+            <p v-if="formData.is_inclusive == 1">Inclusive Rate</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_rate }}
+            </p>
+            <p v-if="formData.is_inclusive == 1">Inclusive Start Date</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_start_date }}
+            </p>
+            <p v-if="formData.is_inclusive == 1">Inclusive End Date</p>
+            <p v-if="formData.is_inclusive == 1">
+              {{ formData.inclusive_end_date }}
+            </p>
           </div>
         </div>
         <div v-for="(i, index) in formData.items" :key="index">
@@ -1269,6 +1364,16 @@ onMounted(async () => {
           @change="changesEditSale"
           @remove="removeItemList"
           @formData="changeItemList"
+        />
+      </div>
+      <div
+        class="absolute top-[44px] left-0 w-screen min-h-full overflow-scroll bg-gray z-10 animate__animated animate__fadeIn"
+        v-if="showInclusivePart"
+      >
+        <SalesInclusivePageVue
+          @change="changesSalesInclusive"
+          @formData="changeGetInclusiveForm"
+          :data="formData"
         />
       </div>
     </div>
