@@ -397,69 +397,76 @@ const onSubmitHandler = async () => {
   }
   for (var x = 0; x < formData.value.items.length; x++) {
     if (
-      formData.value.items[x].product_type == "7" &&
-      !formData.value.items[x].ticket_id
+      formData.value.items[x].product_type == "7" ||
+      formData.value.items[x].product_type == "App\\Models\\Airline"
     ) {
-      frmData.append(
-        "items[" + x + "][ticket_id]",
-        formData.value.items[x].car_id
-      );
+      if (
+        !formData.value.items[x].ticket_id ||
+        formData.value.items[x].ticket_id == ""
+      ) {
+        frmData.append(
+          "items[" + x + "][ticket_id]",
+          formData.value.items[x].car_id
+        );
+      } else {
+        frmData.append(
+          "items[" + x + "][ticket_id]",
+          formData.value.items[x].ticket_id
+        );
+      }
     } else if (
-      formData.value.items[x].product_type == "6" &&
-      !formData.value.items[x].room_id
+      formData.value.items[x].product_type == "6" ||
+      formData.value.items[x].product_type == "App\\Models\\Hotel"
     ) {
-      frmData.append(
-        "items[" + x + "][room_id]",
-        formData.value.items[x].car_id
-      );
+      if (!formData.value.items[x].room_id) {
+        frmData.append(
+          "items[" + x + "][room_id]",
+          formData.value.items[x].car_id
+        );
+      } else {
+        frmData.append(
+          "items[" + x + "][room_id]",
+          formData.value.items[x].room_id
+        );
+      }
     } else if (
-      formData.value.items[x].room_id != "" &&
-      formData.value.items[x].room_name != "" &&
-      formData.value.items[x].product_type != "5" &&
-      formData.value.items[x].product_type != "4" &&
-      formData.value.items[x].product_type != "3" &&
-      formData.value.items[x].product_type != "2" &&
-      formData.value.items[x].product_type != "1"
+      formData.value.items[x].product_type == "4" ||
+      formData.value.items[x].product_type == "App\\Models\\EntranceTicket"
     ) {
-      frmData.append(
-        "items[" + x + "][room_id]",
-        formData.value.items[x].room_id
-      );
+      if (!formData.value.items[x].variation_id) {
+        frmData.append(
+          "items[" + x + "][variation_id]",
+          formData.value.items[x].car_id
+        );
+      } else {
+        frmData.append(
+          "items[" + x + "][variation_id]",
+          formData.value.items[x].car_id
+        );
+      }
     } else if (
-      formData.value.items[x].product_type != "4" &&
-      !formData.value.items[x].variation_id
+      formData.value.items[x].product_type == "2" ||
+      formData.value.items[x].product_type == "App\\Models\\GroupTour"
     ) {
       frmData.append(
         "items[" + x + "][car_id]",
         formData.value.items[x].car_id
       );
-    } else if (formData.value.items[x].product_type == "5") {
-      // frmData.append("items[" + x + "][car_id]", "0");
-      if (formData.value.items[x].car_id) {
-        frmData.append(
-          "items[" + x + "][car_id]",
-          formData.value.items[x].car_id
-        );
-      }
-    } else if (formData.value.items[x].product_type == "2") {
-      if (formData.value.items[x].car_id) {
+    } else if (
+      formData.value.items[x].product_type == "1" ||
+      formData.value.items[x].product_type == "App\\Models\\PrivateVanTour"
+    ) {
+      if (!formData.value.items[x].car_id) {
         frmData.append(
           "items[" + x + "][car_id]",
           formData.value.items[x].car_id
         );
       } else {
-        frmData.append("items[" + x + "][car_id]", 0);
+        frmData.append(
+          "items[" + x + "][car_id]",
+          formData.value.items[x].car_id
+        );
       }
-    } else if (formData.value.items[x].product_type == "4") {
-      frmData.append(
-        "items[" + x + "][variation_id]",
-        formData.value.items[x].car_id
-      );
-    } else if (formData.value.items[x].variation_id != "") {
-      frmData.append(
-        "items[" + x + "][variation_id]",
-        formData.value.items[x].variation_id
-      );
     }
   }
 
@@ -851,9 +858,11 @@ const getDetail = async () => {
         room_id: response.result.items[x].room
           ? response.result.items[x].room.id
           : "",
-        ticket_id: response.result.items[x].product?.tickets
-          ? response.result.items[x].product.tickets[0].id
-          : "",
+        ticket_id:
+          response.result.items[x].ticket == null &&
+          response.result.items[x].product_type == "App\\Models\\Airline"
+            ? response.result.items[x].product?.tickets[0]?.id
+            : response.result.items[x].ticket?.id || "",
         variation_type: checkType(response.result.items[x].product),
         checkin_date: response.result.items[x].checkin_date
           ? response.result.items[x].checkin_date

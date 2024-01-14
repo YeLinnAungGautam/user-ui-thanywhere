@@ -101,6 +101,7 @@ const days = computed(() => {
           {{ main?.variation?.name }}
           {{ main?.car?.name }}
           {{ main?.room?.name }}
+          {{ main?.ticket?.price }}
         </p>
       </div>
 

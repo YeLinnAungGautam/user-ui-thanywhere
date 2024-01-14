@@ -63,7 +63,7 @@ const deleteRoom = async (id) => {
     confirmButtonText: "Confirm",
   }).then(async (result) => {
     if (result.isConfirmed) {
-      // const response = await bookingStore.deleteAction(id);
+      const response = await bookingStore.deleteAction(id);
       toastStore.showToast({
         icon: "success",
         title: "Sucess Deleted",

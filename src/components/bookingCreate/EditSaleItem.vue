@@ -343,6 +343,11 @@ onMounted(() => {
     roomType.value = props.data?.room_list;
     chooseCar(formitem.value.product_id);
   }
+  if (props.data.ticket_id) {
+    formitem.value.car_id = props.data.ticket_id;
+    carType.value = props.data?.ticket_list;
+    chooseCar(formitem.value.product_id);
+  }
 });
 </script>
 
@@ -374,8 +379,8 @@ onMounted(() => {
           Edit Item Sale List
         </p>
         <p class="text-xs text-red text-start">
-          #Note :Inclusive product create is still developing , Can't create
-          now.
+          #Note :Inclusive product create kaung is still developing , Can't
+          create now.
         </p>
         <div class="space-y-2">
           <label for="name" class="text-sm text-gray-800">Product Type</label>

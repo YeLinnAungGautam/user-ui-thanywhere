@@ -109,8 +109,12 @@ const searchStatus = computed(() => {
   }
 });
 
+const changeReload = async (data) => {
+  await bookingStore.getListAction(watchSystem.value);
+};
+
 onMounted(async () => {
-  await bookingStore.getListAction();
+  await bookingStore.getListAction(watchSystem.value);
   console.log(bookings.value);
 });
 
@@ -243,6 +247,7 @@ watch(limit, async (newValue) => {
           :payment_status="book.payment_status"
           :reservation_status="book.reservation_status"
           :items="book.items"
+          @change="changeReload"
         />
       </div>
     </div>

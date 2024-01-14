@@ -127,10 +127,12 @@ const days = computed(() => {
         >
           {{ main?.variation?.name }}
         </p>
-        <!-- <p
+        <p
           class="font-semibold text-xs"
-          v-if="main?.product_type == 'App\\Models\\Hotel'"
-        ></p> -->
+          v-if="main?.product_type == 'App\\Models\\Airline'"
+        >
+          {{ main?.ticket?.price }}
+        </p>
         <p
           class="font-semibold text-xs"
           v-if="
