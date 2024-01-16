@@ -441,7 +441,7 @@ const onSubmitHandler = async () => {
       } else {
         frmData.append(
           "items[" + x + "][variation_id]",
-          formData.value.items[x].car_id
+          formData.value.items[x].variation_id
         );
       }
     } else if (
