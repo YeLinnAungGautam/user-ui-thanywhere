@@ -378,10 +378,7 @@ onMounted(() => {
         <p class="text-lg text-main font-medium text-center">
           Edit Item Sale List
         </p>
-        <p class="text-xs text-red text-start">
-          #Note :Inclusive product create kaung is still developing , Can't
-          create now.
-        </p>
+
         <div class="space-y-2">
           <label for="name" class="text-sm text-gray-800">Product Type</label>
           <v-select
@@ -390,6 +387,7 @@ onMounted(() => {
             :options="formItemType"
             label="name"
             :clearable="false"
+            :disabled="formitem?.reservation_id || disabled"
             :reduce="(d) => d.id"
             @option:selected="chooseType"
             placeholder="choose product type"
@@ -402,6 +400,7 @@ onMounted(() => {
             class="style-chooser w-full min-h-10 text-sm px-4 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             :options="productList"
             label="name"
+            :disabled="formitem?.reservation_id || disabled"
             :clearable="false"
             :reduce="(d) => d.id"
             @option:selected="chooseCar(formitem.product_id)"
@@ -420,6 +419,7 @@ onMounted(() => {
             class="style-chooser w-full min-h-10 text-sm px-4 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
             :options="carType"
             label="name"
+            :disabled="formitem?.reservation_id || disabled"
             :clearable="false"
             :reduce="(d) => d.id"
             @option:selected="
@@ -442,6 +442,7 @@ onMounted(() => {
             :options="carType"
             label="name"
             :clearable="false"
+            :disabled="formitem?.reservation_id || disabled"
             :reduce="(d) => d.id"
             @option:selected="
               chooseCarPrice(
@@ -463,6 +464,7 @@ onMounted(() => {
             :options="carType"
             label="price"
             :clearable="false"
+            :disabled="formitem?.reservation_id || disabled"
             :reduce="(d) => d.id"
             @option:selected="
               chooseCarPrice(
@@ -484,6 +486,7 @@ onMounted(() => {
             :options="roomType"
             label="name"
             :clearable="false"
+            :disabled="formitem?.reservation_id || disabled"
             :reduce="(d) => d.id"
             @option:selected="
               chooseCarPrice(
@@ -499,6 +502,17 @@ onMounted(() => {
           <input
             type="date"
             v-model="formitem.service_date"
+            v-if="formitem.reservation_id == null"
+            @change="todayCheck"
+            id="title"
+            class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
+            :class="todayVali == true ? 'text-blue-600' : 'text-red-600'"
+          />
+          <input
+            type="date"
+            v-model="formitem.service_date"
+            v-if="formitem.reservation_id != null"
+            disabled
             @change="todayCheck"
             id="title"
             class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
@@ -723,7 +737,29 @@ onMounted(() => {
           </div> -->
           <div
             class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-red bg-red text-white border"
-            v-if="formitem.product_id && todayVali"
+            v-if="formitem.reservation_id != null && authStore.isSuperAdmin"
+            @click="getRemoveFunction"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+
+            <p class="">Remove</p>
+          </div>
+          <div
+            class="space-x-4 flex justify-center items-center gap-2 px-4 py-2 rounded border-red bg-red text-white border"
+            v-if="formitem.reservation_id == null"
             @click="getRemoveFunction"
           >
             <svg

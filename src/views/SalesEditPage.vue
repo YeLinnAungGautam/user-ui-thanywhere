@@ -31,6 +31,7 @@ const { customers } = storeToRefs(customerStore);
 const { admin } = storeToRefs(adminStore);
 
 const formData = ref({
+  id: "",
   payment_notes: "",
   customer_id: "",
   sold_from: "",
@@ -743,6 +744,7 @@ const getDetail = async () => {
   try {
     const response = await bookingStore.getDetailAction(route.params.id);
     console.log(response, "this is response get");
+    formData.value.id = response.result.id;
     formData.value.customer_id = response.result.customer.id;
     formData.value.payment_notes = response.result.payment_notes;
     formData.value.sold_from = response.result.sold_from;
@@ -790,9 +792,7 @@ const getDetail = async () => {
         // image:
         //   import.meta.env.VITE_API_URL_IMAGE +
         //   response.result.receipts[i].image,
-        image:
-          "	https://api-blog.thanywhere.com/" +
-          response.result.receipts[i].image,
+        image: response.result.receipts[i].image,
       };
       formData.value.receipt_images.push(data);
     }

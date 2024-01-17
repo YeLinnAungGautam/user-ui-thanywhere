@@ -117,6 +117,7 @@ const choosePaymentBank = () => {
 };
 
 const formData = ref({
+  id: "",
   sold_from: "",
   payment_method: "",
   bank_name: "",
@@ -142,7 +143,9 @@ const getFunction = () => {
 };
 
 onMounted(async () => {
+  console.log(props.data, "this is prop data");
   if (props.data) {
+    formData.value.id = props.data.id;
     formData.value.balance_due_date = props.data.balance_due_date;
     formData.value.booking_date = props.data.booking_date;
     formData.value.money_exchange_rate = props.data.money_exchange_rate;
@@ -190,6 +193,7 @@ onMounted(async () => {
           <input
             type="date"
             v-model="formData.booking_date"
+            :disabled="formData.id || disabled"
             id="name"
             class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
           />
@@ -202,6 +206,7 @@ onMounted(async () => {
           <input
             type="date"
             v-model="formData.balance_due_date"
+            :disabled="formData.id || disabled"
             id="name"
             class="min-w-[95%] block h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
           />
@@ -239,6 +244,7 @@ onMounted(async () => {
           <input
             v-model="formData.money_exchange_rate"
             v-if="paymentValid"
+            :disabled="formData.id || disabled"
             type="number"
             id="title"
             class="w-full h-10 text-sm px-4 py-2 text-gray-900 border-main border rounded shadow-sm bg-white focus:outline-none focus:border-gray-300"
