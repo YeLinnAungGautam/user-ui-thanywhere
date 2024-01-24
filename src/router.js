@@ -1,58 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "./views/LoginPage.vue";
+import LoginView from "./views/Login.vue";
 import HomeView from "./views/Home.vue";
-import AnalyticsView from "./views/Analytics.vue";
-import ProductView from "./views/Products.vue";
-import HotelPageView from "./views/HotelPage.vue";
-import RoomPageView from "./views/Room.vue";
-import HotelCreatePageView from "./views/HotelCreatePage.vue";
-import HotelEditPageView from "./views/HotelEditPage.vue";
-import HotelViewPageView from "./views/HotelViewPage.vue";
-import RoomCreatePageView from "./views/RoomCreatePage.vue";
-import RoomEditPageView from "./views/RoomEditPage.vue";
-import SaleListPageView from "./views/SalesList.vue";
-import SaleCreatePageView from "./views/SalesCreatePage.vue";
-import VantoursPageView from "./views/VantourPage.vue";
-import VantoursCreatePageView from "./views/VantourCreatePage.vue";
-import VantoursEditPageView from "./views/VantourEditPage.vue";
-import AirportPageView from "./views/AirportPage.vue";
-import AirportCreateView from "./views/AirportCreatePage.vue";
-import AirportEditView from "./views/AirportEditPage.vue";
-import GroupTourView from "./views/GrouptourPage.vue";
-import GroupTourCreateView from "./views/GrouptourCreatePage.vue";
-import GroupTourEditView from "./views/GrouptourEditPage.vue";
-import AttractionPageView from "./views/EntrancePage.vue";
-import AttractionCreatePageView from "./views/EntranceCreatePage.vue";
-import AttractionEditPageView from "./views/EntranceEditPage.vue";
-import VariationPageView from "./views/AttractionVariable.vue";
-import VariationCreatePageView from "./views/AttractionVariableCreate.vue";
-import VariationEditPageView from "./views/AttractionVariableEdit.vue";
-import AirlinePageView from "./views/AirLinePage.vue";
-import AirlineCreatePageView from "./views/AirLineCreatePage.vue";
-import AirlineEditPageView from "./views/AirLineEditPage.vue";
-import TicketPageView from "./views/AirlineTicket.vue";
-import TicketCreatePageView from "./views/AirTicketCreatePage.vue";
-import TicketEditPageView from "./views/AirTicketEditPage.vue";
-import VantoursCarListPageView from "./views/VantourCarListPage.vue";
-import AirportCarListPageView from "./views/AirportCarListPage.vue";
-import CustomerPageView from "./views/CustmerPage.vue";
-import CustomerCreatePageView from "./views/CustomerCreatePage.vue";
-import CustomerEditPageView from "./views/CustomerEditPage.vue";
-import SaleEditPageView from "./views/SalesEditPage.vue";
-import InclusivePageView from "./views/InclusivePage.vue";
-import ReservationsPageView from "./views/ReservationPage.vue";
-import ReservationUpdate from "./views/ReservationEditPage.vue";
-import RestaurantPageView from "./views/RestaurantPage.vue";
-import RestaurantCreatePageView from "./views/RestaurantCreatePage.vue";
-import RestaurantEditPageView from "./views/RestaurantEditPage.vue";
-import MealPageView from "./views/MealPage.vue";
-import MealCreatePageView from "./views/MealCreatePage.vue";
-import MealEditPageView from "./views/MealEditPage.vue";
-import VantoursViewPageView from "./views/VantourViewPage.vue";
-import RoomViewPageView from "./views/RoomViewPage.vue";
-import AttractionViewPageView from "./views/EntranceViewPage.vue";
-import AirlineViewPageView from "./views/AirLineViewPage.vue";
-import RestaurantViewPageView from "./views/RestaurantViewPage.vue";
+import AboutView from "./views/About.vue";
+import BookingView from "./views/BookingDetail.vue";
+import productVanView from "./views/Vantour.vue";
+import productAttractionView from "./views/Attraction.vue";
+import productGroupView from "./views/GroupTour.vue";
+import productHotelView from "./views/Hotel.vue";
 
 const routes = [
   {
@@ -67,288 +21,72 @@ const routes = [
     path: "/",
     name: "home",
     component: HomeView,
+    meta: {
+      guest: true,
+    },
   },
   {
-    path: "/analytics",
-    name: "analytics",
-    component: AnalyticsView,
+    path: "/about",
+    name: "about",
+    component: AboutView,
+    meta: {
+      guest: true,
+    },
   },
   {
-    path: "/products",
-    name: "products",
-    component: ProductView,
+    path: "/booking",
+    name: "booking",
+    component: BookingView,
+    meta: {
+      guest: true,
+    },
   },
   {
-    path: "/products/hotels",
-    name: "hotels",
-    component: HotelPageView,
+    path: "/product/van-tour",
+    name: "product-van",
+    component: productVanView,
+    meta: {
+      guest: true,
+    },
   },
   {
-    path: "/products/hotels/create",
-    name: "hotel_create",
-    component: HotelCreatePageView,
+    path: "/product/attraction",
+    name: "product-attraction",
+    component: productAttractionView,
+    meta: {
+      guest: true,
+    },
   },
   {
-    path: "/products/hotels/edit/:id",
-    name: "hotel_edit",
-    component: HotelEditPageView,
+    path: "/product/grouptour",
+    name: "product-group",
+    component: productGroupView,
+    meta: {
+      guest: true,
+    },
   },
   {
-    path: "/products/hotels/view/:id",
-    name: "hotel_view",
-    component: HotelViewPageView,
-  },
-  {
-    path: "/products/hotels/room/:id/:name",
-    name: "room",
-    component: RoomPageView,
-  },
-  {
-    path: "/products/hotels/room/create",
-    name: "room_create",
-    component: RoomCreatePageView,
-  },
-  {
-    path: "/products/hotels/room/edit/:id",
-    name: "room_edit",
-    component: RoomEditPageView,
-  },
-  {
-    path: "/products/hotels/room/view/:id",
-    name: "room_view",
-    component: RoomViewPageView,
-  },
-  {
-    path: "/sales",
-    name: "sales",
-    component: SaleListPageView,
-  },
-  {
-    path: "/sales/create",
-    name: "sales-create",
-    component: SaleCreatePageView,
-  },
-  {
-    path: "/sales/edit/:id",
-    name: "sales-edit",
-    component: SaleEditPageView,
-  },
-  {
-    path: "/products/vantours",
-    name: "vantours",
-    component: VantoursPageView,
-  },
-  {
-    path: "/products/vantours/carList/:id",
-    name: "vantours-carlist",
-    component: VantoursCarListPageView,
-  },
-  {
-    path: "/products/vantours/create",
-    name: "vantours-create",
-    component: VantoursCreatePageView,
-  },
-  {
-    path: "/products/vantours/edit/:id",
-    name: "vantours-edit",
-    component: VantoursEditPageView,
-  },
-  {
-    path: "/products/vantours/view/:id",
-    name: "vantours-view",
-    component: VantoursViewPageView,
-  },
-  {
-    path: "/products/airport",
-    name: "airport",
-    component: AirportPageView,
-  },
-  {
-    path: "/products/airport/carList/:id",
-    name: "airport-carlist",
-    component: AirportCarListPageView,
-  },
-  {
-    path: "/products/airport/create",
-    name: "airport-create",
-    component: AirportCreateView,
-  },
-  {
-    path: "/products/airport/edit/:id",
-    name: "airport-edit",
-    component: AirportEditView,
-  },
-  {
-    path: "/products/grouptour",
-    name: "grouptour",
-    component: GroupTourView,
-  },
-  {
-    path: "/products/grouptour/create",
-    name: "grouptour-create",
-    component: GroupTourCreateView,
-  },
-  {
-    path: "/products/grouptour/edit/:id",
-    name: "grouptour-edit",
-    component: GroupTourEditView,
-  },
-  {
-    path: "/products/attraction",
-    name: "attraction",
-    component: AttractionPageView,
-  },
-  {
-    path: "/products/attraction/create",
-    name: "attraction-create",
-    component: AttractionCreatePageView,
-  },
-  {
-    path: "/products/attraction/edit/:id",
-    name: "attraction-edit",
-    component: AttractionEditPageView,
-  },
-  {
-    path: "/products/attraction/view/:id",
-    name: "attraction-view",
-    component: AttractionViewPageView,
-  },
-  {
-    path: "/products/attraction/variations/:id/:name",
-    name: "variations",
-    component: VariationPageView,
-  },
-  {
-    path: "/products/attraction/variations/create",
-    name: "variations-create",
-    component: VariationCreatePageView,
-  },
-  {
-    path: "/products/attraction/variations/edit/:id",
-    name: "variations-edit",
-    component: VariationEditPageView,
-  },
-  {
-    path: "/products/airline",
-    name: "airline",
-    component: AirlinePageView,
-  },
-  {
-    path: "/products/airline/create",
-    name: "airline-create",
-    component: AirlineCreatePageView,
-  },
-  {
-    path: "/products/airline/edit/:id",
-    name: "airline-edit",
-    component: AirlineEditPageView,
-  },
-  {
-    path: "/products/airline/view/:id",
-    name: "airline-view",
-    component: AirlineViewPageView,
-  },
-  {
-    path: "/products/airline/ticket/:id/:name",
-    name: "ticket",
-    component: TicketPageView,
-  },
-  {
-    path: "/products/airline/ticket/create",
-    name: "ticket-create",
-    component: TicketCreatePageView,
-  },
-  {
-    path: "/products/airline/ticket/edit/:id",
-    name: "ticket-edit",
-    component: TicketEditPageView,
-  },
-  {
-    path: "/customers",
-    name: "customer",
-    component: CustomerPageView,
-  },
-  {
-    path: "/customers/create",
-    name: "customer-create",
-    component: CustomerCreatePageView,
-  },
-  {
-    path: "/customers/edit/:id",
-    name: "customer-edit",
-    component: CustomerEditPageView,
-  },
-  {
-    path: "/products/inclusive",
-    name: "inclusive",
-    component: InclusivePageView,
-  },
-  {
-    path: "/reservations",
-    name: "reservations",
-    component: ReservationsPageView,
-  },
-  {
-    path: "/reservation/update/:id",
-    name: "reservation-update",
-    component: ReservationUpdate,
-  },
-  {
-    path: "/restaurants",
-    name: "restaurant",
-    component: RestaurantPageView,
-  },
-  {
-    path: "/restaurants/create",
-    name: "restaurant-create",
-    component: RestaurantCreatePageView,
-  },
-  {
-    path: "/restaurants/edit/:id",
-    name: "restaurant-edit",
-    component: RestaurantEditPageView,
-  },
-  {
-    path: "/restaurants/view/:id",
-    name: "restaurant-view",
-    component: RestaurantViewPageView,
-  },
-  {
-    path: "/products/restaurant/meal/:id/:name",
-    name: "meal",
-    component: MealPageView,
-  },
-  {
-    path: "/products/restaurant/meal/create",
-    name: "meal-create",
-    component: MealCreatePageView,
-  },
-  {
-    path: "/products/restaurant/meal/edit/:id",
-    name: "meal-edit",
-    component: MealEditPageView,
+    path: "/product/hotel",
+    name: "product-hotel",
+    component: productHotelView,
+    meta: {
+      guest: true,
+    },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
-
-router.beforeEach(async (to, from, next) => {
-  const token = localStorage.getItem("tokenApp");
-
-  if (to.meta.guest) {
-    next();
-  } else if (to.name === "login" && token != null) {
-    next("/login");
-  } else {
-    if (!token) {
-      next("/login");
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      // If the route has a hash, scroll to the element with that ID.
+      return { selector: to.hash };
     } else {
-      next();
+      // Scroll to the top of the page.
+      return { left: 0, top: 0 };
     }
-  }
+  },
 });
 
 export default router;
