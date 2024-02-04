@@ -9,10 +9,10 @@ import vSelect from "vue-select";
 import App from "./App.vue";
 import router from "./router";
 
-const token = localStorage.getItem("tokenApp");
-if (token) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
+// const token = localStorage.getItem("tokenApp");
+// if (token) {
+//   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+// }
 
 const app = createApp(App);
 

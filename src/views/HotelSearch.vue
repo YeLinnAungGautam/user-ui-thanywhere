@@ -1,51 +1,51 @@
 <script setup>
 import LayoutVue from "../components/Layout/Layout.vue";
-import ProductVue from "../components/Layout/Product.vue";
-import ProductCartVue from "../components/ProductCart/VantourCart.vue";
+import ProductVue from "../components/Layout/ProductHotel.vue";
+import ProductCartVue from "../components/ProductCart/HotelCart.vue";
 import { useRoute } from "vue-router";
 import { onMounted, ref, watch } from "vue";
-import { useVantourStore } from "../stores/vantour";
+import { useHotelStore } from "../stores/hotel";
 import Pagination from "../components/Layout/Pagination.vue";
 
 const route = useRoute();
-const vantourStore = useVantourStore();
+const hotelStore = useHotelStore();
 const city_name = ref("");
-const vantour = ref(null);
-const destination_id = ref("");
+const hotel = ref(null);
+const place = ref("");
 
 const handleSearchD = (data) => {
-  console.log(data, "this is id");
-  destination_id.value = data;
+  console.log(data, "this is data");
+  place.value = data;
 };
 
 const changePage = async (url) => {
   console.log(url, "this is url");
   let data = {
-    product_type: "private_van_tour",
+    product_type: "hotel",
   };
-  if (destination_id.value) {
-    data.destination_id = destination_id.value;
+  if (place.value) {
+    data.place = place.value;
   }
-  await vantourStore.getChangePage(url, data);
+  await hotelStore.getChangePage(url, data);
 };
 
 onMounted(async () => {
   city_name.value = route.params.city;
-  const res = await vantourStore.getSimpleListAction({
+  const res = await hotelStore.getSimpleListAction({
     city_id: route.params.id,
     limit: 20,
   });
   console.log(res, "this is rs");
-  vantour.value = res;
+  hotel.value = res;
 });
 
-watch(destination_id, async (newValue) => {
-  const res = await vantourStore.getSimpleListAction({
+watch(place, async (newValue) => {
+  const res = await hotelStore.getSimpleListAction({
     city_id: route.params.id,
-    destination_id: destination_id.value,
+    place: place.value,
     limit: 20,
   });
-  vantour.value = res;
+  hotel.value = res;
 });
 </script>
 
@@ -55,15 +55,16 @@ watch(destination_id, async (newValue) => {
       <ProductVue
         class="sticky top-[70px] z-10"
         :name="city_name"
-        :total="vantour?.data.length"
+        :data="hotel?.data"
+        :total="hotel?.data.length"
         @searchD="handleSearchD"
       />
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 px-4">
-        <div v-for="a in vantour?.data" :key="a">
+        <div v-for="a in hotel?.data" :key="a">
           <ProductCartVue :data="a" />
         </div>
         <div class="col-span-1 sm:col-span-2">
-          <Pagination :data="vantour" @change-page="changePage" />
+          <Pagination :data="hotel" @change-page="changePage" />
         </div>
       </div>
     </div>

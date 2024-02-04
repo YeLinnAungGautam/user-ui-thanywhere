@@ -7,17 +7,16 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/vue/24/outline";
 import { useRouter } from "vue-router";
-import { useDestinationStore } from "../../stores/destination";
+
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 
 const router = useRouter();
 const emit = defineEmits();
-const destiantionStore = useDestinationStore();
-const { dests } = storeToRefs(destiantionStore);
 
 const props = defineProps({
   name: String,
+  data: [Object],
   total: Number,
 });
 
@@ -27,8 +26,7 @@ const searchD = (id) => {
 };
 
 onMounted(async () => {
-  const res = await destiantionStore.getSimpleListAction();
-  console.log(dests.value);
+  console.log(props.data);
 });
 </script>
 <template>
@@ -39,7 +37,7 @@ onMounted(async () => {
           <ChevronLeftIcon class="w-5 h-5 text-main" @click="router.go(-1)" />
         </div>
         <div class="font-medium">
-          Browse All Tour
+          Browse All Hotels
           <span class="text-main">{{ name }} ({{ total }})</span>
         </div>
         <div></div>
@@ -54,12 +52,12 @@ onMounted(async () => {
           All
         </p>
         <p
-          v-for="p in dests?.data"
+          v-for="p in data"
           :key="p"
-          @click="searchD(p.id)"
+          @click="searchD(p.place)"
           class="py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
         >
-          {{ p.name }}
+          {{ p.place }}
         </p>
       </div>
     </div>

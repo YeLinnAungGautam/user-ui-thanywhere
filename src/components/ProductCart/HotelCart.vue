@@ -1,45 +1,52 @@
 <script setup>
-import { StarIcon } from "@heroicons/vue/24/outline";
 import { useRouter } from "vue-router";
-import { HeartIcon } from "@heroicons/vue/24/outline";
+import {
+  HeartIcon,
+  StarIcon,
+  MapPinIcon,
+  DocumentMagnifyingGlassIcon,
+} from "@heroicons/vue/24/outline";
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
+import { ref, defineProps, defineEmits, onMounted } from "vue";
+
+const props = defineProps({
+  data: [Object],
+});
+
+onMounted(() => {
+  // console.log(props.data);
+});
 
 import "vue3-carousel/dist/carousel.css";
 const router = useRouter();
-const slide = [
-  {
-    id: 1,
-    image:
-      "https://d1muf25xaso8hp.cloudfront.net/https%3A%2F%2Fc28d53c20964e9d7e79285c476ad74ab.cdn.bubble.io%2Ff1701321844319x375539512012161150%2FPTY-Cau-012.jpg?w=384&h=&auto=compress&dpr=1.25&fit=max",
-  },
-  {
-    id: 2,
-    image:
-      "https://d1muf25xaso8hp.cloudfront.net/https%3A%2F%2Fc28d53c20964e9d7e79285c476ad74ab.cdn.bubble.io%2Ff1692769141492x556043665158201300%2FAYU-Cau-1.jpg?w=384&h=&auto=compress&dpr=1.25&fit=max",
-  },
-  {
-    id: 3,
-    image:
-      "https://d1muf25xaso8hp.cloudfront.net/https%3A%2F%2Fc28d53c20964e9d7e79285c476ad74ab.cdn.bubble.io%2Ff1692701497306x948823093388460700%2FCHM-002-Fly.jpg?w=384&h=&auto=compress&dpr=1.25&fit=max",
-  },
-];
+const slide = ref([]);
+
+onMounted(() => {
+  // for (let x = 0; x < props.data?.images.length; x++) {
+  //   let image = props.data?.images[x].image;
+  //   slide.value.push(image);
+  // }
+  // console.log(slide.value, "this is image");
+});
 </script>
 
 <template>
   <div>
     <div
-      class="rounded-3xl overflow-hidden cursor-pointer border border-black/10 transition hover:shadow-md"
-      @click="router.push({ name: 'booking' })"
+      class="rounded-2xl overflow-hidden cursor-pointer mx-auto min-w-[300px] max-w-[400px] transition hover:shadow-md"
+      @click="
+        router.push({
+          name: 'hotel-detail',
+          params: {
+            id: data.id,
+          },
+        })
+      "
     >
       <div class="h-[200px] bg-black relative">
-        <!-- <img
-          src="https://d1muf25xaso8hp.cloudfront.net/https%3A%2F%2Fc28d53c20964e9d7e79285c476ad74ab.cdn.bubble.io%2Ff1701321844319x375539512012161150%2FPTY-Cau-012.jpg?w=384&h=&auto=compress&dpr=1.25&fit=max"
-          alt=""
-          class="h-full object-cover"
-        /> -->
         <Carousel :wrap-around="true">
-          <Slide v-for="slide in slide" :key="slide">
+          <Slide v-for="slide in data.images" :key="slide.id">
             <div
               class="carousel__item h-[200px] relative text-center bg-center"
             >
@@ -64,25 +71,41 @@ const slide = [
             Guest favorite
           </div>
           <div>
-            <HeartIcon class="w-6 h-6 text-black" />
+            <!-- <HeartIcon class="w-6 h-6 text-black" /> -->
           </div>
         </div>
       </div>
       <div class="py-4 px-4">
-        <p class="text-base font-semibold">Pattaya Activity Package 3</p>
-        <p class="text-[10px] text-red">Pattaya</p>
-        <div class="flex justify-start items-center space-x-1">
-          <img src="../../../public/star.png" alt="" class="w-3" />
-          <p class="text-[11px] text-yellow">4.0</p>
-          <p class="text-[11px]">( 100 ratings )</p>
+        <div class="flex justify-between items-center pb-1">
+          <p class="text-base font-semibold">{{ data?.name }}</p>
+          <div class="flex justify-start items-center space-x-1">
+            <img src="../../../public/star.png" alt="" class="w-3" />
+            <p class="text-[11px] text-black">4.0</p>
+          </div>
+        </div>
+        <div class="flex justify-start items-center gap-1">
+          <MapPinIcon class="h-3 text-red" />
+          <div class="flex justify-start items-center gap-1">
+            <p class="text-[10px] text-red">
+              {{ data.place }} , {{ data.city?.name }}
+            </p>
+          </div>
+        </div>
+        <div class="flex justify-start items-start gap-1">
+          <DocumentMagnifyingGlassIcon class="h-3 mt-1 text-red" />
+          <div class="flex justify-start items-start flex-wrap">
+            <p class="text-[10px] text-red whitespace-nowrap">
+              {{ data.type == "direct_booking" ? "allow to book" : "" }} ,
+            </p>
+          </div>
         </div>
         <div class="pt-2 text-[11px] flex justify-start items-center space-x-2">
-          <p>From</p>
+          <p>Starting at</p>
           <p
             class="text-base text-red font-semibold flex justify-start items-center"
           >
             <img src="../../../public/thailand-baht.png" alt="" class="w-4" />
-            3500
+            {{ data?.lowest_room_price }} / night
           </p>
         </div>
       </div>

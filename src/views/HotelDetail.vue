@@ -6,38 +6,37 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/vue/24/outline";
 import BookingVue from "../components/Detail/Booking.vue";
-import DescriPartVue from "../components/Detail/DescriPart.vue";
+import DescriPartVue from "../components/Detail/HotelDescriPart.vue";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/vue";
 import Modal from "../components/Layout/Modal.vue";
 import ImagePartVue from "../components/Detail/ImagePart.vue";
 import LayoutVue from "../components/Layout/Layout.vue";
 import ProductCartVue from "../components/Layout/ProductCart.vue";
 import { useRoute, useRouter } from "vue-router";
-import { useVantourStore } from "../stores/vantour";
+import { useHotelStore } from "../stores/hotel";
 import { onMounted, ref, watch } from "vue";
 
 const route = useRoute();
 const router = useRouter();
-const vantourStore = useVantourStore();
+const hotelStore = useHotelStore();
 const data = ref(null);
 
 const getDetail = async (id) => {
-  const res = await vantourStore.getDetailAction(id);
+  const res = await hotelStore.getDetailAction(id);
   data.value = res.result;
   console.log(data.value);
   for (let x = 0; x < data?.value.images.length; x++) {
     let image = data?.value.images[x].image;
     imageSlide.value.push(image);
   }
-  imageSlide.value = [...imageSlide.value, data?.value.cover_image];
 };
 
 const relate = ref(null);
-const getRelate = async (id) => {
-  const res = await vantourStore.getRelateAction(id);
-  console.log(res, "this is relate");
-  relate.value = res;
-};
+// const getRelate = async (id) => {
+//   const res = await hotelStore.getRelateAction(id);
+//   console.log(res, "this is relate");
+//   relate.value = res;
+// };
 
 const imageSlide = ref([]);
 
@@ -59,15 +58,15 @@ const changeAgain = async (id) => {
     imageSlide.value = [];
     relate.value = null;
     await getDetail(id);
-    await getRelate(id);
+    // await getRelate(id);
   }
 };
 
 onMounted(async () => {
   console.log(route.params.id);
-
+  console.log(data.value);
   await getDetail(route.params.id);
-  await getRelate(route.params.id);
+  // await getRelate(route.params.id);
 });
 </script>
 
@@ -143,32 +142,30 @@ onMounted(async () => {
             </div>
           </div>
           <div class="space-y-4 py-4 border-b border-b-black/10">
-            <h1 class="text-lg font-medium">Destiantions :</h1>
+            <h1 class="text-lg font-medium">Location :</h1>
             <div class="space-y-3">
-              <div
-                class="flex justify-start gap-3 items-center px-6"
-                v-for="(d, index) in data?.destinations"
-                :key="index"
-              >
+              <div class="flex justify-start gap-3 items-center px-6">
                 <GlobeAltIcon class="w-4 h-4" />
-                <p>{{ d.name }}</p>
+                <p v-if="data != null">
+                  {{ data.city?.name }} , {{ data.place }}
+                </p>
               </div>
             </div>
           </div>
           <DescriPartVue :data="data && data" />
-          <div class="col-span-1">
+          <!-- <div class="col-span-1">
             <BookingVue />
-          </div>
+          </div> -->
         </div>
 
-        <div class="">
+        <!-- <div class="">
           <h1 class="text-lg font-medium pb-5">Explore the Top Deals !</h1>
           <div class="flex overflow-x-scroll space-x-4 pb-6">
             <div v-for="a in relate?.data" :key="a.id">
               <ProductCartVue :data="a" @change="changeAgain" />
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

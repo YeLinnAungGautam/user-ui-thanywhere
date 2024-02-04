@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="space-y-4 border border-black/10 px-5 mb-4 py-5 rounded-lg sticky top-[90px]"
-  >
+  <div class="space-y-4 border border-black/10 px-5 mb-4 py-5 rounded-lg">
     <h1 class="text-xl font-medium">Inclusives</h1>
     <div class="grid grid-cols-2 gap-6 border-b border-black/10 pb-6">
       <div class="flex justify-start items-center space-x-4">

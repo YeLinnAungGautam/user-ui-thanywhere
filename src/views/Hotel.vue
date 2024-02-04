@@ -1,18 +1,35 @@
+<script setup>
+import HomeBannerVue from "../components/Home/HomeBanner.vue";
+import HomeHotelVue from "../components/Home/Hotels/HomeHotel.vue";
+import HomeAboutThaiVue from "../components/Home/HomeAboutThai.vue";
+import HomeLayoutVue from "../components/Layout/HomeLayout.vue";
+import { useHotelStore } from "../stores/hotel";
+
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
+
+const hotelStore = useHotelStore();
+
+const { hotels, loading } = storeToRefs(hotelStore);
+
+onMounted(async () => {
+  const res = await hotelStore.getListAction();
+  console.log(res);
+});
+</script>
+
 <template>
   <div>
-    <div class="pt-20 relative">
-      <ProductVue class="sticky top-[70px] z-10" />
-      <div class="grid grid-cols-4 gap-10 py-8 px-[80px]">
-        <div v-for="a in 14" :key="a">
-          <ProductCartVue />
+    <HomeLayoutVue>
+      <div class="h-auto space-y-6">
+        <HomeBannerVue />
+        <div class="px-4 space-y-3">
+          <div v-for="(a, index) in hotels?.data" :key="index">
+            <HomeHotelVue :data="a" />
+          </div>
+          <HomeAboutThaiVue />
         </div>
       </div>
-    </div>
+    </HomeLayoutVue>
   </div>
 </template>
-
-<script setup>
-import LayoutVue from "../components/Layout/Layout.vue";
-import ProductVue from "../components/Layout/Product.vue";
-import ProductCartVue from "../components/ProductCart/HotelCart.vue";
-</script>

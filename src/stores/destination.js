@@ -8,59 +8,13 @@ export const useDestinationStore = defineStore("destination", {
     async getSimpleListAction(params) {
       try {
         this.loading = true;
-        const response = await axios.get("/destinations?limit=1000&page=1");
-        this.dests = response.data.result;
+        const response = await axios.get("/customer-portal/destinations");
+        this.dests = response.data;
         this.loading = false;
 
         return response.data;
       } catch (error) {
         this.loading = false;
-        throw error;
-      }
-    },
-    async getChangePage(url) {
-      this.loading = true;
-      const response = await axios.get(url);
-      this.dests = response.data.result;
-      this.loading = false;
-      return response.data;
-    },
-    async getListAction(params) {
-      try {
-        this.loading = true;
-        const response = await axios.get("/destinations", {
-          params: params,
-        });
-        this.dests = response.data.result;
-        this.loading = false;
-        console.log(response);
-        return response.data;
-      } catch (error) {
-        this.loading = false;
-        throw error;
-      }
-    },
-    async addNewAction(data) {
-      try {
-        const response = await axios.post("/destinations", data);
-        return response.data;
-      } catch (error) {
-        throw error;
-      }
-    },
-    async updateAction(data, id) {
-      try {
-        const response = await axios.post("/destinations/" + id, data);
-        return response.data;
-      } catch (error) {
-        throw error;
-      }
-    },
-    async deleteAction(id) {
-      try {
-        const response = await axios.delete("/destinations/" + id);
-        return response.data;
-      } catch (error) {
         throw error;
       }
     },

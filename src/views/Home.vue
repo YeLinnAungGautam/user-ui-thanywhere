@@ -1,27 +1,34 @@
 <script setup>
-import LayoutVue from "../components/Layout/Layout.vue";
 import HomeBannerVue from "../components/Home/HomeBanner.vue";
-import HomeVanTourVue from "../components/Home/HomeVanTour.vue";
-import HomeGroupVue from "../components/Home/HomeGroup.vue";
-import HomeAttractionVue from "../components/Home/HomeAttraction.vue";
-import HomeHotelVue from "../components/Home/HomeHotel.vue";
-import HomeWhyVue from "../components/Home/HomeWhy.vue";
+import HomeBangkok from "../components/Home/HomeBangkok.vue";
 import HomeAboutThaiVue from "../components/Home/HomeAboutThai.vue";
+import HomeLayoutVue from "../components/Layout/HomeLayout.vue";
+import { useVantourStore } from "../stores/vantour";
+
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
+
+const vantourStore = useVantourStore();
+
+const { vantours, loading } = storeToRefs(vantourStore);
+
+onMounted(async () => {
+  const res = await vantourStore.getListAction();
+});
 </script>
 
 <template>
   <div>
-    <div class="h-auto space-y-12">
-      <HomeBannerVue />
-      <div class="px-[80px] space-y-6">
-        <HomeVanTourVue />
-        <HomeHotelVue />
-        <HomeWhyVue />
-        <HomeAttractionVue />
-
-        <HomeGroupVue />
-        <HomeAboutThaiVue />
+    <HomeLayoutVue>
+      <div class="h-auto space-y-6">
+        <HomeBannerVue />
+        <div class="px-4 space-y-3">
+          <div v-for="(a, index) in vantours?.data" :key="index">
+            <HomeBangkok :data="a" />
+          </div>
+          <HomeAboutThaiVue />
+        </div>
       </div>
-    </div>
+    </HomeLayoutVue>
   </div>
 </template>
