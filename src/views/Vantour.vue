@@ -62,7 +62,15 @@ watch(destination_id, async (newValue) => {
         <div v-for="a in vantour?.data" :key="a">
           <ProductCartVue :data="a" />
         </div>
-        <div class="col-span-1 sm:col-span-2">
+        <div v-if="vantour?.data.length == 0">
+          <p>Your search - "{{ city_name }}" isn't data now !</p>
+          <img
+            src="https://img.freepik.com/free-vector/curiosity-child-concept-illustration_114360-10739.jpg?size=626&ext=jpg&ga=GA1.2.302966112.1678379959&semt=ais"
+            alt=""
+            class="mt-10"
+          />
+        </div>
+        <div class="col-span-1 sm:col-span-2" v-if="vantour?.data.length > 0">
           <Pagination :data="vantour" @change-page="changePage" />
         </div>
       </div>

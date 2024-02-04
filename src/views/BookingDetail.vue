@@ -157,7 +157,7 @@ onMounted(async () => {
           </div>
           <DescriPartVue :data="data && data" />
           <div class="col-span-1">
-            <BookingVue />
+            <BookingVue :data="data?.cars" />
           </div>
         </div>
 

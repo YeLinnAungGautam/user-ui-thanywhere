@@ -1,10 +1,5 @@
 <template>
   <div class="rounded-2xl relative overflow-hidden">
-    <!-- <div
-      class="absolute bottom-4 right-4 bg-white rounded-xl border flex justify-center items-center gap-3 border-black px-2 py-2"
-    >
-      <RectangleGroupIcon class="w-6 h-6" />show all photos
-    </div> -->
     <div class="h-auto w-full bg-black relative">
       <Carousel :wrap-around="true">
         <Slide v-for="slide in image" :key="slide">
