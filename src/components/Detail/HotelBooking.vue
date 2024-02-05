@@ -29,7 +29,7 @@ const chooseType = () => {
     price: room_type.value.room_price,
     max_person: room_type.value.max_person,
     description: room_type.value.description,
-    images: room_type.value.images[0],
+    images: room_type.value.images[0].image,
   };
 };
 

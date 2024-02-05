@@ -11,7 +11,7 @@ import { useCityStore } from "../../stores/city";
 import Modal from "../Layout/Modal.vue";
 import Pagination from "../Layout/Pagination.vue";
 import { storeToRefs } from "pinia";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const cityStore = useCityStore();
 
@@ -56,10 +56,15 @@ const searchD = (id) => {
   emit("searchD", id);
 };
 
+const search = ref("");
+
 onMounted(async () => {
-  // console.log(props.data);
   await cityStore.getSimpleListAction();
   console.log(city.value);
+});
+
+watch(search, async () => {
+  await cityStore.getSimpleListAction({ search: search.value });
 });
 </script>
 <template>
@@ -95,6 +100,14 @@ onMounted(async () => {
             </p>
           </div>
           <div class="space-y-3 font-poppins">
+            <input
+              type="text"
+              name=""
+              id=""
+              class="text-sm border w-full py-2 px-4 rounded-md shadow-md"
+              v-model="search"
+              placeholder="search city by name"
+            />
             <div
               v-for="c in city?.data"
               :key="c.id"

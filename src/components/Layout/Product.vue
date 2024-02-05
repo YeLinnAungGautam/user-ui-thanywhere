@@ -9,7 +9,7 @@ import {
 import { useRouter } from "vue-router";
 import { useDestinationStore } from "../../stores/destination";
 import { storeToRefs } from "pinia";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../../stores/city";
 import Modal from "../Layout/Modal.vue";
 import Pagination from "../Layout/Pagination.vue";
@@ -56,10 +56,16 @@ const chooseCity = (data) => {
   showModalHander();
 };
 
+const search = ref("");
+
 onMounted(async () => {
   await destiantionStore.getSimpleListAction();
   await cityStore.getSimpleListAction();
   console.log(city.value.data, "this is city");
+});
+
+watch(search, async () => {
+  await cityStore.getSimpleListAction({ search: search.value });
 });
 </script>
 <template>
@@ -95,6 +101,14 @@ onMounted(async () => {
             </p>
           </div>
           <div class="space-y-3 font-poppins">
+            <input
+              type="text"
+              name=""
+              id=""
+              class="text-sm border w-full py-2 px-4 rounded-md shadow-md"
+              v-model="search"
+              placeholder="search city by name"
+            />
             <div
               v-for="c in city?.data"
               :key="c.id"

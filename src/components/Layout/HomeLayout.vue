@@ -30,17 +30,11 @@ const route = useRoute();
           class="group-hover:block w-1 h-1 mx-auto mt-1 bg-main rounded-full"
         ></p>
       </router-link>
-      <router-link
-        to="/attractions"
+      <div
         class="cursor-pointer group hover:text-main whitespace-nowrap text-black/60 p-3 rounded-full"
-        :class="route.path == '/attractions' ? 'text-main' : ''"
       >
         Attractions
-        <p
-          :class="route.path == '/attractions' ? 'block' : 'hidden'"
-          class="group-hover:block w-1 h-1 mx-auto mt-1 bg-main rounded-full"
-        ></p>
-      </router-link>
+      </div>
 
       <router-link
         to="/product/van-tour"
