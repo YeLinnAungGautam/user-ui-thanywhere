@@ -23,44 +23,41 @@ import "vue3-carousel/dist/carousel.css";
 const router = useRouter();
 const slide = ref([]);
 
-const emit = defineEmits();
-
-const goNext = (id) => {
-  // router.push({
-  //   name: "vantour-detail",
-  //   params: {
-  //     id: id,
-  //   },
-  // });
-  emit("change", id);
-};
-
 onMounted(() => {
-  // console.log(props.data);
-  for (let x = 0; x < props.data?.images.length; x++) {
-    let image = props.data?.images[x].image;
-    slide.value.push(image);
-  }
-  slide.value = [...slide.value, props.data?.cover_image];
-  console.log(slide.value, "this is image");
+  // for (let x = 0; x < props.data?.images.length; x++) {
+  //   let image = props.data?.images[x].image;
+  //   slide.value.push(image);
+  // }
+  // console.log(slide.value, "this is image");
 });
 </script>
 
 <template>
   <div>
     <div
-      class="cursor-pointer mx-auto min-w-[300px] max-w-[400px] transition"
-      @click="goNext(data.id)"
+      class="cursor-pointer mx-auto w-full transition"
+      @click="
+        router.push({
+          name: 'hotel-detail',
+          params: {
+            id: data.id,
+          },
+        })
+      "
     >
       <div
         class="h-[200px] bg-black relative rounded-lg shadow-md overflow-hidden"
       >
         <Carousel :wrap-around="true">
-          <Slide v-for="slide in slide" :key="slide">
+          <Slide v-for="slide in data.images" :key="slide.id">
             <div
               class="carousel__item h-[200px] relative text-center bg-center"
             >
-              <img :src="slide" alt="" class="h-full w-full object-cover" />
+              <img
+                :src="slide.image"
+                alt=""
+                class="h-full w-full object-cover"
+              />
             </div>
           </Slide>
 
@@ -93,25 +90,16 @@ onMounted(() => {
           <!-- <MapPinIcon class="h-3 text-red" /> -->
           <img :src="Pin" class="h-4" alt="" />
           <div class="flex justify-start items-center gap-1">
-            <p
-              class="text-[10px] text-red"
-              v-for="(c, index) in data?.cities"
-              :key="index"
-            >
-              {{ c.name }}
+            <p class="text-[10px] text-red">
+              {{ data.place }} , {{ data.city?.name }}
             </p>
           </div>
         </div>
         <div class="flex justify-start items-start gap-1">
-          <!-- <DocumentMagnifyingGlassIcon class="h-3 mt-1 text-red" /> -->
-          <img :src="Pin" class="h-4" alt="" />
+          <DocumentMagnifyingGlassIcon class="h-3 mt-1 text-red" />
           <div class="flex justify-start items-start flex-wrap">
-            <p
-              class="text-[10px] text-red whitespace-nowrap"
-              v-for="(d, index) in data?.destinations"
-              :key="index"
-            >
-              {{ d.name }} ,
+            <p class="text-[10px] text-red whitespace-nowrap">
+              {{ data.type == "direct_booking" ? "allow to book" : "" }} ,
             </p>
           </div>
         </div>
@@ -121,7 +109,7 @@ onMounted(() => {
             class="text-base text-red font-semibold flex justify-start items-center"
           >
             <img src="../../../public/thailand-baht.png" alt="" class="w-4" />
-            {{ data?.lowest_car_price }} / car
+            {{ data?.lowest_room_price }} / night
           </p>
         </div>
       </div>

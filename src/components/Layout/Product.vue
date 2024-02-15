@@ -7,7 +7,7 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/vue/24/outline";
 import { useRouter } from "vue-router";
-import { useDestinationStore } from "../../stores/destination";
+import { useCategoryStore } from "../../stores/category";
 import { storeToRefs } from "pinia";
 import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../../stores/city";
@@ -16,9 +16,9 @@ import Pagination from "../Layout/Pagination.vue";
 
 const router = useRouter();
 const emit = defineEmits();
-const destiantionStore = useDestinationStore();
+const categoryStore = useCategoryStore();
 const cityStore = useCityStore();
-const { dests } = storeToRefs(destiantionStore);
+const { categories } = storeToRefs(categoryStore);
 const { city } = storeToRefs(cityStore);
 
 const props = defineProps({
@@ -29,6 +29,7 @@ const props = defineProps({
 const searchD = (id) => {
   console.log(id);
   emit("searchD", id);
+  showModalHander();
 };
 
 const showModal = ref(false);
@@ -53,13 +54,12 @@ const chooseCity = (data) => {
   setTimeout(() => {
     window.location.reload();
   }, 1000);
-  showModalHander();
 };
 
 const search = ref("");
 
 onMounted(async () => {
-  await destiantionStore.getSimpleListAction();
+  await categoryStore.getSimpleListAction();
   await cityStore.getSimpleListAction();
   console.log(city.value.data, "this is city");
 });
@@ -79,7 +79,7 @@ watch(search, async () => {
           class="mb-5 text-lg font-medium leading-6 text-gray-900"
         >
           <div class="flex justify-between items-center pb-2 font-poppins">
-            <p class="font-poppins text-xs">Click & Choose City</p>
+            <p class="font-poppins text-xs">Click & Choose Category</p>
             <p
               @click="showModalHander"
               class="bg-main py-1 px-1 rounded-3xl text-xs text-white"
@@ -110,10 +110,10 @@ watch(search, async () => {
               placeholder="search city by name"
             />
             <div
-              v-for="c in city?.data"
+              v-for="c in categories?.data"
               :key="c.id"
               class="px-4 py-2 rounded border border-black/30 shadow-md text-xs"
-              @click="chooseCity(c)"
+              @click="searchD(c.id)"
             >
               {{ c.name }}
             </div>
@@ -143,7 +143,7 @@ watch(search, async () => {
           @click="showModalHander"
           class="bg-main text-white py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
         >
-          Filter City
+          Filter
         </p>
         <p
           @click="searchD('')"
@@ -152,9 +152,9 @@ watch(search, async () => {
           All
         </p>
         <p
-          v-for="p in dests?.data"
+          v-for="p in city?.data"
           :key="p"
-          @click="searchD(p.id)"
+          @click="chooseCity(p)"
           class="py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
         >
           {{ p.name }}

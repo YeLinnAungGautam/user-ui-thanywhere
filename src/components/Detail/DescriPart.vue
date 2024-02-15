@@ -11,8 +11,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <div class="space-y-4 py-4 border-b border-b-black/10">
+  <div class="pb-8">
+    <div class="space-y-4 py-3">
       <h1 class="text-lg font-medium">Description :</h1>
       <div class="space-y-3">
         <p class="text-justify">
@@ -21,7 +21,7 @@ onMounted(() => {
       </div>
     </div>
     <div
-      class="space-y-4 py-4 border-b border-b-black/10"
+      class="space-y-4 py-3"
       v-for="(d, index) in data?.destinations"
       :key="index"
     >

@@ -9,7 +9,7 @@
           <img
             :src="slide.image"
             alt=""
-            class="min-w-[608px] h-full object-cover border border-gray-300"
+            class="min-w-[608px] h-full object-cover"
           />
         </div>
       </Slide>

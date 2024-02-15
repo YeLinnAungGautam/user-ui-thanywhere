@@ -42,10 +42,12 @@ onMounted(() => {
 <template>
   <div>
     <div
-      class="rounded-2xl overflow-hidden cursor-pointer mx-auto min-w-[300px] max-w-[400px] transition hover:shadow-md"
+      class="cursor-pointer mx-auto min-w-[300px] max-w-[400px] transition"
       @click="goNext(data.id)"
     >
-      <div class="h-[200px] bg-black relative">
+      <div
+        class="h-[200px] bg-white relative rounded-lg shadow-md overflow-hidden"
+      >
         <Carousel :wrap-around="true">
           <Slide v-for="slide in slide" :key="slide">
             <div

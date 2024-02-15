@@ -15,6 +15,7 @@ const props = defineProps({
 });
 
 const room_type = ref("");
+const date = ref("");
 
 const change = ref({
   price: "-",
@@ -33,6 +34,10 @@ const chooseType = () => {
   };
 };
 
+const goContact = () => {
+  window.open("https://www.facebook.com/messages/t/100156219490319");
+};
+
 onMounted(() => {
   change.value = {
     price: "-",
@@ -46,7 +51,7 @@ onMounted(() => {
 
 <template>
   <div class="space-y-4 border border-black/10 px-5 mb-4 py-5 rounded-lg">
-    <h1 class="text-xl font-medium">Inclusives</h1>
+    <h1 class="text-xl font-medium">Facilities</h1>
     <div class="grid grid-cols-2 gap-6 border-b border-black/10 pb-6">
       <div class="flex justify-start items-center space-x-4">
         <WifiIcon class="w-6 h-6" />
@@ -66,6 +71,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="py-2 space-y-2">
+      <p class="pb-3 text-base font-semibold">{{ room_type.name }}</p>
       <img
         v-if="!change.images"
         src="https://www.thespruce.com/thmb/vf_MEDifLRzzmQNjMyUDR1FGA14=/3000x0/filters:no_upscale():max_bytes(150000):strip_icc()/tips-for-decorating-a-beautiful-bedroom-1976169-hero-e960fbb8311c4b9b875a1813962d34eb.jpg"
@@ -91,7 +97,7 @@ onMounted(() => {
       <div class="space-y-2">
         <label for="" class="text-xs">ROOM TYPE</label>
         <v-select
-          class="border border-black/30 px-4 rounded-md py-1"
+          class="border border-black/10 px-4 rounded-md py-1"
           v-model="room_type"
           :options="data ?? []"
           label="name"
@@ -103,30 +109,33 @@ onMounted(() => {
       </div>
       <div class="space-y-2">
         <label for="" class="text-xs">CHECKIN DATE</label>
-        <input
+        <!-- <input
           type="date"
           name=""
           id=""
           class="w-full px-4 py-2 border border-black/30 focus:outline-none rounded-md"
-        />
+        /> -->
+        <VueDatePicker v-model="date"></VueDatePicker>
       </div>
       <div class="space-y-2">
         <label for="" class="text-xs">CHECKOUT DATE</label>
-        <input
+        <!-- <input
           type="date"
           name=""
           id=""
           class="w-full px-4 py-2 border border-black/30 focus:outline-none rounded-md"
-        />
+        /> -->
+        <VueDatePicker v-model="date"></VueDatePicker>
       </div>
 
       <div class="pt-3">
         <input
-          type="submite"
+          type="button"
+          @click="goContact"
           name=""
           value="Contact Sales"
           id=""
-          class="w-full text-center px-4 py-3 text-white font-semibold bg-main border border-black/30 focus:outline-none rounded-md"
+          class="w-full text-center px-4 py-3 text-white font-semibold bg-main focus:outline-none rounded-md"
         />
       </div>
       <p class="text-xs text-black/90 text-center">You won't be charged yet.</p>

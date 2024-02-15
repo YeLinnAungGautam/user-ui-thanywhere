@@ -9,6 +9,7 @@ import {
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
 import { ref, defineProps, defineEmits, onMounted } from "vue";
+import Pin from "../../../public/pin-1-svgrepo-com.svg";
 
 const props = defineProps({
   data: [Object],
@@ -34,7 +35,7 @@ onMounted(() => {
 <template>
   <div>
     <div
-      class="rounded-2xl overflow-hidden cursor-pointer mx-auto min-w-[300px] max-w-[400px] transition hover:shadow-md"
+      class="cursor-pointer mx-auto min-w-[300px] max-w-[320px] transition"
       @click="
         router.push({
           name: 'hotel-detail',
@@ -44,7 +45,9 @@ onMounted(() => {
         })
       "
     >
-      <div class="h-[200px] bg-black relative">
+      <div
+        class="h-[200px] bg-black relative rounded-lg shadow-md overflow-hidden"
+      >
         <Carousel :wrap-around="true">
           <Slide v-for="slide in data.images" :key="slide.id">
             <div
@@ -84,7 +87,8 @@ onMounted(() => {
           </div>
         </div>
         <div class="flex justify-start items-center gap-1">
-          <MapPinIcon class="h-3 text-red" />
+          <!-- <MapPinIcon class="h-3 text-red" /> -->
+          <img :src="Pin" class="h-4" alt="" />
           <div class="flex justify-start items-center gap-1">
             <p class="text-[10px] text-red">
               {{ data.place }} , {{ data.city?.name }}

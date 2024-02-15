@@ -35,7 +35,12 @@ watch(() => {
           :class="isHome ? 'bg-main rounded-full text-white' : ''"
         />
       </div>
-      <p class="text-xs float-end text-center text-main">Home</p>
+      <p
+        class="text-xs float-end text-center"
+        :class="isHome ? 'text-main' : 'text-black/40'"
+      >
+        Home
+      </p>
     </router-link>
     <div class="space-y-1">
       <div
@@ -45,7 +50,7 @@ watch(() => {
           class="w-8 h-8 hover:bg-main hover:rounded-full p-1 hover:w-8 hover:h-8"
         />
       </div>
-      <p class="text-xs float-end text-center text-main">Deals</p>
+      <p class="text-xs float-end text-center text-black/60">Deals</p>
     </div>
     <div class="space-y-1">
       <div
@@ -55,7 +60,7 @@ watch(() => {
           class="w-8 h-8 hover:bg-main hover:rounded-full p-1 hover:w-8 hover:h-8"
         />
       </div>
-      <p class="text-xs float-end text-center text-main">Search</p>
+      <p class="text-xs float-end text-center text-black/60">Search</p>
     </div>
     <div class="space-y-1">
       <div
@@ -65,7 +70,7 @@ watch(() => {
           class="w-8 h-8 hover:bg-main hover:rounded-full p-1 hover:w-8 hover:h-8"
         />
       </div>
-      <p class="text-xs float-end text-center text-main">Account</p>
+      <p class="text-xs float-end text-center text-black/60">Account</p>
     </div>
     <div class="space-y-1">
       <div
@@ -75,7 +80,7 @@ watch(() => {
           class="w-8 h-8 hover:bg-main hover:rounded-full p-1 hover:w-8 hover:h-8"
         />
       </div>
-      <p class="text-xs float-end text-center text-main">Upcoming</p>
+      <p class="text-xs float-end text-center text-black/60">Upcoming</p>
     </div>
   </div>
 </template>

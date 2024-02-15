@@ -14,6 +14,7 @@ import LayoutVue from "../components/Layout/Layout.vue";
 import ProductCartVue from "../components/Layout/ProductCart.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useVantourStore } from "../stores/vantour";
+import Pin from "../../public/pin-1-svgrepo-com.svg";
 import { onMounted, ref, watch } from "vue";
 
 const route = useRoute();
@@ -74,17 +75,16 @@ onMounted(async () => {
 <template>
   <div>
     <div class="px-4 pt-6 border border-black/10 space-y-6">
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center relative">
         <h1
           class="text-lg font-medium flex justify-start items-center gap-2"
           @click="router.go(-1)"
         >
           <ChevronLeftIcon class="w-5 h-5 text-main" />
         </h1>
-        <div class="flex justify-end items-center gap-8">
-          <div class="flex justify-start items-start gap-3">
-            <ArrowUpTrayIcon class="w-5 h-5" />
-          </div>
+        <div
+          class="flex justify-end items-center gap-8 absolute right-4 bottom-[-60px] z-50"
+        >
           <div class="flex justify-start items-start gap-3">
             <HeartIcon class="w-5 h-5" />
           </div>
@@ -94,7 +94,7 @@ onMounted(async () => {
       <!-- modal -->
       <Modal :isOpen="showModal" @closeModal="showModal = false">
         <DialogPanel
-          class="w-full max-w-md p-4 overflow-hidden text-left align-middle transition-all transform bg-white rounded-lg shadow-xl"
+          class="w-full max-w-md p-4 overflow-hidden text-left align-middle transition-all transform bg-white rounded-lg shadow-md"
         >
           <DialogTitle
             as="h3"
@@ -137,6 +137,7 @@ onMounted(async () => {
           <div class="space-y-2 pb-4 pt-4 border-b border-b-black/10">
             <h1 class="text-xl font-medium">{{ data?.name }}</h1>
             <div class="flex justify-start items-center gap-2 flex-wrap">
+              <img :src="Pin" class="h-4" alt="" />
               <p class="text-main" v-for="t in data?.tags" :key="t.id">
                 {{ t.name }}
               </p>

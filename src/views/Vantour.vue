@@ -1,7 +1,7 @@
 <script setup>
 import LayoutVue from "../components/Layout/Layout.vue";
 import ProductVue from "../components/Layout/Product.vue";
-import ProductCartVue from "../components/ProductCart/VantourCart.vue";
+import ProductCartVue from "../components/ProductCart/VantourFilterCart.vue";
 import { useRoute } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import { useVantourStore } from "../stores/vantour";
@@ -42,7 +42,7 @@ onMounted(async () => {
 watch(destination_id, async (newValue) => {
   const res = await vantourStore.getSimpleListAction({
     city_id: route.params.id,
-    destination_id: destination_id.value,
+    product_category_id: destination_id.value,
     limit: 20,
   });
   vantour.value = res;
@@ -58,7 +58,9 @@ watch(destination_id, async (newValue) => {
         :total="vantour?.data.length"
         @searchD="handleSearchD"
       />
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 px-4">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 py-4 px-4"
+      >
         <div v-for="a in vantour?.data" :key="a">
           <ProductCartVue :data="a" />
         </div>
@@ -70,7 +72,10 @@ watch(destination_id, async (newValue) => {
             class="mt-10"
           />
         </div>
-        <div class="col-span-1 sm:col-span-2" v-if="vantour?.data.length > 0">
+        <div
+          class="col-span-1 sm:col-span-2 md:col-span-3"
+          v-if="vantour?.data.length > 0"
+        >
           <Pagination :data="vantour" @change-page="changePage" />
         </div>
       </div>

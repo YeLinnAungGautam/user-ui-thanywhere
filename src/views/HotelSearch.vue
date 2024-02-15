@@ -1,7 +1,7 @@
 <script setup>
 import LayoutVue from "../components/Layout/Layout.vue";
 import ProductVue from "../components/Layout/ProductHotel.vue";
-import ProductCartVue from "../components/ProductCart/HotelCart.vue";
+import ProductCartVue from "../components/ProductCart/HotelFilterCart.vue";
 import { useRoute } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import { useHotelStore } from "../stores/hotel";
@@ -59,7 +59,9 @@ watch(place, async (newValue) => {
         :total="hotel?.data.length"
         @searchD="handleSearchD"
       />
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 px-4">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 py-4 px-4"
+      >
         <div v-for="a in hotel?.data" :key="a">
           <ProductCartVue :data="a" />
         </div>
@@ -71,7 +73,10 @@ watch(place, async (newValue) => {
             class="mt-10"
           />
         </div>
-        <div class="col-span-1 sm:col-span-2" v-if="hotel?.data.length > 0">
+        <div
+          class="col-span-1 sm:col-span-2 md:grid-cols-3"
+          v-if="hotel?.data.length > 0"
+        >
           <Pagination :data="hotel" @change-page="changePage" />
         </div>
       </div>

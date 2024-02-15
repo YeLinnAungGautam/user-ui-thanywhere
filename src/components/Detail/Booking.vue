@@ -20,6 +20,7 @@ const change = ref({
   image:
     "https://img.freepik.com/free-vector/blue-hatchback-car-isolated-white-vector_53876-64419.jpg?size=626&ext=jpg&ga=GA1.2.302966112.1678379959&semt=ais",
 });
+const date = ref("");
 const chooseType = () => {
   console.log(car_type.value);
   change.value = {
@@ -60,6 +61,10 @@ const chooseType = () => {
       // Handle the case when car_type.value.name doesn't match any of the above cases
       break;
   }
+};
+
+const goContact = () => {
+  window.open("https://www.facebook.com/messages/t/100156219490319");
 };
 
 onMounted(() => {
@@ -105,7 +110,7 @@ onMounted(() => {
       <div class="space-y-2">
         <label for="" class="text-xs">CAR TYPE</label>
         <v-select
-          class="border border-black/30 px-4 rounded-md py-1"
+          class="border border-black/10 px-4 rounded-md py-1"
           v-model="car_type"
           :options="data ?? []"
           label="name"
@@ -117,21 +122,23 @@ onMounted(() => {
       </div>
       <div class="space-y-2">
         <label for="" class="text-xs">TRAVEL DATE</label>
-        <input
+        <!-- <input
           type="date"
           name=""
           id=""
           class="w-full px-4 py-2 border border-black/30 focus:outline-none rounded-md"
-        />
+        /> -->
+        <VueDatePicker v-model="date">select travel date</VueDatePicker>
       </div>
 
       <div class="pt-3">
         <input
-          type="submite"
+          type="button"
+          @click="goContact"
           name=""
           value="Contact Sales"
           id=""
-          class="w-full text-center px-4 py-3 text-white font-semibold bg-main border border-black/30 focus:outline-none rounded-md"
+          class="w-full text-center px-4 py-3 text-white font-semibold bg-main focus:outline-none rounded-md"
         />
       </div>
       <p class="text-xs text-black/90 text-center">You won't be charged yet.</p>

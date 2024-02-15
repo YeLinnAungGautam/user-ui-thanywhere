@@ -14,6 +14,7 @@ const { vantours, loading } = storeToRefs(vantourStore);
 
 onMounted(async () => {
   const res = await vantourStore.getListAction();
+  console.log(res);
 });
 </script>
 

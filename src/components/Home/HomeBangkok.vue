@@ -1,14 +1,14 @@
 <script setup>
 import ProductCartVue from "../ProductCart/VantourCart.vue";
-import { useDestinationStore } from "../../stores/destination";
+import { useCategoryStore } from "../../stores/category";
 import { ref, defineProps, defineEmits, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const destinationStore = useDestinationStore();
-const { dests } = storeToRefs(destinationStore);
+const categoryStore = useCategoryStore();
+const { categories } = storeToRefs(categoryStore);
 
 const props = defineProps({
   data: Object,
@@ -25,7 +25,9 @@ const filterArray = (id) => {
 
   if (id) {
     dataArray.value = props.data?.private_van_tours.filter((tour) => {
-      return tour.destinations.some((destination) => destination.id == id);
+      return tour.destinations.some(
+        (destination) => destination.category.id == id
+      );
     });
   }
 };
@@ -41,8 +43,9 @@ const goPage = (id, name) => {
 };
 
 onMounted(async () => {
-  const res = await destinationStore.getSimpleListAction();
+  const res = await categoryStore.getSimpleListAction();
   destinations.value = res;
+  // console.log(props.data?.private_van_tours, "this is data");
 });
 </script>
 

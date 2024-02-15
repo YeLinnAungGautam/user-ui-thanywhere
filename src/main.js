@@ -5,6 +5,8 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import "vue-select/dist/vue-select.css";
 import vSelect from "vue-select";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 import App from "./App.vue";
 import router from "./router";
@@ -18,6 +20,7 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.component("v-select", vSelect);
+app.component('VueDatePicker', VueDatePicker);
 app.use(router);
 
 app.mount("#app");

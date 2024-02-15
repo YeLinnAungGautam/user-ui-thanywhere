@@ -13,7 +13,7 @@ const router = useRouter();
 
 <template>
   <div
-    class="bg-white flex justify-between items-center py-2 gap-4 px-4 sticky w-full z-40 top-[-2px] border border-black/10"
+    class="bg-white flex justify-between items-center py-2 gap-4 px-4 sticky w-full z-40 top-[-2px]"
   >
     <img
       src="../../../public/logo.png"

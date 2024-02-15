@@ -23,34 +23,28 @@ import "vue3-carousel/dist/carousel.css";
 const router = useRouter();
 const slide = ref([]);
 
-const emit = defineEmits();
-
-const goNext = (id) => {
-  // router.push({
-  //   name: "vantour-detail",
-  //   params: {
-  //     id: id,
-  //   },
-  // });
-  emit("change", id);
-};
-
 onMounted(() => {
-  // console.log(props.data);
   for (let x = 0; x < props.data?.images.length; x++) {
     let image = props.data?.images[x].image;
     slide.value.push(image);
   }
   slide.value = [...slide.value, props.data?.cover_image];
-  console.log(slide.value, "this is image");
+  // console.log(slide.value, "this is image");
 });
 </script>
 
 <template>
   <div>
     <div
-      class="cursor-pointer mx-auto min-w-[300px] max-w-[400px] transition"
-      @click="goNext(data.id)"
+      class="cursor-pointer mx-auto w-full transition"
+      @click="
+        router.push({
+          name: 'vantour-detail',
+          params: {
+            id: data.id,
+          },
+        })
+      "
     >
       <div
         class="h-[200px] bg-black relative rounded-lg shadow-md overflow-hidden"
@@ -105,6 +99,7 @@ onMounted(() => {
         <div class="flex justify-start items-start gap-1">
           <!-- <DocumentMagnifyingGlassIcon class="h-3 mt-1 text-red" /> -->
           <img :src="Pin" class="h-4" alt="" />
+
           <div class="flex justify-start items-start flex-wrap">
             <p
               class="text-[10px] text-red whitespace-nowrap"

@@ -15,6 +15,7 @@ import ProductCartVue from "../components/Layout/ProductHotelCart.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import { onMounted, ref, watch } from "vue";
+import Pin from "../../public/pin-1-svgrepo-com.svg";
 
 const route = useRoute();
 const router = useRouter();
@@ -73,17 +74,16 @@ onMounted(async () => {
 <template>
   <div>
     <div class="px-4 pt-6 border border-black/10 space-y-6">
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center relative">
         <h1
           class="text-lg font-medium flex justify-start items-center gap-2"
           @click="router.go(-1)"
         >
           <ChevronLeftIcon class="w-5 h-5 text-main" />
         </h1>
-        <div class="flex justify-end items-center gap-8">
-          <div class="flex justify-start items-start gap-3">
-            <ArrowUpTrayIcon class="w-5 h-5" />
-          </div>
+        <div
+          class="flex justify-end items-center gap-8 absolute right-4 bottom-[-60px] z-50"
+        >
           <div class="flex justify-start items-start gap-3">
             <HeartIcon class="w-5 h-5" />
           </div>
@@ -135,6 +135,10 @@ onMounted(async () => {
         <div class="">
           <div class="space-y-2 pb-4 pt-4 border-b border-b-black/10">
             <h1 class="text-xl font-medium">{{ data?.name }}</h1>
+            <div class="flex justify-start items-center gap-2">
+              <img :src="Pin" class="h-4" alt="" />
+              <p class="text-sm text-main">{{ data?.city?.name }}</p>
+            </div>
             <div class="flex justify-start items-center gap-2 flex-wrap">
               <p class="text-main" v-for="t in data?.tags" :key="t.id">
                 {{ t.name }}
@@ -147,7 +151,7 @@ onMounted(async () => {
               <div class="flex justify-start gap-3 items-center px-6">
                 <GlobeAltIcon class="w-4 h-4" />
                 <p v-if="data != null">
-                  {{ data.city?.name }} , {{ data.place }}
+                  {{ data.place }}
                 </p>
               </div>
             </div>
