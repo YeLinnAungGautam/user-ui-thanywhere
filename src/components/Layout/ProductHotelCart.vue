@@ -35,7 +35,7 @@ onMounted(() => {
     slide.value.push(image);
   }
   // slide.value = [...slide.value, props.data?.cover_image];
-  console.log(slide.value, "this is image");
+  // console.log(slide.value, "this is image");
 });
 </script>
 

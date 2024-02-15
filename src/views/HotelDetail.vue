@@ -25,7 +25,7 @@ const data = ref(null);
 const getDetail = async (id) => {
   const res = await hotelStore.getDetailAction(id);
   data.value = res.result;
-  console.log(data.value);
+  console.log(data.value, "this is res");
   for (let x = 0; x < data?.value.images.length; x++) {
     let image = data?.value.images[x].image;
     imageSlide.value.push(image);
@@ -43,7 +43,7 @@ const imageSlide = ref([]);
 
 const showModal = ref(false);
 const ShowImage = () => {
-  console.log("image");
+  // console.log("image");
   showModal.value = !showModal.value;
 };
 
@@ -64,8 +64,8 @@ const changeAgain = async (id) => {
 };
 
 onMounted(async () => {
-  console.log(route.params.id);
-  console.log(data.value);
+  // console.log(route.params.id);
+  // console.log(data.value);
   await getDetail(route.params.id);
   await getRelate(route.params.id);
 });
@@ -158,7 +158,7 @@ onMounted(async () => {
           </div>
           <DescriPartVue :data="data && data" />
           <div class="col-span-1">
-            <BookingVue :data="data?.rooms" />
+            <BookingVue :data="data?.rooms" :facility="data?.facilities" />
           </div>
         </div>
 

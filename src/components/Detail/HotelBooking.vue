@@ -7,11 +7,13 @@ import {
   LockClosedIcon,
   FireIcon,
   HomeModernIcon,
+  BuildingStorefrontIcon,
 } from "@heroicons/vue/24/outline";
 import { ref, defineProps, defineEmits, onMounted } from "vue";
 
 const props = defineProps({
   data: [Object],
+  facility: [Object],
 });
 
 const room_type = ref("");
@@ -45,29 +47,24 @@ onMounted(() => {
     descriptioin: "",
     images: "",
   };
-  console.log(props.data, "this is room");
+  // console.log(props.facility, "this is room");
 });
 </script>
 
 <template>
   <div class="space-y-4 border border-black/10 px-5 mb-4 py-5 rounded-lg">
     <h1 class="text-xl font-medium">Facilities</h1>
-    <div class="grid grid-cols-2 gap-6 border-b border-black/10 pb-6">
-      <div class="flex justify-start items-center space-x-4">
-        <WifiIcon class="w-6 h-6" />
-        <p class="text-xs font-medium">Wifi free</p>
-      </div>
-      <div class="flex justify-start items-center space-x-4">
-        <LockClosedIcon class="w-6 h-6" />
-        <p class="text-xs font-medium">Security</p>
-      </div>
-      <div class="flex justify-start items-center space-x-4">
-        <FireIcon class="w-6 h-6" />
-        <p class="text-xs font-medium">Nice Services</p>
-      </div>
-      <div class="flex justify-start items-center space-x-4">
-        <MapPinIcon class="w-6 h-6" />
-        <p class="text-xs font-medium">Center</p>
+    <div
+      class="grid grid-cols-2 gap-6 border-b border-black/10 pb-6"
+      v-if="facility"
+    >
+      <div
+        class="flex justify-start items-center space-x-4"
+        v-for="f in facility"
+        :key="f.id"
+      >
+        <BuildingStorefrontIcon class="w-6 h-6" />
+        <p class="text-xs font-medium">{{ f.name }}</p>
       </div>
     </div>
     <div class="py-2 space-y-2">

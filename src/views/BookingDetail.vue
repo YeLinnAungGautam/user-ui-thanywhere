@@ -36,7 +36,7 @@ const getDetail = async (id) => {
 const relate = ref(null);
 const getRelate = async (id) => {
   const res = await vantourStore.getRelateAction(id);
-  console.log(res, "this is relate");
+  // console.log(res, "this is relate");
   relate.value = res;
 };
 
@@ -151,7 +151,8 @@ onMounted(async () => {
                 v-for="(d, index) in data?.destinations"
                 :key="index"
               >
-                <GlobeAltIcon class="w-4 h-4" />
+                <!-- <GlobeAltIcon class="w-4 h-4" /> -->
+
                 <p>{{ d.name }}</p>
               </div>
             </div>

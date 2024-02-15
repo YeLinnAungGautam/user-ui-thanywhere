@@ -4,6 +4,7 @@ import { useCategoryStore } from "../../stores/category";
 import { ref, defineProps, defineEmits, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
+import NoDataPageVue from "../../components/ProductCart/NoData.vue";
 
 const router = useRouter();
 
@@ -96,11 +97,14 @@ onMounted(async () => {
     </div>
     <div
       class="flex overflow-x-scroll scroll-container space-x-6 pb-4"
-      v-if="searchId"
+      v-if="searchId && dataArray.length > 0"
     >
       <div v-for="(a, index) in dataArray" :key="index">
         <ProductCartVue :data="a" />
       </div>
+    </div>
+    <div class="w-full" v-if="searchId && dataArray.length == 0">
+      <NoDataPageVue />
     </div>
   </div>
 </template>
