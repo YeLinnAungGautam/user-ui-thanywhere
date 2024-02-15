@@ -64,14 +64,14 @@ watch(destination_id, async (newValue) => {
         <div v-for="a in vantour?.data" :key="a">
           <ProductCartVue :data="a" />
         </div>
-        <div v-if="vantour?.data.length == 0">
+        <div v-if="vantour?.data.length == 0" class="col-span-3">
           <p class="text-xs">
             Your search - "{{ city_name }}" isn't data now !
           </p>
           <img
             src="https://img.freepik.com/free-photo/folder-icon-with-magnifying-document-search-file-scanning-icon-symbol-background-3d-illustration_56104-2072.jpg?size=626&ext=jpg&uid=R70610921&ga=GA1.2.302966112.1678379959&semt=ais"
             alt=""
-            class="mt-10"
+            class="w-full"
           />
         </div>
         <div

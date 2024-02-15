@@ -121,7 +121,7 @@ watch(search, async () => {
         </DialogTitle>
       </DialogPanel>
     </Modal>
-    <div class="px-4 border border-black/10 bg-white">
+    <div class="px-4 bg-white">
       <div class="flex justify-between items-center pt-4">
         <div>
           <ChevronLeftIcon class="w-5 h-5 text-main" @click="router.go(-1)" />

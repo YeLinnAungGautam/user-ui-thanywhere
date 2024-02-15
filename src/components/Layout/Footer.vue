@@ -13,12 +13,16 @@ const router = useRouter();
 const route = useRoute();
 
 const isHome = ref(false);
+const isSearch = ref(false);
 
 watch(() => {
   isHome.value =
     route.name?.includes("home") ||
     route.name?.includes("attractions") ||
     route.name?.includes("product-hotel");
+  isSearch.value =
+    route.name?.includes("product-van") ||
+    route.name?.includes("product-hot-search");
 });
 </script>
 
@@ -58,9 +62,15 @@ watch(() => {
       >
         <FunnelIcon
           class="w-8 h-8 hover:bg-main hover:rounded-full p-1 hover:w-8 hover:h-8"
+          :class="isSearch ? 'bg-main rounded-full text-white' : ''"
         />
       </div>
-      <p class="text-xs float-end text-center text-black/60">Search</p>
+      <p
+        class="text-xs float-end text-center text-black/60"
+        :class="isSearch ? 'text-main' : 'text-black/40'"
+      >
+        Search
+      </p>
     </div>
     <div class="space-y-1">
       <div

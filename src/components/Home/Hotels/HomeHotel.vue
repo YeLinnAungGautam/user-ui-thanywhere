@@ -34,7 +34,7 @@ const filterArray = (name) => {
 
 const goPage = (id, name) => {
   router.push({
-    name: "product-hotel-search",
+    name: "product-hot-search",
     params: {
       id: id,
       city: name,

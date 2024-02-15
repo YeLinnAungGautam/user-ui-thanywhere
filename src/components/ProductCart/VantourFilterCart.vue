@@ -84,8 +84,8 @@ onMounted(() => {
           </div>
         </div>
         <div class="flex justify-start items-center gap-1">
-          <!-- <MapPinIcon class="h-3 text-red" /> -->
-          <img :src="Pin" class="h-4" alt="" />
+          <MapPinIcon class="h-3 text-red mx-0.5" />
+          <!-- <img :src="Pin" class="h-4" alt="" /> -->
           <div class="flex justify-start items-center gap-1">
             <p
               class="text-[10px] text-red"

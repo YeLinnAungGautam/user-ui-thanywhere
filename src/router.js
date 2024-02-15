@@ -69,7 +69,7 @@ const routes = [{
     },
     {
         path: "/product/hotel/:id/:city",
-        name: "product-hotel-search",
+        name: "product-hot-search",
         component: productHotelSearchView,
         meta: {
             guest: true,

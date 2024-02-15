@@ -73,13 +73,13 @@ onMounted(async () => {
 
 <template>
   <div>
-    <div class="px-4 pt-6 border border-black/10 space-y-6">
+    <div class="px-4 border border-black/10 space-y-6">
       <div class="flex justify-between items-center relative">
         <h1
-          class="text-lg font-medium flex justify-start items-center gap-2"
+          class="text-lg font-medium flex justify-start items-center gap-2 absolute left-4 bottom-[-60px] z-50"
           @click="router.go(-1)"
         >
-          <ChevronLeftIcon class="w-5 h-5 text-main" />
+          <ChevronLeftIcon class="w-5 h-5 text-black" />
         </h1>
         <div
           class="flex justify-end items-center gap-8 absolute right-4 bottom-[-60px] z-50"

@@ -29,7 +29,7 @@ const props = defineProps({
 const searchD = (id) => {
   console.log(id);
   emit("searchD", id);
-  showModalHander();
+  showModal.value = false;
 };
 
 const showModal = ref(false);
@@ -65,7 +65,7 @@ onMounted(async () => {
 });
 
 watch(search, async () => {
-  await cityStore.getSimpleListAction({ search: search.value });
+  await categoryStore.getSimpleListAction({ search: search.value });
 });
 </script>
 <template>
@@ -107,7 +107,7 @@ watch(search, async () => {
               id=""
               class="text-sm border w-full py-2 px-4 rounded-md shadow-md"
               v-model="search"
-              placeholder="search city by name"
+              placeholder="search by name"
             />
             <div
               v-for="c in categories?.data"
@@ -117,12 +117,18 @@ watch(search, async () => {
             >
               {{ c.name }}
             </div>
-            <Pagination :data="city" @change-page="changePage" />
+            <Pagination :data="categories" @change-page="changePage" />
+            <div
+              class="px-4 bg-main text-white py-2 rounded shadow-md text-xs"
+              @click="searchD('')"
+            >
+              Clear Filter
+            </div>
           </div>
         </DialogTitle>
       </DialogPanel>
     </Modal>
-    <div class="px-4 border border-black/10 bg-white">
+    <div class="px-4 bg-white">
       <div class="flex justify-between items-center pt-4">
         <div>
           <ChevronLeftIcon
@@ -145,17 +151,18 @@ watch(search, async () => {
         >
           Filter
         </p>
-        <p
+        <!-- <p
           @click="searchD('')"
-          class="bg-main text-white py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
+          class="bg-white text-black py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
         >
           All
-        </p>
+        </p> -->
         <p
           v-for="p in city?.data"
           :key="p"
           @click="chooseCity(p)"
           class="py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
+          :class="name == p.name ? 'bg-main text-white' : ''"
         >
           {{ p.name }}
         </p>

@@ -4,7 +4,7 @@
       <Carousel :wrap-around="true">
         <Slide v-for="slide in image" :key="slide">
           <div
-            class="carousel__item h-[300px] sm:h-[400px] md:h-[450px] w-full relative text-center bg-center"
+            class="carousel__item h-auto w-full relative text-center bg-center"
           >
             <img :src="slide" alt="" class="h-full w-full object-cover" />
           </div>
@@ -35,7 +35,7 @@ import { ref, defineProps, defineEmits, onMounted } from "vue";
 const props = defineProps({
   image: Object,
 });
-
+// h-[300px] sm:h-[400px] md:h-[450px]
 // const slide = [
 //   {
 //     id: 1,
