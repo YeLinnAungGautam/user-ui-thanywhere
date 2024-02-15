@@ -41,7 +41,7 @@ watch(() => {
       </div>
       <p
         class="text-xs float-end text-center"
-        :class="isHome ? 'text-main' : 'text-black/40'"
+        :class="isHome ? 'text-main' : 'text-black/60'"
       >
         Home
       </p>
