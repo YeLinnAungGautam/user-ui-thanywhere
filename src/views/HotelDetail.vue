@@ -123,7 +123,7 @@ onMounted(async () => {
             </div>
             <div v-for="image in imageSlide" :key="image" class="">
               <a :href="image" target="_blink">
-                <img :src="image" alt="" class="h-full mb-2" />
+                <img :src="image" alt="" class="w-full h-auto mb-2" />
               </a>
             </div>
           </DialogTitle>

@@ -19,7 +19,7 @@ const emit = defineEmits();
 const categoryStore = useCategoryStore();
 const cityStore = useCityStore();
 const { categories } = storeToRefs(categoryStore);
-const { city } = storeToRefs(cityStore);
+const { city, cities } = storeToRefs(cityStore);
 
 const props = defineProps({
   name: String,
@@ -60,7 +60,8 @@ const search = ref("");
 
 onMounted(async () => {
   await categoryStore.getSimpleListAction();
-  await cityStore.getSimpleListAction();
+  // await cityStore.getSimpleListAction();
+  await cityStore.getListAction();
   console.log(city.value.data, "this is city");
 });
 
@@ -147,9 +148,9 @@ watch(search, async () => {
       >
         <p
           @click="showModalHander"
-          class="bg-main text-white py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
+          class="text-black py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
         >
-          Filter
+          <AdjustmentsHorizontalIcon class="w-5 h-5" />
         </p>
         <!-- <p
           @click="searchD('')"
@@ -158,7 +159,7 @@ watch(search, async () => {
           All
         </p> -->
         <p
-          v-for="p in city?.data"
+          v-for="p in cities?.data"
           :key="p"
           @click="chooseCity(p)"
           class="py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"

@@ -20,6 +20,21 @@ export const useCityStore = defineStore("city", {
                 throw error;
             }
         },
+        async getListAction(params) {
+            try {
+                this.loading = true;
+                const response = await axios.get("/customer-portal/cities?limit=1000", {
+                    params,
+                });
+                this.cities = response.data;
+                this.loading = false;
+
+                return response.data;
+            } catch (error) {
+                this.loading = false;
+                throw error;
+            }
+        },
         async getChangePage(url) {
             this.loading = true;
             const response = await axios.get(url);

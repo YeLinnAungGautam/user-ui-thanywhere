@@ -137,9 +137,9 @@ watch(search, async () => {
       >
         <p
           @click="showModalHander"
-          class="bg-main text-white py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
+          class="text-black py-1 px-3 border border-black/20 rounded-full hover:border-none cursor-pointer hover:text-red hover:font-semibold whitespace-nowrap"
         >
-          Filter City
+          <AdjustmentsHorizontalIcon class="w-5 h-5" />
         </p>
         <p
           @click="searchD('')"
