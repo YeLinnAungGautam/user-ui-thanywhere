@@ -24,11 +24,12 @@ const router = useRouter();
 const slide = ref([]);
 
 onMounted(() => {
-  for (let x = 0; x < props.data?.images.length; x++) {
-    let image = props.data?.images[x].image;
+  slide.value.push(props.data?.cover_image);
+  for (let x = 0; x < props.data?.destinations.length; x++) {
+    let image = props.data?.destinations[x].feature_image;
     slide.value.push(image);
   }
-  slide.value = [...slide.value, props.data?.cover_image];
+  // slide.value = [...slide.value, props.data?.cover_image];
   // console.log(slide.value, "this is image");
 });
 </script>

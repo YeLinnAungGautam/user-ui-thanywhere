@@ -14,12 +14,14 @@ import { ref, defineProps, defineEmits, onMounted } from "vue";
 const props = defineProps({
   data: [Object],
   facility: [Object],
+  lowest: Number,
 });
 
 const room_type = ref("");
 const date = ref("");
 
 const change = ref({
+  name: "",
   price: "-",
   max_person: "-",
   descriptioin: "",
@@ -29,6 +31,7 @@ const change = ref({
 const chooseType = () => {
   console.log(room_type.value);
   change.value = {
+    name: room_type.value.name,
     price: room_type.value.room_price,
     max_person: room_type.value.max_person,
     description: room_type.value.description,
@@ -41,12 +44,19 @@ const goContact = () => {
 };
 
 onMounted(() => {
-  change.value = {
-    price: "-",
-    max_person: "-",
-    descriptioin: "",
-    images: "",
-  };
+  console.log(props?.data, "this is data");
+  for (let i = 0; i < props?.data?.length; i++) {
+    if (props.data[i].room_price == props.lowest) {
+      change.value = {
+        name: props.data[i].name,
+        price: props.data[i].room_price,
+        max_person: props.data[i].max_person,
+        description: props.data[i].description,
+        images: props.data[i].images[0].image,
+      };
+    }
+  }
+
   // console.log(props.facility, "this is room");
 });
 </script>
@@ -68,7 +78,9 @@ onMounted(() => {
       </div>
     </div>
     <div class="py-2 space-y-2">
-      <p class="pb-3 text-base font-semibold">{{ room_type.name }}</p>
+      <p class="pb-3 text-base font-semibold" v-if="change.name">
+        {{ change.name }}
+      </p>
       <img
         v-if="!change.images"
         src="https://www.thespruce.com/thmb/vf_MEDifLRzzmQNjMyUDR1FGA14=/3000x0/filters:no_upscale():max_bytes(150000):strip_icc()/tips-for-decorating-a-beautiful-bedroom-1976169-hero-e960fbb8311c4b9b875a1813962d34eb.jpg"
@@ -81,11 +93,11 @@ onMounted(() => {
         alt=""
         class="w-full rounded-lg shadow-md mb-5"
       />
-      <h1 class="text-xl font-medium flex justify-start items-center">
+      <h1 class="text-lg font-medium flex justify-start items-center">
         <img src="../../../public/thailand-baht.png" alt="" class="w-5 h-5" />{{
           change.price
         }}
-        for {{ change.max_person }} persons
+        / night
       </h1>
       <div class="space-y-2" v-if="change.description">
         <label for="" class="text-xs">DESCRIPTON</label>
@@ -105,24 +117,14 @@ onMounted(() => {
         />
       </div>
       <div class="space-y-2">
-        <label for="" class="text-xs">CHECKIN DATE</label>
-        <!-- <input
-          type="date"
-          name=""
-          id=""
-          class="w-full px-4 py-2 border border-black/30 focus:outline-none rounded-md"
-        /> -->
-        <VueDatePicker v-model="date"></VueDatePicker>
-      </div>
-      <div class="space-y-2">
-        <label for="" class="text-xs">CHECKOUT DATE</label>
-        <!-- <input
-          type="date"
-          name=""
-          id=""
-          class="w-full px-4 py-2 border border-black/30 focus:outline-none rounded-md"
-        /> -->
-        <VueDatePicker v-model="date"></VueDatePicker>
+        <label for="" class="text-xs">CHECKIN & CHECKOUT DATE</label>
+
+        <VueDatePicker
+          v-model="date"
+          range
+          placeholder="Select check in & out date"
+          text-input
+        />
       </div>
 
       <div class="pt-3">

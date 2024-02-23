@@ -12,7 +12,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="space-y-4 py-4 border-b border-b-black/10 min-h-[200px]">
+    <div class="space-y-4 py-4 min-h-[200px]">
       <h1 class="text-lg font-medium">Description :</h1>
       <div class="space-y-3">
         <p class="text-justify">

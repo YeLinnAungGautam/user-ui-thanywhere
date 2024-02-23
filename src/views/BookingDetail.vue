@@ -26,11 +26,21 @@ const getDetail = async (id) => {
   const res = await vantourStore.getDetailAction(id);
   data.value = res.result;
   console.log(data.value);
-  for (let x = 0; x < data?.value.images.length; x++) {
-    let image = data?.value.images[x].image;
+  imageSlide.value.push(data?.value.cover_image);
+  for (let x = 0; x < data?.value.destinations.length; x++) {
+    let image = data?.value.destinations[x].feature_image;
     imageSlide.value.push(image);
   }
-  imageSlide.value = [...imageSlide.value, data?.value.cover_image];
+  // imageSlide.value = [...imageSlide.value, data?.value.cover_image];
+  imageClick.value.push(data?.value.cover_image);
+  for (let x = 0; x < data?.value.destinations.length; x++) {
+    let image = data?.value.destinations[x].feature_image;
+    imageClick.value.push(image);
+  }
+  for (let x = 0; x < data?.value.images.length; x++) {
+    let image = data?.value.images[x].image;
+    imageClick.value.push(image);
+  }
 };
 
 const relate = ref(null);
@@ -41,6 +51,7 @@ const getRelate = async (id) => {
 };
 
 const imageSlide = ref([]);
+const imageClick = ref([]);
 
 const showModal = ref(false);
 const ShowImage = () => {
@@ -122,7 +133,7 @@ onMounted(async () => {
                 </svg>
               </p>
             </div>
-            <div v-for="image in imageSlide" :key="image" class="">
+            <div v-for="image in imageClick" :key="image" class="">
               <a :href="image" target="_blink">
                 <img :src="image" alt="" class="w-full h-auto mb-2" />
               </a>
@@ -147,12 +158,12 @@ onMounted(async () => {
             <h1 class="text-lg font-medium">Destiantions :</h1>
             <div class="space-y-3">
               <div
-                class="flex justify-start gap-3 items-center px-6"
+                class="flex justify-start gap-3 items-center pr-6"
                 v-for="(d, index) in data?.destinations"
                 :key="index"
               >
                 <!-- <GlobeAltIcon class="w-4 h-4" /> -->
-
+                <img :src="d.category.icon" class="w-4 h-4" alt="" />
                 <p>{{ d.name }}</p>
               </div>
             </div>

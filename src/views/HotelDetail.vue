@@ -157,8 +157,12 @@ onMounted(async () => {
             </div>
           </div>
           <DescriPartVue :data="data && data" />
-          <div class="col-span-1">
-            <BookingVue :data="data?.rooms" :facility="data?.facilities" />
+          <div class="col-span-1" v-if="data?.rooms">
+            <BookingVue
+              :data="data?.rooms"
+              :facility="data?.facilities"
+              :lowest="data?.lowest_room_price"
+            />
           </div>
         </div>
 
