@@ -73,7 +73,10 @@ onMounted(() => {
         v-for="f in facility"
         :key="f.id"
       >
-        <BuildingStorefrontIcon class="w-6 h-6" />
+        <!-- <BuildingStorefrontIcon class="w-6 h-6" /> -->
+        <div class="w-6 h-6 overflow-hidden">
+          <img :src="f.image" class="w-full h-full object-center" alt="" />
+        </div>
         <p class="text-xs font-medium">{{ f.name }}</p>
       </div>
     </div>
