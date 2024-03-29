@@ -8,10 +8,8 @@ import { useVantourStore } from "../stores/vantour";
 import VantourListItem from "../components/VantourListItem.vue";
 import { useCityStore } from "../stores/city";
 import { useCarStore } from "../stores/car";
-import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
-const authStore = useAuthStore();
 const vantourStore = useVantourStore();
 const cityStore = useCityStore();
 const carStore = useCarStore();
@@ -51,10 +49,10 @@ const changePage = async (url) => {
 
 const getList = async () => {
   const res = await vantourStore.getSimpleListAction();
-
-  for (let i = 0; i < res.result.data.length; i++) {
-    chooseType.value.push(res.result.data[i].name);
-    choosePlace.value.push(res.result.data[i].place);
+  console.log(res, "this is list");
+  for (let i = 0; i < res.data.length; i++) {
+    chooseType.value.push(res.data[i].name);
+    choosePlace.value.push(res.data[i].place);
   }
 };
 
@@ -97,6 +95,7 @@ onMounted(async () => {
   await getList();
   await carStore.getSimpleListAction();
   await cityStore.getSimpleListAction();
+  console.log(cars.value, cities.value, "this is vantour page");
 });
 
 watch(search, async (newValue) => {
@@ -116,7 +115,7 @@ watch(car_id, async (newValue) => {
     <div class="py-5 px-4 space-y-4">
       <div class="relative">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          class="flex justify-start items-center gap-2 text-main absolute top-0 text-sm"
           @click="goBack"
         >
           <svg
@@ -135,32 +134,13 @@ watch(car_id, async (newValue) => {
           </svg>
           Back
         </div>
-        <div
-          class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
-          @click="createPage"
-          v-if="!authStore.isAgent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 6v12m6-6H6"
-            />
-          </svg>
-        </div>
-        <p class="text-main text-2xl font-semibold w-full text-center">
+
+        <p class="text-main text-lg font-semibold w-full text-center">
           Van Tours
         </p>
       </div>
       <div
-        class="bg-main/10 py-1 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/5 py-2 pl-3 pr-2 rounded-xl shadow flex justify-between items-center"
       >
         <div class="mr-2" @click="clear">
           <svg
@@ -199,7 +179,7 @@ watch(car_id, async (newValue) => {
       </div>
       <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
+          class="style-chooser bg-white rounded-xl border border-main min-w-[100px]"
           :options="cities?.data"
           label="name"
           v-model="city_id"
@@ -208,7 +188,7 @@ watch(car_id, async (newValue) => {
           placeholder="City "
         ></v-select>
         <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
+          class="style-chooser bg-white rounded-xl border border-main min-w-[100px]"
           :options="cars?.data"
           label="name"
           v-model="car_id"
@@ -227,7 +207,7 @@ watch(car_id, async (newValue) => {
         <img src="../../public/logo.jpg" class="rounded-full h-16 w-16" />
       </div>
       <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 pb-5"
         v-if="!loading"
       >
         <div v-for="(vantour, index) in vantours?.data" :key="index">

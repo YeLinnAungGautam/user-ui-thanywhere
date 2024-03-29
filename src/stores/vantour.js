@@ -7,16 +7,13 @@ export const useVantourStore = defineStore("vantour", {
   actions: {
     async getSimpleListAction(params) {
       try {
-        this.loading = true;
         const response = await axios.get(
           "/private-van-tours?limit=1000&page=1"
         );
-        this.vantour = response.data.result;
-        this.loading = false;
+        this.vantour = response.data;
 
         return response.data;
       } catch (error) {
-        this.loading = false;
         throw error;
       }
     },
@@ -30,8 +27,8 @@ export const useVantourStore = defineStore("vantour", {
           params: params,
         }
       );
-      this.vantours = response.data.result;
-      console.log(response.data.result, "pagi");
+      this.vantours = response.data;
+      console.log(response.data, "pagi");
       this.loading = false;
       return response.data;
     },
@@ -41,7 +38,7 @@ export const useVantourStore = defineStore("vantour", {
         const response = await axios.get("/private-van-tours", {
           params: params,
         });
-        this.vantours = response.data.result;
+        this.vantours = response.data;
         this.loading = false;
         console.log(response);
         return response.data;

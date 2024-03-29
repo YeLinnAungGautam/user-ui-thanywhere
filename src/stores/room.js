@@ -7,14 +7,11 @@ export const useRoomStore = defineStore("room", {
   actions: {
     async getSimpleListAction(params) {
       try {
-        this.loading = true;
         const response = await axios.get("/rooms?limit=1000&page=1");
-        this.rooms = response.data.result;
-        this.loading = false;
+        this.rooms = response.data;
 
         return response.data;
       } catch (error) {
-        this.loading = false;
         throw error;
       }
     },
@@ -23,7 +20,7 @@ export const useRoomStore = defineStore("room", {
       const response = await axios.get(url, {
         params: params,
       });
-      this.rooms = response.data.result;
+      this.rooms = response.data;
       this.loading = false;
       return response.data;
     },
@@ -33,7 +30,7 @@ export const useRoomStore = defineStore("room", {
         const response = await axios.get("/rooms", {
           params: params,
         });
-        this.rooms = response.data.result;
+        this.rooms = response.data;
         this.loading = false;
         console.log(response);
         return response.data;

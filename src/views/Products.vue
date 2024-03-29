@@ -10,6 +10,7 @@ import { useGrouptourStore } from "../stores/grouptour";
 import { useEntranceStore } from "../stores/entrance";
 import { useRestaurantStore } from "../stores/restaurant";
 import { useAirLineStore } from "../stores/airline";
+import HomeScrollTextVue from "../components/home/HomeScrollText.vue";
 
 const router = useRouter();
 const entranceStore = useEntranceStore();
@@ -63,12 +64,12 @@ const clear = () => {
 onMounted(async () => {
   await hotelStore.getListAction();
   await vantourStore.getListAction();
-  await airportStore.getListAction();
-  await grouptourStore.getListAction();
-  await entranceStore.getListAction();
-  await airlineStore.getListAction();
-  await restaurantStore.getListAction();
-  console.log(hotels.value);
+  // await airportStore.getListAction();
+  // await grouptourStore.getListAction();
+  // await entranceStore.getListAction();
+  // await airlineStore.getListAction();
+  // await restaurantStore.getListAction();
+  // console.log(vantours.value, "this is vantours");
 });
 </script>
 
@@ -76,9 +77,9 @@ onMounted(async () => {
   <div class="bg-white">
     <NavbarVue />
     <div class="py-5 px-4 space-y-4">
-      <p class="text-main text-2xl font-semibold">Products</p>
+      <HomeScrollTextVue />
       <div
-        class="bg-main/10 py-2 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/5 py-2 pl-3 pr-2 rounded-xl flex justify-between items-center shadow"
       >
         <div class="mr-2" @click="clear">
           <svg
@@ -114,64 +115,103 @@ onMounted(async () => {
           placeholder="Search"
         ></v-select>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 py-4">
+      <div
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pb-4 pt-3"
+      >
         <div
-          class="space-y-2"
+          class="space-y-2 pb-4"
           @click="goVantours"
           v-if="search == 'van tour' || search == 'all' || search == ''"
         >
-          <img
-            src="../../public/privatevantour.jpg"
-            alt=""
-            class="rounded-lg"
-          />
-          <p class="text-lg pl-2 font-semibold text-main">Van Tours</p>
-          <p class="text-sm pl-2">{{ vantours?.meta.total }} Packages</p>
+          <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
+            <img
+              src="../../public/privatevantour.jpg"
+              class="w-full h-full object-cover object-center"
+              alt=""
+            />
+          </div>
+          <p class="text-base pl-2 font-semibold text-main">Van Tours</p>
+          <p class="text-xs pl-2">{{ vantours?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2"
+          class="space-y-2 pb-4"
           @click="goHotels"
           v-if="search == 'hotel' || search == 'all' || search == ''"
         >
-          <img src="../../public/hotels.jpg" alt="" class="rounded-lg" />
-          <p class="text-lg pl-2 font-semibold text-main">Hotels</p>
-          <p class="text-sm pl-2">{{ hotels?.meta.total }} Packages</p>
+          <!-- <img  alt="" class="rounded-xl" /> -->
+          <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
+            <img
+              src="../../public/hotels.jpg"
+              class="w-full h-full object-cover object-center"
+              alt=""
+            />
+          </div>
+          <p class="text-base pl-2 font-semibold text-main">Hotels</p>
+          <p class="text-xs pl-2">{{ hotels?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2"
+          class="space-y-2 pb-4"
           v-if="search == 'attraction' || search == 'all' || search == ''"
           @click="goAttraction"
         >
-          <img src="../../public/attraction.jpg" alt="" class="rounded-lg" />
-          <p class="text-lg pl-2 font-semibold text-main">Attractions</p>
-          <p class="text-sm pl-2">{{ entrances?.meta.total }} Packages</p>
+          <!-- <img src="../../public/attraction.jpg" alt="" class="rounded-xl" /> -->
+          <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
+            <img
+              src="../../public/attraction.jpg"
+              class="w-full h-full object-cover object-center"
+              alt=""
+            />
+          </div>
+          <p class="text-base pl-2 font-semibold text-main">Attractions</p>
+          <p class="text-xs pl-2">{{ entrances?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2"
+          class="space-y-2 pb-4"
           @click="goGrouptour"
           v-if="search == 'group tour' || search == 'all' || search == ''"
         >
-          <img src="../../public/grouptour.jpg" alt="" class="rounded-lg" />
-          <p class="text-lg pl-2 font-semibold text-main">Group Tours</p>
-          <p class="text-sm pl-2">{{ grouptours?.meta.total }} Packages</p>
+          <!-- <img src="../../public/grouptour.jpg" alt="" class="rounded-xl" /> -->
+          <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
+            <img
+              src="../../public/grouptour.jpg"
+              class="w-full h-full object-cover object-center"
+              alt=""
+            />
+          </div>
+          <p class="text-base pl-2 font-semibold text-main">Group Tours</p>
+          <p class="text-xs pl-2">{{ grouptours?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2"
+          class="space-y-2 pb-4"
           v-if="search == 'airline' || search == 'all' || search == ''"
           @click="router.push({ name: 'airline' })"
         >
-          <img src="../../public/flightticket.jpg" alt="" class="rounded-lg" />
-          <p class="text-lg pl-2 font-semibold text-main">AirLine</p>
-          <p class="text-sm pl-2">{{ airlines?.meta.total }} Packages</p>
+          <!-- <img src="../../public/flightticket.jpg" alt="" class="rounded-xl" /> -->
+          <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
+            <img
+              src="../../public/flightticket.jpg"
+              class="w-full h-full object-cover object-center"
+              alt=""
+            />
+          </div>
+          <p class="text-base pl-2 font-semibold text-main">AirLine</p>
+          <p class="text-xs pl-2">{{ airlines?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2"
+          class="space-y-2 pb-4"
           v-if="search == 'restaurant' || search == 'all' || search == ''"
           @click="router.push({ name: 'restaurant' })"
         >
-          <img src="../../public/restaurant.jpg" alt="" class="rounded-lg" />
-          <p class="text-lg pl-2 font-semibold text-main">Restaurant</p>
-          <p class="text-sm pl-2">{{ restaurants?.meta.total }} Packages</p>
+          <!-- <img src="../../public/restaurant.jpg" alt="" class="rounded-xl" /> -->
+          <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
+            <img
+              src="../../public/restaurant.jpg"
+              class="w-full h-full object-cover object-center"
+              alt=""
+            />
+          </div>
+          <p class="text-base pl-2 font-semibold text-main">Restaurant</p>
+          <p class="text-xs pl-2">{{ restaurants?.meta.total }} Packages</p>
         </div>
       </div>
     </div>

@@ -3,138 +3,154 @@
 @tailwind components;
 @tailwind utilities;
 .shadow-custom {
-  box-shadow: 5px 5px 10px #e0e0e0, -5px -5px 10px #ffffff;
+    box-shadow: 5px 5px 10px #e0e0e0, -5px -5px 10px #ffffff;
 }
 
 .vs--single .vs__selected {
-  background-color: transparent;
-  border-color: transparent;
-  color: #ff6300;
+    background-color: transparent;
+    border-color: transparent;
+    color: #ff6300;
 }
 
 div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
-  border: 0;
-  border-radius: 3.25em !important;
-  background: initial;
-  background-color: #6e7881;
-  color: #fff;
-  font-size: 12px !important;
+    border: 0;
+    border-radius: 3.25em !important;
+    background: initial;
+    background-color: #6e7881;
+    color: #fff;
+    font-size: 12px !important;
 }
 
 div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
-  border: 0;
-  border-radius: 3.25em !important;
-  background: initial;
-  background-color: #6e7881;
-  color: #fff;
-  font-size: 12px !important;
+    border: 0;
+    border-radius: 3.25em !important;
+    background: initial;
+    background-color: #6e7881;
+    color: #fff;
+    font-size: 12px !important;
 }
 
 div:where(.swal2-container) .swal2-html-container {
-  z-index: 1;
-  justify-content: center;
-  margin: 1em 1.6em 0.3em;
-  padding: 0;
-  overflow: auto;
-  color: inherit;
-  font-size: 16px !important;
-  font-weight: normal;
-  line-height: normal;
-  text-align: center;
-  word-wrap: break-word;
-  word-break: break-word;
+    z-index: 1;
+    justify-content: center;
+    margin: 1em 1.6em 0.3em;
+    padding: 0;
+    overflow: auto;
+    color: inherit;
+    font-size: 16px !important;
+    font-weight: normal;
+    line-height: normal;
+    text-align: center;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .swal2-container,
 .swal2-popup,
 .swal2-title {
-  font-family: "Poppins", sans-serif;
-  color: #ff6300;
-  font-size: 20px !important;
+    font-family: "Poppins", sans-serif;
+    color: #ff6300;
+    font-size: 20px !important;
 }
 
 .vs__open-indicator {
-  fill: #ff6300 !important;
-  transform: scale(var(--vs-controls-size));
-  transition: transform var(--vs-transition-duration)
-    var(--vs-transition-timing-function);
-  transition-timing-function: var(--vs-transition-timing-function);
+    fill: #ff6300 !important;
+    transform: scale(var(--vs-controls-size));
+    transition: transform var(--vs-transition-duration) var(--vs-transition-timing-function);
+    transition-timing-function: var(--vs-transition-timing-function);
 }
 
 .vs__search {
-  color: #ff6300 !important;
-  font-size: 14px !important;
+    color: #ff6300 !important;
+    font-size: 14px !important;
 }
 
 .small-title-text {
-  font-size: 16px !important;
-  padding-top: 8px !important;
-  /* Adjust the font size as needed */
+    font-size: 16px !important;
+    padding-top: 8px !important;
+    /* Adjust the font size as needed */
 }
 
 .swal2-container,
 .swal2-popup,
 .swal2-title {
-  font-family: "Poppins", sans-serif;
-  color: #ff6300;
+    font-family: "Poppins", sans-serif;
+    color: #ff6300;
 }
 
 div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
-  border: 0;
-  border-radius: 0.25em;
-  background: initial;
-  background-color: #ff613c !important;
-  color: #fff;
-  font-size: 1em;
+    border: 0;
+    border-radius: 0.25em;
+    background: initial;
+    background-color: #ff613c !important;
+    color: #fff;
+    font-size: 1em;
 }
 
 .page-enter,
 .page-leave-to
-/* .page-leave-active in <2.1.8 */ {
-  opacity: 0;
+/* .page-leave-active in <2.1.8 */
+
+{
+    opacity: 0;
 }
 
 :root {
-  --vs-colors--lightest: rgba(60, 60, 60, 0.26);
-  --vs-colors--light: rgba(60, 60, 60, 0.5);
-  --vs-colors--dark: #333;
-  --vs-colors--darkest: rgba(0, 0, 0, 0.15);
-  --vs-search-input-color: inherit;
-  --vs-search-input-placeholder-color: inherit;
-  --vs-font-size: 1rem;
-  --vs-line-height: 1.4;
-  --vs-state-disabled-bg: rgb(248, 248, 248);
-  --vs-state-disabled-color: var(--vs-colors--light);
-  --vs-state-disabled-controls-color: var(--vs-colors--light);
-  --vs-state-disabled-cursor: not-allowed;
-  --vs-border-color: transparent !important;
-  --vs-border-width: 1px;
-  --vs-border-style: solid;
-  --vs-border-radius: 4px;
-  --vs-actions-padding: 4px 6px 0 3px;
-  --vs-controls-color: var(--vs-colors--light);
-  --vs-controls-size: 1;
-  --vs-controls--deselect-text-shadow: 0 1px 0 #fff;
-  --vs-selected-bg: #f0f0f0;
-  --vs-selected-color: var(--vs-colors--dark);
-  --vs-selected-border-color: var(--vs-border-color);
-  --vs-selected-border-style: var(--vs-border-style);
-  --vs-selected-border-width: var(--vs-border-width);
-  --vs-dropdown-bg: #fff;
-  --vs-dropdown-color: inherit;
-  --vs-dropdown-z-index: 1000;
-  --vs-dropdown-min-width: 160px;
-  --vs-dropdown-max-height: 350px;
-  --vs-dropdown-box-shadow: 0px 3px 6px 0px var(--vs-colors--darkest);
-  --vs-dropdown-option-bg: #000;
-  --vs-dropdown-option-color: var(--vs-dropdown-color);
-  --vs-dropdown-option-padding: 3px 20px;
-  --vs-dropdown-option--active-bg: #5897fb;
-  --vs-dropdown-option--active-color: #fff;
-  --vs-dropdown-option--deselect-bg: #fb5858;
-  --vs-dropdown-option--deselect-color: #fff;
-  --vs-transition-timing-function: cubic-bezier(1, -0.115, 0.975, 0.855);
-  --vs-transition-duration: 0.15s;
-  --animate-duration: 500ms;
-  --animate-delay: 0.3s;
+    --vs-colors--lightest: rgba(60, 60, 60, 0.26);
+    --vs-colors--light: rgba(60, 60, 60, 0.5);
+    --vs-colors--dark: #333;
+    --vs-colors--darkest: rgba(0, 0, 0, 0.15);
+    --vs-search-input-color: inherit;
+    --vs-search-input-placeholder-color: inherit;
+    --vs-font-size: 1rem;
+    --vs-line-height: 1.4;
+    --vs-state-disabled-bg: rgb(248, 248, 248);
+    --vs-state-disabled-color: var(--vs-colors--light);
+    --vs-state-disabled-controls-color: var(--vs-colors--light);
+    --vs-state-disabled-cursor: not-allowed;
+    --vs-border-color: transparent !important;
+    --vs-border-width: 1px;
+    --vs-border-style: solid;
+    --vs-border-radius: 4px;
+    --vs-actions-padding: 4px 6px 0 3px;
+    --vs-controls-color: var(--vs-colors--light);
+    --vs-controls-size: 1;
+    --vs-controls--deselect-text-shadow: 0 1px 0 #fff;
+    --vs-selected-bg: #f0f0f0;
+    --vs-selected-color: var(--vs-colors--dark);
+    --vs-selected-border-color: var(--vs-border-color);
+    --vs-selected-border-style: var(--vs-border-style);
+    --vs-selected-border-width: var(--vs-border-width);
+    --vs-dropdown-bg: #fff;
+    --vs-dropdown-color: inherit;
+    --vs-dropdown-z-index: 1000;
+    --vs-dropdown-min-width: 160px;
+    --vs-dropdown-max-height: 350px;
+    --vs-dropdown-box-shadow: 0px 3px 6px 0px var(--vs-colors--darkest);
+    --vs-dropdown-option-bg: #000;
+    --vs-dropdown-option-color: var(--vs-dropdown-color);
+    --vs-dropdown-option-padding: 3px 20px;
+    --vs-dropdown-option--active-bg: #5897fb;
+    --vs-dropdown-option--active-color: #fff;
+    --vs-dropdown-option--deselect-bg: #fb5858;
+    --vs-dropdown-option--deselect-color: #fff;
+    --vs-transition-timing-function: cubic-bezier(1, -0.115, 0.975, 0.855);
+    --vs-transition-duration: 0.15s;
+    --animate-duration: 500ms;
+    --animate-delay: 0.3s;
+}
+
+.dp__input {
+    background-color: var(--dp-background-color);
+    border-radius: 10px !important;
+    font-family: var(--dp-font-family);
+    border: 1px solid #ff4f4f !important;
+    outline: none;
+    transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    width: 100%;
+    font-size: var(--dp-font-size);
+    line-height: calc(var(--dp-font-size) * 1.5);
+    padding: var(--dp-input-padding);
+    color: var(--dp-text-color);
+    box-sizing: border-box;
 }

@@ -9,7 +9,7 @@ export const useCityStore = defineStore("city", {
       try {
         this.loading = true;
         const response = await axios.get("/cities?limit=1000&page=1");
-        this.cities = response.data.result;
+        this.cities = response.data;
         this.loading = false;
 
         return response.data;
@@ -21,7 +21,7 @@ export const useCityStore = defineStore("city", {
     async getChangePage(url) {
       this.loading = true;
       const response = await axios.get(url);
-      this.cities = response.data.result;
+      this.cities = response.data;
       this.loading = false;
       return response.data;
     },
@@ -31,7 +31,7 @@ export const useCityStore = defineStore("city", {
         const response = await axios.get("/cities", {
           params: params,
         });
-        this.cities = response.data.result;
+        this.cities = response.data;
         this.loading = false;
         console.log(response);
         return response.data;

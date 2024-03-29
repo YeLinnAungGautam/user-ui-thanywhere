@@ -9,7 +9,7 @@ export const useCarStore = defineStore("car", {
       try {
         this.loading = true;
         const response = await axios.get("/cars");
-        this.cars = response.data.result;
+        this.cars = response.data;
         this.loading = false;
 
         return response.data;
@@ -21,7 +21,7 @@ export const useCarStore = defineStore("car", {
     async getChangePage(url) {
       this.loading = true;
       const response = await axios.get(url);
-      this.cars = response.data.result;
+      this.cars = response.data;
       this.loading = false;
       return response.data;
     },
@@ -31,7 +31,7 @@ export const useCarStore = defineStore("car", {
         const response = await axios.get("/cars", {
           params: params,
         });
-        this.cars = response.data.result;
+        this.cars = response.data;
         this.loading = false;
         console.log(response);
         return response.data;

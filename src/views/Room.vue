@@ -6,14 +6,12 @@ import NavbarVue from "../components/Navbar.vue";
 import RoomsItemVue from "../components/RoomsItem.vue";
 import { useHotelStore } from "../stores/hotel";
 import { useRoomStore } from "../stores/room";
-import { useAuthStore } from "../stores/auth";
 import NoDataPage from "../components/NoDataPage.vue";
 import Pagination from "../components/Pagination.vue";
 
 const router = useRouter();
 const route = useRoute();
 const hotelStore = useHotelStore();
-const authStore = useAuthStore();
 const roomStore = useRoomStore();
 
 const name = ref("kaung");
@@ -48,6 +46,7 @@ const goBack = () => {
 
 const start_date = ref("");
 const end_date = ref("");
+const date = ref("");
 const periodAjj = ref("");
 
 const searchFunction = async () => {
@@ -60,8 +59,7 @@ const clear = () => {
   hotel_id.value = "";
   hotel_name.value = "";
   order_by_price.value = "";
-  start_date.value = "";
-  end_date.value = "";
+  date.value = "";
   periodAjj.value = "";
 };
 const watchSystem = computed(() => {
@@ -94,6 +92,9 @@ onMounted(async () => {
   hotel_id.value = route.params.id;
   hotel_name.value = route.params.name;
   await hotelStore.getSimpleListAction();
+  const startDate = new Date();
+  const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+  date.value = [startDate, endDate];
   // await roomStore.getListAction();
   // console.log(route.params.id, hotels.value, "this is params id");
 });
@@ -118,7 +119,7 @@ watch(periodAjj, async (newValue) => {
     <div class="py-5 px-4 space-y-4">
       <div class="relative">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          class="flex justify-start items-center gap-2 text-main absolute top-0 text-sm"
           @click="goBack"
         >
           <svg
@@ -137,30 +138,11 @@ watch(periodAjj, async (newValue) => {
           </svg>
           Back
         </div>
-        <div
-          class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
-          @click="createPage"
-          v-if="!authStore.isAgent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 6v12m6-6H6"
-            />
-          </svg>
-        </div>
-        <p class="text-main text-2xl font-semibold w-full text-center">Rooms</p>
+
+        <p class="text-main text-lg font-semibold w-full text-center">Rooms</p>
       </div>
       <div
-        class="bg-main/10 py-1 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/5 py-2 pl-3 pr-2 rounded-xl shadow flex justify-between items-center"
       >
         <div class="mr-2" @click="clear">
           <svg
@@ -170,7 +152,7 @@ watch(periodAjj, async (newValue) => {
               !order_by_price &&
               !start_date &&
               !end_date &&
-              periodAjj
+              !periodAjj
             "
             fill="none"
             viewBox="0 0 24 24"
@@ -213,70 +195,23 @@ watch(periodAjj, async (newValue) => {
       </div>
       <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[150px]"
+          class="style-chooser bg-white rounded-xl py-1 border border-main min-w-[100px]"
           :options="chooseType"
           v-model="order_by_price"
           label="name"
           :clearable="false"
           :reduce="(d) => d.name"
-          placeholder="Sort by Price"
+          placeholder="Sort"
         ></v-select>
-        <!-- <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Pax"
-        ></v-select> -->
-        <div class="relative">
-          <p
-            class="absolute text-main top-[25%] left-[16%] text-sm"
-            v-if="!start_date"
-          >
-            Checkin Date
-          </p>
-          <input
-            type="date"
-            v-model="start_date"
-            class="bg-white rounded-full border border-main min-w-[150px] h-10 text-xs px-2 py-2"
-            title="start date"
+
+        <div class="w-[220px]">
+          <VueDatePicker
+            v-model="date"
+            range
+            :format="'yyyy-MM-dd'"
+            placeholder=" select date range"
           />
         </div>
-        <div class="relative">
-          <p
-            class="absolute text-main top-[25%] left-[16%] text-sm"
-            v-if="!end_date"
-          >
-            Checkout Date
-          </p>
-          <input
-            type="date"
-            v-model="end_date"
-            class="bg-white rounded-full border border-main min-w-[150px] h-10 text-xs px-2 py-2"
-            title="end date"
-          />
-        </div>
-        <button
-          class="px-2 py-1.5 bg-[#ff613c] rounded-full text-white"
-          @click="searchFunction"
-          v-if="start_date && end_date"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-            />
-          </svg>
-        </button>
       </div>
       <div
         class="relative flex justify-center items-center py-[50%]"

@@ -7,10 +7,9 @@ export const useHotelStore = defineStore("hotel", {
   actions: {
     async getSimpleListAction(params) {
       try {
-        this.loading = true;
         const response = await axios.get("/hotels?limit=1000&page=1");
-        this.hotel = response.data.result;
-        this.loading = false;
+        this.hotel = response.data;
+
         console.log(response);
         return response.data;
       } catch (error) {
@@ -23,7 +22,7 @@ export const useHotelStore = defineStore("hotel", {
       const response = await axios.get(url, {
         params: params,
       });
-      this.hotels = response.data.result;
+      this.hotels = response.data;
       this.loading = false;
       return response.data;
     },
@@ -33,7 +32,7 @@ export const useHotelStore = defineStore("hotel", {
         const response = await axios.get("/hotels", {
           params: params,
         });
-        this.hotels = response.data.result;
+        this.hotels = response.data;
         this.loading = false;
         console.log(response);
         return response.data;

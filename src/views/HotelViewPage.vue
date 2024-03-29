@@ -18,9 +18,9 @@ const loading = ref(false);
 const detail = async () => {
   loading.value = true;
   const res = await hotelStore.getDetailAction(route.params.id);
-  console.log(res);
+  console.log(res, "this is hotel");
   loading.value = false;
-  hotel.value = res.result;
+  hotel.value = res.data;
 };
 
 const roomView = (id) => {
@@ -42,12 +42,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="space-y-2 rounded-lg">
+  <div class="space-y-2 rounded-xl">
     <NavbarVue />
     <div class="px-4">
-      <div class="relative">
+      <div class="relative pt-2">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          class="flex justify-start items-center gap-2 text-main absolute top-2 text-sm"
           @click="goBack"
         >
           <svg
@@ -67,7 +67,7 @@ onMounted(async () => {
           Back
         </div>
 
-        <p class="text-main text-lg pt-1 font-semibold w-full text-center">
+        <p class="text-main text-lg font-semibold w-full text-center">
           Hotel Detail
         </p>
       </div>
@@ -76,7 +76,7 @@ onMounted(async () => {
           <Carousel :wrap-around="true" :autoplay="5000">
             <Slide v-for="i in hotel?.images" :key="i.id">
               <div class="carousel__item">
-                <div class="h-auto w-full overflow-hidden rounded-lg">
+                <div class="h-auto w-full overflow-hidden rounded-xl">
                   <img
                     :src="i.image"
                     alt=""
@@ -100,7 +100,7 @@ onMounted(async () => {
           </Carousel>
         </div>
         <div v-if="hotel?.images.length == 0">
-          <div class="h-auto w-full overflow-hidden rounded-lg">
+          <div class="h-auto w-full overflow-hidden rounded-xl">
             <img
               src="../../public/default-image.jpg"
               alt=""
@@ -108,71 +108,91 @@ onMounted(async () => {
             />
           </div>
         </div>
-        <div class="space-y-4 px-2 text-lg font-semibold mt-3 text-main">
+        <div class="space-y-4 px-2 text-base font-semibold mt-3 text-main">
           <p class="">{{ hotel?.name }}</p>
           <div class="grid grid-cols-2 gap-2">
-            <p class="border border-main text-xs text-start px-4 py-1">City</p>
+            <p class="text-xs text-start py-1">City</p>
             <p
-              class="border border-main text-start px-4 py-1 font-normal text-xs"
+              class="text-start px-4 py-1 bg-main/10 font-normal text-xs rounded-md"
             >
               {{ hotel?.city?.name }}
             </p>
-            <p class="border border-main text-xs text-start px-4 py-1">Place</p>
+            <p class="text-xs text-start py-1">Place</p>
             <p
-              class="border border-main text-start px-4 py-1 font-normal text-xs"
+              class="text-start px-4 py-1 bg-main/10 font-normal text-xs rounded-md"
             >
               {{ hotel?.place }}
             </p>
-            <p class="border border-main text-xs text-start px-4 py-1">
-              Lowest Price
-            </p>
+            <p class="text-xs text-start py-1">Lowest Price</p>
             <p
-              class="border border-main text-start px-4 py-1 font-normal text-xs"
+              class="text-start px-4 py-1 bg-main/10 font-normal text-xs rounded-md"
             >
               {{ hotel?.lowest_room_price }} THB
             </p>
+            <p
+              class="col-span-2 text-xs text-black/80 text-justify leading-relaxed tracking-wide py-3 font-normal"
+            >
+              {{ hotel?.description }}
+            </p>
           </div>
         </div>
-
-        <div class="px-2 pt-4 pb-6 space-y-4 text-main font-semibold">
-          <p>Related Rooms</p>
+        <div class="py-4 px-2 space-y-3">
+          <p class="text-main font-semibold">Hotel Facilities</p>
           <div
-            class="flex mb-5 pb-4 space-x-3 rounded-lg shadow-sm overflow-x-scroll"
+            class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4"
+            v-if="hotel?.facilities.length > 0"
           >
             <div
-              class="bg-white text-xs rounded shadow-md my-auto text-black min-w-[200px] space-y-1 h-auto border border-main"
+              v-for="f in hotel?.facilities"
+              :key="f.id"
+              class="flex justify-start gap-4"
+            >
+              <img :src="f.image" alt="" class="w-6 h-6" />
+              <p class="text-xs">{{ f.name }}</p>
+            </div>
+          </div>
+          <div v-if="hotel?.facilities.length == 0">
+            <p class="text-xs">Facilities isn't in this detail ! 😒</p>
+          </div>
+        </div>
+        <div class="px-2 pt-4 pb-6 space-y-4 text-main font-semibold">
+          <p class="pb-3 pt-2">Related Rooms</p>
+          <div class="flex mb-5 pb-4 space-x-4 overflow-x-scroll">
+            <div
+              class="bg-white text-xs rounded-md my-auto text-black min-w-[250px] overflow-hidden space-y-1 h-auto"
               v-for="(r, index) in hotel?.rooms"
               :key="index"
+              @click="roomView(r.id)"
             >
-              <div class="h-[120px] w-full overflow-hidden">
+              <div class="h-[150px] w-full overflow-hidden rounded-xl">
                 <img
                   v-if="r.images.length > 0"
                   :src="r.images[0]?.image"
                   alt=""
-                  class="object-cover w-full h-[120px]"
+                  class="object-cover w-full h-full object-center"
                 />
                 <img
                   v-if="r.images.length == 0"
                   src="https://www.survivorsuk.org/wp-content/uploads/2017/01/no-image.jpg"
                   alt=""
-                  class="object-cover w-full h-[120px]"
+                  class="object-cover w-full h-full object-center"
                 />
               </div>
 
-              <div class="h-[180px] space-y-1 py-4 px-4">
+              <div class="h-[180px] space-y-3 py-4 px-2">
                 <p class="text-main">Room Name</p>
                 <p class="font-normal">{{ r.name }}</p>
                 <p class="text-main">Room Price</p>
-                <p class="font-normal">{{ r.room_price }} THB</p>
-                <p class="text-main">Max Person</p>
-                <p class="font-normal">{{ r.max_person }}</p>
+                <p class="font-normal">
+                  {{ r.room_price }} THB for {{ r.max_person }} Max Person
+                </p>
               </div>
-              <div
-                class="col-span-2 bg-main pl-2 text-white py-2"
-                @click="roomView(r.id)"
+              <!-- <div
+                class="col-span-2 bg-main pl-2 text-white text-center py-2"
+                
               >
-                More Info ...
-              </div>
+                More Detail
+              </div> -->
             </div>
           </div>
         </div>

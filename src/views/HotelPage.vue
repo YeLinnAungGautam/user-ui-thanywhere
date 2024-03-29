@@ -8,11 +8,9 @@ import Pagination from "../components/Pagination.vue";
 import HotelsItemVue from "../components/HotelsItem.vue";
 import { useCityStore } from "../stores/city";
 import NoDataPageVue from "../components/NoDataPage.vue";
-import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const hotelStore = useHotelStore();
-const authStore = useAuthStore();
 const cityStore = useCityStore();
 
 const { hotels, hotel, loading } = storeToRefs(hotelStore);
@@ -51,11 +49,11 @@ const changePage = async (url) => {
 const getList = async () => {
   const res = await hotelStore.getSimpleListAction();
 
-  for (let i = 0; i < res.result.data.length; i++) {
-    chooseType.value.push(res.result.data[i].name);
+  for (let i = 0; i < res.data.length; i++) {
+    chooseType.value.push(res.data[i].name);
   }
-  for (let i = 0; i < res.result.data.length; i++) {
-    choosePlace.value.push(res.result.data[i].place);
+  for (let i = 0; i < res.data.length; i++) {
+    choosePlace.value.push(res.data[i].place);
   }
 };
 
@@ -124,7 +122,7 @@ watch(place, async (newValue) => {
     <div class="py-5 px-4 space-y-4">
       <div class="relative">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          class="flex justify-start items-center gap-2 text-main absolute top-0 text-sm"
           @click="goBack"
         >
           <svg
@@ -143,32 +141,11 @@ watch(place, async (newValue) => {
           </svg>
           Back
         </div>
-        <div
-          class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
-          @click="createPage"
-          v-if="!authStore.isAgent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 6v12m6-6H6"
-            />
-          </svg>
-        </div>
-        <p class="text-main text-2xl font-semibold w-full text-center">
-          Hotels
-        </p>
+
+        <p class="text-main text-lg font-semibold w-full text-center">Hotels</p>
       </div>
       <div
-        class="bg-main/10 py-1 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/5 py-2 pl-3 pr-2 rounded-xl flex justify-between items-center shadow"
       >
         <div class="mr-2" @click="clear">
           <svg
@@ -207,7 +184,7 @@ watch(place, async (newValue) => {
       </div>
       <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
+          class="style-chooser bg-white rounded-xl border border-main min-w-[100px]"
           :options="cities?.data"
           label="name"
           v-model="city_id"
@@ -216,7 +193,7 @@ watch(place, async (newValue) => {
           placeholder="City"
         ></v-select>
         <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
+          class="style-chooser bg-white rounded-xl border border-main min-w-[100px]"
           :options="choosePlace"
           label="name"
           v-model="place"
@@ -224,40 +201,14 @@ watch(place, async (newValue) => {
           :reduce="(d) => d"
           placeholder="Place"
         ></v-select>
-        <div
-          @click="priceShow = true"
-          v-if="!priceShow"
-          class="bg-white rounded-full border border-main min-w-[100px] text-main px-2 py-1"
-        >
-          <div class="flex justify-between items-center">
-            price
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.9"
-              stroke="currentColor"
-              class="w-4 h-4 font-bold"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-              />
-            </svg>
-          </div>
-        </div>
-        <div
-          class="text-sm flex justify-center items-center gap-2"
-          v-if="priceShow"
-        >
+
+        <div class="text-sm flex justify-center items-center gap-2">
           <input
             type="number"
             v-model="price"
-            class="bg-white text-xs focus:ring-0 border-main rounded-full px-4 py-2 border max-w-[100px]"
-            placeholder=" price"
+            class="bg-white text-xs focus:ring-0 text-main border-main rounded-xl px-4 py-2 border max-w-[100px]"
+            placeholder="max_price"
           />
-          <p class="">Max</p>
         </div>
       </div>
       <div
@@ -269,16 +220,13 @@ watch(place, async (newValue) => {
         ></div>
         <img src="../../public/logo.jpg" class="rounded-full h-16 w-16" />
       </div>
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
-        v-if="!loading"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5" v-if="!loading">
         <div v-for="(hotel, index) in hotels?.data" :key="index">
           <HotelsItemVue :id="hotel.id" :hotels="hotel" @change="changes" />
         </div>
       </div>
       <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 pb-5 pt-2"
         v-if="!loading"
       >
         <div

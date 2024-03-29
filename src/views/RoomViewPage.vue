@@ -20,7 +20,7 @@ const detail = async () => {
   const res = await roomStore.getDetailAction(route.params.id);
   console.log(res);
   loading.value = false;
-  hotel.value = res.result;
+  hotel.value = res.data;
 };
 
 const goBack = () => {
@@ -33,12 +33,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="space-y-2 rounded-lg">
+  <div class="space-y-2 rounded-xl">
     <NavbarVue />
-    <div class="px-4">
+    <div class="px-4 pt-2">
       <div class="relative">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          class="flex justify-start items-center gap-2 text-main absolute top-1 text-sm"
           @click="goBack"
         >
           <svg
@@ -58,7 +58,7 @@ onMounted(async () => {
           Back
         </div>
 
-        <p class="text-main text-lg pt-1 font-semibold w-full text-center">
+        <p class="text-main text-lg font-semibold w-full text-center">
           Room Detail
         </p>
       </div>
@@ -67,7 +67,7 @@ onMounted(async () => {
           <Carousel :wrap-around="true" :autoplay="5000">
             <Slide v-for="i in hotel?.images" :key="i.id">
               <div class="carousel__item">
-                <div class="h-auto w-full overflow-hidden rounded-lg">
+                <div class="h-auto w-full overflow-hidden rounded-xl">
                   <img
                     :src="i.image"
                     alt=""
@@ -91,7 +91,7 @@ onMounted(async () => {
           </Carousel>
         </div>
         <div v-if="hotel?.images.length == 0">
-          <div class="h-auto w-full overflow-hidden rounded-lg">
+          <div class="h-auto w-full overflow-hidden rounded-xl">
             <img
               src="../../public/default-image.jpg"
               alt=""
@@ -99,46 +99,49 @@ onMounted(async () => {
             />
           </div>
         </div>
-        <div class="space-y-4 px-2 text-lg font-semibold mt-3 text-main">
+        <div class="space-y-4 px-2 text-base font-semibold mt-3 text-main">
           <p class="">{{ hotel?.name }}</p>
-          <p class="text-xs text-black font-normal">{{ hotel?.description }}</p>
+
           <div class="grid grid-cols-2 gap-2">
-            <p class="border border-main text-xs text-start px-4 py-1">
-              Is Extra ?
-            </p>
+            <p class="text-xs text-start py-1">Is Extra ?</p>
             <p
-              class="border border-main text-start px-4 py-1 font-normal text-xs"
+              class="rounded text-start px-4 py-1 font-normal text-xs bg-main/10"
             >
               {{ hotel?.is_extra == 0 ? "No" : "Yes" }}
             </p>
-            <p class="border border-main text-xs text-start px-4 py-1">
-              Max Person
-            </p>
+            <p class="text-xs text-start py-1">Max Person</p>
             <p
-              class="border border-main text-start px-4 py-1 font-normal text-xs"
+              class="rounded text-start px-4 py-1 font-normal text-xs bg-main/10"
             >
               {{ hotel?.max_person }}
             </p>
-            <p class="border border-main text-xs text-start px-4 py-1">Price</p>
+            <p class="text-xs text-start py-1">Price</p>
             <p
-              class="border border-main text-start px-4 py-1 font-normal text-xs"
+              class="rounded text-start px-4 py-1 font-normal text-xs bg-main/10"
             >
               {{ hotel?.room_price }} THB
             </p>
+            <p class="text-xs text-start py-1">Place</p>
+            <p
+              class="rounded text-start px-4 py-1 font-normal text-xs bg-main/10"
+            >
+              {{ hotel?.hotel?.place }}
+            </p>
           </div>
+          <p class="text-xs text-black font-normal">{{ hotel?.description }}</p>
         </div>
 
         <div class="px-2 pt-4 pb-6 space-y-4 text-main font-semibold">
           <p>Room Periods</p>
           <div
-            class="flex mb-5 pb-4 space-x-2 rounded-lg shadow-sm overflow-x-scroll"
+            class="flex mb-5 pb-4 space-x-2 rounded-xl shadow-sm overflow-x-scroll"
           >
             <div
-              class="bg-white px-4 text-xs rounded shadow-md my-auto text-black min-w-[190px] space-y-1 h-[140px] border border-main"
+              class="bg-main/10 px-4 text-xs rounded-xl overflow-hidden my-auto text-black min-w-[190px] space-y-1 h-[165px] shadow"
               v-for="(r, index) in hotel?.room_periods"
               :key="index"
             >
-              <div class="space-y-1 py-4">
+              <div class="space-y-2 py-4">
                 <p class="text-main">Start Date</p>
                 <p class="font-normal">{{ r.start_date }}</p>
                 <p class="text-main">End Date</p>
