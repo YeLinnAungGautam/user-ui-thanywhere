@@ -44,7 +44,9 @@ const goView = (id) => {
         <Carousel :wrap-around="true">
           <Slide v-for="i in rooms?.images" :key="i.id">
             <div class="carousel__item">
-              <div class="h-auto w-full overflow-hidden rounded-xl">
+              <div
+                class="h-[230px] sm:h-[300px] md:h-[220px] lg:h-[300px] w-full overflow-hidden rounded-xl"
+              >
                 <img
                   :src="i.image"
                   alt=""

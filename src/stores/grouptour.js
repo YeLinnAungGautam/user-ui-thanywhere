@@ -9,7 +9,7 @@ export const useGrouptourStore = defineStore("grouptour", {
       try {
         this.loading = true;
         const response = await axios.get("/group-tours?limit=1000&page=1");
-        this.grouptour = response.data.result;
+        this.grouptour = response.data;
         this.loading = false;
 
         return response.data;
@@ -28,7 +28,7 @@ export const useGrouptourStore = defineStore("grouptour", {
           params: params,
         }
       );
-      this.grouptours = response.data.result;
+      this.grouptours = response.data;
       this.loading = false;
       return response.data;
     },
@@ -38,7 +38,7 @@ export const useGrouptourStore = defineStore("grouptour", {
         const response = await axios.get("/group-tours", {
           params: params,
         });
-        this.grouptours = response.data.result;
+        this.grouptours = response.data;
         this.loading = false;
         console.log(response);
         return response.data;

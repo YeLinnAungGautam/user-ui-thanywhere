@@ -8,12 +8,10 @@ import { useGrouptourStore } from "../stores/grouptour";
 import GrouptourListItem from "../components/GrouptourListItem.vue";
 import { useCityStore } from "../stores/city";
 import NoDataPageVue from "../components/NoDataPage.vue";
-import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const grouptourStore = useGrouptourStore();
 const cityStore = useCityStore();
-const authStore = useAuthStore();
 
 const { grouptours, grouptour, loading } = storeToRefs(grouptourStore);
 const { cities } = storeToRefs(cityStore);
@@ -48,8 +46,8 @@ const changePage = async (url) => {
 const getList = async () => {
   const res = await grouptourStore.getSimpleListAction();
 
-  for (let i = 0; i < res.result.data.length; i++) {
-    chooseType.value.push(res.result.data[i].name);
+  for (let i = 0; i < res.data.length; i++) {
+    chooseType.value.push(res.data[i].name);
   }
 };
 
@@ -104,7 +102,7 @@ watch(city_id, async (newValue) => {
     <div class="py-5 px-4 space-y-4">
       <div class="relative">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          class="flex justify-start items-center gap-2 text-main absolute top-0 text-sm"
           @click="goBack"
         >
           <svg
@@ -123,32 +121,13 @@ watch(city_id, async (newValue) => {
           </svg>
           Back
         </div>
-        <div
-          v-if="!authStore.isAgent"
-          class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
-          @click="createPage"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 6v12m6-6H6"
-            />
-          </svg>
-        </div>
-        <p class="text-main text-2xl font-semibold w-full text-center">
-          GroupTours
+
+        <p class="text-main text-lg font-semibold w-full text-center">
+          Group Tours
         </p>
       </div>
       <div
-        class="bg-main/10 py-1 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/5 py-2 pl-3 pr-2 rounded-xl flex justify-between items-center shadow"
       >
         <div class="mr-2" @click="clear">
           <svg
@@ -187,7 +166,7 @@ watch(city_id, async (newValue) => {
       </div>
       <div class="py-1.5 mb-5 gap-3 flex-wrap flex">
         <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
+          class="style-chooser bg-white rounded-xl border border-main min-w-[100px]"
           :options="cities?.data"
           label="name"
           :clearable="false"

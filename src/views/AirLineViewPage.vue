@@ -20,7 +20,7 @@ const detail = async () => {
   const res = await airlineStore.getDetailAction(route.params.id);
   console.log(res);
   loading.value = false;
-  hotel.value = res.result;
+  hotel.value = res.data;
 };
 
 const roomView = (id) => {
@@ -42,12 +42,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="space-y-2 rounded-lg">
+  <div class="space-y-4 rounded-lg">
     <NavbarVue />
     <div class="px-4">
       <div class="relative">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          class="flex justify-start items-center gap-2 text-main absolute top-0 text-sm"
           @click="goBack"
         >
           <svg
@@ -67,40 +67,13 @@ onMounted(async () => {
           Back
         </div>
 
-        <p class="text-main text-lg pt-1 font-semibold w-full text-center">
+        <p class="text-main text-lg font-semibold w-full text-center">
           AirLine Detail
         </p>
       </div>
       <div class="pt-4" v-if="!loading">
-        <!-- <div v-if="hotel?.images.length > 0">
-          <Carousel :wrap-around="true" :autoplay="5000">
-            <Slide v-for="i in hotel?.images" :key="i.id">
-              <div class="carousel__item">
-                <div class="h-auto w-full overflow-hidden rounded-lg">
-                  <img
-                    :src="i.image"
-                    alt=""
-                    class="object-cover"
-                    v-if="i.image != null"
-                  />
-                  <img
-                    src="../../public/default-image.jpg"
-                    alt=""
-                    class="object-cover"
-                    v-if="i.image == null"
-                  />
-                </div>
-              </div>
-            </Slide>
-
-            <template #addons>
-              <Navigation />
-              <Pagination />
-            </template>
-          </Carousel>
-        </div> -->
         <div>
-          <div class="h-auto w-full overflow-hidden rounded-lg">
+          <div class="h-auto w-full overflow-hidden rounded-xl shadow">
             <img
               src="../../public/flightticket.jpg"
               alt=""
@@ -108,46 +81,38 @@ onMounted(async () => {
             />
           </div>
         </div>
-        <div class="space-y-4 px-2 text-lg font-semibold mt-3 text-main">
+        <div class="space-y-2 px-2 text-base font-semibold mt-3 text-main">
           <p class="">{{ hotel?.name }}</p>
-          <p class="text-sm text-black">{{ hotel?.legal_name }}</p>
+          <p class="text-sm text-black/70">{{ hotel?.legal_name }}</p>
           <div class="grid grid-cols-2 gap-2">
-            <p class="border border-main text-xs text-start px-4 py-1">
-              Starting balance
-            </p>
-            <p
-              class="border border-main text-start px-4 py-1 font-normal text-xs"
-            >
-              {{ hotel?.starting_balance }} THB
+            <p class="text-xs text-start py-1">Starting balance</p>
+            <p class="text-start font-normal text-xs">
+              <span class="bg-main/10 py-1 px-2 rounded-md"
+                >{{ hotel?.starting_balance }} THB</span
+              >
             </p>
           </div>
         </div>
 
         <div class="px-2 pt-4 pb-6 space-y-4 text-main font-semibold">
-          <p>Related Tickets</p>
+          <p class="text-sm">Related Tickets</p>
           <div
             class="flex mb-5 pb-4 space-x-3 rounded-lg shadow-sm overflow-x-scroll"
           >
             <div
-              class="bg-white text-xs rounded shadow-md my-auto text-black min-w-[200px] space-y-1 h-auto border border-main"
+              class="bg-white text-xs my-auto text-black min-w-[200px] space-y-1 h-auto"
               v-for="(r, index) in hotel?.tickets"
               :key="index"
             >
-              <div class="h-[120px] w-full overflow-hidden">
-                <!-- <img
-                  v-if="r.images.length > 0"
-                  :src="r.images[0]?.image"
-                  alt=""
-                  class="object-cover w-full h-[120px]"
-                /> -->
+              <div class="h-[150px] w-full overflow-hidden rounded-xl">
                 <img
                   src="../../public/flightticket.jpg"
                   alt=""
-                  class="object-cover w-full h-[120px]"
+                  class="object-cover w-full h-full object-center"
                 />
               </div>
 
-              <div class="h-[160px] space-y-1 py-4 px-4">
+              <div class="h-[160px] space-y-2 py-4 px-4">
                 <p class="text-main">Ticket Name</p>
                 <p class="font-normal">{{ r.price }}</p>
                 <p class="text-main">Ticket Description</p>

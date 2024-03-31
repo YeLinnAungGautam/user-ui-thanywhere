@@ -9,9 +9,9 @@ export const useVariationStore = defineStore("variation", {
       try {
         this.loading = true;
         const response = await axios.get(
-          "/entrance-tickets-variations?limit=1000&page=1"
+          "/entrance-ticket-variations?limit=1000&page=1"
         );
-        this.variation = response.data.result;
+        this.variation = response.data;
         this.loading = false;
 
         return response.data;
@@ -25,17 +25,17 @@ export const useVariationStore = defineStore("variation", {
       const response = await axios.get(url, {
         params: params,
       });
-      this.variations = response.data.result;
+      this.variations = response.data;
       this.loading = false;
       return response.data;
     },
     async getListAction(params) {
       try {
         this.loading = true;
-        const response = await axios.get("/entrance-tickets-variations", {
+        const response = await axios.get("/entrance-ticket-variations", {
           params: params,
         });
-        this.variations = response.data.result;
+        this.variations = response.data;
         this.loading = false;
         console.log(response);
         return response.data;
@@ -46,7 +46,7 @@ export const useVariationStore = defineStore("variation", {
     },
     async addNewAction(data) {
       try {
-        const response = await axios.post("/entrance-tickets-variations", data);
+        const response = await axios.post("/entrance-ticket-variations", data);
         return response.data;
       } catch (error) {
         throw error;
@@ -55,7 +55,7 @@ export const useVariationStore = defineStore("variation", {
     async updateAction(data, id) {
       try {
         const response = await axios.post(
-          "/entrance-tickets-variations/" + id,
+          "/entrance-ticket-variations/" + id,
           data
         );
         return response.data;
@@ -65,7 +65,7 @@ export const useVariationStore = defineStore("variation", {
     },
     async getDetailAction(id) {
       try {
-        const response = await axios.get("/entrance-tickets-variations/" + id);
+        const response = await axios.get("/entrance-ticket-variations/" + id);
         return response.data;
       } catch (error) {
         throw error;
@@ -74,7 +74,7 @@ export const useVariationStore = defineStore("variation", {
     async deleteAction(id) {
       try {
         const response = await axios.delete(
-          "/entrance-tickets-variations/" + id
+          "/entrance-ticket-variations/" + id
         );
         return response.data;
       } catch (error) {

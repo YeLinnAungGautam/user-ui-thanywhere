@@ -53,7 +53,9 @@ const showSetting = () => {
         <Carousel :wrap-around="true">
           <Slide v-for="i in hotels?.images" :key="i.id">
             <div class="carousel__item">
-              <div class="h-auto w-full overflow-hidden rounded-xl">
+              <div
+                class="h-[230px] sm:h-[300px] md:h-[220px] lg:h-[300px] w-full overflow-hidden rounded-xl"
+              >
                 <img
                   :src="i.image"
                   alt=""
@@ -83,7 +85,7 @@ const showSetting = () => {
       />
     </div>
     <div
-      class="opacity-0 group-hover:opacity-100 absolute bg-white/80 bottom-[32%] w-full py-2 grid grid-cols-2 divide-x-2 divide-x-gray-400"
+      class="opacity-0 group-hover:opacity-100 absolute bg-white/80 top-[32%] w-full py-2 grid grid-cols-2 divide-x-2 divide-x-gray-400"
     >
       <p
         class="text-xs text-main text-center"

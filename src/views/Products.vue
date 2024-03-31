@@ -65,9 +65,9 @@ onMounted(async () => {
   await hotelStore.getListAction();
   await vantourStore.getListAction();
   // await airportStore.getListAction();
-  // await grouptourStore.getListAction();
-  // await entranceStore.getListAction();
-  // await airlineStore.getListAction();
+  await grouptourStore.getListAction();
+  await entranceStore.getListAction();
+  await airlineStore.getListAction();
   // await restaurantStore.getListAction();
   // console.log(vantours.value, "this is vantours");
 });

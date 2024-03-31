@@ -7,11 +7,9 @@ import Pagination from "../components/Pagination.vue";
 import { useAirLineStore } from "../stores/airline";
 import AirLineItem from "../components/AirLineItem.vue";
 import NoDataPageVue from "../components/NoDataPage.vue";
-import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const airlineStore = useAirLineStore();
-const authStore = useAuthStore();
 
 const { airlines, airline, loading } = storeToRefs(airlineStore);
 
@@ -44,8 +42,8 @@ const changePage = async (url) => {
 const getList = async () => {
   const res = await airlineStore.getSimpleListAction();
 
-  for (let i = 0; i < res.result.data.length; i++) {
-    chooseType.value.push(res.result.data[i].name);
+  for (let i = 0; i < res.data.length; i++) {
+    chooseType.value.push(res.data[i].name);
   }
 };
 
@@ -100,7 +98,7 @@ watch(max_price, async (newValue) => {
     <div class="py-5 px-4 space-y-4">
       <div class="relative">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          class="flex justify-start items-center gap-2 text-main absolute top-0 text-sm"
           @click="goBack"
         >
           <svg
@@ -119,32 +117,13 @@ watch(max_price, async (newValue) => {
           </svg>
           Back
         </div>
-        <div
-          class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
-          @click="createPage"
-          v-if="!authStore.isAgent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 6v12m6-6H6"
-            />
-          </svg>
-        </div>
-        <p class="text-main text-2xl font-semibold w-full text-center">
+
+        <p class="text-main text-lg font-semibold w-full text-center">
           AirLines
         </p>
       </div>
       <div
-        class="bg-main/10 py-2 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/5 py-2 pl-3 pr-2 rounded-xl flex justify-between items-center shadow"
       >
         <div class="mr-2" @click="clear">
           <svg
@@ -184,7 +163,7 @@ watch(max_price, async (newValue) => {
       <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
         <div
           @click="priceShow = true"
-          class="bg-white rounded-full border border-main min-w-[100px] text-main px-4 py-1"
+          class="bg-white rounded-xl border border-main min-w-[100px] text-main px-4 py-1"
         >
           <div class="flex justify-between items-center" v-if="!priceShow">
             price
@@ -208,10 +187,10 @@ watch(max_price, async (newValue) => {
               type="range"
               v-model="max_price"
               min="0"
-              class="bg-main"
+              class="bg-main mr-2"
               max="1000"
             />
-            {{ max_price }}
+            {{ max_price }} THB
           </div>
         </div>
       </div>
@@ -224,18 +203,12 @@ watch(max_price, async (newValue) => {
         ></div>
         <img src="../../public/logo.jpg" class="rounded-full h-16 w-16" />
       </div>
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
-        v-if="!loading"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5" v-if="!loading">
         <div v-for="(airline, index) in airlines?.data" :key="index">
           <AirLineItem :id="airline.id" :airlines="airline" @change="changes" />
         </div>
       </div>
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
-        v-if="!loading"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5" v-if="!loading">
         <div
           class="space-y-2 col-span-1 md:col-span-2"
           v-if="airlines?.data.length == 0"

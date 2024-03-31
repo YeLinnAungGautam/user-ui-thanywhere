@@ -9,7 +9,7 @@ export const useAirLineStore = defineStore("airline", {
       try {
         this.loading = true;
         const response = await axios.get("/airlines?limit=1000&page=1");
-        this.airline = response.data.result;
+        this.airline = response.data;
         this.loading = false;
 
         return response.data;
@@ -23,7 +23,7 @@ export const useAirLineStore = defineStore("airline", {
       const response = await axios.get(url, {
         params: params,
       });
-      this.airlines = response.data.result;
+      this.airlines = response.data;
       this.loading = false;
       return response.data;
     },
@@ -33,7 +33,7 @@ export const useAirLineStore = defineStore("airline", {
         const response = await axios.get("/airlines", {
           params: params,
         });
-        this.airlines = response.data.result;
+        this.airlines = response.data;
         this.loading = false;
         console.log(response);
         return response.data;

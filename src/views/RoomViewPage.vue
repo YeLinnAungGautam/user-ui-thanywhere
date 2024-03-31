@@ -104,28 +104,29 @@ onMounted(async () => {
 
           <div class="grid grid-cols-2 gap-2">
             <p class="text-xs text-start py-1">Is Extra ?</p>
-            <p
-              class="rounded text-start px-4 py-1 font-normal text-xs bg-main/10"
-            >
-              {{ hotel?.is_extra == 0 ? "No" : "Yes" }}
+
+            <p class="text-start font-normal text-xs">
+              <span class="bg-main/10 py-1 px-2 rounded-md">{{
+                hotel?.is_extra == 0 ? "No" : "Yes"
+              }}</span>
             </p>
-            <p class="text-xs text-start py-1">Max Person</p>
-            <p
-              class="rounded text-start px-4 py-1 font-normal text-xs bg-main/10"
-            >
-              {{ hotel?.max_person }}
-            </p>
+
             <p class="text-xs text-start py-1">Price</p>
-            <p
-              class="rounded text-start px-4 py-1 font-normal text-xs bg-main/10"
-            >
-              {{ hotel?.room_price }} THB
+            <p class="text-start font-normal text-xs">
+              <span class="bg-main/10 py-1 px-2 rounded-md"
+                >{{ hotel?.room_price }} THB
+              </span>
             </p>
             <p class="text-xs text-start py-1">Place</p>
-            <p
-              class="rounded text-start px-4 py-1 font-normal text-xs bg-main/10"
-            >
-              {{ hotel?.hotel?.place }}
+            <p class="text-start font-normal text-xs">
+              <span class="bg-main/10 py-1 px-2 rounded-md"
+                >{{ hotel?.hotel?.place }}
+              </span>
+            </p>
+            <p class="text-xs text-start py-1">Max Person</p>
+
+            <p class="text-start font-normal leading-relaxed text-xs">
+              <span class="py-1 rounded-md">{{ hotel?.max_person }} </span>
             </p>
           </div>
           <p class="text-xs text-black font-normal">{{ hotel?.description }}</p>
@@ -134,10 +135,10 @@ onMounted(async () => {
         <div class="px-2 pt-4 pb-6 space-y-4 text-main font-semibold">
           <p>Room Periods</p>
           <div
-            class="flex mb-5 pb-4 space-x-2 rounded-xl shadow-sm overflow-x-scroll"
+            class="flex mb-5 pb-4 space-x-4 rounded-xl shadow-sm overflow-x-scroll"
           >
             <div
-              class="bg-main/10 px-4 text-xs rounded-xl overflow-hidden my-auto text-black min-w-[190px] space-y-1 h-[165px] shadow"
+              class="bg-main/5 px-4 text-xs rounded-xl overflow-hidden my-auto text-black min-w-[190px] space-y-1 h-[165px] shadow"
               v-for="(r, index) in hotel?.room_periods"
               :key="index"
             >

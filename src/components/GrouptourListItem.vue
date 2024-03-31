@@ -4,7 +4,6 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { useGrouptourStore } from "../stores/grouptour";
 import { useToastStore } from "../stores/toast";
-import { useAuthStore } from "../stores/auth";
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
 
@@ -18,7 +17,6 @@ const props = defineProps({
 const router = useRouter();
 const grouptourStore = useGrouptourStore();
 const toastStore = useToastStore();
-const authStore = useAuthStore();
 
 const emit = defineEmits();
 
@@ -44,51 +42,30 @@ const showEdit = ref(false);
 const showSetting = () => {
   showEdit.value = !showEdit.value;
 };
-
-const deleteHotel = async (id) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#2463EB",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Confirm",
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      const response = await grouptourStore.deleteAction(id);
-      toastStore.showToast({
-        icon: "success",
-        title: "Sucess Deleted",
-      });
-      await grouptourStore.getListAction();
-
-      emit("change", " Deleted");
-    }
-  });
-};
 </script>
 
 <template>
-  <div class="space-y-2 relative overflow-hidden rounded-lg">
+  <div class="space-y-3 relative overflow-hidden rounded-lg">
     <div
-      class="h-[200px] sm:h-[250px] md:h-[220px] lg:h-[300px] w-full overflow-hidden rounded-lg"
+      class="h-[240px] sm:h-[250px] md:h-[220px] lg:h-[300px] w-full overflow-hidden rounded-xl"
     >
       <div>
-        <Carousel :wrap-around="true">
+        <Carousel :wrap-around="true" v-if="grouptours?.images.length > 0">
           <Slide v-for="i in grouptours?.images" :key="i.id">
             <div class="carousel__item">
-              <div class="h-auto w-full overflow-hidden rounded-lg">
+              <div
+                class="h-[240px] sm:h-[250px] md:h-[220px] lg:h-[300px] w-full overflow-hidden rounded-xl"
+              >
                 <img
                   :src="i.image"
                   alt=""
-                  class="object-cover"
+                  class="object-cover w-full h-full object-center"
                   v-if="i.image != null"
                 />
                 <img
                   src="../../public/default-image.jpg"
                   alt=""
-                  class="object-cover"
+                  class="object-cover w-full h-full object-center"
                   v-if="i.image == null"
                 />
               </div>
@@ -103,78 +80,9 @@ const deleteHotel = async (id) => {
       <img
         src="../../public/default-image.jpg"
         alt=""
-        class="object-cover"
+        class="object-cover w-full h-full object-center"
         v-if="grouptours?.images.length == 0"
       />
-    </div>
-    <div
-      class="absolute top-[-7px] right-0 z-50 bg-main/80 text-white rounded-es-3xl p-2"
-      @click="showSetting"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
-        />
-      </svg>
-    </div>
-    <div
-      class="absolute right-0 z-50 bg-main/80 text-white rounded-full p-2"
-      :class="
-        showEdit
-          ? ' translation duration-150 top-[50px]'
-          : 'top-[-100px] translation duration-150'
-      "
-      @click="goEdit(id)"
-      v-if="!authStore.isAgent"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-        />
-      </svg>
-    </div>
-    <div
-      class="absolute right-0 z-50 bg-main/80 text-white rounded-full p-2"
-      :class="
-        showEdit
-          ? ' translation duration-150 top-[100px]'
-          : ' top-[-100px] translation duration-150'
-      "
-      v-if="authStore.isSuperAdmin"
-      @click="deleteHotel(id)"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-        />
-      </svg>
     </div>
 
     <div class="pt-2">
@@ -186,24 +94,24 @@ const deleteHotel = async (id) => {
             </p>
 
             <div
-              class="text-sm pl-2 font-semibold flex justify-start items-center gap-2 flex-wrap"
+              class="text-xs pl-2 font-semibold flex justify-start items-center gap-2 flex-wrap"
             >
               <p
                 v-for="(city, index) in grouptours?.cities"
                 :key="index"
-                class="bg-main text-white p-1 rounded"
+                class="bg-main/10 text-main p-1 rounded"
               >
                 {{ city.name }}
               </p>
             </div>
           </div>
           <div>
-            <p class="text-2xl pl-2 flex-nowrap flex font-semibold text-main">
+            <p class="text-xl pl-2 flex-nowrap flex font-semibold text-main">
               {{ grouptours.price }}THB
             </p>
           </div>
         </div>
-        <p class="text-xs pl-2 text-black text-justify">
+        <p class="text-xs pl-2 text-black/80 text-justify">
           {{ grouptours.description }}
         </p>
       </div>

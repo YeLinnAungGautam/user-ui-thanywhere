@@ -49,9 +49,28 @@ const end_date = ref("");
 const date = ref("");
 const periodAjj = ref("");
 
-const searchFunction = async () => {
-  if (start_date.value && end_date.value) {
-    periodAjj.value = `${start_date.value} , ${end_date.value}`;
+const searchFunction = () => {
+  console.log(date.value);
+  let first = date.value[0];
+  let second = date.value[1];
+  // console.log(dateFormat(first), "this is date", dateFormat(second));
+  periodAjj.value = `${dateFormat(first)} , ${dateFormat(second)}`;
+};
+
+const dateFormat = (inputDateString) => {
+  if (inputDateString != null) {
+    const inputDate = new Date(inputDateString);
+
+    // Get the year, month, and day components
+    const year = inputDate.getFullYear();
+    const month = String(inputDate.getMonth() + 1).padStart(2, "0"); // Adding 1 because months are zero-based
+    const day = String(inputDate.getDate()).padStart(2, "0");
+
+    // Format the date in "YYYY-MM-DD" format
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+  } else {
+    return null;
   }
 };
 
@@ -92,9 +111,6 @@ onMounted(async () => {
   hotel_id.value = route.params.id;
   hotel_name.value = route.params.name;
   await hotelStore.getSimpleListAction();
-  const startDate = new Date();
-  const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-  date.value = [startDate, endDate];
   // await roomStore.getListAction();
   // console.log(route.params.id, hotels.value, "this is params id");
 });
@@ -107,9 +123,9 @@ watch(order_by_price, async (newValue) => {
   await roomStore.getListAction(watchSystem.value);
   console.log(order_by_price.value);
 });
-watch(periodAjj, async (newValue) => {
+watch(date, async (newValue) => {
+  searchFunction();
   await roomStore.getListAction(watchSystem.value);
-  console.log(periodAjj.value);
 });
 </script>
 

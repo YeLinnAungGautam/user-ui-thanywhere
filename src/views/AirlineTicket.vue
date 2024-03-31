@@ -8,13 +8,11 @@ import { useAirLineStore } from "../stores/airline";
 import { useAirTicketStore } from "../stores/airticket";
 import NoDataPage from "../components/NoDataPage.vue";
 import Pagination from "../components/Pagination.vue";
-import { useAuthStore } from "../stores/auth";
 
 const router = useRouter();
 const route = useRoute();
 const airlineStore = useAirLineStore();
 const airticketStore = useAirTicketStore();
-const authStore = useAuthStore();
 
 const { airline } = storeToRefs(airlineStore);
 const { airtickets, airticket, loading } = storeToRefs(airticketStore);
@@ -28,12 +26,6 @@ const chooseType = ref([
   { id: 3, name: "hotel" },
   { id: 4, name: "attraction" },
 ]);
-
-const createPage = () => {
-  router.push({
-    name: "ticket-create",
-  });
-};
 
 const goBack = () => {
   router.go(-1);
@@ -61,7 +53,7 @@ const changes = async (message) => {
 onMounted(async () => {
   await airlineStore.getSimpleListAction();
   await airticketStore.getSimpleListAction();
-  console.log(airline.value, "this is airline");
+  console.log(airtickets.value, "this is airline");
   airline_id.value = route.params.id;
   airline_name.value = route.params.name;
 });
@@ -80,7 +72,7 @@ watch(airline_id, async (newValue) => {
     <div class="py-5 px-4 space-y-4">
       <div class="relative">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-1"
+          class="flex justify-start items-center gap-2 text-main absolute top-0 text-sm"
           @click="goBack"
         >
           <svg
@@ -99,32 +91,13 @@ watch(airline_id, async (newValue) => {
           </svg>
           Back
         </div>
-        <div
-          class="bg-main text-white p-2 rounded-full absolute top-[-5px] right-0"
-          @click="createPage"
-          v-if="!authStore.isAgent"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 6v12m6-6H6"
-            />
-          </svg>
-        </div>
-        <p class="text-main text-2xl font-semibold w-full text-center">
+
+        <p class="text-main text-lg font-semibold w-full text-center">
           AirLine Ticket
         </p>
       </div>
       <div
-        class="bg-main/10 py-2 pl-3 pr-2 rounded-3xl flex justify-between items-center"
+        class="bg-main/5 py-2 pl-3 pr-2 rounded-xl flex justify-between items-center shadow"
       >
         <div class="mr-2" @click="clear">
           <svg
@@ -167,24 +140,7 @@ watch(airline_id, async (newValue) => {
           placeholder="Search"
         ></v-select>
       </div>
-      <!-- <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Price"
-        ></v-select>
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Pax"
-        ></v-select>
-      </div> -->
+
       <div
         class="relative flex justify-center items-center py-[50%]"
         v-if="loading"

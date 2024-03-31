@@ -112,22 +112,22 @@ onMounted(async () => {
           <p class="">{{ hotel?.name }}</p>
           <div class="grid grid-cols-2 gap-2">
             <p class="text-xs text-start py-1">City</p>
-            <p
-              class="text-start px-4 py-1 bg-main/10 font-normal text-xs rounded-md"
-            >
-              {{ hotel?.city?.name }}
+            <p class="text-start font-normal text-xs">
+              <span class="bg-main/10 py-1 px-2 rounded-md">{{
+                hotel?.city?.name
+              }}</span>
             </p>
             <p class="text-xs text-start py-1">Place</p>
-            <p
-              class="text-start px-4 py-1 bg-main/10 font-normal text-xs rounded-md"
-            >
-              {{ hotel?.place }}
+            <p class="text-start font-normal text-xs">
+              <span class="bg-main/10 py-1 px-2 rounded-md">{{
+                hotel?.place
+              }}</span>
             </p>
             <p class="text-xs text-start py-1">Lowest Price</p>
-            <p
-              class="text-start px-4 py-1 bg-main/10 font-normal text-xs rounded-md"
-            >
-              {{ hotel?.lowest_room_price }} THB
+            <p class="text-start font-normal text-xs">
+              <span class="bg-main/10 py-1 px-2 rounded-md"
+                >{{ hotel?.lowest_room_price }} THB</span
+              >
             </p>
             <p
               class="col-span-2 text-xs text-black/80 text-justify leading-relaxed tracking-wide py-3 font-normal"
