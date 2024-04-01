@@ -53,9 +53,7 @@ const showSetting = () => {
         <Carousel :wrap-around="true" v-if="grouptours?.images.length > 0">
           <Slide v-for="i in grouptours?.images" :key="i.id">
             <div class="carousel__item">
-              <div
-                class="h-[240px] sm:h-[250px] md:h-[220px] lg:h-[300px] w-full overflow-hidden rounded-xl"
-              >
+              <div class="h-full w-full overflow-hidden rounded-xl">
                 <img
                   :src="i.image"
                   alt=""

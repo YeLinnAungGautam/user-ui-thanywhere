@@ -119,16 +119,21 @@ onMounted(async () => {
         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 pb-4 pt-3"
       >
         <div
-          class="space-y-2 pb-4"
-          @click="goVantours"
+          class="space-y-2 pb-4 relative"
           v-if="search == 'van tour' || search == 'all' || search == ''"
         >
+          <!-- @click="goVantours" -->
           <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
             <img
               src="../../public/privatevantour.jpg"
               class="w-full h-full object-cover object-center"
               alt=""
             />
+          </div>
+          <div
+            class="w-full h-[200px] sm:h-[230px] text-white flex justify-center items-center bg-black/50 absolute -top-2 rounded-xl"
+          >
+            Coming Soon
           </div>
           <p class="text-base pl-2 font-semibold text-main">Van Tours</p>
           <p class="text-xs pl-2">{{ vantours?.meta.total }} Packages</p>
@@ -166,11 +171,10 @@ onMounted(async () => {
           <p class="text-xs pl-2">{{ entrances?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2 pb-4"
-          @click="goGrouptour"
+          class="space-y-2 pb-4 relative"
           v-if="search == 'group tour' || search == 'all' || search == ''"
         >
-          <!-- <img src="../../public/grouptour.jpg" alt="" class="rounded-xl" /> -->
+          <!-- @click="goGrouptour" -->
           <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
             <img
               src="../../public/grouptour.jpg"
@@ -178,15 +182,19 @@ onMounted(async () => {
               alt=""
             />
           </div>
+          <div
+            class="w-full h-[200px] sm:h-[230px] text-white flex justify-center items-center bg-black/50 absolute -top-2 rounded-xl"
+          >
+            Coming Soon
+          </div>
           <p class="text-base pl-2 font-semibold text-main">Group Tours</p>
           <p class="text-xs pl-2">{{ grouptours?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2 pb-4"
+          class="space-y-2 pb-4 relative"
           v-if="search == 'airline' || search == 'all' || search == ''"
-          @click="router.push({ name: 'airline' })"
         >
-          <!-- <img src="../../public/flightticket.jpg" alt="" class="rounded-xl" /> -->
+          <!-- @click="router.push({ name: 'airline' })" -->
           <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
             <img
               src="../../public/flightticket.jpg"
@@ -194,21 +202,30 @@ onMounted(async () => {
               alt=""
             />
           </div>
+          <div
+            class="w-full h-[200px] sm:h-[230px] text-white flex justify-center items-center bg-black/50 absolute -top-2 rounded-xl"
+          >
+            Coming Soon
+          </div>
           <p class="text-base pl-2 font-semibold text-main">AirLine</p>
           <p class="text-xs pl-2">{{ airlines?.meta.total }} Packages</p>
         </div>
         <div
-          class="space-y-2 pb-4"
+          class="space-y-2 pb-4 relative"
           v-if="search == 'restaurant' || search == 'all' || search == ''"
-          @click="router.push({ name: 'restaurant' })"
         >
-          <!-- <img src="../../public/restaurant.jpg" alt="" class="rounded-xl" /> -->
+          <!-- @click="router.push({ name: 'restaurant' })" -->
           <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
             <img
               src="../../public/restaurant.jpg"
               class="w-full h-full object-cover object-center"
               alt=""
             />
+          </div>
+          <div
+            class="w-full h-[200px] sm:h-[230px] text-white flex justify-center items-center bg-black/50 absolute -top-2 rounded-xl"
+          >
+            Coming Soon
           </div>
           <p class="text-base pl-2 font-semibold text-main">Restaurant</p>
           <p class="text-xs pl-2">{{ restaurants?.meta.total }} Packages</p>

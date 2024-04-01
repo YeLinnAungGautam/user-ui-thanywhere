@@ -13,7 +13,7 @@
 import { onMounted, ref } from "vue";
 
 const text = ref(
-  "😍Thanks for visiting our website, 🤩 you can see detail any package as you like ! ❤️❤️"
+  "မင်္ဂလာပါ။ 🙏 Thailand Anywhere ​၏ product ပေါင်း ၂၀၀ကျော်ကို ဤ Website မှာ ကြည့်ရှုနိုင်ပါတယ် ရှင့်။ 😍Update ဈေးများကို သိရန်တွက် Facebook Messenger မှ Sale Assistants များကိုဆက်သွယ်မေးမြန်းရန် မေတ္တာရပ်ခံပါတယ်။ 🥰🙏"
 );
 const duration = ref(10); // Adjust the duration according to the length of text and desired speed
 
