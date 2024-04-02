@@ -36,15 +36,13 @@ const createPage = () => {
 
 const changePage = async (url) => {
   console.log(url);
-  // let data = {
-  //   search: search.value,
-  //   max_price: price.value,
-  //   city_id: city_id.value,
-  //   place: place.value,
-  // };
-  await hotelStore.getChangePage(url, watchSystem.value);
-  // window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  if (url != null) {
+    console.log(watchSystem.value, "this is watch system");
+    await hotelStore.getChangePage(url, watchSystem.value);
+  }
 };
+
+// const addList = ref(null);
 
 const getList = async () => {
   const res = await hotelStore.getSimpleListAction();
@@ -78,6 +76,8 @@ const changes = async (message) => {
   }
 };
 
+const hotelList = ref([]);
+
 const watchSystem = computed(() => {
   const result = {};
 
@@ -96,30 +96,87 @@ const watchSystem = computed(() => {
   return result;
 });
 
+// const checkHaveNextPage = () => {
+
+// }
+
+const handleScroll = () => {
+  const bottomOfWindow =
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) ===
+    document.documentElement.offsetHeight;
+
+  if (bottomOfWindow) {
+    console.log("This is the bottom of the window");
+    // console.log(hotels?.value.meta.current_page, "this is hotel");
+    if (hotels?.value?.meta?.current_page < hotels?.value?.meta?.last_page) {
+      changePage(
+        hotels?.value?.meta?.links[hotels?.value?.meta?.current_page + 1].url
+      );
+    }
+  }
+
+  const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  // console.log(document.documentElement.scrollTop, "this is top");
+  if (scrolledDown) {
+    showSearch.value = true;
+  } else {
+    showSearch.value = false;
+  }
+};
+
+const showSearch = ref(false);
+
+const searchActionButton = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
 onMounted(async () => {
-  await hotelStore.getListAction();
+  window.addEventListener("scroll", handleScroll);
+  let res = await hotelStore.getListAction();
+  hotelList.value = res.data;
+  console.log(hotelList.value, "this is hotel list add");
   await cityStore.getSimpleListAction();
   await getList();
 });
 
+const searchAction = async () => {
+  console.log(watchSystem.value, "this is watch");
+  const res = await hotelStore.getListAction(watchSystem.value);
+  hotelList.value = res.data;
+};
+
 watch(search, async (newValue) => {
-  await hotelStore.getListAction(watchSystem.value);
+  hotelList.value = [];
+  await searchAction();
 });
 watch(price, async (newValue) => {
-  await hotelStore.getListAction(watchSystem.value);
+  hotelList.value = [];
+  await searchAction();
 });
 watch(city_id, async (newValue) => {
-  await hotelStore.getListAction(watchSystem.value);
+  hotelList.value = [];
+  await searchAction();
 });
 watch(place, async (newValue) => {
-  await hotelStore.getListAction(watchSystem.value);
+  hotelList.value = [];
+  await searchAction();
+});
+
+// infinite loop
+watch(hotels, async (newValue) => {
+  hotelList.value = [...hotelList.value, ...newValue.data];
+
+  console.log(hotelList.value, "this is add new");
 });
 </script>
 
 <template>
   <div class="bg-white">
     <NavbarVue />
-    <div class="py-5 px-4 space-y-4">
+    <div class="py-5 px-4 space-y-4 relative">
       <div class="relative">
         <div
           class="flex justify-start items-center gap-2 text-main absolute top-0 text-sm"
@@ -212,7 +269,45 @@ watch(place, async (newValue) => {
         </div>
       </div>
       <div
-        class="relative flex justify-center items-center py-[50%]"
+        class="pb-3 pt-4 px-4 flex justify-end text-main font-semibold border-b border-b-black/20 bg-white sticky -top-1 z-20"
+        v-if="showSearch"
+        @click="searchActionButton"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6 mr-2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+          />
+        </svg>
+        search
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5">
+        <!-- !loading -->
+        <div v-for="(hotel, index) in hotelList" :key="index">
+          <HotelsItemVue :id="hotel.id" :hotels="hotel" @change="changes" />
+        </div>
+      </div>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 pb-5 pt-2"
+      >
+        <!-- !loading -->
+        <div
+          class="space-y-2 col-span-1 md:col-span-2"
+          v-if="hotelList?.length == 0"
+        >
+          <NoDataPageVue />
+        </div>
+      </div>
+      <div
+        class="relative flex justify-center items-center py-[30%]"
         v-if="loading"
       >
         <div
@@ -220,25 +315,9 @@ watch(place, async (newValue) => {
         ></div>
         <img src="../../public/logo.jpg" class="rounded-full h-16 w-16" />
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5" v-if="!loading">
-        <div v-for="(hotel, index) in hotels?.data" :key="index">
-          <HotelsItemVue :id="hotel.id" :hotels="hotel" @change="changes" />
-        </div>
-      </div>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 pb-5 pt-2"
-        v-if="!loading"
-      >
-        <div
-          class="space-y-2 col-span-1 md:col-span-2"
-          v-if="hotels?.data.length == 0"
-        >
-          <NoDataPageVue />
-        </div>
-      </div>
-      <div>
+      <!-- <div>
         <Pagination v-if="!loading" :data="hotels" @change-page="changePage" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

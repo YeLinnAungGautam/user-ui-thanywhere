@@ -102,7 +102,7 @@ const showSetting = () => {
         </p>
         <p class="text-sm pl-2">{{ hotels?.place }}</p>
         <p class="text-sm pl-2">{{ hotels?.city_name }}</p>
-        <p class="text-xs pl-2 text-main">Allowment Available</p>
+        <p class="text-xs pl-2 text-main">Direct Partner</p>
       </div>
       <div class="text-end">
         <p class="text-xl pl-2 font-semibold text-main">

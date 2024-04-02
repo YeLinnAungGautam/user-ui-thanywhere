@@ -75,17 +75,71 @@ const watchSystem = computed(() => {
   return result;
 });
 
+const entranceList = ref([]);
+
 onMounted(async () => {
-  await entranceStore.getListAction();
+  window.addEventListener("scroll", handleScroll);
+  let res = await entranceStore.getListAction();
   await cityStore.getSimpleListAction();
+  entranceList.value = res.data;
   await getList();
 });
 
+const searchAction = async () => {
+  console.log(watchSystem.value, "this is watch");
+  const res = await entranceStore.getListAction(watchSystem.value);
+  entranceList.value = res.data;
+};
+
 watch(search, async (newValue) => {
-  await entranceStore.getListAction(watchSystem.value);
+  entranceList.value = [];
+  await searchAction();
 });
 watch(city_id, async (newValue) => {
-  await entranceStore.getListAction(watchSystem.value);
+  entranceList.value = [];
+  await searchAction();
+});
+
+// infinite scrolling part
+
+const handleScroll = () => {
+  const bottomOfWindow =
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) ===
+    document.documentElement.offsetHeight;
+  // console.log(bottomOfWindow);
+
+  if (bottomOfWindow) {
+    console.log("This is the bottom of the window");
+    // console.log(entrances?.value.meta.current_page, "this is hotel");
+    if (entrances?.value.meta.current_page < entrances?.value.meta.last_page) {
+      changePage(
+        entrances?.value.meta.links[entrances?.value.meta.current_page + 1].url
+      );
+    }
+  }
+
+  const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  // console.log(document.documentElement.scrollTop, "this is top");
+  if (scrolledDown) {
+    showSearch.value = true;
+  } else {
+    showSearch.value = false;
+  }
+};
+
+const showSearch = ref(false);
+
+const searchActionButton = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
+watch(entrances, async (newValue) => {
+  entranceList.value = [...entranceList.value, ...newValue.data];
+
+  console.log(entranceList.value, "this is add new");
 });
 </script>
 
@@ -167,37 +221,30 @@ watch(city_id, async (newValue) => {
           :reduce="(d) => d.id"
           placeholder="City"
         ></v-select>
-        <!-- <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Area"
-        ></v-select>
-        <v-select
-          class="style-chooser bg-white rounded-full border border-main min-w-[100px]"
-          :options="chooseType"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d.name"
-          placeholder="Price"
-        ></v-select> -->
       </div>
       <div
-        class="relative flex justify-center items-center py-[50%]"
-        v-if="loading"
+        class="pb-3 pt-4 px-4 flex justify-end text-main font-semibold border-b border-b-black/20 bg-white sticky -top-1 z-20"
+        v-if="showSearch"
+        @click="searchActionButton"
       >
-        <div
-          class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
-        ></div>
-        <img src="../../public/logo.jpg" class="rounded-full h-16 w-16" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6 mr-2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+          />
+        </svg>
+        search
       </div>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 pb-5"
-        v-if="!loading"
-      >
-        <div v-for="(entrance, index) in entrances?.data" :key="index">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 pb-5">
+        <div v-for="(entrance, index) in entranceList" :key="index">
           <AttractionListItem
             :id="entrance.id"
             :attractions="entrance"
@@ -205,24 +252,30 @@ watch(city_id, async (newValue) => {
           />
         </div>
       </div>
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
-        v-if="!loading"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2">
         <div
           class="space-y-2 col-span-1 md:col-span-2"
-          v-if="entrances?.data.length == 0"
+          v-if="entranceList.length == 0"
         >
           <NoDataPageVue />
         </div>
       </div>
-      <div>
+      <div
+        class="relative flex justify-center items-center py-[30%]"
+        v-if="loading"
+      >
+        <div
+          class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
+        ></div>
+        <img src="../../public/logo.jpg" class="rounded-full h-16 w-16" />
+      </div>
+      <!-- <div>
         <Pagination
           v-if="!loading"
           :data="entrances"
           @change-page="changePage"
         />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

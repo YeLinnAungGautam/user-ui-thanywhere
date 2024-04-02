@@ -28,12 +28,6 @@ const order_by_price = ref("");
 const hotel_id = ref("");
 const hotel_name = ref("");
 
-// const goRoom = () => {
-//   router.push({
-//     name: "home",
-//   });
-// };
-
 const createPage = () => {
   router.push({
     name: "room_create",
@@ -98,7 +92,9 @@ const watchSystem = computed(() => {
 
 const changePage = async (url) => {
   console.log(url);
-  await roomStore.getChangePage(url, watchSystem.value);
+  if (url != null) {
+    await roomStore.getChangePage(url, watchSystem.value);
+  }
 };
 
 const changes = async (message) => {
@@ -108,25 +104,79 @@ const changes = async (message) => {
 };
 
 onMounted(async () => {
+  window.addEventListener("scroll", handleScroll);
   hotel_id.value = route.params.id;
   hotel_name.value = route.params.name;
   await hotelStore.getSimpleListAction();
   // await roomStore.getListAction();
+  // roomList.value = rooms?.value.data;
   // console.log(route.params.id, hotels.value, "this is params id");
 });
 
+const searchAction = async () => {
+  console.log(watchSystem.value);
+  let res = await roomStore.getListAction(watchSystem.value);
+  roomList.value = res.data;
+};
+
 watch(hotel_id, async (newValue) => {
-  await roomStore.getListAction(watchSystem.value);
-  console.log(hotel_id.value);
+  roomList.value = [];
+  await searchAction();
 });
 watch(order_by_price, async (newValue) => {
-  await roomStore.getListAction(watchSystem.value);
-  console.log(order_by_price.value);
+  roomList.value = [];
+
+  await searchAction();
 });
 watch(date, async (newValue) => {
+  roomList.value = [];
   searchFunction();
-  await roomStore.getListAction(watchSystem.value);
+  await searchAction();
 });
+
+// infinite scrolling
+
+const roomList = ref([]);
+const showSearch = ref(false);
+
+const handleScroll = () => {
+  const bottomOfWindow =
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) ===
+    document.documentElement.offsetHeight;
+
+  if (bottomOfWindow) {
+    console.log(
+      "This is the bottom of the window",
+      rooms?.value?.meta?.current_page,
+      rooms.value?.meta?.last_page
+    );
+
+    if (rooms?.value?.meta?.current_page < rooms?.value?.meta?.last_page) {
+      changePage(
+        rooms?.value?.meta?.links[rooms?.value?.meta?.current_page + 1].url
+      );
+    }
+  }
+
+  const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  // console.log(document.documentElement.scrollTop, "this is top");
+  if (scrolledDown) {
+    showSearch.value = true;
+  } else {
+    showSearch.value = false;
+  }
+};
+
+watch(rooms, async (newValue) => {
+  roomList.value = [...roomList.value, ...newValue.data];
+});
+
+const searchActionButton = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
 </script>
 
 <template>
@@ -230,7 +280,41 @@ watch(date, async (newValue) => {
         </div>
       </div>
       <div
-        class="relative flex justify-center items-center py-[50%]"
+        class="pb-3 pt-4 px-4 flex justify-end text-main font-semibold border-b border-b-black/20 bg-white sticky -top-1 z-20"
+        v-if="showSearch"
+        @click="searchActionButton"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6 mr-2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+          />
+        </svg>
+        search
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2">
+        <div class="space-y-2" v-for="(room, index) in roomList" :key="index">
+          <RoomsItemVue :id="room.id" :rooms="room" @change="changes" />
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2">
+        <div
+          class="space-y-2 col-span-1 md:col-span-2"
+          v-if="roomList?.length == 0"
+        >
+          <NoDataPage />
+        </div>
+      </div>
+      <div
+        class="relative flex justify-center items-center py-[30%]"
         v-if="loading"
       >
         <div
@@ -238,32 +322,9 @@ watch(date, async (newValue) => {
         ></div>
         <img src="../../public/logo.jpg" class="rounded-full h-16 w-16" />
       </div>
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
-        v-if="!loading"
-      >
-        <div
-          class="space-y-2"
-          v-for="(room, index) in rooms?.data"
-          :key="index"
-        >
-          <RoomsItemVue :id="room.id" :rooms="room" @change="changes" />
-        </div>
-      </div>
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
-        v-if="!loading"
-      >
-        <div
-          class="space-y-2 col-span-1 md:col-span-2"
-          v-if="rooms?.data.length == 0"
-        >
-          <NoDataPage />
-        </div>
-      </div>
-      <div>
+      <!-- <div>
         <Pagination v-if="!loading" :data="rooms" @change-page="changePage" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

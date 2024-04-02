@@ -51,7 +51,10 @@ const changePage = async (url) => {
   // let data = {
   //   variation_id: variation_id.value,
   // };
-  await roomStore.getChangePage(url, watchSystem.value);
+  // await roomStore.getChangePage(url, watchSystem.value);
+  if (url != null) {
+    await variationStore.getChangePage(url, watchSystem.value);
+  }
 };
 
 const changes = async (message) => {
@@ -73,17 +76,74 @@ const watchSystem = computed(() => {
 });
 
 onMounted(async () => {
+  window.addEventListener("scroll", handleScroll);
   variation_id.value = route.params.id;
   variation_name.value = route.params.name;
   await entranceStore.getSimpleListAction();
 });
 
 watch(variation_id, async (newValue) => {
-  await variationStore.getListAction(watchSystem.value);
+  variationList.value = [];
+  await searchAction();
 });
 watch(max_price, async (newValue) => {
-  await variationStore.getListAction(watchSystem.value);
+  variationList.value = [];
+  await searchAction();
 });
+
+// scroll inifinttt
+
+const variationList = ref([]);
+const showSearch = ref(false);
+
+const searchAction = async () => {
+  console.log(watchSystem.value);
+  let res = await variationStore.getListAction(watchSystem.value);
+  variationList.value = res.data;
+};
+
+const handleScroll = () => {
+  const bottomOfWindow =
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) ===
+    document.documentElement.offsetHeight;
+
+  if (bottomOfWindow) {
+    console.log(
+      "This is the bottom of the window",
+      variations?.value?.meta?.current_page,
+      variations.value?.meta?.last_page
+    );
+
+    if (
+      variations?.value?.meta?.current_page < variations?.value?.meta?.last_page
+    ) {
+      changePage(
+        variations?.value?.meta?.links[
+          variations?.value?.meta?.current_page + 1
+        ].url
+      );
+    }
+  }
+
+  const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  // console.log(document.documentElement.scrollTop, "this is top");
+  if (scrolledDown) {
+    showSearch.value = true;
+  } else {
+    showSearch.value = false;
+  }
+};
+
+watch(variations, async (newValue) => {
+  variationList.value = [...variationList.value, ...newValue.data];
+});
+
+const searchActionButton = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
 </script>
 
 <template>
@@ -195,18 +255,30 @@ watch(max_price, async (newValue) => {
         </div>
       </div>
       <div
-        class="relative flex justify-center items-center py-[50%]"
-        v-if="loading"
+        class="pb-3 pt-4 px-4 flex justify-end text-main font-semibold border-b border-b-black/20 bg-white sticky -top-1 z-20"
+        v-if="showSearch"
+        @click="searchActionButton"
       >
-        <div
-          class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
-        ></div>
-        <img src="../../public/logo.jpg" class="rounded-full h-16 w-16" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6 mr-2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+          />
+        </svg>
+        search
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5" v-if="!loading">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5">
         <div
           class="space-y-2"
-          v-for="(variation, index) in variations?.data"
+          v-for="(variation, index) in variationList"
           :key="index"
         >
           <VariationItem
@@ -216,24 +288,30 @@ watch(max_price, async (newValue) => {
           />
         </div>
       </div>
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2"
-        v-if="!loading"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2">
         <div
           class="space-y-2 col-span-1 md:col-span-2"
-          v-if="variations?.data.length == 0"
+          v-if="variationList?.length == 0"
         >
           <NoDataPage />
         </div>
       </div>
-      <div>
+      <div
+        class="relative flex justify-center items-center py-[30%]"
+        v-if="loading"
+      >
+        <div
+          class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
+        ></div>
+        <img src="../../public/logo.jpg" class="rounded-full h-16 w-16" />
+      </div>
+      <!-- <div>
         <Pagination
           v-if="!loading"
           :data="variations"
           @change-page="changePage"
         />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
