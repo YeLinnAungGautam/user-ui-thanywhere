@@ -102,8 +102,8 @@ const watchSystem = computed(() => {
 
 const handleScroll = () => {
   const bottomOfWindow =
-    Math.floor(document.documentElement.scrollTop + window.innerHeight) ===
-    document.documentElement.offsetHeight;
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
+    document.documentElement.offsetHeight - 100;
 
   if (bottomOfWindow) {
     console.log("This is the bottom of the window");
