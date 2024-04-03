@@ -101,22 +101,13 @@ watch(city_id, async (newValue) => {
 });
 
 // infinite scrolling part
+const bottomOfWindow = ref(false);
 
 const handleScroll = () => {
-  const bottomOfWindow =
+  bottomOfWindow.value =
     Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
     document.documentElement.offsetHeight - 100;
   // console.log(bottomOfWindow);
-
-  if (bottomOfWindow) {
-    console.log("This is the bottom of the window");
-    // console.log(entrances?.value.meta.current_page, "this is hotel");
-    if (entrances?.value.meta.current_page < entrances?.value.meta.last_page) {
-      changePage(
-        entrances?.value.meta.links[entrances?.value.meta.current_page + 1].url
-      );
-    }
-  }
 
   const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
   // console.log(document.documentElement.scrollTop, "this is top");
@@ -126,6 +117,23 @@ const handleScroll = () => {
     showSearch.value = false;
   }
 };
+
+watch(bottomOfWindow, (newVal) => {
+  if (bottomOfWindow.value == true) {
+    let changePageCalled = false;
+    if (newVal && !changePageCalled) {
+      console.log("This is the bottom of the window");
+      if (
+        entrances?.value.meta.current_page < entrances?.value.meta.last_page
+      ) {
+        changePage(
+          entrances?.value.meta.links[entrances?.value.meta.current_page + 1]
+            .url
+        );
+      }
+    }
+  }
+});
 
 const showSearch = ref(false);
 

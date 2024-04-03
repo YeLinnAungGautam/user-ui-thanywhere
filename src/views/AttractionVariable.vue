@@ -95,6 +95,7 @@ watch(max_price, async (newValue) => {
 
 const variationList = ref([]);
 const showSearch = ref(false);
+const bottomOfWindow = ref(false);
 
 const searchAction = async () => {
   console.log(watchSystem.value);
@@ -103,27 +104,9 @@ const searchAction = async () => {
 };
 
 const handleScroll = () => {
-  const bottomOfWindow =
+  bottomOfWindow.value =
     Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
     document.documentElement.offsetHeight - 100;
-
-  if (bottomOfWindow) {
-    console.log(
-      "This is the bottom of the window",
-      variations?.value?.meta?.current_page,
-      variations.value?.meta?.last_page
-    );
-
-    if (
-      variations?.value?.meta?.current_page < variations?.value?.meta?.last_page
-    ) {
-      changePage(
-        variations?.value?.meta?.links[
-          variations?.value?.meta?.current_page + 1
-        ].url
-      );
-    }
-  }
 
   const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
   // console.log(document.documentElement.scrollTop, "this is top");
@@ -133,6 +116,25 @@ const handleScroll = () => {
     showSearch.value = false;
   }
 };
+
+watch(bottomOfWindow, (newVal) => {
+  if (bottomOfWindow.value == true) {
+    let changePageCalled = false;
+    if (newVal && !changePageCalled) {
+      console.log("This is the bottom of the window");
+      if (
+        variations?.value?.meta?.current_page <
+        variations?.value?.meta?.last_page
+      ) {
+        changePage(
+          variations?.value?.meta?.links[
+            variations?.value?.meta?.current_page + 1
+          ].url
+        );
+      }
+    }
+  }
+});
 
 watch(variations, async (newValue) => {
   variationList.value = [...variationList.value, ...newValue.data];

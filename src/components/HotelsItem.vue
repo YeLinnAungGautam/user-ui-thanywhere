@@ -2,12 +2,14 @@
 import { ref, defineProps, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
+
 import { useHotelStore } from "../stores/hotel";
 import { useToastStore } from "../stores/toast";
 import { defineComponent } from "vue";
 import { Carousel, Navigation, Pagination, Slide } from "vue3-carousel";
 
 import "vue3-carousel/dist/carousel.css";
+import { CheckBadgeIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps({
   id: Number,
@@ -46,9 +48,7 @@ const showSetting = () => {
 
 <template>
   <div class="space-y-2 relative overflow-hidden rounded-xl group">
-    <div
-      class="h-[230px] sm:h-[300px] md:h-[220px] lg:h-[300px] w-full overflow-hidden rounded-xl"
-    >
+    <div class="max-h-[300px] w-full overflow-hidden rounded-xl relative">
       <div v-if="hotels?.images.length > 0">
         <Carousel :wrap-around="true">
           <Slide v-for="i in hotels?.images" :key="i.id">
@@ -75,6 +75,11 @@ const showSetting = () => {
           </template>
         </Carousel>
       </div>
+      <p
+        class="text-xs text-main px-4 py-2 rounded-full absolute top-2 right-2 shadow-sm bg-white"
+      >
+        Direct Partner
+      </p>
       <img
         src="../../public/default-image.jpg"
         alt=""
@@ -101,8 +106,9 @@ const showSetting = () => {
           {{ hotels?.name }}
         </p>
         <p class="text-sm pl-2">{{ hotels?.place }}</p>
-        <p class="text-sm pl-2">{{ hotels?.city_name }}</p>
-        <p class="text-xs pl-2 text-main">Direct Partner</p>
+        <p class="text-xs pl-2 text-main font-semibold">
+          {{ hotels?.city?.name }}
+        </p>
       </div>
       <div class="text-end">
         <p class="text-xl pl-2 font-semibold text-main">

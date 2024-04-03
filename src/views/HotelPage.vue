@@ -8,6 +8,9 @@ import Pagination from "../components/Pagination.vue";
 import HotelsItemVue from "../components/HotelsItem.vue";
 import { useCityStore } from "../stores/city";
 import NoDataPageVue from "../components/NoDataPage.vue";
+import { AdjustmentsHorizontalIcon } from "@heroicons/vue/24/outline";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/vue";
+import Modal from "../components/Modal.vue";
 
 const router = useRouter();
 const hotelStore = useHotelStore();
@@ -45,14 +48,20 @@ const changePage = async (url) => {
 // const addList = ref(null);
 
 const getList = async () => {
-  const res = await hotelStore.getSimpleListAction();
+  const res = await hotelStore.getSimpleListAction({ city_id: city_id.value });
 
   for (let i = 0; i < res.data.length; i++) {
     chooseType.value.push(res.data[i].name);
   }
+  choosePlace.value = [];
   for (let i = 0; i < res.data.length; i++) {
-    choosePlace.value.push(res.data[i].place);
+    // choosePlace.value.push(res.data[i].place);
+    const place = res.data[i].place;
+    if (!choosePlace.value.find((item) => item === place)) {
+      choosePlace.value.push(place);
+    }
   }
+  console.log(res.data, "this is get");
 };
 
 const priceShow = ref(false);
@@ -100,20 +109,12 @@ const watchSystem = computed(() => {
 
 // }
 
+const bottomOfWindow = ref(false);
+
 const handleScroll = () => {
-  const bottomOfWindow =
+  bottomOfWindow.value =
     Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
     document.documentElement.offsetHeight - 100;
-
-  if (bottomOfWindow) {
-    console.log("This is the bottom of the window");
-    // console.log(hotels?.value.meta.current_page, "this is hotel");
-    if (hotels?.value?.meta?.current_page < hotels?.value?.meta?.last_page) {
-      changePage(
-        hotels?.value?.meta?.links[hotels?.value?.meta?.current_page + 1].url
-      );
-    }
-  }
 
   const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
   // console.log(document.documentElement.scrollTop, "this is top");
@@ -124,6 +125,21 @@ const handleScroll = () => {
   }
 };
 
+watch(bottomOfWindow, (newVal) => {
+  if (bottomOfWindow.value == true) {
+    let changePageCalled = false;
+    if (newVal && !changePageCalled) {
+      console.log("This is the bottom of the window");
+      if (hotels?.value?.meta?.current_page < hotels?.value?.meta?.last_page) {
+        changePageCalled = true; // Set the flag to true
+        changePage(
+          hotels?.value?.meta?.links[hotels?.value?.meta?.current_page + 1].url
+        );
+      }
+    }
+  }
+});
+
 const showSearch = ref(false);
 
 const searchActionButton = () => {
@@ -132,6 +148,8 @@ const searchActionButton = () => {
     behavior: "smooth",
   });
 };
+
+const createModalOpen = ref(false);
 
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
@@ -159,6 +177,7 @@ watch(price, async (newValue) => {
 watch(city_id, async (newValue) => {
   hotelList.value = [];
   await searchAction();
+  await getList();
 });
 watch(place, async (newValue) => {
   hotelList.value = [];
@@ -167,7 +186,9 @@ watch(place, async (newValue) => {
 
 // infinite loop
 watch(hotels, async (newValue) => {
-  hotelList.value = [...hotelList.value, ...newValue.data];
+  if (newValue) {
+    hotelList.value = [...hotelList.value, ...newValue.data];
+  }
 
   console.log(hotelList.value, "this is add new");
 });
@@ -177,70 +198,54 @@ watch(hotels, async (newValue) => {
   <div class="bg-white">
     <NavbarVue />
     <div class="py-5 px-4 space-y-4 relative">
-      <div class="relative">
+      <div class="flex justify-between items-center gap-2">
         <div
-          class="flex justify-start items-center gap-2 text-main absolute top-0 text-sm"
-          @click="goBack"
+          class="bg-white w-[82%] py-3 pl-4 pr-2 rounded-full flex justify-between items-center css__box__generated"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.75 19.5L8.25 12l7.5-7.5"
+          <div class="mr-2" @click="clear">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              v-if="!search && !price && !city_id && !place"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 text-main"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+            <img
+              v-if="search || price || city_id || place"
+              src="../../public/clear-svgrepo-com (1).svg"
+              class="w-6 h-6"
+              alt=""
             />
-          </svg>
-          Back
+            <!-- <p class="text-main">Search</p> -->
+          </div>
+          <v-select
+            class="style-chooser w-full"
+            :options="chooseType"
+            v-model="search"
+            label="name"
+            :clearable="false"
+            :reduce="(d) => d"
+            placeholder="Search for Hotels"
+          ></v-select>
+          <!-- @option:selected="chooseName()" -->
         </div>
-
-        <p class="text-main text-lg font-semibold w-full text-center">Hotels</p>
-      </div>
-      <div
-        class="bg-main/5 py-2 pl-3 pr-2 rounded-xl flex justify-between items-center shadow"
-      >
-        <div class="mr-2" @click="clear">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            v-if="!search && !price && !city_id && !place"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6 text-main"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-            />
-          </svg>
-          <img
-            v-if="search || price || city_id || place"
-            src="../../public/clear-svgrepo-com (1).svg"
-            class="w-6 h-6"
-            alt=""
-          />
-          <!-- <p class="text-main">Search</p> -->
+        <div
+          class="w-10 h-10 p-2 border border-main flex justify-center items-center rounded-full"
+          @click="createModalOpen = true"
+        >
+          <AdjustmentsHorizontalIcon class="w-7 h-7 text-main" />
         </div>
-        <v-select
-          class="style-chooser w-full"
-          :options="chooseType"
-          v-model="search"
-          label="name"
-          :clearable="false"
-          :reduce="(d) => d"
-          placeholder="Search"
-        ></v-select>
-        <!-- @option:selected="chooseName()" -->
       </div>
-      <div class="flex py-1.5 mb-5 gap-3 flex-wrap">
-        <v-select
+      <div class="flex flex-wrap">
+        <!-- <v-select
           class="style-chooser bg-white rounded-xl border border-main min-w-[100px]"
           :options="cities?.data"
           label="name"
@@ -248,24 +253,30 @@ watch(hotels, async (newValue) => {
           :clearable="false"
           :reduce="(d) => d.id"
           placeholder="City"
-        ></v-select>
-        <v-select
-          class="style-chooser bg-white rounded-xl border border-main min-w-[100px]"
-          :options="choosePlace"
-          label="name"
-          v-model="place"
-          :clearable="false"
-          :reduce="(d) => d"
-          placeholder="Place"
-        ></v-select>
-
-        <div class="text-sm flex justify-center items-center gap-2">
-          <input
-            type="number"
-            v-model="price"
-            class="bg-white text-xs focus:ring-0 text-main border-main rounded-xl px-4 py-2 border max-w-[100px]"
-            placeholder="max_price"
-          />
+        ></v-select> -->
+        <div class="w-full border-b border-b-black/10">
+          <div class="flex pb-2 space-x-2 overflow-x-scroll">
+            <p
+              class="bg-white px-2 py-1 text-xs text-main"
+              :class="
+                city_id == '' ? 'border-b-2 border-b-main font-semibold' : ''
+              "
+              @click="city_id = ''"
+            >
+              All
+            </p>
+            <p
+              class="bg-white px-2 py-1 text-xs text-main whitespace-nowrap"
+              :class="
+                city_id == c.id ? 'border-b-2 border-b-main font-semibold' : ''
+              "
+              v-for="c in cities?.data"
+              :key="c.id"
+              @click="city_id = c.id"
+            >
+              {{ c.name }}
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -289,7 +300,7 @@ watch(hotels, async (newValue) => {
         </svg>
         search
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-5">
         <!-- !loading -->
         <div v-for="(hotel, index) in hotelList" :key="index">
           <HotelsItemVue :id="hotel.id" :hotels="hotel" @change="changes" />
@@ -319,6 +330,46 @@ watch(hotels, async (newValue) => {
         <Pagination v-if="!loading" :data="hotels" @change-page="changePage" />
       </div> -->
     </div>
+    <Modal :isOpen="createModalOpen" @closeModal="createModalOpen = false">
+      <DialogPanel
+        class="w-full max-w-md p-4 font-poppins text-left align-middle transition-all transform bg-white rounded-lg shadow-xl"
+      >
+        <DialogTitle
+          as="h3"
+          class="mb-5 text-base font-medium leading-6 text-main"
+        >
+          Search
+        </DialogTitle>
+        <div class="space-y-4 mb-3">
+          <div class="text-sm gap-2 w-full text-main space-y-4">
+            <p class=" ">Max Price</p>
+            <div
+              class="flex justify-between items-center bg-main text-xs text-main border-main rounded-full border pr-2 shadow"
+            >
+              <input
+                type="number"
+                v-model="price"
+                class="bg-white text-xs focus:ring-0 focus:outline-none text-main border-main rounded-full px-4 w-[80%] py-3 border"
+                placeholder="eg : 100 THB"
+              />
+              <p class="text-white px-2 text-lg font-semibold">THB</p>
+            </div>
+          </div>
+          <div class="text-sm gap-2 w-full text-main space-y-4">
+            <p class=" ">Place</p>
+            <v-select
+              class="style-chooser bg-white rounded-full border-2 px-4 py-1.5 border-main min-w-[100px] shadow"
+              :options="choosePlace"
+              label="name"
+              v-model="place"
+              :clearable="false"
+              :reduce="(d) => d"
+              placeholder="Place Search"
+            ></v-select>
+          </div>
+        </div>
+      </DialogPanel>
+    </Modal>
   </div>
 </template>
 

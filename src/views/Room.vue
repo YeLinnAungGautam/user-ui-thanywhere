@@ -138,25 +138,12 @@ watch(date, async (newValue) => {
 
 const roomList = ref([]);
 const showSearch = ref(false);
+const bottomOfWindow = ref(false);
 
 const handleScroll = () => {
-  const bottomOfWindow =
+  bottomOfWindow.value =
     Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
     document.documentElement.offsetHeight - 100;
-
-  if (bottomOfWindow) {
-    console.log(
-      "This is the bottom of the window",
-      rooms?.value?.meta?.current_page,
-      rooms.value?.meta?.last_page
-    );
-
-    if (rooms?.value?.meta?.current_page < rooms?.value?.meta?.last_page) {
-      changePage(
-        rooms?.value?.meta?.links[rooms?.value?.meta?.current_page + 1].url
-      );
-    }
-  }
 
   const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
   // console.log(document.documentElement.scrollTop, "this is top");
@@ -166,6 +153,20 @@ const handleScroll = () => {
     showSearch.value = false;
   }
 };
+
+watch(bottomOfWindow, (newVal) => {
+  if (bottomOfWindow.value) {
+    let changePageCalled = false;
+    if (newVal && !changePageCalled) {
+      console.log("This is the bottom of the window");
+      if (rooms?.value?.meta?.current_page < rooms?.value?.meta?.last_page) {
+        changePage(
+          rooms?.value?.meta?.links[rooms?.value?.meta?.current_page + 1].url
+        );
+      }
+    }
+  }
+});
 
 watch(rooms, async (newValue) => {
   roomList.value = [...roomList.value, ...newValue.data];
