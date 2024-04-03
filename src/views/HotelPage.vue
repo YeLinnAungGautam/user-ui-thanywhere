@@ -200,7 +200,7 @@ watch(hotels, async (newValue) => {
     <div class="py-5 px-4 space-y-4 relative">
       <div class="flex justify-between items-center gap-2">
         <div
-          class="bg-white w-[82%] py-3 pl-4 pr-2 rounded-full flex justify-between items-center css__box__generated"
+          class="bg-white w-[82%] py-3 text-sm text-main pl-4 pr-2 rounded-full flex justify-between items-center css__box__generated"
         >
           <div class="mr-2" @click="clear">
             <svg
