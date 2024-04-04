@@ -79,7 +79,7 @@ onMounted(async () => {
     <div class="py-5 px-4 space-y-4">
       <HomeScrollTextVue />
       <div
-        class="bg-main/5 py-2 pl-3 pr-2 rounded-xl flex justify-between items-center shadow"
+        class="bg-white w-full py-3 text-sm text-main pl-4 pr-2 rounded-full flex justify-between items-center css__box__generated"
       >
         <div class="mr-2" @click="clear">
           <svg

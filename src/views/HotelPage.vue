@@ -245,15 +245,6 @@ watch(hotels, async (newValue) => {
         </div>
       </div>
       <div class="flex flex-wrap">
-        <!-- <v-select
-          class="style-chooser bg-white rounded-xl border border-main min-w-[100px]"
-          :options="cities?.data"
-          label="name"
-          v-model="city_id"
-          :clearable="false"
-          :reduce="(d) => d.id"
-          placeholder="City"
-        ></v-select> -->
         <div class="w-full border-b border-b-black/10">
           <div class="flex pb-2 space-x-2 overflow-x-scroll">
             <p
@@ -306,17 +297,17 @@ watch(hotels, async (newValue) => {
           <HotelsItemVue :id="hotel.id" :hotels="hotel" @change="changes" />
         </div>
       </div>
-      <div
+      <!-- <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 pb-5 pt-2"
       >
-        <!-- !loading -->
+        
         <div
           class="space-y-2 col-span-1 md:col-span-2"
           v-if="hotelList?.length == 0"
         >
           <NoDataPageVue />
         </div>
-      </div>
+      </div> -->
       <div
         class="relative flex justify-center items-center py-[30%]"
         v-if="loading"
@@ -354,6 +345,19 @@ watch(hotels, async (newValue) => {
               />
               <p class="text-white px-2 text-lg font-semibold">THB</p>
             </div>
+          </div>
+          <div></div>
+          <div class="text-sm gap-2 w-full text-main space-y-4">
+            <p class=" ">City</p>
+            <v-select
+              class="style-chooser bg-white rounded-full border-2 px-4 py-1.5 border-main min-w-[100px] shadow"
+              :options="cities?.data"
+              label="name"
+              v-model="city_id"
+              :clearable="false"
+              :reduce="(d) => d.id"
+              placeholder="Choose City"
+            ></v-select>
           </div>
           <div class="text-sm gap-2 w-full text-main space-y-4">
             <p class=" ">Place</p>

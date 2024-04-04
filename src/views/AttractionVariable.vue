@@ -290,14 +290,14 @@ const searchActionButton = () => {
           />
         </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2">
+      <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 pt-2">
         <div
           class="space-y-2 col-span-1 md:col-span-2"
           v-if="variationList?.length == 0"
         >
           <NoDataPage />
         </div>
-      </div>
+      </div> -->
       <div
         class="relative flex justify-center items-center py-[30%]"
         v-if="loading"
