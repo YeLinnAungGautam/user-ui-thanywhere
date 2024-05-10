@@ -120,9 +120,10 @@ onMounted(async () => {
       >
         <div
           class="space-y-2 pb-4 relative"
+          @click="goVantours"
           v-if="search == 'van tour' || search == 'all' || search == ''"
         >
-          <!-- @click="goVantours" -->
+          
           <div class="w-full h-[200px] sm:h-[230px] overflow-hidden rounded-xl">
             <img
               src="../../public/privatevantour.jpg"
@@ -130,11 +131,7 @@ onMounted(async () => {
               alt=""
             />
           </div>
-          <div
-            class="w-full h-[200px] sm:h-[230px] text-white flex justify-center items-center bg-black/50 absolute -top-2 rounded-xl"
-          >
-            Coming Soon
-          </div>
+          
           <p class="text-base pl-2 font-semibold text-main">Van Tours</p>
           <p class="text-xs pl-2">{{ vantours?.meta.total }} Packages</p>
         </div>
