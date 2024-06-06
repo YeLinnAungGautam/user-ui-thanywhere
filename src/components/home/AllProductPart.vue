@@ -4,7 +4,7 @@
     <div
       class="flex flex-1 justify-start space-x-4 pr-4 items-center overflow-x-scroll scroll-container"
     >
-      <div class="space-y-2 min-w-14 ml-6">
+      <div class="space-y-2 min-w-14 max-w-14 ml-6">
         <div
           class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
         >
@@ -15,7 +15,7 @@
           hotel bookings
         </p>
       </div>
-      <div class="space-y-2 min-w-14">
+      <div class="space-y-2 min-w-14 max-w-14">
         <div
           class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
         >
@@ -26,7 +26,7 @@
           inclusive packages
         </p>
       </div>
-      <div class="space-y-2 min-w-14">
+      <div class="space-y-2 min-w-14 max-w-14">
         <div
           class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
         >
@@ -37,7 +37,7 @@
           attraction tickets
         </p>
       </div>
-      <div class="space-y-2 min-w-14">
+      <div class="space-y-2 min-w-14 max-w-14">
         <div
           class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
         >
@@ -48,7 +48,7 @@
           private van tours
         </p>
       </div>
-      <div class="space-y-2 min-w-14">
+      <div class="space-y-2 min-w-14 max-w-14">
         <div
           class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
         >
