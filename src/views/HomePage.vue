@@ -10,6 +10,7 @@ import BestSellingVanTours from "../components/home/BestSellingVanTours.vue";
 import profileIcon from "../assets/icons/Search Bar Icons & Headline icons/account icon.svg";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import logoIcon from "../assets/logo.png";
+// import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
 </script>
 
 <template>
@@ -53,8 +54,10 @@ import logoIcon from "../assets/logo.png";
       <div class="h-auto pb-20 pt-8 space-y-10">
         <AllProductPartVue />
         <ReadDestinationVue />
+
         <ThingToDoVue />
         <StayinBangkokVue />
+        <!-- <ExporeAboutCityVue /> -->
         <UniqueHotelVue />
         <BestSellingVanTours />
       </div>

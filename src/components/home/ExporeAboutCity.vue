@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between items-center mb-2">
-      <h1 class="text-main font-semibold px-6">read about destinations</h1>
+      <h1 class="text-main font-semibold px-6">expore cities</h1>
       <div
         class="text-[10px] font-semibold text-main flex mr-6 justify-end items-center gap-1"
       >
@@ -38,7 +38,7 @@ import { onMounted, ref } from "vue";
 import citydb from "../../assets/citydb";
 
 const settings = {
-  itemsToShow: 1.6,
+  itemsToShow: 1.8,
   snapAlign: "center",
 };
 
@@ -50,27 +50,15 @@ onMounted(() => {
 
 const breakpoints = {
   400: {
-    itemsToShow: 1.8,
-    snapAlign: "center",
-  },
-  450: {
-    itemsToShow: 2.2,
+    itemsToShow: 2.4,
     snapAlign: "center",
   },
   500: {
-    itemsToShow: 2.3,
-    snapAlign: "center",
-  },
-  550: {
-    itemsToShow: 2.6,
-    snapAlign: "center",
-  },
-  600: {
     itemsToShow: 2.8,
     snapAlign: "center",
   },
-  650: {
-    itemsToShow: 3,
+  600: {
+    itemsToShow: 3.5,
     snapAlign: "center",
   },
   700: {
