@@ -50,7 +50,7 @@
       </div>
       <div class="space-y-2 w-[3.5rem]">
         <div
-          class="bg-gradient-to-br to-main from-main/40 max-w-12 min-w-12 p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <PaperAirplaneIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="flight" alt="" class="w-6 h-6 mx-auto" />
