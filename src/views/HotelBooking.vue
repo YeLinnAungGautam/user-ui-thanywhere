@@ -133,17 +133,17 @@ const data = stayinbangkok;
                 <p class="text-sm font-semibold">start rating</p>
                 <ChevronUpIcon class="w-4 h-4" />
               </div>
-              <div class="flex justify-start items-center gap-2 mr-5">
+              <div class="flex flex-wrap justify-start items-center gap-2 mr-5">
                 <div
-                  class="border border-black/60 rounded-lg px-4 py-2"
+                  class="border border-black/60 rounded-lg px-2 py-2"
                   v-for="(i, index) in 4"
                   :key="index"
                 >
                   <div class="flex justify-center items-center gap-1">
-                    <p>{{ index + 2 }}</p>
+                    <p class="text-sm">{{ index + 2 }}</p>
                     <StarIcon class="w-5 h-5 text-main" />
                   </div>
-                  <p class="text-[8px] text-black/70">6+ hotels</p>
+                  <p class="text-[8px] text-black/70">6+hotels</p>
                 </div>
               </div>
             </div>
