@@ -4,9 +4,9 @@
     <div
       class="flex flex-1 justify-start space-x-4 pr-4 items-center overflow-x-scroll scroll-container"
     >
-      <div class="space-y-2 min-w-14 max-w-14 ml-6">
+      <div class="space-y-2 w-14 ml-6">
         <div
-          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
+          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <HomeModernIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="hotel" alt="" class="w-6 h-6 mx-auto" />
@@ -15,9 +15,9 @@
           hotel bookings
         </p>
       </div>
-      <div class="space-y-2 min-w-14 max-w-14">
+      <div class="space-y-2 w-14">
         <div
-          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
+          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <BriefcaseIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="inclusive" alt="" class="w-6 h-6 mx-auto" />
@@ -26,9 +26,9 @@
           inclusive packages
         </p>
       </div>
-      <div class="space-y-2 min-w-14 max-w-14">
+      <div class="space-y-2 w-14">
         <div
-          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
+          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <CursorArrowRippleIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="attraction" alt="" class="w-6 h-6 mx-auto" />
@@ -37,9 +37,9 @@
           attraction tickets
         </p>
       </div>
-      <div class="space-y-2 min-w-14 max-w-14">
+      <div class="space-y-2 w-14">
         <div
-          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
+          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <TruckIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="vantour" alt="" class="w-6 h-6 mx-auto" />
@@ -48,9 +48,9 @@
           private van tours
         </p>
       </div>
-      <div class="space-y-2 min-w-14 max-w-14">
+      <div class="space-y-2 w-14">
         <div
-          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto"
+          class="bg-gradient-to-br to-main from-main/40 max-w-12 p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <PaperAirplaneIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="flight" alt="" class="w-6 h-6 mx-auto" />
