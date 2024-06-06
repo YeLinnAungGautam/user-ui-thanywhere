@@ -7,17 +7,21 @@
             :src="homeImage"
             alt=""
             class="w-6 h-6 mx-auto"
-            v-if="route.name != 'Home'"
+            v-if="!route.path.includes('home') && !route.name == 'Home'"
           />
           <img
             :src="homeFillImage"
             alt=""
             class="w-6 h-6 mx-auto"
-            v-if="route.name == 'Home'"
+            v-if="route.path.includes('home') || route.name == 'Home'"
           />
           <p
             class="text-xs"
-            :class="route.name == 'Home' ? 'text-main' : 'text-black/90'"
+            :class="
+              route.name == 'Home' || route.path.includes('home')
+                ? 'text-main'
+                : 'text-black/90'
+            "
           >
             home
           </p>
@@ -50,10 +54,10 @@ import tripsImage from "../../assets/icons/Navigation bar icons/no filled icons/
 import wishlistsImage from "../../assets/icons/Navigation bar icons/no filled icons/wishlists icon no fill.svg";
 import profileImage from "../../assets/icons/Navigation bar icons/no filled icons/profile icon no filled.svg";
 import homeFillImage from "../../assets/icons/Navigation bar icons/filled icons/home icon filled.svg";
-import searchFillImage from "../../assets/icons/Navigation bar icons/filled icons/search icon filled.svg";
-import tripsFillImage from "../../assets/icons/Navigation bar icons/filled icons/trips icon filled.svg";
-import wishlistsFillImage from "../../assets/icons/Navigation bar icons/filled icons/wishlists icon filled.svg";
-import profileFillImage from "../../assets/icons/Navigation bar icons/filled icons/profile icon filled.svg";
+// import searchFillImage from "../../assets/icons/Navigation bar icons/filled icons/search icon filled.svg";
+// import tripsFillImage from "../../assets/icons/Navigation bar icons/filled icons/trips icon filled.svg";
+// import wishlistsFillImage from "../../assets/icons/Navigation bar icons/filled icons/wishlists icon filled.svg";
+// import profileFillImage from "../../assets/icons/Navigation bar icons/filled icons/profile icon filled.svg";
 import { useRoute } from "vue-router";
 
 const route = useRoute();

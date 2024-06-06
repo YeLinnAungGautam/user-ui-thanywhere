@@ -7,9 +7,7 @@ import ThingToDoVue from "../components/home/ThingToDo.vue";
 import StayinBangkokVue from "../components/home/StayInBangkok.vue";
 import UniqueHotelVue from "../components/home/UniqueHotel.vue";
 import BestSellingVanTours from "../components/home/BestSellingVanTours.vue";
-import profileIcon from "../assets/icons/Search Bar Icons & Headline icons/account icon.svg";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import logoIcon from "../assets/logo.png";
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
 </script>
 
@@ -19,14 +17,6 @@ import logoIcon from "../assets/logo.png";
       <div class="">
         <HeaderHomeVue>
           <div class="px-6 space-y-6">
-            <div class="flex justify-between items-center text-white">
-              <img :src="logoIcon" class="w-10 h-10" alt="" />
-              <p class="font-semibold tracking-wide text-lg">
-                THAILAND ANYWHERE
-              </p>
-              <!-- <UserCircleIcon class="w-6 h-6 text-white" /> -->
-              <img :src="profileIcon" class="w-6 h-6" alt="" />
-            </div>
             <div class="text-white">
               <p class="text-base font-semibold tracking-wider">Hello, Minn</p>
               <p class="text-xs">can't wait to bring you excitements !</p>

@@ -4,7 +4,7 @@
     <div
       class="flex flex-1 justify-start space-x-4 pr-4 items-center overflow-x-scroll scroll-container"
     >
-      <div class="space-y-2 w-[3.5rem] ml-6">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer ml-6" @click="hotelPage">
         <div
           class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -15,7 +15,7 @@
           hotel bookings
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem]">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer">
         <div
           class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -26,7 +26,7 @@
           inclusive packages
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem]">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer">
         <div
           class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -37,7 +37,7 @@
           attraction tickets
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem]">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer">
         <div
           class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -48,7 +48,7 @@
           private van tours
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem]">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer">
         <div
           class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -69,4 +69,11 @@ import inclusive from "../../assets/icons/products icons/all inclusive icon.svg"
 import attraction from "../../assets/icons/products icons/attractions icon.svg";
 import vantour from "../../assets/icons/products icons/van tours icon.svg";
 import flight from "../../assets/icons/products icons/flight icon.svg";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const hotelPage = () => {
+  router.push("/home/hotel-bookings");
+};
 </script>
