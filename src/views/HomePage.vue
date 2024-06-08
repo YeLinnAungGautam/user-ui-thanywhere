@@ -9,23 +9,26 @@ import UniqueHotelVue from "../components/home/UniqueHotel.vue";
 import BestSellingVanTours from "../components/home/BestSellingVanTours.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 </script>
 
 <template>
   <div>
     <Layout>
       <div class="">
-        <HeaderHomeVue>
+        <HeaderHomeVue :showTitle="true">
           <div class="px-6 space-y-6">
             <div class="text-white">
               <p class="text-base font-semibold tracking-wider">Hello, Minn</p>
               <p class="text-xs">can't wait to bring you excitements !</p>
             </div>
-            <div class="relative">
+            <div class="relative" @click="router.push('/home/search')">
               <input
                 type="search"
                 name=""
-                placeholder=" search"
+                placeholder=" search for all products"
                 class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
                 id=""
               />

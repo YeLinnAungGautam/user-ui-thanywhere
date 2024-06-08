@@ -37,7 +37,7 @@
           attraction tickets
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem] cursor-pointer">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="vantourPage">
         <div
           class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -75,5 +75,8 @@ const router = useRouter();
 
 const hotelPage = () => {
   router.push("/home/hotel-bookings");
+};
+const vantourPage = () => {
+  router.push("/home/van-tour");
 };
 </script>
