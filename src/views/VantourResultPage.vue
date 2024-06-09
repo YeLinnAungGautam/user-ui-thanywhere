@@ -48,6 +48,7 @@ const close = () => {
 };
 
 const data = vantourdb;
+const all = ref(false);
 
 onMounted(async () => {
   await cityStore.getSimpleListAction();
@@ -153,15 +154,21 @@ onMounted(async () => {
           <div class="space-y-3 pb-10">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">choose city</p>
-              <ChevronUpIcon class="w-4 h-4" />
+              <p
+                class="text-black text-[10px] cursor-pointer"
+                @click="all = !all"
+              >
+                {{ all ? "show less" : "show more" }}
+              </p>
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2">
-              <div
-                class="border border-black/60 rounded-lg px-4 py-1"
-                v-for="(i, index) in cities?.data"
-                :key="index"
-              >
-                <p class="text-[10px]">{{ i?.name }}</p>
+              <div v-for="(c, index) in cities?.data" :key="c.id">
+                <p
+                  v-if="index < 8 || all"
+                  class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                >
+                  {{ c?.name }}
+                </p>
               </div>
             </div>
           </div>

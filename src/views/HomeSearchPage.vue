@@ -67,7 +67,9 @@ const searchTag = ref(1);
           :class="searchTag == 1 ? 'border-b-2 border-main' : ''"
           @click="searchTag = 1"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
+          <p
+            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+          >
             all products
           </p>
         </div>
@@ -76,7 +78,9 @@ const searchTag = ref(1);
           :class="searchTag == 2 ? 'border-b-2 border-main' : ''"
           @click="searchTag = 2"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
+          <p
+            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+          >
             van tours
           </p>
         </div>
@@ -85,7 +89,9 @@ const searchTag = ref(1);
           :class="searchTag == 3 ? 'border-b-2 border-main' : ''"
           @click="searchTag = 3"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
+          <p
+            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+          >
             hotel bookings
           </p>
         </div>
@@ -94,7 +100,9 @@ const searchTag = ref(1);
           :class="searchTag == 4 ? 'border-b-2 border-main' : ''"
           @click="searchTag = 4"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
+          <p
+            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+          >
             attractions
           </p>
         </div>
@@ -103,7 +111,9 @@ const searchTag = ref(1);
           :class="searchTag == 5 ? 'border-b-2 border-main' : ''"
           @click="searchTag = 5"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
+          <p
+            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+          >
             flight tickets
           </p>
         </div>
