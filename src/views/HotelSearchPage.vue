@@ -18,14 +18,31 @@ const router = useRouter();
 const searchTag = ref(1);
 
 const goResultPage = () => {
-  router.push("/home/hotel-filter");
+  if (searchId.value) {
+    router.push({
+      name: "FilteredHotelBookings",
+      params: { id: searchId.value, name: search.value, price: "20000" },
+    });
+  }
+};
+
+const search = ref("");
+const searchId = ref("");
+
+const searchFunction = (data) => {
+  search.value = data.name;
+  searchId.value = data.id;
 };
 
 const all = ref(false);
 const data = stayinbangkok;
 
-onMounted(async () => {
+const getCityData = async () => {
   await cityStore.getSimpleListAction();
+};
+
+onMounted(async () => {
+  await getCityData();
   console.log(cities.value);
 });
 </script>
@@ -40,6 +57,7 @@ onMounted(async () => {
             <input
               type="search"
               name=""
+              v-model="search"
               placeholder=" search"
               class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
               id=""
@@ -72,6 +90,7 @@ onMounted(async () => {
             <div v-for="(c, index) in cities?.data" :key="c.id">
               <p
                 v-if="index < 6 || all"
+                @click="searchFunction(c)"
                 class="px-4 py-1.5 bg-white text-[10px] text-main rounded-full"
               >
                 {{ c?.name }}

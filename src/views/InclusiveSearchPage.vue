@@ -18,7 +18,7 @@ const router = useRouter();
 const searchTag = ref(1);
 
 const goResultPage = () => {
-  router.push("/home/van-tour-result");
+  router.push("/home/inclusive-result");
 };
 
 const all = ref(false);
@@ -90,17 +90,21 @@ onMounted(async () => {
           :class="searchTag == 1 ? 'border-b-2 border-main' : ''"
           @click="searchTag = 1"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
+          <p
+            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+          >
             top searches
           </p>
         </div>
         <div
-          class="space-y-2 w-[6.5rem] cursor-pointer ml-6"
+          class="space-y-2 w-[8.5rem] cursor-pointer ml-6"
           :class="searchTag == 2 ? 'border-b-2 border-main' : ''"
           @click="searchTag = 2"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
-            trending van tours
+          <p
+            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+          >
+            trending all inclusive
           </p>
         </div>
       </div>
@@ -129,7 +133,7 @@ onMounted(async () => {
                 <p
                   class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
                 >
-                  {{ i?.lowest_car_price }}THB
+                  1000THB
                 </p>
               </div>
             </div>
@@ -157,7 +161,7 @@ onMounted(async () => {
                 <p
                   class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
                 >
-                  {{ i?.lowest_car_price }}THB
+                  1000THB
                 </p>
               </div>
             </div>

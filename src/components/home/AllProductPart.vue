@@ -15,7 +15,7 @@
           hotel bookings
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem] cursor-pointer">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="inclusivePage">
         <div
           class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -26,7 +26,7 @@
           inclusive packages
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem] cursor-pointer">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="attractionPage">
         <div
           class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -48,7 +48,7 @@
           private van tours
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem] cursor-pointer">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="airlinePage">
         <div
           class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -57,6 +57,17 @@
         </div>
         <p class="text-[10px] text-black text-center text-wrap">
           flight tickets
+        </p>
+      </div>
+      <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="destinationPage">
+        <div
+          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+        >
+          <!-- <PaperAirplaneIcon class="max-w-7 max-h-7 text-white" /> -->
+          <img :src="attraction" alt="" class="w-6 h-6 mx-auto" />
+        </div>
+        <p class="text-[10px] text-black text-center text-wrap">
+          destination about
         </p>
       </div>
     </div>
@@ -78,5 +89,17 @@ const hotelPage = () => {
 };
 const vantourPage = () => {
   router.push("/home/van-tour");
+};
+const attractionPage = () => {
+  router.push("/home/attraction");
+};
+const inclusivePage = () => {
+  router.push("/home/inclusive");
+};
+const airlinePage = () => {
+  router.push("/home/airline");
+};
+const destinationPage = () => {
+  router.push("/home/destination");
 };
 </script>

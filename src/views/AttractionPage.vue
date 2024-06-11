@@ -2,12 +2,10 @@
 import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import vantourdb from "../assets/vantourdb";
-
-// import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { HeartIcon } from "@heroicons/vue/24/outline";
 
-const data = vantourdb;
+// const data = vantourdb;
 
 const router = useRouter();
 </script>
@@ -18,15 +16,15 @@ const router = useRouter();
       <div class="px-6 space-y-6">
         <div class="text-white pt-4">
           <p class="text-base font-semibold tracking-wider">
-            van tour packages
+            attraction tickets
           </p>
           <p class="text-xs">bangkok, pattaya, phuket, etc...</p>
         </div>
-        <div class="relative" @click="router.push('/home/van-tour-search')">
+        <div class="relative" @click="router.push('/home/attraction-search')">
           <input
             type="search"
             name=""
-            placeholder=" search your vantour packages here"
+            placeholder=" where would you like to travel"
             class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
             id=""
           />
@@ -40,46 +38,48 @@ const router = useRouter();
       </div>
     </HeaderHomeVue>
     <div class="h-auto pb-20 pt-8 space-y-4 px-6">
-      <h1 class="text-main font-semibold">popular van tours</h1>
+      <h1 class="text-main font-semibold">popular attractions</h1>
       <div
         class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
-        v-for="i in data"
+        v-for="i in 10"
         :key="i"
       >
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
           <img
-            :src="i?.cover_image"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
             class="w-full h-full object-cover"
             alt=""
           />
         </div>
         <div class="col-span-6 relative">
           <div class="overflow-hidden space-y-1">
-            <p class="text-xs font-semibold text-main">{{ i.name }}</p>
+            <div>
+              <p class="text-xs font-semibold text-main pr-4">
+                dream world some simple
+              </p>
+              <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" />
+            </div>
             <div class="flex justify-start gap-1 flex-wrap items-center">
               <p
-                v-for="c in i?.cities"
-                :key="c"
-                class="bg-black/10 px-1 text-[8px] py-0.5 rounded-md"
+                class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
+                v-for="a in 2"
+                :key="a"
               >
-                {{ c.name }}
+                bangkok
               </p>
             </div>
             <p class="text-[8px] h-[70px] overflow-hidden">
-              {{ i.long_description }}
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe id
+              labore fuga esse, nesciunt sapiente impedit odit voluptatibus
+              molestiae, consequuntur deleniti, magni quasi expedita velit
+              tenetur cum dolorum minus libero!
             </p>
-            <div class="absolute bottom-0 space-y-0.5 w-full">
-              <div class="flex justify-between items-center w-full">
-                <p class="text-[8px] pb-1">starting price</p>
-                <p class="text-xs text-main font-semibold">
-                  {{ i.lowest_car_price }}THB
-                  <span class="text-[8px] text-black/50">/person</span>
-                </p>
-              </div>
+            <div class="absolute bottom-0 space-y-0.5">
+              <p class="text-[10px] pb-1">starting price</p>
               <p
-                class="bg-main text-white text-xs font-medium px-3 inline-block py-1 rounded-full"
+                class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
               >
-                view more
+                900THB
               </p>
             </div>
           </div>

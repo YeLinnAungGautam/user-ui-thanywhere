@@ -13,17 +13,20 @@ import {
   BuildingOffice2Icon,
   StarIcon,
 } from "@heroicons/vue/24/solid";
-import stayinbangkok from "../assets/db";
+// import stayinbangkok from "../assets/db";
 import StarPartVue from "../components/home/StarPart.vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
+import { useHotelStore } from "../stores/hotel";
 
+const hotelStore = useHotelStore();
 const cityStore = useCityStore();
 const router = useRouter();
+const route = useRoute();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 
@@ -31,16 +34,140 @@ const open = () => {
   myBottomSheet.value.open();
 };
 
+const openBottomSheet = async () => {
+  open();
+  filterId.value = city_id.value;
+  city_name.value = route.params.name;
+};
+
 const close = () => {
   myBottomSheet.value.close();
 };
 
-const data = stayinbangkok;
+const filteredHotel = async () => {
+  router.push({
+    name: "FilteredHotelBookings",
+    params: { id: filterId.value, name: city_name.value, price: price.value },
+  });
+  close();
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000); // 2000 milliseconds = 2 seconds
+};
+
+// const data = stayinbangkok;
+const price = ref("");
+const search = ref("");
+const city_id = ref("");
+const filterId = ref("");
+const place = ref("");
+
+const watchSystem = computed(() => {
+  const result = {};
+
+  if (search.value != "" && search.value != undefined) {
+    result.search = search.value;
+  }
+  if (price.value != "" && price.value != undefined) {
+    result.max_price = price.value;
+  }
+  if (city_id.value != "" && city_id.value != undefined) {
+    result.city_id = city_id.value;
+  }
+  if (place.value != "" && place.value != undefined) {
+    result.place = place.value;
+  }
+  return result;
+});
 
 const all = ref(false);
 
+// onMounted(async () => {
+
+// });
+
+const { hotels, loading } = storeToRefs(hotelStore);
+
+const changePage = async (url) => {
+  console.log(url);
+  if (url != null) {
+    await hotelStore.getChangePage(url, watchSystem.value);
+  }
+};
+
+const bottomOfWindow = ref(false);
+
+const handleScroll = () => {
+  bottomOfWindow.value =
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
+    document.documentElement.offsetHeight - 100;
+
+  const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  // console.log(document.documentElement.scrollTop, "this is top");
+  if (scrolledDown) {
+    showSearch.value = true;
+  } else {
+    showSearch.value = false;
+  }
+};
+
+watch(bottomOfWindow, (newVal) => {
+  if (bottomOfWindow.value == true) {
+    let changePageCalled = false;
+    if (newVal && !changePageCalled) {
+      console.log("This is the bottom of the window");
+      if (hotels?.value?.meta?.current_page < hotels?.value?.meta?.last_page) {
+        changePageCalled = true; // Set the flag to true
+        changePage(
+          hotels?.value?.meta?.links[hotels?.value?.meta?.current_page + 1].url
+        );
+      }
+    }
+  }
+});
+
+const showSearch = ref(false);
+
+const hotelList = ref([]);
+const count = ref("");
+const count_filter = ref("");
+const city_name = ref("");
+const searchCityName = ref("");
+
+const searchFunction = (data) => {
+  city_name.value = data.name;
+  filterId.value = data.id;
+};
+
 onMounted(async () => {
+  city_id.value = route.params.id;
+  price.value = route.params.price;
   await cityStore.getSimpleListAction();
+  window.addEventListener("scroll", handleScroll);
+  let res = await hotelStore.getListAction(watchSystem.value);
+  count.value = res.meta.total;
+  searchCityName.value = route.params.name;
+
+  hotelList.value = res.data;
+  console.log(hotelList.value, "this is hotel list add");
+});
+
+watch(hotels, async (newValue) => {
+  if (newValue) {
+    hotelList.value = [...hotelList.value, ...newValue.data];
+  }
+
+  console.log(hotelList.value, "this is add new");
+});
+
+watch([filterId, price], async ([newValue, newPrice]) => {
+  let data = {
+    city_id: newValue,
+    max_price: newPrice,
+  };
+  const res = await hotelStore.getSimpleListAction(data);
+  console.log(res, "this is data");
+  count_filter.value = res.meta.total;
 });
 </script>
 
@@ -53,7 +180,7 @@ onMounted(async () => {
             class="w-6 h-6 text-white"
             @click="router.push('/home/hotel-bookings')"
           />
-          <p class="text-white font-semibold">over 30 hotels</p>
+          <p class="text-white font-semibold">over {{ count }} hotels</p>
           <p class="opacity-0">..</p>
         </div>
         <div class="relative w-full">
@@ -74,10 +201,12 @@ onMounted(async () => {
       </HeaderHome>
       <div class="space-y-4 px-6 pt-6 pb-20">
         <div class="flex justify-between items-center mb-2">
-          <h1 class="text-main font-semibold">hotels in bangkok</h1>
+          <h1 class="text-main font-semibold">
+            hotels in {{ searchCityName }}
+          </h1>
           <div
             class="flex justify-end items-center gap-2 cursor-pointer"
-            @click="open"
+            @click="openBottomSheet"
           >
             <p class="text-[10px] text-main font-semibold">filter by</p>
             <ChevronDownIcon class="w-3 h-3 text-main" />
@@ -85,12 +214,19 @@ onMounted(async () => {
         </div>
         <div
           class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
-          v-for="i in data"
+          v-for="i in hotelList ?? []"
           :key="i"
         >
           <div class="w-full col-span-5 h-[182px] overflow-hidden rounded-2xl">
             <img
-              :src="i?.images[0].image"
+              :src="i?.images[0]?.image"
+              class="w-full h-full object-cover"
+              alt=""
+              v-if="i?.images.length > 0"
+            />
+            <img
+              v-if="i?.images.length == 0"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
               class="w-full h-full object-cover"
               alt=""
             />
@@ -135,6 +271,16 @@ onMounted(async () => {
             </div>
           </div>
         </div>
+        <div
+          class="relative flex justify-center items-center py-[30%]"
+          v-if="loading"
+        >
+          <div
+            class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
+          ></div>
+          <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
+          <!-- <p>loading</p> -->
+        </div>
       </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
@@ -160,6 +306,8 @@ onMounted(async () => {
                 <p
                   v-if="index < 8 || all"
                   class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                  :class="filterId == c.id ? 'bg-main text-white' : ''"
+                  @click="searchFunction(c)"
                 >
                   {{ c?.name }}
                 </p>
@@ -191,7 +339,7 @@ onMounted(async () => {
               <ChevronUpIcon class="w-4 h-4" />
             </div>
             <div class="space-y-2">
-              <p class="text-xs font-medium">0 THB - 100000 THB</p>
+              <p class="text-xs font-medium">0 THB - {{ price }} THB</p>
               <div class="relative">
                 <div
                   class="bg-white w-6 h-6 absolute bottom-3.5 rounded-full border border-main"
@@ -199,9 +347,10 @@ onMounted(async () => {
                 <input
                   id="small-range"
                   type="range"
+                  v-model="price"
                   min="0"
-                  max="100000"
-                  value="100000"
+                  max="20000"
+                  value="20000"
                   class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
                 />
               </div>
@@ -219,7 +368,7 @@ onMounted(async () => {
               @click="filteredHotel"
               class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
             >
-              see 50 hotels
+              see {{ count_filter }} hotels
             </button>
           </div>
         </div>
