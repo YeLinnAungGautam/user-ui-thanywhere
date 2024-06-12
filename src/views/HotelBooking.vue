@@ -112,6 +112,10 @@ const searchFunction = (data) => {
 
 const hotelList = ref([]);
 
+const goDetialPage = (id) => {
+  router.push({ name: "HomeDetail", params: { id: id } });
+};
+
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
   let res = await hotelStore.getListAction();
@@ -172,6 +176,7 @@ watch(hotels, async (newValue) => {
           class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
           v-for="i in hotelList ? hotelList : []"
           :key="i"
+          @click="goDetialPage(i?.id)"
         >
           <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
             <img
