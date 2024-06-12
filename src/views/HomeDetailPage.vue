@@ -14,7 +14,7 @@
       />
       <div class="px-4">
         <div
-          class="bg-white mt-4 mb-10 p-5 rounded-3xl border border-black/10 space-y-6"
+          class="bg-white mt-4 mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
         >
           <div class="space-y-2">
             <h1 class="text-main font-medium">{{ detail?.name }}</h1>
@@ -120,6 +120,87 @@
             </div>
           </div>
         </div>
+        <div
+          class="bg-main py-3 mb-10 rounded-3xl text-center text-white text-sm"
+          @click="modalOpen = true"
+        >
+          <p>talk to sales</p>
+        </div>
+        <Modal :isOpen="modalOpen" @closeModal="modalOpen = false">
+          <DialogPanel
+            class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+          >
+            <DialogTitle
+              as="div"
+              class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
+            >
+              <p class="opacity-0">...</p>
+              <p class="text-sm font-medium text-main">
+                select on option to book
+              </p>
+              <XMarkIcon class="w-5 h-5" @click="modalOpen = false" />
+            </DialogTitle>
+            <div class="grid grid-cols-2 gap-5">
+              <a
+                href="https://www.facebook.com/messages/t/103464812174500"
+                target="_blink"
+                class="outline-none text-center bg-main/20 border border-main flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+              >
+                <img
+                  :src="messengerIcon"
+                  alt=""
+                  class="w-14 h-14 my-3 object-cover mx-auto"
+                />
+                <div class="pt-1">
+                  <p class="text-[10px]">book with</p>
+                  <p class="text-xs font-medium">messenger</p>
+                </div>
+              </a>
+              <a
+                href=""
+                class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+              >
+                <img
+                  :src="viberIcon"
+                  alt=""
+                  class="w-14 h-14 my-3 object-cover mx-auto"
+                />
+                <div class="pt-1">
+                  <p class="text-[10px]">book with</p>
+                  <p class="text-xs font-medium">viber</p>
+                </div>
+              </a>
+              <a
+                href=""
+                class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+              >
+                <img
+                  :src="whatsappIcon"
+                  alt=""
+                  class="w-14 h-14 my-3 object-cover mx-auto"
+                />
+                <div class="pt-1">
+                  <p class="text-[10px]">book with</p>
+                  <p class="text-xs font-medium">whats app</p>
+                </div>
+              </a>
+              <a
+                href=""
+                class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+              >
+                <img
+                  :src="callIcon"
+                  alt=""
+                  class="w-14 h-14 my-3 object-cover mx-auto"
+                />
+                <div class="pt-1">
+                  <p class="text-[10px]">book with</p>
+                  <p class="text-xs font-medium">call center</p>
+                </div>
+              </a>
+            </div>
+          </DialogPanel>
+        </Modal>
       </div>
     </div>
   </div>
@@ -132,6 +213,12 @@ import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import logo from "../assets/logo.png";
+import messengerIcon from "../assets/Booking icons/messenger.png";
+import viberIcon from "../assets/Booking icons/viber.png";
+import whatsappIcon from "../assets/Booking icons/whatsapp.png";
+import callIcon from "../assets/Booking icons/call.png";
+import Modal from "../components/layout/Modal.vue";
+import { DialogPanel, DialogTitle } from "@headlessui/vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -149,6 +236,8 @@ const getDetail = async (id) => {
   detail.value = res.data;
   loading.value = false;
 };
+
+const modalOpen = ref(false);
 
 const goRoomDetail = (id) => {
   router.push({ name: "HomeRoomDetail", params: { id: id } });

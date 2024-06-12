@@ -152,7 +152,7 @@ onMounted(async () => {
           </DialogTitle>
           <div class="grid grid-cols-2 gap-5">
             <a
-              href="https://www.facebook.com/thailandanywherevip"
+              href="https://www.facebook.com/messages/t/103464812174500"
               target="_blink"
               class="outline-none text-center bg-main/20 border border-main flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
             >
