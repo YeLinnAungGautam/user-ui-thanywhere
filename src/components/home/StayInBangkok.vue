@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center">
       <h1 class="text-main font-semibold px-6">stays in bangkok</h1>
       <div
-        @click="router.push('/home/hotel-search')"
+        @click="goMore()"
         class="text-[10px] font-semibold text-main cursor-pointer flex justify-end items-center gap-1 mr-6"
       >
         <p>see more</p>
@@ -59,6 +59,13 @@ const router = useRouter();
 
 const goDetialPage = (id) => {
   router.push({ name: "HomeDetail", params: { id: id } });
+};
+
+const goMore = () => {
+  router.push({
+    name: "FilteredHotelBookings",
+    params: { id: "2", name: "Bangkok", price: 1000000 },
+  });
 };
 
 onMounted(() => {

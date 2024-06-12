@@ -35,7 +35,7 @@
           <p class="text-main text-[10px]">bangkok</p>
           <p class="font-semibold text-sm">{{ i?.name }}</p>
           <button
-            class="bg-black/10 px-3 mt-2 mb-2 py-1 rounded-lg text-[10px] text-white"
+            class="bg-black/30 px-3 mt-2 mb-2 py-1 rounded-lg text-[10px] text-white"
           >
             show detail
           </button>
