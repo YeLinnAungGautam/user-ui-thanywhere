@@ -3,7 +3,7 @@ import HeaderHome from "../components/layout/HeaderHome.vue";
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import { useRouter } from "vue-router";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
@@ -26,8 +26,8 @@ const goResultPage = () => {
   }
 };
 
-const search = ref("");
-const searchId = ref("");
+const search = ref("Bangkok");
+const searchId = ref(2);
 
 const searchFunction = (data) => {
   search.value = data.name;
@@ -44,6 +44,10 @@ const getCityData = async () => {
 onMounted(async () => {
   await getCityData();
   console.log(cities.value);
+});
+
+watch(searchId, () => {
+  goResultPage();
 });
 </script>
 
@@ -91,7 +95,12 @@ onMounted(async () => {
               <p
                 v-if="index < 6 || all"
                 @click="searchFunction(c)"
-                class="px-4 py-1.5 bg-white text-[10px] text-main rounded-full"
+                class="px-4 py-1.5 text-[10px] rounded-full"
+                :class="
+                  searchId == c.id
+                    ? 'bg-main/40 border border-white text-white'
+                    : 'bg-white text-main'
+                "
               >
                 {{ c?.name }}
               </p>

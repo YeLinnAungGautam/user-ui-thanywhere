@@ -3,10 +3,10 @@
     <div class="flex justify-between items-center">
       <h1 class="text-main font-semibold px-6">stays in bangkok</h1>
       <div
-        @click="seeMore = !seeMore"
-        class="text-[10px] font-semibold text-main flex justify-end items-center gap-1 mr-6"
+        @click="router.push('/home/hotel-search')"
+        class="text-[10px] font-semibold text-main cursor-pointer flex justify-end items-center gap-1 mr-6"
       >
-        <p>{{ !seeMore ? "show less" : "see more" }}</p>
+        <p>see more</p>
         <ChevronDownIcon class="w-3 h-3" />
       </div>
     </div>
@@ -15,7 +15,7 @@
         class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10"
         v-for="(i, index) in data"
         :key="index"
-        :class="index < 6 || !seeMore ? '' : 'hidden'"
+        @click="goDetialPage(i?.id)"
       >
         <div class="w-full h-[140px] p-1.5 overflow-hidden">
           <img
@@ -25,7 +25,7 @@
           />
         </div>
         <div class="px-3 py-0">
-          <StarPartVue :count="3" />
+          <StarPartVue :count="5" />
           <p class="font-semibold text-sm pt-1">{{ i.name }}</p>
           <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
             {{ i.place }}
@@ -52,10 +52,14 @@ import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 import StarPartVue from "./StarPart.vue";
 import stayinbangkok from "../../assets/db";
+import { useRouter } from "vue-router";
 
 const data = ref(null);
+const router = useRouter();
 
-const seeMore = ref(true);
+const goDetialPage = (id) => {
+  router.push({ name: "HomeDetail", params: { id: id } });
+};
 
 onMounted(() => {
   data.value = stayinbangkok;

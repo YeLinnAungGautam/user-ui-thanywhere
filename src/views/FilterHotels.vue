@@ -134,6 +134,10 @@ const count_filter = ref("");
 const city_name = ref("");
 const searchCityName = ref("");
 
+const goDetialPage = (id) => {
+  router.push({ name: "HomeDetail", params: { id: id } });
+};
+
 const searchFunction = (data) => {
   city_name.value = data.name;
   filterId.value = data.id;
@@ -216,6 +220,7 @@ watch([filterId, price], async ([newValue, newPrice]) => {
           class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
           v-for="i in hotelList ?? []"
           :key="i"
+          @click="goDetialPage(i?.id)"
         >
           <div class="w-full col-span-5 h-[182px] overflow-hidden rounded-2xl">
             <img
@@ -349,8 +354,8 @@ watch([filterId, price], async ([newValue, newPrice]) => {
                   type="range"
                   v-model="price"
                   min="0"
-                  max="20000"
-                  value="20000"
+                  max="100000"
+                  value="100000"
                   class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
                 />
               </div>

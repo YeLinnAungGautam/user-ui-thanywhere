@@ -3,10 +3,10 @@
     <div class="flex justify-between items-center">
       <h1 class="text-main font-semibold px-6">unique hotels in thailand</h1>
       <div
-        @click="seeMore = !seeMore"
+        @click="router.push('/home/hotel-search')"
         class="text-[10px] font-semibold text-main flex justify-end items-center gap-1 mr-6"
       >
-        <p>{{ !seeMore ? "show less" : "see more" }}</p>
+        <p>see more</p>
         <ChevronDownIcon class="w-3 h-3" />
       </div>
     </div>
@@ -15,7 +15,7 @@
         class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10"
         v-for="(i, index) in data"
         :key="index"
-        :class="index < 6 || !seeMore ? '' : 'hidden'"
+        @click="goDetialPage(i?.id)"
       >
         <div class="w-full h-[140px] p-1.5 overflow-hidden">
           <img
@@ -32,14 +32,14 @@
           />
         </div>
         <div class="px-3 py-0">
-          <StarPartVue :count="3" />
+          <StarPartVue :count="5" />
           <p class="font-semibold text-sm pt-1">{{ i.name }}</p>
           <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
             {{ i.place }}
           </p>
 
           <p
-            class="text-[9px] pt-1 max-h-[44px] overflow-hidden"
+            class="text-[9px] pt-1 min-h-[44px] max-h-[44px] overflow-hidden"
             v-if="i.description != 'null'"
           >
             {{ i.description }}
@@ -63,10 +63,16 @@ import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 import StarPartVue from "./StarPart.vue";
 import unidb from "../../assets/unquiddb";
+import { useRouter } from "vue-router";
 
 const data = ref(null);
 
-const seeMore = ref(true);
+// const seeMore = ref(true);
+const router = useRouter();
+
+const goDetialPage = (id) => {
+  router.push({ name: "HomeDetail", params: { id: id } });
+};
 
 onMounted(() => {
   data.value = unidb;

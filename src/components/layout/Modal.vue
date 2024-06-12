@@ -14,7 +14,7 @@
       </TransitionChild>
 
       <div class="fixed inset-0 overflow-y-auto">
-        <div class="flex h-100 mt-20 justify-center p-4 text-center">
+        <div class="flex h-100 mt-[50%] justify-center p-4 text-center">
           <TransitionChild
             as="template"
             enter="duration-300 ease-out"

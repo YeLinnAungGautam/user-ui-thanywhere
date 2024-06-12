@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="flex justify-between items-center mb-2">
-      <h1 class="text-main font-semibold px-6">read about destinations</h1>
-      <div
+      <h1 class="text-black/60 font-semibold px-6">read about destinations</h1>
+      <!-- <div
         class="text-[10px] font-semibold text-main flex mr-6 justify-end items-center gap-1"
       >
         see more <ChevronDownIcon class="w-3 h-3" />
-      </div>
+      </div> -->
     </div>
     <div class="py-4">
       <carousel v-bind="settings" :breakpoints="breakpoints">
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ChevronDownIcon } from "@heroicons/vue/24/outline";
+// import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
 import { onMounted, ref } from "vue";

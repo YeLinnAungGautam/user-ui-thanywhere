@@ -3,10 +3,10 @@
     <div class="flex justify-between items-center">
       <h1 class="text-main font-semibold px-6">best selling van tours</h1>
       <div
-        @click="seeMore = !seeMore"
+        @click="router.push('/home/van-tour-search')"
         class="text-[10px] font-semibold text-main flex justify-end items-center gap-1 mr-6"
       >
-        <p>{{ !seeMore ? "show less" : "see more" }}</p>
+        <p>see more</p>
         <ChevronDownIcon class="w-3 h-3" />
       </div>
     </div>
@@ -15,7 +15,6 @@
         class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10"
         v-for="(i, index) in data"
         :key="index"
-        :class="index < 6 || !seeMore ? '' : 'hidden'"
       >
         <div class="w-full h-[140px] p-1.5 overflow-hidden">
           <img
@@ -50,8 +49,10 @@ import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 import StarPartVue from "./StarPart.vue";
 import vantourdb from "../../assets/vantourdb";
+import { useRouter } from "vue-router";
 
-const seeMore = ref(true);
+// const seeMore = ref(true);
+const router = useRouter();
 const data = ref(null);
 
 onMounted(() => {

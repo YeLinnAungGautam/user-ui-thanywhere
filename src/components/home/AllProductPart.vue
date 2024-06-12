@@ -17,7 +17,7 @@
       </div>
       <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="inclusivePage">
         <div
-          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-black/30 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <BriefcaseIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="inclusive" alt="" class="w-6 h-6 mx-auto" />
@@ -28,7 +28,7 @@
       </div>
       <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="attractionPage">
         <div
-          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-black/30 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <CursorArrowRippleIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="attraction" alt="" class="w-6 h-6 mx-auto" />
@@ -39,7 +39,7 @@
       </div>
       <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="vantourPage">
         <div
-          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-black/30 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <TruckIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="vantour" alt="" class="w-6 h-6 mx-auto" />
@@ -50,7 +50,7 @@
       </div>
       <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="airlinePage">
         <div
-          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-black/30 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <PaperAirplaneIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="flight" alt="" class="w-6 h-6 mx-auto" />
@@ -61,7 +61,7 @@
       </div>
       <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="destinationPage">
         <div
-          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-black/30 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <PaperAirplaneIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="attraction" alt="" class="w-6 h-6 mx-auto" />

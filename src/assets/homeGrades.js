@@ -5,15 +5,15 @@ const homeGradesdb = [
   },
   {
     id: 2,
-    image: image2,
-  },
-  {
-    id: 3,
     image: image3,
   },
   {
-    id: 4,
+    id: 3,
     image: image4,
+  },
+  {
+    id: 4,
+    image: image2,
   },
 ];
 
