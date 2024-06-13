@@ -14,7 +14,7 @@
                 <p class="text-main text-2xl font-semibold">
                   {{ slide.title }}
                 </p>
-                <p class="text-xs font-medium text-main px-10 pt-5">
+                <p class="text-xs font-medium text-main px-8 pt-5">
                   {{ slide.des }}
                 </p>
                 <div class="flex justify-center items-center mt-5 gap-1">
@@ -103,10 +103,7 @@ const simple = [
     image: image1,
     title: "looking for a trips?",
     des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-    repellendus eligendi laboriosam, obcaecati veritatis
-    laudantium alias ducimus perferendis recusandae temporibus
-    quaerat optio fugiat blanditiis rerum, dolor tenetur magnam ex
-    minus.`,
+    repellendus eligendi laboriosam, `,
     button: "next page",
   },
   {
@@ -114,10 +111,7 @@ const simple = [
     image: image2,
     title: "get best deals?",
     des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-    repellendus eligendi laboriosam, obcaecati veritatis
-    laudantium alias ducimus perferendis recusandae temporibus
-    quaerat optio fugiat blanditiis rerum, dolor tenetur magnam ex
-    minus.`,
+    repellendus eligendi laboriosam, `,
     button: "next page",
   },
   {
@@ -125,10 +119,7 @@ const simple = [
     image: image3,
     title: "enjoy the trip?",
     des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-    repellendus eligendi laboriosam, obcaecati veritatis
-    laudantium alias ducimus perferendis recusandae temporibus
-    quaerat optio fugiat blanditiis rerum, dolor tenetur magnam ex
-    minus.`,
+    repellendus eligendi laboriosam, .`,
     button: "guest",
   },
 ];
