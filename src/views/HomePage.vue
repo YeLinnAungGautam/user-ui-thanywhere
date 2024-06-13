@@ -10,50 +10,79 @@ import BestSellingVanTours from "../components/home/BestSellingVanTours.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
 import { useRouter } from "vue-router";
+import { onMounted, ref } from "vue";
+import ShowOnboardingVue from "../components/home/ShowOnboarding.vue";
 
 const router = useRouter();
+
+const showOnboarding = ref("show");
+
+const onchangeComponent = (data) => {
+  if (data == "changes") {
+    localStorage.setItem("showOnboarding", "noshow");
+    showOnboarding.value = "noshow";
+  }
+};
+
+onMounted(() => {
+  let status = localStorage.getItem("showOnboarding");
+  // showOnboarding.value = localStorage.getItem("showOnboarding");
+  console.log(status);
+  if (!status) {
+    showOnboarding.value = "show";
+  } else {
+    showOnboarding.value = "noshow";
+  }
+});
 </script>
 
 <template>
   <div>
-    <Layout>
-      <div class="">
-        <HeaderHomeVue :showTitle="true">
-          <div class="px-6 space-y-6">
-            <div class="text-white">
-              <p class="text-base font-semibold tracking-wider">Hello, Minn</p>
-              <p class="text-xs">can't wait to bring you excitements !</p>
+    <div v-if="showOnboarding == 'show'">
+      <ShowOnboardingVue @change="onchangeComponent" />
+    </div>
+    <div v-if="showOnboarding == 'noshow'">
+      <Layout>
+        <div class="">
+          <HeaderHomeVue :showTitle="true">
+            <div class="px-6 space-y-6">
+              <div class="text-white">
+                <p class="text-base font-semibold tracking-wider">
+                  Hello, Minn
+                </p>
+                <p class="text-xs">can't wait to bring you excitements !</p>
+              </div>
+              <div class="relative" @click="router.push('/home/search')">
+                <input
+                  type="search"
+                  name=""
+                  placeholder=" search for all products"
+                  class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
+                  id=""
+                />
+                <!-- <MagnifyingGlassIcon
+                  class="w-5 h-5 absolute top-3.5 right-5 text-main"
+                /> -->
+                <img
+                  :src="searchIcon"
+                  class="w-5 h-5 absolute top-3.5 right-5 text-main"
+                  alt=""
+                />
+              </div>
             </div>
-            <div class="relative" @click="router.push('/home/search')">
-              <input
-                type="search"
-                name=""
-                placeholder=" search for all products"
-                class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
-                id=""
-              />
-              <!-- <MagnifyingGlassIcon
-                class="w-5 h-5 absolute top-3.5 right-5 text-main"
-              /> -->
-              <img
-                :src="searchIcon"
-                class="w-5 h-5 absolute top-3.5 right-5 text-main"
-                alt=""
-              />
-            </div>
-          </div>
-        </HeaderHomeVue>
-      </div>
-      <div class="h-auto pb-20 pt-8 space-y-10">
-        <AllProductPartVue />
-        <ReadDestinationVue />
+          </HeaderHomeVue>
+        </div>
+        <div class="h-auto pb-20 pt-8 space-y-10">
+          <AllProductPartVue />
+          <ReadDestinationVue />
 
-        <ThingToDoVue />
-        <StayinBangkokVue />
-        <!-- <ExporeAboutCityVue /> -->
-        <UniqueHotelVue />
-        <BestSellingVanTours />
-      </div>
-    </Layout>
+          <ThingToDoVue />
+          <StayinBangkokVue />
+          <!-- <ExporeAboutCityVue /> -->
+          <UniqueHotelVue />
+          <BestSellingVanTours />
+        </div>
+      </Layout>
+    </div>
   </div>
 </template>

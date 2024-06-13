@@ -23,7 +23,7 @@
             >
               {{ detail?.place }}
             </p>
-            <p class="text-[12.5px] text-black/80 leading-6">
+            <p class="text-[13.5px] text-black/80 leading-6">
               {{ detail?.description }}
             </p>
           </div>
