@@ -74,7 +74,7 @@
         </slide>
 
         <template #addons>
-          <pagination class="custom" />
+          <pagination class="custom2" />
         </template>
       </carousel>
     </div>
@@ -150,7 +150,7 @@ onMounted(() => {
 </script>
 
 <style>
-.custom {
+.custom2 {
   position: absolute;
   top: 200px;
   width: 100%;
