@@ -10,38 +10,30 @@ import BestSellingVanTours from "../components/home/BestSellingVanTours.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
 import { useRouter } from "vue-router";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import ShowOnboardingVue from "../components/home/ShowOnboarding.vue";
+import { useSettingStore } from "../stores/setting";
+import { storeToRefs } from "pinia";
 
 const router = useRouter();
-
-const showOnboarding = ref("show");
+const settingStore = useSettingStore();
+const { showOnboard } = storeToRefs(settingStore);
 
 const onchangeComponent = (data) => {
   if (data == "changes") {
-    localStorage.setItem("showOnboarding", "noshow");
-    showOnboarding.value = "noshow";
+    settingStore.changeOnboard();
   }
 };
 
-onMounted(() => {
-  let status = localStorage.getItem("showOnboarding");
-  // showOnboarding.value = localStorage.getItem("showOnboarding");
-  console.log(status);
-  if (!status) {
-    showOnboarding.value = "show";
-  } else {
-    showOnboarding.value = "noshow";
-  }
-});
+onMounted(() => {});
 </script>
 
 <template>
   <div>
-    <div v-if="showOnboarding == 'show'">
+    <div v-if="showOnboard">
       <ShowOnboardingVue @change="onchangeComponent" />
     </div>
-    <div v-if="showOnboarding == 'noshow'">
+    <div v-if="!showOnboard">
       <Layout>
         <div class="">
           <HeaderHomeVue :showTitle="true">

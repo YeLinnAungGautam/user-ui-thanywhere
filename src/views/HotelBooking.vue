@@ -93,11 +93,17 @@ watch(bottomOfWindow, (newVal) => {
 });
 
 const count_filter = ref(0);
+const price_range = ref("");
+
 watch([filterId, price], async ([newValue, newPrice]) => {
   let data = {
     city_id: newValue,
-    max_price: newPrice,
   };
+  if (newPrice && price_range.value == "") {
+    data.max_price = newPrice;
+  } else if (price_range.value && !newPrice) {
+    data.price_range = price_range.value;
+  }
   const res = await hotelStore.getSimpleListAction(data);
   console.log(res, "this is data");
   count_filter.value = res.meta.total;
@@ -114,6 +120,14 @@ const hotelList = ref([]);
 
 const goDetialPage = (id) => {
   router.push({ name: "HomeDetail", params: { id: id } });
+};
+
+const getRange = (data) => {
+  // console.log(data);
+  router.push({
+    name: "FilteredHotelBookings",
+    params: { id: 2, name: "Bangkok", price: data },
+  });
 };
 
 onMounted(async () => {
@@ -160,7 +174,7 @@ watch(hotels, async (newValue) => {
       </div>
     </HeaderHomeVue>
     <div class="h-auto pb-20 pt-8 space-y-10">
-      <HotelsGradesVue />
+      <HotelsGradesVue @Range="getRange" />
       <div class="space-y-4 px-6">
         <div class="flex justify-between items-center mb-2">
           <h1 class="text-main font-semibold">direct partner hotels</h1>

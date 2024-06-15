@@ -10,7 +10,11 @@
     </div>
     <div class="py-4">
       <carousel v-bind="settings" :breakpoints="breakpoints">
-        <slide v-for="(slide, index) in data" :key="index">
+        <slide
+          v-for="(slide, index) in data"
+          :key="index"
+          @click="getRange(slide.price_range)"
+        >
           <div :class="index == 0 ? 'ml-6' : 'ml-3'">
             <div class="w-full h-[120px] overflow-hidden">
               <img
@@ -34,12 +38,19 @@
 // import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, defineEmits } from "vue";
 import homeGradesdb from "../../assets/homeGrades";
+
+const emit = defineEmits();
 
 const settings = {
   itemsToShow: 1.6,
   snapAlign: "center",
+};
+
+const getRange = (range) => {
+  console.log(range);
+  emit("range", range);
 };
 
 const data = ref(null);

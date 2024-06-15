@@ -47,7 +47,11 @@ const close = () => {
 const filteredHotel = async () => {
   router.push({
     name: "FilteredHotelBookings",
-    params: { id: filterId.value, name: city_name.value, price: price.value },
+    params: {
+      id: filterId.value,
+      name: city_name.value,
+      price: price.value ? price.value : price_range.value,
+    },
   });
   close();
   setTimeout(() => {
@@ -57,6 +61,7 @@ const filteredHotel = async () => {
 
 // const data = stayinbangkok;
 const price = ref("");
+const price_range = ref("");
 const search = ref("");
 const city_id = ref("");
 const filterId = ref("");
@@ -68,8 +73,19 @@ const watchSystem = computed(() => {
   if (search.value != "" && search.value != undefined) {
     result.search = search.value;
   }
-  if (price.value != "" && price.value != undefined) {
+  if (
+    price.value != "" &&
+    price.value != undefined &&
+    price_range.value == ""
+  ) {
     result.max_price = price.value;
+  }
+  if (
+    price_range.value != "" &&
+    price_range.value != undefined &&
+    price.value == ""
+  ) {
+    result.price_range = price_range.value;
   }
   if (city_id.value != "" && city_id.value != undefined) {
     result.city_id = city_id.value;
@@ -145,7 +161,15 @@ const searchFunction = (data) => {
 
 onMounted(async () => {
   city_id.value = route.params.id;
-  price.value = route.params.price;
+  if (
+    route.params.price &&
+    typeof route.params.price === "string" &&
+    route.params.price.includes("-")
+  ) {
+    price_range.value = route.params.price;
+  } else {
+    price.value = route.params.price;
+  }
   await cityStore.getSimpleListAction();
   window.addEventListener("scroll", handleScroll);
   let res = await hotelStore.getListAction(watchSystem.value);
@@ -167,10 +191,14 @@ watch(hotels, async (newValue) => {
 watch([filterId, price], async ([newValue, newPrice]) => {
   let data = {
     city_id: newValue,
-    max_price: newPrice,
   };
+  if (newPrice && price_range.value == "") {
+    data.max_price = newPrice;
+  } else if (price_range.value && !newPrice) {
+    data.price_range = price_range.value;
+  }
   const res = await hotelStore.getSimpleListAction(data);
-  console.log(res, "this is data");
+  console.log(data, "this is data");
   count_filter.value = res.meta.total;
 });
 </script>

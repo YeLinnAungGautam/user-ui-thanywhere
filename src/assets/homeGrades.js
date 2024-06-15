@@ -2,18 +2,22 @@ const homeGradesdb = [
   {
     id: 1,
     image: image1,
+    price_range: `0-1000`,
   },
   {
     id: 2,
     image: image3,
+    price_range: `1000-1600`,
   },
   {
     id: 3,
     image: image4,
+    price_range: `1600-2400`,
   },
   {
     id: 4,
     image: image2,
+    price_range: `2400-1000000`,
   },
 ];
 
