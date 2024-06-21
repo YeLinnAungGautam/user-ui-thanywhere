@@ -42,12 +42,18 @@ const close = () => {
 
 const filterId = ref("");
 const city_name = ref("");
+const rating = ref("");
 const price = ref(100000);
 
 const filteredHotel = async () => {
   router.push({
     name: "FilteredHotelBookings",
-    params: { id: filterId.value, name: city_name.value, price: price.value },
+    params: {
+      id: filterId.value,
+      name: city_name.value,
+      price: price.value,
+      rating: rating.value,
+    },
   });
   close();
 };
@@ -95,9 +101,10 @@ watch(bottomOfWindow, (newVal) => {
 const count_filter = ref(0);
 const price_range = ref("");
 
-watch([filterId, price], async ([newValue, newPrice]) => {
+watch([filterId, price, rating], async ([newValue, newPrice, newRating]) => {
   let data = {
     city_id: newValue,
+    rating: newRating ? newRating : 3,
   };
   if (newPrice && price_range.value == "") {
     data.max_price = newPrice;
@@ -211,7 +218,7 @@ watch(hotels, async (newValue) => {
             <div class="mr-6 overflow-hidden">
               <p class="text-xs font-semibold text-main">{{ i.name }}</p>
               <div class="flex justify-between items-center">
-                <StarPartVue :count="3" />
+                <StarPartVue :count="i.rating" />
                 <div
                   class="text-[10px] flex justify-end items-center gap-0.5 py-1"
                 >
@@ -291,12 +298,16 @@ watch(hotels, async (newValue) => {
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2 mr-5">
                 <div
-                  class="border border-black/60 rounded-lg px-2 py-2"
-                  v-for="(i, index) in 4"
+                  class="border rounded-lg px-2 py-2"
+                  :class="
+                    rating == index + 1 ? 'border-main ' : 'border-black/60'
+                  "
+                  v-for="(i, index) in 5"
                   :key="index"
+                  @click="rating = i"
                 >
                   <div class="flex justify-center items-center gap-1">
-                    <p class="text-sm">{{ index + 2 }}</p>
+                    <p class="text-sm">{{ index + 1 }}</p>
                     <StarIcon class="w-5 h-5 text-main" />
                   </div>
                   <p class="text-[8px] text-black/70">6+hotels</p>

@@ -3,11 +3,146 @@ import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import { useRouter } from "vue-router";
-import { HeartIcon } from "@heroicons/vue/24/outline";
+import {
+  HeartIcon,
+  ChevronDownIcon,
+  StarIcon,
+} from "@heroicons/vue/24/outline";
+import { useEntranceStore } from "../stores/entrance";
+import { useCityStore } from "../stores/city";
+import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
+import "@webzlodimir/vue-bottom-sheet/dist/style.css";
+import { ref, watch, onMounted } from "vue";
+import { storeToRefs } from "pinia";
 
 // const data = vantourdb;
 
 const router = useRouter();
+
+const entranceStore = useEntranceStore();
+const cityStore = useCityStore();
+const myBottomSheet = ref(null);
+const { cities } = storeToRefs(cityStore);
+
+const all = ref(false);
+
+const open = () => {
+  myBottomSheet.value.open();
+};
+
+const openBottomSheet = async () => {
+  open();
+};
+
+const close = () => {
+  myBottomSheet.value.close();
+};
+
+const filterId = ref("");
+const city_name = ref("");
+const price = ref(100000);
+
+const filteredHotel = async () => {
+  router.push({
+    name: "FilteredHotelBookings",
+    params: { id: filterId.value, name: city_name.value, price: price.value },
+  });
+  close();
+};
+
+const { entrances, loading } = storeToRefs(entranceStore);
+
+const changePage = async (url) => {
+  console.log(url);
+  if (url != null) {
+    await entranceStore.getChangePage(url);
+  }
+};
+
+const bottomOfWindow = ref(false);
+
+const handleScroll = () => {
+  bottomOfWindow.value =
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
+    document.documentElement.offsetHeight - 100;
+
+  const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  // console.log(document.documentElement.scrollTop, "this is top");
+  if (scrolledDown) {
+    showSearch.value = true;
+  } else {
+    showSearch.value = false;
+  }
+};
+
+watch(bottomOfWindow, (newVal) => {
+  if (bottomOfWindow.value == true) {
+    let changePageCalled = false;
+    if (newVal && !changePageCalled) {
+      console.log("This is the bottom of the window");
+      if (
+        entrances?.value?.meta?.current_page < entrances?.value?.meta?.last_page
+      ) {
+        changePageCalled = true; // Set the flag to true
+        changePage(
+          entrances?.value?.meta?.links[
+            entrances?.value?.meta?.current_page + 1
+          ].url
+        );
+      }
+    }
+  }
+});
+
+const count_filter = ref(0);
+// const price_range = ref("");
+
+watch([filterId], async ([newValue]) => {
+  let data = {
+    city_id: newValue,
+  };
+
+  const res = await entranceStore.getSimpleListAction(data);
+  console.log(res, "this is data");
+  count_filter.value = res.meta.total;
+});
+
+const showSearch = ref(false);
+
+const searchFunction = (data) => {
+  city_name.value = data.name;
+  filterId.value = data.id;
+};
+
+const entrancesList = ref([]);
+
+// const goDetialPage = (id) => {
+//   router.push({ name: "HomeDetail", params: { id: id } });
+// };
+
+// const getRange = (data) => {
+//   // console.log(data);
+//   router.push({
+//     name: "FilteredHotelBookings",
+//     params: { id: 2, name: "Bangkok", price: data },
+//   });
+// };
+
+onMounted(async () => {
+  window.addEventListener("scroll", handleScroll);
+  let res = await entranceStore.getListAction();
+  await cityStore.getSimpleListAction();
+  entrancesList.value = res.data;
+  console.log(entrancesList.value, "this is entrance list add");
+});
+
+watch(entrances, async (newValue) => {
+  if (newValue) {
+    entrancesList.value = [...entrancesList.value, ...newValue.data];
+  }
+
+  console.log(entrancesList.value, "this is add new");
+});
 </script>
 
 <template>
@@ -38,14 +173,30 @@ const router = useRouter();
       </div>
     </HeaderHomeVue>
     <div class="h-auto pb-20 pt-8 space-y-4 px-6">
-      <h1 class="text-main font-semibold">popular attractions</h1>
+      <div class="flex justify-between items-center">
+        <h1 class="text-main font-semibold">attractions</h1>
+        <div
+          class="flex justify-end items-center gap-2 cursor-pointer"
+          @click="openBottomSheet"
+        >
+          <p class="text-[10px] text-main font-semibold">filter by</p>
+          <ChevronDownIcon class="w-3 h-3 text-main" />
+        </div>
+      </div>
       <div
         class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
-        v-for="i in 10"
+        v-for="i in entrancesList"
         :key="i"
       >
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
           <img
+            v-if="i?.cover_image"
+            :src="i?.cover_image"
+            class="w-full h-full object-cover"
+            alt=""
+          />
+          <img
+            v-if="!i?.cover_image"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
             class="w-full h-full object-cover"
             alt=""
@@ -55,36 +206,125 @@ const router = useRouter();
           <div class="overflow-hidden space-y-1">
             <div>
               <p class="text-xs font-semibold text-main pr-4">
-                dream world some simple
+                {{ i?.name }}
               </p>
               <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" />
             </div>
             <div class="flex justify-start gap-1 flex-wrap items-center">
               <p
                 class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
-                v-for="a in 2"
+                v-for="a in i?.cities"
                 :key="a"
               >
-                bangkok
+                {{ a.name }}
               </p>
             </div>
-            <p class="text-[8px] h-[70px] overflow-hidden">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe id
-              labore fuga esse, nesciunt sapiente impedit odit voluptatibus
-              molestiae, consequuntur deleniti, magni quasi expedita velit
-              tenetur cum dolorum minus libero!
+            <p
+              class="text-[8px] h-[70px] overflow-hidden"
+              v-if="i?.description && i?.description != 'null'"
+            >
+              {{ i?.description }}
+            </p>
+            <p
+              class="text-[8px] h-[70px] overflow-hidden"
+              v-if="!i?.description || i?.description == 'null'"
+            >
+              coming soon !
             </p>
             <div class="absolute bottom-0 space-y-0.5">
               <p class="text-[10px] pb-1">starting price</p>
               <p
+                v-if="i?.variations.length > 0"
                 class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
               >
-                900THB
+                {{ i?.variations[0].price }}THB
+              </p>
+              <p
+                v-if="i?.variations.length == 0"
+                class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
+              >
+                80THB
               </p>
             </div>
           </div>
         </div>
       </div>
+      <div
+        class="relative flex justify-center items-center py-[30%]"
+        v-if="loading"
+      >
+        <div
+          class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
+        ></div>
+        <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
+        <!-- <p>loading</p> -->
+      </div>
+      <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
+        <div class="font-poppins">
+          <div class="flex justify-between items-center px-6 pb-4">
+            <p class="opacity-0">........</p>
+            <p class="text-main text-base">filter</p>
+            <XMarkIcon class="w-5 h-5" @click="close" />
+          </div>
+          <div class="border border-black/10 p-4 ml-4 mr-2 rounded-xl">
+            <div class="space-y-3 pb-10">
+              <div class="flex justify-between items-center">
+                <p class="text-sm font-semibold">choose city</p>
+                <p
+                  class="text-black text-[10px] cursor-pointer"
+                  @click="all = !all"
+                >
+                  {{ all ? "show less" : "show more" }}
+                </p>
+              </div>
+              <div class="flex flex-wrap justify-start items-center gap-2">
+                <div v-for="(c, index) in cities?.data" :key="c.id">
+                  <p
+                    v-if="index < 8 || all"
+                    class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                    :class="filterId == c.id ? 'bg-main text-white' : ''"
+                    @click="searchFunction(c)"
+                  >
+                    {{ c?.name }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="pb-10 space-y-4">
+              <p class="text-sm font-semibold">select activities type</p>
+              <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                <div
+                  class="px-2 py-2 space-y-1 w-[70px] mx-auto"
+                  v-for="(i, index) in 12"
+                  :key="index"
+                >
+                  <div class="flex justify-center items-center gap-1">
+                    <StarIcon class="w-10 h-10 text-main" />
+                  </div>
+                  <p class="text-[8px] text-black/70 text-center">
+                    some text for search
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between gap-4 items-center pt-4">
+              <button
+                @click="close"
+                class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
+              >
+                clear
+              </button>
+              <button
+                @click="filteredHotel"
+                class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
+              >
+                see {{ count_filter }} entrances
+              </button>
+            </div>
+          </div>
+        </div>
+      </vue-bottom-sheet>
     </div>
   </Layout>
 </template>

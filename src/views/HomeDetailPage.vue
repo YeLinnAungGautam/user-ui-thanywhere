@@ -23,8 +23,24 @@
             >
               {{ detail?.place }}
             </p>
-            <p class="text-[13.5px] text-black/80 leading-6">
-              {{ detail?.description }}
+            <p
+              class="text-[13.5px] text-black/80 leading-6"
+              :class="!seeMoreShow ? 'h-[147px] overflow-hidden' : 'h-auto'"
+              v-html="detail?.full_description"
+            ></p>
+            <p
+              class="text-[12px] text-main"
+              v-if="!seeMoreShow"
+              @click="seeMoreShow = true"
+            >
+              see more
+            </p>
+            <p
+              class="text-[12px] text-main"
+              v-if="seeMoreShow"
+              @click="seeMoreShow = false"
+            >
+              see less
             </p>
           </div>
           <div class="space-y-4" v-if="detail?.facilities.length > 0">
@@ -226,6 +242,7 @@ const hotelStore = useHotelStore();
 
 const detail = ref(null);
 const loading = ref(false);
+const seeMoreShow = ref(false);
 
 const getDetail = async (id) => {
   loading.value = true;
@@ -247,3 +264,5 @@ onMounted(async () => {
   await getDetail(route.params.id);
 });
 </script>
+
+<style></style>

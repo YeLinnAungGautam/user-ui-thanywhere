@@ -51,6 +51,7 @@ const filteredHotel = async () => {
       id: filterId.value,
       name: city_name.value,
       price: price.value ? price.value : price_range.value,
+      rating: rating.value ? rating.value : 3,
     },
   });
   close();
@@ -65,6 +66,7 @@ const price_range = ref("");
 const search = ref("");
 const city_id = ref("");
 const filterId = ref("");
+const rating = ref("");
 const place = ref("");
 
 const watchSystem = computed(() => {
@@ -89,6 +91,9 @@ const watchSystem = computed(() => {
   }
   if (city_id.value != "" && city_id.value != undefined) {
     result.city_id = city_id.value;
+  }
+  if (rating.value != "" || rating.value != undefined) {
+    result.rating = rating.value;
   }
   if (place.value != "" && place.value != undefined) {
     result.place = place.value;
@@ -161,6 +166,7 @@ const searchFunction = (data) => {
 
 onMounted(async () => {
   city_id.value = route.params.id;
+  rating.value = route.params.rating;
   if (
     route.params.price &&
     typeof route.params.price === "string" &&
@@ -188,9 +194,10 @@ watch(hotels, async (newValue) => {
   console.log(hotelList.value, "this is add new");
 });
 
-watch([filterId, price], async ([newValue, newPrice]) => {
+watch([filterId, price, rating], async ([newValue, newPrice, newRating]) => {
   let data = {
     city_id: newValue,
+    rating: newRating ? newRating : 3,
   };
   if (newPrice && price_range.value == "") {
     data.max_price = newPrice;
@@ -200,6 +207,14 @@ watch([filterId, price], async ([newValue, newPrice]) => {
   const res = await hotelStore.getSimpleListAction(data);
   console.log(data, "this is data");
   count_filter.value = res.meta.total;
+});
+
+watch(search, async (newValue) => {
+  if (newValue) {
+    hotelList.value = [];
+    let res = await hotelStore.getListAction(watchSystem.value);
+    hotelList.value = res.data;
+  }
 });
 </script>
 
@@ -217,11 +232,10 @@ watch([filterId, price], async ([newValue, newPrice]) => {
         </div>
         <div class="relative w-full">
           <input
-            type="search"
-            name=""
+            type="text"
+            v-model="search"
             placeholder=" search"
             class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
-            id=""
           />
 
           <img
@@ -273,7 +287,7 @@ watch([filterId, price], async ([newValue, newPrice]) => {
                 {{ i.name }}
               </p>
               <div class="flex justify-between items-center">
-                <StarPartVue :count="3" />
+                <StarPartVue :count="i.rating" />
                 <div
                   class="text-[10px] flex justify-end items-center gap-0.5 py-1"
                 >
@@ -354,12 +368,16 @@ watch([filterId, price], async ([newValue, newPrice]) => {
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2 mr-5">
               <div
-                class="border border-black/60 rounded-lg px-2 py-2"
-                v-for="(i, index) in 4"
+                class="border rounded-lg px-2 py-2"
+                :class="
+                  rating == index + 1 ? 'border-main ' : 'border-black/60'
+                "
+                v-for="(i, index) in 5"
                 :key="index"
+                @click="rating = i"
               >
                 <div class="flex justify-center items-center gap-1">
-                  <p class="text-sm">{{ index + 2 }}</p>
+                  <p class="text-sm">{{ index + 1 }}</p>
                   <StarIcon class="w-5 h-5 text-main" />
                 </div>
                 <p class="text-[8px] text-black/70">6+hotels</p>

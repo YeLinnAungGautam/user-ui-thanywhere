@@ -33,7 +33,7 @@ const routes = [
     component: HotelBookingsVue,
   },
   {
-    path: "/home/hotel-filter/:id/:name/:price",
+    path: "/home/hotel-filter/:id/:name/:price/:rating",
     name: "FilteredHotelBookings",
     component: FilteredHotelBookingsVue,
   },
