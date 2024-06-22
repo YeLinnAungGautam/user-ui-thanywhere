@@ -28,7 +28,7 @@
       </div>
       <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="attractionPage">
         <div
-          class="bg-black/30 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <CursorArrowRippleIcon class="max-w-7 max-h-7 text-white" /> -->
           <img :src="attraction" alt="" class="w-6 h-6 mx-auto" />

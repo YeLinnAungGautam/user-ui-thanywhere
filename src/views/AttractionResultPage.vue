@@ -5,23 +5,27 @@ import {
   HeartIcon,
   ChevronDownIcon,
   XMarkIcon,
-  StarIcon,
 } from "@heroicons/vue/24/outline";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 // import { MapPinIcon, BuildingOffice2Icon } from "@heroicons/vue/24/solid";
 // import vantourdb from "../assets/vantourdb";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
+import activitydb from "../assets/activitydb";
+import { useEntranceStore } from "../stores/entrance";
 
 const cityStore = useCityStore();
+const entranceStore = useEntranceStore();
 const router = useRouter();
+const route = useRoute();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
+const { entrances, loading } = storeToRefs(entranceStore);
 
 const open = () => {
   myBottomSheet.value.open();
@@ -34,8 +38,132 @@ const close = () => {
 // const data = vantourdb;
 const all = ref(false);
 
+const filterId = ref("");
+const city_name = ref("");
+
+const filteredHotel = async () => {
+  router.push({
+    name: "HomeAttractionResult",
+    params: { id: filterId.value, name: city_name.value },
+  });
+  close();
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000); // 2000 milliseconds = 2 seconds
+};
+
+const changePage = async (url) => {
+  console.log(url);
+  if (url != null) {
+    let data = { city_id: filterId.value };
+    await entranceStore.getChangePage(url, data);
+  }
+};
+
+const bottomOfWindow = ref(false);
+
+const handleScroll = () => {
+  bottomOfWindow.value =
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
+    document.documentElement.offsetHeight - 100;
+
+  const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  // console.log(document.documentElement.scrollTop, "this is top");
+  if (scrolledDown) {
+    showSearch.value = true;
+  } else {
+    showSearch.value = false;
+  }
+};
+
+watch(bottomOfWindow, (newVal) => {
+  if (bottomOfWindow.value == true) {
+    let changePageCalled = false;
+    if (newVal && !changePageCalled) {
+      console.log("This is the bottom of the window");
+      if (
+        entrances?.value?.meta?.current_page < entrances?.value?.meta?.last_page
+      ) {
+        changePageCalled = true; // Set the flag to true
+        changePage(
+          entrances?.value?.meta?.links[
+            entrances?.value?.meta?.current_page + 1
+          ].url
+        );
+      }
+    }
+  }
+});
+
+const count_filter = ref(0);
+// const price_range = ref("");
+
+watch([filterId], async ([newValue]) => {
+  let data = {
+    city_id: newValue,
+  };
+
+  const res = await entranceStore.getListAction(data);
+  console.log(res, "this is data");
+  count_filter.value = res.meta.total;
+});
+
+const showSearch = ref(false);
+
+const searchFunction = (data) => {
+  city_name.value = data.name;
+  filterId.value = data.id;
+};
+
+const entrancesList = ref([]);
+
+const goDetialPage = (id) => {
+  router.push({ name: "HomeAttractionDetail", params: { id: id } });
+};
+
+// const getRange = (data) => {
+//   // console.log(data);
+//   router.push({
+//     name: "HomeAttractionResult",
+//     params: { id: 2, name: "Bangkok" },
+//   });
+// };
+//  activitydb = activitydb;
+
+const count = ref(0);
+const search = ref("");
+
+watch(search, async (newValue) => {
+  if (newValue) {
+    entrancesList.value = [];
+    let res = await entranceStore.getListAction({
+      city_id: filterId.value,
+      search: search.value,
+    });
+    entrancesList.value = res.data;
+  }
+});
+
 onMounted(async () => {
+  filterId.value = route.params.id;
+  city_name.value = route.params.name;
+  window.addEventListener("scroll", handleScroll);
+  let res = await entranceStore.getListAction({
+    city_id: filterId.value,
+    search: search.value,
+  });
+  count.value = res.meta.total;
   await cityStore.getSimpleListAction();
+  entrancesList.value = res.data;
+  console.log(entrancesList.value, "this is entrance list add");
+});
+
+watch(entrances, async (newValue) => {
+  if (newValue) {
+    entrancesList.value = [...entrancesList.value, ...newValue.data];
+  }
+
+  console.log(entrancesList.value, "this is add new");
 });
 </script>
 
@@ -48,12 +176,13 @@ onMounted(async () => {
             class="w-6 h-6 text-white"
             @click="router.push('/home/attraction')"
           />
-          <p class="text-white font-semibold">over 30 attractions</p>
+          <p class="text-white font-semibold">over {{ count }} attractions</p>
           <p class="opacity-0">..</p>
         </div>
         <div class="relative w-full">
           <input
-            type="search"
+            type="text"
+            v-model="search"
             name=""
             placeholder=" search"
             class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
@@ -69,7 +198,9 @@ onMounted(async () => {
       </HeaderHome>
       <div class="space-y-4 px-6 pt-6 pb-20">
         <div class="flex justify-between items-center mb-2">
-          <h1 class="text-main font-semibold">attractions in bangkok</h1>
+          <h1 class="text-main font-semibold">
+            attractions in {{ city_name }}
+          </h1>
           <div
             class="flex justify-end items-center gap-2 cursor-pointer"
             @click="open"
@@ -80,11 +211,19 @@ onMounted(async () => {
         </div>
         <div
           class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
-          v-for="i in 10"
+          v-for="i in entrancesList"
           :key="i"
+          @click="goDetialPage(i.id)"
         >
           <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
             <img
+              v-if="i?.cover_image"
+              :src="i?.cover_image"
+              class="w-full h-full object-cover"
+              alt=""
+            />
+            <img
+              v-if="!i?.cover_image"
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
               class="w-full h-full object-cover"
               alt=""
@@ -94,35 +233,51 @@ onMounted(async () => {
             <div class="overflow-hidden space-y-1">
               <div>
                 <p class="text-xs font-semibold text-main pr-4">
-                  dream world some simple
+                  {{ i?.name }}
                 </p>
                 <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" />
               </div>
               <div class="flex justify-start gap-1 flex-wrap items-center">
                 <p
                   class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
-                  v-for="a in 2"
+                  v-for="a in i?.cities"
                   :key="a"
                 >
-                  bangkok
+                  {{ a.name }}
                 </p>
               </div>
-              <p class="text-[8px] h-[70px] overflow-hidden">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe
-                id labore fuga esse, nesciunt sapiente impedit odit voluptatibus
-                molestiae, consequuntur deleniti, magni quasi expedita velit
-                tenetur cum dolorum minus libero!
+              <p
+                class="text-[8px] h-[70px] overflow-hidden"
+                v-if="i?.description && i?.description != 'null'"
+              >
+                {{ i?.description }}
+              </p>
+              <p
+                class="text-[8px] h-[70px] overflow-hidden"
+                v-if="!i?.description || i?.description == 'null'"
+              >
+                coming soon !
               </p>
               <div class="absolute bottom-0 space-y-0.5">
                 <p class="text-[10px] pb-1">starting price</p>
                 <p
                   class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
                 >
-                  900THB
+                  {{ i?.lowest_variation_price }}THB
                 </p>
               </div>
             </div>
           </div>
+        </div>
+        <div
+          class="relative flex justify-center items-center py-[30%]"
+          v-if="loading"
+        >
+          <div
+            class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
+          ></div>
+          <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
+          <!-- <p>loading</p> -->
         </div>
       </div>
     </div>
@@ -149,27 +304,27 @@ onMounted(async () => {
                 <p
                   v-if="index < 8 || all"
                   class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                  :class="filterId == c.id ? 'bg-main text-white' : ''"
+                  @click="searchFunction(c)"
                 >
                   {{ c?.name }}
                 </p>
               </div>
             </div>
           </div>
-          <div class="pb-10 space-y-4">
-            <p class="text-sm font-semibold">select activities type</p>
-            <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
-              <div
-                class="px-2 py-2 space-y-1 w-[70px] mx-auto"
-                v-for="(i, index) in 12"
-                :key="index"
-              >
-                <div class="flex justify-center items-center gap-1">
-                  <StarIcon class="w-10 h-10 text-main" />
-                </div>
-                <p class="text-[8px] text-black/70 text-center">
-                  some text for search
-                </p>
+          <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+            <div
+              class="px-2 py-2 space-y-1 w-[70px] mx-auto"
+              v-for="(i, index) in activitydb"
+              :key="index"
+            >
+              <div class="flex justify-center items-center gap-1">
+                <!-- <StarIcon class="w-10 h-10 text-main" /> -->
+                <img :src="i.image" class="w-10 h-10" alt="" />
               </div>
+              <p class="text-[8px] text-black/70 text-center">
+                {{ i.name }}
+              </p>
             </div>
           </div>
 
@@ -184,7 +339,7 @@ onMounted(async () => {
               @click="filteredHotel"
               class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
             >
-              see 50 attractions
+              see {{ count_filter }} attractions
             </button>
           </div>
         </div>

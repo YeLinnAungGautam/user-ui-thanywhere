@@ -3,17 +3,14 @@ import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import { useRouter } from "vue-router";
-import {
-  HeartIcon,
-  ChevronDownIcon,
-  StarIcon,
-} from "@heroicons/vue/24/outline";
+import { HeartIcon, ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { useEntranceStore } from "../stores/entrance";
 import { useCityStore } from "../stores/city";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { ref, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
+import activitydb from "../assets/activitydb";
 
 // const data = vantourdb;
 
@@ -40,12 +37,11 @@ const close = () => {
 
 const filterId = ref("");
 const city_name = ref("");
-const price = ref(100000);
 
 const filteredHotel = async () => {
   router.push({
-    name: "FilteredHotelBookings",
-    params: { id: filterId.value, name: city_name.value, price: price.value },
+    name: "HomeAttractionResult",
+    params: { id: filterId.value, name: city_name.value },
   });
   close();
 };
@@ -102,7 +98,7 @@ watch([filterId], async ([newValue]) => {
     city_id: newValue,
   };
 
-  const res = await entranceStore.getSimpleListAction(data);
+  const res = await entranceStore.getListAction(data);
   console.log(res, "this is data");
   count_filter.value = res.meta.total;
 });
@@ -116,17 +112,18 @@ const searchFunction = (data) => {
 
 const entrancesList = ref([]);
 
-// const goDetialPage = (id) => {
-//   router.push({ name: "HomeDetail", params: { id: id } });
-// };
+const goDetialPage = (id) => {
+  router.push({ name: "HomeAttractionDetail", params: { id: id } });
+};
 
 // const getRange = (data) => {
 //   // console.log(data);
 //   router.push({
-//     name: "FilteredHotelBookings",
-//     params: { id: 2, name: "Bangkok", price: data },
+//     name: "HomeAttractionResult",
+//     params: { id: 2, name: "Bangkok" },
 //   });
 // };
+//  activitydb = activitydb;
 
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
@@ -187,6 +184,7 @@ watch(entrances, async (newValue) => {
         class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
         v-for="i in entrancesList"
         :key="i"
+        @click="goDetialPage(i.id)"
       >
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
           <img
@@ -234,16 +232,9 @@ watch(entrances, async (newValue) => {
             <div class="absolute bottom-0 space-y-0.5">
               <p class="text-[10px] pb-1">starting price</p>
               <p
-                v-if="i?.variations.length > 0"
                 class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
               >
-                {{ i?.variations[0].price }}THB
-              </p>
-              <p
-                v-if="i?.variations.length == 0"
-                class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
-              >
-                80THB
+                {{ i?.lowest_variation_price }}THB
               </p>
             </div>
           </div>
@@ -295,14 +286,15 @@ watch(entrances, async (newValue) => {
               <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
                 <div
                   class="px-2 py-2 space-y-1 w-[70px] mx-auto"
-                  v-for="(i, index) in 12"
+                  v-for="(i, index) in activitydb"
                   :key="index"
                 >
                   <div class="flex justify-center items-center gap-1">
-                    <StarIcon class="w-10 h-10 text-main" />
+                    <!-- <StarIcon class="w-10 h-10 text-main" /> -->
+                    <img :src="i.image" class="w-10 h-10" alt="" />
                   </div>
                   <p class="text-[8px] text-black/70 text-center">
-                    some text for search
+                    {{ i.name }}
                   </p>
                 </div>
               </div>
