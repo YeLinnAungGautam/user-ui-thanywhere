@@ -21,6 +21,7 @@ import HomeDestinationResultVue from "../views/DestinationResultPage.vue";
 import HomeDetailVue from "../views/HomeDetailPage.vue";
 import HomeRoomDetailVue from "../views/RoomDetailPage.vue";
 import HomeAttractionDetailVue from "../views/EntranceDetailPage.vue";
+import HomeVantourDetailVue from "../views/VantourDetailPage.vue";
 
 const routes = [
   {
@@ -69,9 +70,14 @@ const routes = [
     component: HomeVantourSearchVue,
   },
   {
-    path: "/home/van-tour-result",
+    path: "/home/van-tour-result/:id/:name/:car",
     name: "HomeVantourResult",
     component: HomeVantourResultVue,
+  },
+  {
+    path: "/home/van-tour-detail/:id",
+    name: "HomeVantourDetail",
+    component: HomeVantourDetailVue,
   },
   {
     path: "/home/attraction",

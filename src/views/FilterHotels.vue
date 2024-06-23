@@ -204,7 +204,7 @@ watch([filterId, price, rating], async ([newValue, newPrice, newRating]) => {
   } else if (price_range.value && !newPrice) {
     data.price_range = price_range.value;
   }
-  const res = await hotelStore.getListAction(data);
+  const res = await hotelStore.getFilterAction(data);
   console.log(data, "this is data");
   count_filter.value = res.meta.total;
 });

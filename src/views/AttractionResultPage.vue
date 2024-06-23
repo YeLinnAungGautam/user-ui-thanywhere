@@ -103,7 +103,7 @@ watch([filterId], async ([newValue]) => {
     city_id: newValue,
   };
 
-  const res = await entranceStore.getListAction(data);
+  const res = await entranceStore.getFilterAction(data);
   console.log(res, "this is data");
   count_filter.value = res.meta.total;
 });
@@ -132,6 +132,7 @@ const goDetialPage = (id) => {
 
 const count = ref(0);
 const search = ref("");
+const searchCityName = ref("");
 
 watch(search, async (newValue) => {
   if (newValue) {
@@ -147,6 +148,7 @@ watch(search, async (newValue) => {
 onMounted(async () => {
   filterId.value = route.params.id;
   city_name.value = route.params.name;
+  searchCityName.value = route.params.name;
   window.addEventListener("scroll", handleScroll);
   let res = await entranceStore.getListAction({
     city_id: filterId.value,
@@ -199,7 +201,7 @@ watch(entrances, async (newValue) => {
       <div class="space-y-4 px-6 pt-6 pb-20">
         <div class="flex justify-between items-center mb-2">
           <h1 class="text-main font-semibold">
-            attractions in {{ city_name }}
+            attractions in {{ searchCityName }}
           </h1>
           <div
             class="flex justify-end items-center gap-2 cursor-pointer"

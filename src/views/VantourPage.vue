@@ -2,14 +2,150 @@
 import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import vantourdb from "../assets/vantourdb";
-
-// import { ref } from "vue";
+import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
+import "@webzlodimir/vue-bottom-sheet/dist/style.css";
+// import { ref, watch, onMounted } from 'vue';
 import { useRouter } from "vue-router";
-
-const data = vantourdb;
+import { onMounted, ref, watch } from "vue";
+import { useVantourStore } from "../stores/vantour";
+import { useCityStore } from "../stores/city";
+import { storeToRefs } from "pinia";
+import { useCarStore } from "../stores/car";
+import {
+  ChevronDownIcon,
+  XMarkIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+} from "@heroicons/vue/24/outline";
 
 const router = useRouter();
+const carStore = useCarStore();
+const vantourStore = useVantourStore();
+const cityStore = useCityStore();
+const myBottomSheet = ref(null);
+const { cities } = storeToRefs(cityStore);
+const { vantours, loading } = storeToRefs(vantourStore);
+const { cars } = storeToRefs(carStore);
+
+const all = ref(false);
+
+const open = () => {
+  myBottomSheet.value.open();
+};
+
+// const openBottomSheet = async () => {
+//   open();
+// };
+
+const close = () => {
+  myBottomSheet.value.close();
+};
+
+const filterId = ref("");
+const city_name = ref("");
+
+const filteredHotel = async () => {
+  router.push({
+    name: "HomeVantourResult",
+    params: { id: filterId.value, name: city_name.value, car: car_id.value },
+  });
+  close();
+};
+
+const changePage = async (url) => {
+  console.log(url);
+  if (url != null) {
+    await vantourStore.getChangePage(url);
+  }
+};
+
+const bottomOfWindow = ref(false);
+
+const handleScroll = () => {
+  bottomOfWindow.value =
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
+    document.documentElement.offsetHeight - 100;
+
+  const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  // console.log(document.documentElement.scrollTop, "this is top");
+  if (scrolledDown) {
+    showSearch.value = true;
+  } else {
+    showSearch.value = false;
+  }
+};
+
+watch(bottomOfWindow, (newVal) => {
+  if (bottomOfWindow.value == true) {
+    let changePageCalled = false;
+    if (newVal && !changePageCalled) {
+      console.log("This is the bottom of the window");
+      if (
+        vantours?.value?.meta?.current_page < vantours?.value?.meta?.last_page
+      ) {
+        changePageCalled = true; // Set the flag to true
+        changePage(
+          vantours?.value?.meta?.links[vantours?.value?.meta?.current_page + 1]
+            .url
+        );
+      }
+    }
+  }
+});
+
+const count_filter = ref(0);
+const car_id = ref("");
+
+watch([filterId, car_id], async ([newValue, newCarValue]) => {
+  let data = {
+    city_id: newValue,
+    car_id: newCarValue,
+  };
+
+  const res = await vantourStore.getFilterAction(data);
+  console.log(res, "this is data");
+  count_filter.value = res.meta.total;
+});
+
+const showSearch = ref(false);
+
+const searchFunction = (data) => {
+  city_name.value = data.name;
+  filterId.value = data.id;
+};
+
+const vantourList = ref([]);
+
+const goDetialPage = (id) => {
+  router.push({ name: "HomeVantourDetail", params: { id: id } });
+};
+
+// const getRange = (data) => {
+//   // console.log(data);
+//   router.push({
+//     name: "HomeAttractionResult",
+//     params: { id: 2, name: "Bangkok" },
+//   });
+// };
+//  activitydb = activitydb;
+
+onMounted(async () => {
+  window.addEventListener("scroll", handleScroll);
+  let res = await vantourStore.getListAction();
+  await cityStore.getSimpleListAction();
+  vantourList.value = res.data;
+  console.log(vantourList.value, "this is entrance list add");
+  await carStore.getSimpleListAction();
+  console.log(cars.value, "this is car");
+});
+
+watch(vantours, async (newValue) => {
+  if (newValue) {
+    vantourList.value = [...vantourList.value, ...newValue.data];
+  }
+
+  console.log(vantourList.value, "this is add new");
+});
 </script>
 
 <template>
@@ -40,15 +176,31 @@ const router = useRouter();
       </div>
     </HeaderHomeVue>
     <div class="h-auto pb-20 pt-8 space-y-4 px-6">
-      <h1 class="text-main font-semibold">popular van tours</h1>
+      <div class="flex justify-between items-center">
+        <h1 class="text-main font-semibold">van tours packages</h1>
+        <div
+          class="flex justify-end items-center gap-2 cursor-pointer"
+          @click="open"
+        >
+          <p class="text-[10px] text-main font-semibold">filter by</p>
+          <ChevronDownIcon class="w-3 h-3 text-main" />
+        </div>
+      </div>
       <div
         class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
-        v-for="i in data"
+        v-for="i in vantourList"
         :key="i"
       >
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
           <img
+            v-if="i?.cover_image"
             :src="i?.cover_image"
+            class="w-full h-full object-cover"
+            alt=""
+          />
+          <img
+            v-if="!i?.cover_image"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
             class="w-full h-full object-cover"
             alt=""
           />
@@ -77,6 +229,7 @@ const router = useRouter();
                 </p>
               </div>
               <p
+                @click="goDetialPage(i.id)"
                 class="bg-main text-white text-xs font-medium px-3 inline-block py-1 rounded-full"
               >
                 view more
@@ -85,6 +238,120 @@ const router = useRouter();
           </div>
         </div>
       </div>
+      <div
+        class="relative flex justify-center items-center py-[30%]"
+        v-if="loading"
+      >
+        <div
+          class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
+        ></div>
+        <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
+        <!-- <p>loading</p> -->
+      </div>
+      <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
+        <div class="font-poppins">
+          <div class="flex justify-between items-center px-6 pb-4">
+            <p class="opacity-0">........</p>
+            <p class="text-main text-base">filter</p>
+            <XMarkIcon class="w-5 h-5" @click="close" />
+          </div>
+          <div class="border border-black/10 p-4 ml-4 mr-2 rounded-xl">
+            <div class="space-y-3 pb-10">
+              <div class="flex justify-between items-center">
+                <p class="text-sm font-semibold">choose city</p>
+                <p
+                  class="text-black text-[10px] cursor-pointer"
+                  @click="all = !all"
+                >
+                  {{ all ? "show less" : "show more" }}
+                </p>
+              </div>
+              <div class="flex flex-wrap justify-start items-center gap-2">
+                <div class="flex flex-wrap justify-start items-center gap-2">
+                  <div v-for="(c, index) in cities?.data" :key="c.id">
+                    <p
+                      v-if="index < 8 || all"
+                      class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                      :class="filterId == c.id ? 'bg-main text-white' : ''"
+                      @click="searchFunction(c)"
+                    >
+                      {{ c?.name }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-3 pb-4">
+              <div class="flex justify-between items-center">
+                <p class="text-sm font-semibold">choose car type</p>
+                <ChevronUpIcon class="w-4 h-4" />
+              </div>
+              <div class="flex flex-wrap justify-start items-center gap-2 mr-5">
+                <div class="" v-for="(i, index) in cars?.data" :key="index">
+                  <div class="flex justify-center items-center gap-1">
+                    <p
+                      class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                      :class="car_id == i.id ? 'bg-main text-white' : ''"
+                      @click="car_id = i.id"
+                    >
+                      {{ i?.name }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-3 pb-8 pt-4">
+              <div class="border border-green rounded-2xl p-3">
+                <div
+                  class="text-green text-sm font-medium pb-2 flex justify-start items-center gap-2"
+                >
+                  <CheckCircleIcon class="w-4 h-4 text-green" />
+                  <p class="text-sm">what's include</p>
+                </div>
+                <div
+                  class="flex justify-start items-center gap-2 flex-wrap text-xs text-green"
+                >
+                  <p>12 hours of travel</p>
+                  <p>hotel transfer</p>
+                  <p>online assistant</p>
+                  <p>tour expenses</p>
+                  <p>fuel expenses</p>
+                  <p>experienced driver</p>
+                </div>
+              </div>
+              <div class="border border-red rounded-2xl p-3">
+                <div
+                  class="text-red text-sm font-medium pb-2 flex justify-start items-center gap-2"
+                >
+                  <XCircleIcon class="w-4 h-4 text-red" />
+                  <p class="text-sm">what's not include</p>
+                </div>
+                <div
+                  class="flex justify-start items-center gap-2 flex-wrap text-xs text-red"
+                >
+                  <p>personal expenses</p>
+                  <p>entrance tickets</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between gap-4 items-center pt-4">
+              <button
+                @click="close"
+                class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
+              >
+                clear
+              </button>
+              <button
+                @click="filteredHotel"
+                class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
+              >
+                see {{ count_filter }} hotels
+              </button>
+            </div>
+          </div>
+        </div>
+      </vue-bottom-sheet>
     </div>
   </Layout>
 </template>

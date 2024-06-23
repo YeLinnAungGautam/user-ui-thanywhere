@@ -98,7 +98,7 @@ watch([filterId], async ([newValue]) => {
     city_id: newValue,
   };
 
-  const res = await entranceStore.getListAction(data);
+  const res = await entranceStore.getFilterAction(data);
   console.log(res, "this is data");
   count_filter.value = res.meta.total;
 });
