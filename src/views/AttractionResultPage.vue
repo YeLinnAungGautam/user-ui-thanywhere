@@ -55,7 +55,13 @@ const filteredHotel = async () => {
 const changePage = async (url) => {
   console.log(url);
   if (url != null) {
-    let data = { city_id: filterId.value };
+    // let data = { city_id: filterId.value };
+    let data;
+    if (search.value != "" && search.value != "null") {
+      data = { search: search.value };
+    } else {
+      data = { city_id: filterId.value };
+    }
     await entranceStore.getChangePage(url, data);
   }
 };
@@ -137,10 +143,19 @@ const searchCityName = ref("");
 watch(search, async (newValue) => {
   if (newValue) {
     entrancesList.value = [];
+    searchCityName.value = "null";
     let res = await entranceStore.getListAction({
-      city_id: filterId.value,
       search: search.value,
     });
+    count.value = res.meta.total;
+    entrancesList.value = res.data;
+  } else {
+    entrancesList.value = [];
+    searchCityName.value = route.params.name;
+    let res = await entranceStore.getListAction({
+      city_id: filterId.value,
+    });
+    count.value = res.meta.total;
     entrancesList.value = res.data;
   }
 });
@@ -200,8 +215,11 @@ watch(entrances, async (newValue) => {
       </HeaderHome>
       <div class="space-y-4 px-6 pt-6 pb-20">
         <div class="flex justify-between items-center mb-2">
-          <h1 class="text-main font-semibold">
+          <h1 class="text-main font-semibold" v-if="searchCityName != 'null'">
             attractions in {{ searchCityName }}
+          </h1>
+          <h1 class="text-main font-semibold" v-if="searchCityName == 'null'">
+            attractions
           </h1>
           <div
             class="flex justify-end items-center gap-2 cursor-pointer"

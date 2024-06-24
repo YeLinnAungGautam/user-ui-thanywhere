@@ -30,7 +30,7 @@ export const useVantourStore = defineStore("vantour", {
         });
         this.vantours = response.data;
         this.loading = false;
-        console.log(response);
+        // console.log(response.data, "this is response from pinia");
         return response.data;
       } catch (error) {
         this.loading = false;

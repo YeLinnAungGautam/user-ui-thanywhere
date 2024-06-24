@@ -161,10 +161,19 @@ watch([filterId, car_id], async ([newValue, newCarValue]) => {
 watch(search, async (newValue) => {
   if (newValue) {
     vantoursList.value = [];
+    searchCityName.value = "null";
     let res = await vantourStore.getListAction({
       search: newValue,
+    });
+    count.value = res.meta.total;
+    vantoursList.value = res.data;
+  } else {
+    vantoursList.value = [];
+    searchCityName.value = route.params.name;
+    let res = await vantourStore.getListAction({
       city_id: filterId.value,
     });
+    count.value = res.meta.total;
     vantoursList.value = res.data;
   }
 });
@@ -201,8 +210,11 @@ watch(search, async (newValue) => {
       </HeaderHome>
       <div class="space-y-4 px-6 pt-6 pb-20">
         <div class="flex justify-between items-center mb-2">
-          <h1 class="text-main font-semibold">
+          <h1 class="text-main font-semibold" v-if="searchCityName != 'null'">
             vantours packages in {{ searchCityName }}
+          </h1>
+          <h1 class="text-main font-semibold" v-if="searchCityName == 'null'">
+            vantours packages
           </h1>
           <div
             class="flex justify-end items-center gap-2 cursor-pointer"
@@ -216,7 +228,7 @@ watch(search, async (newValue) => {
         </div>
         <div
           class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
-          v-for="i in vantourList"
+          v-for="i in vantoursList"
           :key="i"
         >
           <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">

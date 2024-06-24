@@ -43,16 +43,16 @@ const close = () => {
 const filterId = ref("");
 const city_name = ref("");
 const rating = ref("");
-const price = ref(100000);
+const price = ref("");
 
 const filteredHotel = async () => {
   router.push({
     name: "FilteredHotelBookings",
     params: {
-      id: filterId.value,
-      name: city_name.value,
-      price: price.value,
-      rating: rating.value,
+      id: filterId.value ? filterId.value : "null",
+      name: city_name.value ? city_name.value : "null",
+      price: price.value ? price.value : "null",
+      rating: rating.value ? rating.value : "null",
     },
   });
   close();
@@ -104,8 +104,10 @@ const price_range = ref("");
 watch([filterId, price, rating], async ([newValue, newPrice, newRating]) => {
   let data = {
     city_id: newValue,
-    rating: newRating ? newRating : 3,
   };
+  if (newRating) {
+    data.rating = newRating;
+  }
   if (newPrice && price_range.value == "") {
     data.max_price = newPrice;
   } else if (price_range.value && !newPrice) {
@@ -133,7 +135,7 @@ const getRange = (data) => {
   // console.log(data);
   router.push({
     name: "FilteredHotelBookings",
-    params: { id: 2, name: "Bangkok", price: data },
+    params: { id: 2, name: "Bangkok", price: data, rating: "null" },
   });
 };
 

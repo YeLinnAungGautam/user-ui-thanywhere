@@ -71,31 +71,38 @@ const place = ref("");
 
 const watchSystem = computed(() => {
   const result = {};
-
-  if (search.value != "" && search.value != undefined) {
-    result.search = search.value;
-  }
   if (
     price.value != "" &&
     price.value != undefined &&
-    price_range.value == ""
+    price.value != "null" &&
+    price_range.value == "" &&
+    price_range.value != "null"
   ) {
     result.max_price = price.value;
   }
   if (
     price_range.value != "" &&
     price_range.value != undefined &&
-    price.value == ""
+    price.value == "" &&
+    price.value != "null"
   ) {
     result.price_range = price_range.value;
   }
-  if (city_id.value != "" && city_id.value != undefined) {
+  if (
+    city_id.value != "" &&
+    city_id.value != undefined &&
+    city_id.value != "null"
+  ) {
     result.city_id = city_id.value;
   }
-  if (rating.value != "" || rating.value != undefined) {
+  if (
+    rating.value != "" &&
+    rating.value != undefined &&
+    rating.value != "null"
+  ) {
     result.rating = rating.value;
   }
-  if (place.value != "" && place.value != undefined) {
+  if (place.value != "" && place.value != undefined && place.value != "null") {
     result.place = place.value;
   }
   return result;
@@ -112,7 +119,15 @@ const { hotels, loading } = storeToRefs(hotelStore);
 const changePage = async (url) => {
   console.log(url);
   if (url != null) {
-    await hotelStore.getChangePage(url, watchSystem.value);
+    let data;
+    if (search.value != null && search.value != "") {
+      data = {
+        search: search.value,
+      };
+    } else {
+      data = watchSystem.value;
+    }
+    await hotelStore.getChangePage(url, data);
   }
 };
 
@@ -194,25 +209,53 @@ watch(hotels, async (newValue) => {
   console.log(hotelList.value, "this is add new");
 });
 
+// watch([filterId, price, rating], async ([newValue, newPrice, newRating]) => {
+//   let data = {
+//     city_id: newValue,
+//     rating: newRating ? newRating : 3,
+//   };
+//   if (newPrice && price_range.value == "") {
+//     data.max_price = newPrice;
+//   } else if (price_range.value && !newPrice) {
+//     data.price_range = price_range.value;
+//   }
+//   const res = await hotelStore.getFilterAction(data);
+//   console.log(data, "this is data");
+//   count_filter.value = res.meta.total;
+// });
+
 watch([filterId, price, rating], async ([newValue, newPrice, newRating]) => {
-  let data = {
-    city_id: newValue,
-    rating: newRating ? newRating : 3,
-  };
-  if (newPrice && price_range.value == "") {
+  let data = {};
+  if (newValue && newValue != "null") {
+    data.city_id = newValue;
+  }
+  if (newRating) {
+    data.rating = newRating;
+  }
+  if (newPrice && price_range.value == "" && newPrice != "null") {
     data.max_price = newPrice;
   } else if (price_range.value && !newPrice) {
     data.price_range = price_range.value;
   }
   const res = await hotelStore.getFilterAction(data);
-  console.log(data, "this is data");
+  console.log(res, "this is data");
   count_filter.value = res.meta.total;
 });
 
 watch(search, async (newValue) => {
   if (newValue) {
     hotelList.value = [];
+    searchCityName.value = "null";
+    let res = await hotelStore.getListAction({
+      search: newValue,
+    });
+    count.value = res.meta.total;
+    hotelList.value = res.data;
+  } else {
+    hotelList.value = [];
+    searchCityName.value = route.params.name;
     let res = await hotelStore.getListAction(watchSystem.value);
+    count.value = res.meta.total;
     hotelList.value = res.data;
   }
 });
@@ -247,8 +290,11 @@ watch(search, async (newValue) => {
       </HeaderHome>
       <div class="space-y-4 px-6 pt-6 pb-20">
         <div class="flex justify-between items-center mb-2">
-          <h1 class="text-main font-semibold">
+          <h1 class="text-main font-semibold" v-if="searchCityName != 'null'">
             hotels in {{ searchCityName }}
+          </h1>
+          <h1 class="text-main font-semibold" v-if="searchCityName == 'null'">
+            hotels
           </h1>
           <div
             class="flex justify-end items-center gap-2 cursor-pointer"
