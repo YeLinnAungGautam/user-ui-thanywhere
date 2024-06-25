@@ -132,6 +132,7 @@ const changePage = async (url) => {
 };
 
 const bottomOfWindow = ref(false);
+const isStickey = ref(false);
 
 const handleScroll = () => {
   bottomOfWindow.value =
@@ -139,6 +140,7 @@ const handleScroll = () => {
     document.documentElement.offsetHeight - 100;
 
   const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  isStickey.value = document.documentElement.scrollTop > 180;
   // console.log(document.documentElement.scrollTop, "this is top");
   if (scrolledDown) {
     showSearch.value = true;
@@ -290,6 +292,7 @@ watch(search, async (newValue) => {
       </HeaderHome>
       <div class="space-y-4 pt-6 pb-20 relative">
         <div
+          :class="isStickey ? 'shadow-custom' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
         >
           <h1 class="text-main font-semibold" v-if="searchCityName != 'null'">

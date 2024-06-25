@@ -68,6 +68,7 @@ const changePage = async (url) => {
 };
 
 const bottomOfWindow = ref(false);
+const isStickey = ref(false);
 
 const handleScroll = () => {
   bottomOfWindow.value =
@@ -75,7 +76,12 @@ const handleScroll = () => {
     document.documentElement.offsetHeight - 100;
 
   const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
-  // console.log(document.documentElement.scrollTop, "this is top");
+  isStickey.value = document.documentElement.scrollTop > 500;
+  // console.log(
+  //   document.documentElement.scrollTop,
+  //   "this is top",
+  //   isStickey.value
+  // );
   if (scrolledDown) {
     showSearch.value = true;
   } else {
@@ -141,6 +147,7 @@ const getRange = (data) => {
 
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
+
   let res = await hotelStore.getListAction();
   await cityStore.getSimpleListAction();
   hotelList.value = res.data;
@@ -186,6 +193,7 @@ watch(hotels, async (newValue) => {
       <HotelsGradesVue @Range="getRange" />
       <div class="space-y-4 relative">
         <div
+          :class="isStickey ? 'shadow-custom' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
         >
           <h1 class="text-main font-semibold">direct partner hotels</h1>
