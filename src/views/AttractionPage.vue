@@ -169,8 +169,10 @@ watch(entrances, async (newValue) => {
         </div>
       </div>
     </HeaderHomeVue>
-    <div class="h-auto pb-20 pt-8 space-y-4 px-6">
-      <div class="flex justify-between items-center">
+    <div class="h-auto pb-20 pt-8 space-y-4 relative">
+      <div
+        class="flex justify-between items-center sticky top-0 py-2 px-6 z-10 bg-background w-full"
+      >
         <h1 class="text-main font-semibold">attractions</h1>
         <div
           class="flex justify-end items-center gap-2 cursor-pointer"
@@ -181,7 +183,7 @@ watch(entrances, async (newValue) => {
         </div>
       </div>
       <div
-        class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
+        class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
         v-for="i in entrancesList"
         :key="i"
         @click="goDetialPage(i.id)"

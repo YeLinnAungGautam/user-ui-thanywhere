@@ -288,8 +288,10 @@ watch(search, async (newValue) => {
           />
         </div>
       </HeaderHome>
-      <div class="space-y-4 px-6 pt-6 pb-20">
-        <div class="flex justify-between items-center mb-2">
+      <div class="space-y-4 pt-6 pb-20 relative">
+        <div
+          class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
+        >
           <h1 class="text-main font-semibold" v-if="searchCityName != 'null'">
             hotels in {{ searchCityName }}
           </h1>
@@ -305,7 +307,7 @@ watch(search, async (newValue) => {
           </div>
         </div>
         <div
-          class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
+          class="border mx-6 border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
           v-for="i in hotelList ?? []"
           :key="i"
           @click="goDetialPage(i?.id)"

@@ -182,10 +182,12 @@ watch(hotels, async (newValue) => {
         </div>
       </div>
     </HeaderHomeVue>
-    <div class="h-auto pb-20 pt-8 space-y-10">
+    <div class="h-auto pb-20 pt-8 space-y-10 relative">
       <HotelsGradesVue @Range="getRange" />
-      <div class="space-y-4 px-6">
-        <div class="flex justify-between items-center mb-2">
+      <div class="space-y-4 relative">
+        <div
+          class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
+        >
           <h1 class="text-main font-semibold">direct partner hotels</h1>
           <div
             class="flex justify-end items-center gap-2 cursor-pointer"
@@ -196,7 +198,7 @@ watch(hotels, async (newValue) => {
           </div>
         </div>
         <div
-          class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
+          class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
           v-for="i in hotelList ? hotelList : []"
           :key="i"
           @click="goDetialPage(i?.id)"
