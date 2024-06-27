@@ -75,7 +75,7 @@ const routes = [{
         component: HomeVantourSearchVue,
     },
     {
-        path: "/home/van-tour-result/:id/:name/:car",
+        path: "/home/van-tour-result/:id/:name",
         name: "HomeVantourResult",
         component: HomeVantourResultVue,
     },

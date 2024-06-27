@@ -16,17 +16,17 @@ import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search
 import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
-import { useCarStore } from "../stores/car";
+// import { useCarStore } from "../stores/car";
 import { useVantourStore } from "../stores/vantour";
 
-const carStore = useCarStore();
+// const carStore = useCarStore();
 const cityStore = useCityStore();
 const router = useRouter();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const vantourStore = useVantourStore();
 const { vantours, loading } = storeToRefs(vantourStore);
-const { cars } = storeToRefs(carStore);
+// const { cars } = storeToRefs(carStore);
 const route = useRoute();
 
 const open = () => {
@@ -45,7 +45,6 @@ const filteredHotel = async () => {
     params: {
       id: filterId.value,
       name: city_name.value,
-      car: car_id.value,
     },
   });
   close();
@@ -55,7 +54,7 @@ const filteredHotel = async () => {
 };
 
 // const data = stayinbangkok;
-const car_id = ref("");
+// const car_id = ref("");
 const search = ref("");
 const searchCityName = ref("");
 
@@ -66,7 +65,6 @@ const changePage = async (url) => {
   if (url != null) {
     await vantourStore.getChangePage(url, {
       city_id: filterId.value,
-      car_id: car_id.value,
     });
   }
 };
@@ -125,14 +123,13 @@ const searchFunction = (data) => {
 
 onMounted(async () => {
   filterId.value = route.params.id;
-  car_id.value = route.params.car;
+  // car_id.value = route.params.car;
   city_name.value = route.params.name;
   await cityStore.getSimpleListAction();
-  await carStore.getSimpleListAction();
+  // await carStore.getSimpleListAction();
   window.addEventListener("scroll", handleScroll);
   let res = await vantourStore.getListAction({
     city_id: filterId.value,
-    car_id: car_id.value,
   });
   count.value = res.meta.total;
   searchCityName.value = route.params.name;
@@ -149,10 +146,9 @@ watch(vantours, async (newValue) => {
   console.log(vantoursList.value, "this is add new");
 });
 
-watch([filterId, car_id], async ([newValue, newCarValue]) => {
+watch([filterId], async ([newValue]) => {
   let data = {
     city_id: newValue,
-    car_id: newCarValue,
   };
 
   const res = await vantourStore.getFilterAction(data);
@@ -328,7 +324,7 @@ watch(search, async (newValue) => {
               </div>
             </div>
           </div>
-          <div class="space-y-3 pb-4">
+          <!-- <div class="space-y-3 pb-4">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">choose car type</p>
               <ChevronUpIcon class="w-4 h-4" />
@@ -346,7 +342,7 @@ watch(search, async (newValue) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="space-y-3 pb-8 pt-4">
             <div class="border border-green rounded-2xl p-3">
               <div
@@ -393,7 +389,7 @@ watch(search, async (newValue) => {
               @click="filteredHotel"
               class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
             >
-              see {{ count_filter }} hotels
+              see {{ count_filter }} vantours
             </button>
           </div>
         </div>

@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div v-if="loading">
-      <LoadingPageVue />
-    </div>
+    <transition name="fade">
+      <div v-if="loading" class="animate transition">
+        <LoadingPageVue />
+      </div>
+    </transition>
     <div class="relative" v-if="!loading">
       <ImageCarousel :data="detail?.images" />
       <ChevronLeftIcon
@@ -249,7 +251,9 @@ const getDetail = async (id) => {
   console.log(res);
   console.log("====================================");
   detail.value = res.data;
-  loading.value = false;
+  setTimeout(() => {
+    loading.value = false;
+  }, 2000);
 };
 
 const modalOpen = ref(false);
@@ -263,4 +267,13 @@ onMounted(async () => {
 });
 </script>
 
-<style></style>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

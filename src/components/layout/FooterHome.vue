@@ -6,13 +6,13 @@
           <img
             :src="homeImage"
             alt=""
-            class="w-6 h-6 mx-auto"
+            class="w-5 h-5 mx-auto"
             v-if="!route.path.includes('home') && !route.name == 'Home'"
           />
           <img
             :src="homeFillImage"
             alt=""
-            class="w-6 h-6 mx-auto"
+            class="w-5 h-5 mx-auto"
             v-if="route.path.includes('home') || route.name == 'Home'"
           />
           <p
@@ -27,19 +27,19 @@
           </p>
         </router-link>
         <div class="space-y-1">
-          <img :src="searchImage" alt="" class="w-6 h-6 mx-auto" />
+          <img :src="searchImage" alt="" class="w-5 h-5 mx-auto" />
           <p class="text-xs text-black/90">search</p>
         </div>
         <div class="space-y-1">
-          <img :src="wishlistsImage" alt="" class="w-6 h-6 mx-auto" />
+          <img :src="wishlistsImage" alt="" class="w-5 h-5 mx-auto" />
           <p class="text-xs text-black/90">wishlists</p>
         </div>
         <div class="space-y-1">
-          <img :src="tripsImage" alt="" class="w-6 h-6 mx-auto" />
+          <img :src="tripsImage" alt="" class="w-5 h-5 mx-auto" />
           <p class="text-xs text-black/90">trips</p>
         </div>
         <div class="space-y-1">
-          <img :src="profileImage" alt="" class="w-6 h-6 mx-auto" />
+          <img :src="profileImage" alt="" class="w-5 h-5 mx-auto" />
           <p class="text-xs text-black/90">account</p>
         </div>
       </div>

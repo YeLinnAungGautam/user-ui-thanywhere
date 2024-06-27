@@ -10,7 +10,7 @@ import { onMounted, ref, watch } from "vue";
 import { useVantourStore } from "../stores/vantour";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
-import { useCarStore } from "../stores/car";
+// import { useCarStore } from "../stores/car";
 import {
   ChevronDownIcon,
   XMarkIcon,
@@ -19,13 +19,13 @@ import {
 } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
-const carStore = useCarStore();
+// const carStore = useCarStore();
 const vantourStore = useVantourStore();
 const cityStore = useCityStore();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { vantours, loading } = storeToRefs(vantourStore);
-const { cars } = storeToRefs(carStore);
+// const { cars } = storeToRefs(carStore);
 
 const all = ref(false);
 
@@ -47,7 +47,7 @@ const city_name = ref("");
 const filteredHotel = async () => {
   router.push({
     name: "HomeVantourResult",
-    params: { id: filterId.value, name: city_name.value, car: car_id.value },
+    params: { id: filterId.value, name: city_name.value },
   });
   close();
 };
@@ -96,12 +96,11 @@ watch(bottomOfWindow, (newVal) => {
 });
 
 const count_filter = ref(0);
-const car_id = ref("");
+// const car_id = ref("");
 
-watch([filterId, car_id], async ([newValue, newCarValue]) => {
+watch([filterId], async ([newValue]) => {
   let data = {
     city_id: newValue,
-    car_id: newCarValue,
   };
 
   const res = await vantourStore.getFilterAction(data);
@@ -137,8 +136,8 @@ onMounted(async () => {
   await cityStore.getSimpleListAction();
   vantourList.value = res.data;
   console.log(vantourList.value, "this is entrance list add");
-  await carStore.getSimpleListAction();
-  console.log(cars.value, "this is car");
+  // await carStore.getSimpleListAction();
+  // console.log(cars.value, "this is car");
 });
 
 watch(vantours, async (newValue) => {
@@ -286,7 +285,7 @@ watch(vantours, async (newValue) => {
                 </div>
               </div>
             </div>
-            <div class="space-y-3 pb-4">
+            <!-- <div class="space-y-3 pb-4">
               <div class="flex justify-between items-center">
                 <p class="text-sm font-semibold">choose car type</p>
                 <ChevronUpIcon class="w-4 h-4" />
@@ -304,7 +303,7 @@ watch(vantours, async (newValue) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="space-y-3 pb-8 pt-4">
               <div class="border border-green rounded-2xl p-3">
                 <div
@@ -351,7 +350,7 @@ watch(vantours, async (newValue) => {
                 @click="filteredHotel"
                 class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
               >
-                see {{ count_filter }} hotels
+                see {{ count_filter }} vantours
               </button>
             </div>
           </div>
