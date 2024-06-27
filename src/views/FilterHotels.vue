@@ -14,7 +14,7 @@ import {
   StarIcon,
 } from "@heroicons/vue/24/solid";
 // import stayinbangkok from "../assets/db";
-import StarPartVue from "../components/home/StarPart.vue";
+// import StarPartVue from "../components/home/StarPart.vue";
 import { useRoute, useRouter } from "vue-router";
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
@@ -50,8 +50,12 @@ const filteredHotel = async () => {
     params: {
       id: filterId.value,
       name: city_name.value,
-      price: price.value ? price.value : price_range.value,
-      rating: rating.value ? rating.value : 3,
+      price:
+        minPrice.value || maxPrice.value
+          ? `${minPrice.value}-${maxPrice.value}`
+          : "null",
+      rating: rating.value ? rating.value : "null",
+      place: place.value ? place.value : "null",
     },
   });
   close();
@@ -68,6 +72,7 @@ const city_id = ref("");
 const filterId = ref("");
 const rating = ref("");
 const place = ref("");
+const placeall = ref(false);
 
 const watchSystem = computed(() => {
   const result = {};
@@ -114,7 +119,7 @@ const all = ref(false);
 
 // });
 
-const { hotels, loading } = storeToRefs(hotelStore);
+const { hotels, loading, hotel } = storeToRefs(hotelStore);
 
 const changePage = async (url) => {
   console.log(url);
@@ -184,6 +189,7 @@ const searchFunction = (data) => {
 onMounted(async () => {
   city_id.value = route.params.id;
   rating.value = route.params.rating;
+  place.value = route.params.place;
   if (
     route.params.price &&
     typeof route.params.price === "string" &&
@@ -196,6 +202,8 @@ onMounted(async () => {
   await cityStore.getSimpleListAction();
   window.addEventListener("scroll", handleScroll);
   let res = await hotelStore.getListAction(watchSystem.value);
+  await hotelStore.getSimpleListAction(watchSystem.value);
+  setPlaceArray(hotel?.value.data);
   count.value = res.meta.total;
   searchCityName.value = route.params.name;
 
@@ -226,23 +234,46 @@ watch(hotels, async (newValue) => {
 //   count_filter.value = res.meta.total;
 // });
 
-watch([filterId, price, rating], async ([newValue, newPrice, newRating]) => {
-  let data = {};
-  if (newValue && newValue != "null") {
-    data.city_id = newValue;
+const minRange = ref(0);
+const maxRange = ref(100000);
+const minPrice = ref(0);
+const maxPrice = ref(100000);
+
+watch(
+  [filterId, minPrice, maxPrice, rating, place],
+  async ([newValue, newPrice, newMaxPrice, newRating, newPlace]) => {
+    let data = {};
+    if (newValue && newValue != "null") {
+      data.city_id = newValue;
+    }
+    if (newRating != null && newRating != "null" && newRating) {
+      data.rating = newRating;
+    }
+    if (newPlace) {
+      data.place = newPlace;
+    }
+
+    data.price_range = `${newPrice}-${newMaxPrice}`;
+
+    const res = await hotelStore.getSimpleListAction(data);
+    setPlaceArray(hotel?.value.data);
+    console.log(res, "this is data");
+    count_filter.value = res.meta.total;
   }
-  if (newRating) {
-    data.rating = newRating;
-  }
-  if (newPrice && price_range.value == "" && newPrice != "null") {
-    data.max_price = newPrice;
-  } else if (price_range.value && !newPrice) {
-    data.price_range = price_range.value;
-  }
-  const res = await hotelStore.getFilterAction(data);
-  console.log(res, "this is data");
-  count_filter.value = res.meta.total;
-});
+);
+
+const placeArray = ref([]);
+
+const setPlaceArray = (data) => {
+  const uniquePlaces = new Set();
+
+  data.forEach((element) => {
+    uniquePlaces.add(element.place);
+  });
+
+  placeArray.value = Array.from(uniquePlaces);
+  console.log(placeArray.value, "this is array");
+};
 
 watch(search, async (newValue) => {
   if (newValue) {
@@ -338,7 +369,10 @@ watch(search, async (newValue) => {
                 {{ i.name }}
               </p>
               <div class="flex justify-between items-center">
-                <StarPartVue :count="i.rating" />
+                <!-- <StarPartVue :count="i.rating" /> -->
+                <p class="text-[10px] text-black font-medium">
+                  {{ i.rating }}-star rating
+                </p>
                 <div
                   class="text-[10px] flex justify-end items-center gap-0.5 py-1"
                 >
@@ -412,6 +446,37 @@ watch(search, async (newValue) => {
               </div>
             </div>
           </div>
+          <div class="space-y-3 pb-10">
+            <div class="flex justify-between items-center">
+              <p class="text-sm font-semibold">choose place</p>
+              <div class="flex justify-end items-center gap-4">
+                <p
+                  class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                  @click="place = ''"
+                >
+                  all places
+                </p>
+                <p
+                  class="text-black text-[10px] cursor-pointer"
+                  @click="placeall = !placeall"
+                >
+                  {{ placeall ? "show less" : "show more" }}
+                </p>
+              </div>
+            </div>
+            <div class="flex flex-wrap justify-start items-center gap-2">
+              <div v-for="(c, index) in placeArray" :key="c">
+                <p
+                  v-if="index < 8 || placeall"
+                  class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                  :class="place == c ? 'bg-main text-white' : ''"
+                  @click="place = c"
+                >
+                  {{ c }}
+                </p>
+              </div>
+            </div>
+          </div>
           <div class="space-y-3 pb-4">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">start rating</p>
@@ -440,7 +505,7 @@ watch(search, async (newValue) => {
               <p class="text-sm font-semibold">price range</p>
               <ChevronUpIcon class="w-4 h-4" />
             </div>
-            <div class="space-y-2">
+            <!-- <div class="space-y-2">
               <p class="text-xs font-medium">0 THB - {{ price }} THB</p>
               <div class="relative">
                 <div
@@ -455,6 +520,33 @@ watch(search, async (newValue) => {
                   value="100000"
                   class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
                 />
+              </div>
+            </div> -->
+            <div class="space-y-2">
+              <p class="text-xs font-medium">
+                {{ minPrice }} THB - {{ maxPrice }} THB
+              </p>
+              <div class="relative grid grid-cols-2 gap-4">
+                <div>
+                  <input
+                    id="small-range-min"
+                    type="range"
+                    v-model="minPrice"
+                    :min="minRange"
+                    :max="maxPrice"
+                    class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
+                  />
+                </div>
+                <div>
+                  <input
+                    id="small-range-max"
+                    type="range"
+                    v-model="maxPrice"
+                    :min="minPrice"
+                    :max="maxRange"
+                    class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
+                  />
+                </div>
               </div>
             </div>
           </div>

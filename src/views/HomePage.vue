@@ -11,29 +11,26 @@ import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
 import { useRouter } from "vue-router";
 import { onMounted } from "vue";
-import ShowOnboardingVue from "../components/home/ShowOnboarding.vue";
-import { useSettingStore } from "../stores/setting";
-import { storeToRefs } from "pinia";
+// import ShowOnboardingVue from "../components/home/ShowOnboarding.vue";
+// import { useSettingStore } from "../stores/setting";
+// import { storeToRefs } from "pinia";
 
 const router = useRouter();
-const settingStore = useSettingStore();
-const { showOnboard } = storeToRefs(settingStore);
+// const settingStore = useSettingStore();
+// const { showOnboard } = storeToRefs(settingStore);
 
-const onchangeComponent = (data) => {
-  if (data == "changes") {
-    settingStore.changeOnboard();
-  }
-};
+// const onchangeComponent = (data) => {
+//   if (data == "changes") {
+//     settingStore.changeOnboard();
+//   }
+// };
 
 onMounted(() => {});
 </script>
 
 <template>
   <div>
-    <div v-if="showOnboard">
-      <ShowOnboardingVue @change="onchangeComponent" />
-    </div>
-    <div v-if="!showOnboard">
+    <div>
       <Layout>
         <div class="">
           <HeaderHomeVue :showTitle="true">

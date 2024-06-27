@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div
-      v-if="loading"
-      class="bg-black/30 h-screen flex justify-center items-center"
-    >
-      <img :src="logo" alt="" />
+    <div v-if="loading">
+      <LoadingPageVue />
     </div>
     <div class="relative" v-if="!loading">
       <ImageCarousel :data="detail?.images" />
@@ -228,13 +225,14 @@ import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
-import logo from "../assets/logo.png";
+
 import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
 import whatsappIcon from "../assets/Booking icons/whatsapp.png";
 import callIcon from "../assets/Booking icons/call.png";
 import Modal from "../components/layout/Modal.vue";
 import { DialogPanel, DialogTitle } from "@headlessui/vue";
+import LoadingPageVue from "../components/layout/LoadingPage.vue";
 
 const route = useRoute();
 const router = useRouter();

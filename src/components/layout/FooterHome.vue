@@ -2,7 +2,7 @@
   <div class="w-full mx-auto bg-white">
     <div class="max-w-md px-4 py-2 mx-auto justify-center items-center flex">
       <div class="flex justify-between items-center w-full">
-        <router-link to="/" class="space-y-1">
+        <router-link to="/home" class="space-y-1">
           <img
             :src="homeImage"
             alt=""

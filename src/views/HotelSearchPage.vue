@@ -21,7 +21,14 @@ const goResultPage = () => {
   if (searchId.value) {
     router.push({
       name: "FilteredHotelBookings",
-      params: { id: searchId.value, name: search.value, price: "20000" },
+      // params: { id: searchId.value, name: search.value, price: "20000" },
+      params: {
+        id: searchId.value ? searchId.value : "null",
+        name: search.value ? search.value : "null",
+        price: "null",
+        rating: "null",
+        place: "null",
+      },
     });
   }
 };

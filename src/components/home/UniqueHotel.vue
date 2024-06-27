@@ -32,7 +32,10 @@
           />
         </div>
         <div class="px-3 py-0">
-          <StarPartVue :count="5" />
+          <!-- <StarPartVue :count="5" /> -->
+          <p class="text-[10px] text-black font-medium">
+            {{ i.rating }}-star rating
+          </p>
           <p class="font-semibold text-sm pt-1">{{ i.name }}</p>
           <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
             {{ i.place }}
@@ -61,7 +64,7 @@
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
-import StarPartVue from "./StarPart.vue";
+// import StarPartVue from "./StarPart.vue";
 import unidb from "../../assets/unquiddb";
 import { useRouter } from "vue-router";
 
@@ -76,8 +79,7 @@ const goDetialPage = (id) => {
 
 const goMore = () => {
   router.push({
-    name: "FilteredHotelBookings",
-    params: { id: "2", name: "Bangkok", price: 1000000 },
+    name: "HotelBookings",
   });
 };
 

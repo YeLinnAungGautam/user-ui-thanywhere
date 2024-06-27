@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const goHomePage = () => {
-  router.push("/");
+  router.push("/home");
 };
 </script>
 

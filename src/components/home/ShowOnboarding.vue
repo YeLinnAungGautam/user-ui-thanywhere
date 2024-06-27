@@ -85,10 +85,13 @@
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
-import { onMounted, ref, defineEmits } from "vue";
+import { onMounted, ref } from "vue";
 import image1 from "../../assets/onboarding screns/onboarding-1.jpg";
 import image2 from "../../assets/onboarding screns/onboarding-2.jpg";
 import image3 from "../../assets/onboarding screns/onboarding-3.jpg";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const settings = {
   itemsToShow: 1,
@@ -126,8 +129,6 @@ const simple = [
 
 const carousel2 = ref(null);
 
-const emit = defineEmits();
-
 // const showInfo = () => {
 //   emit("change", "changes");
 // };
@@ -140,7 +141,7 @@ const perPage = () => {
 };
 
 const customPageChange = () => {
-  emit("change", "changes");
+  router.push("/home");
 };
 
 onMounted(() => {

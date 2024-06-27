@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div
-      v-if="loading"
-      class="bg-black/30 h-screen flex justify-center items-center"
-    >
-      <img :src="logo" alt="" />
+    <div v-if="loading">
+      <LoadingPageVue />
     </div>
     <div class="relative" v-if="!loading">
       <ImageCarousel :data="detail?.images" />
@@ -159,7 +156,8 @@ import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
-import logo from "../assets/logo.png";
+// import logo from "../assets/logo.png";
+import LoadingPageVue from "../components/layout/LoadingPage.vue";
 import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
 import whatsappIcon from "../assets/Booking icons/whatsapp.png";
