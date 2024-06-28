@@ -384,7 +384,7 @@ watch(search, async (newValue) => {
                 {{ i.description }}
               </p>
               <div class="absolute bottom-0">
-                <p class="text-[8px]">nearby places</p>
+                <p class="text-[8px]">location area</p>
                 <div class="flex justify-start gap-2 items-center">
                   <div
                     class="text-[8px] flex justify-end text-main items-center gap-0.5 py-1"
