@@ -1,6 +1,12 @@
 <template>
   <div>
     <div class="relative">
+      <div
+        class="absolute top-0 right-6 text-white text-[10px] font-semibold bg-main px-5 py-1 rounded-full mt-5 inline-block z-20"
+        @click="customPageChange"
+      >
+        skip
+      </div>
       <carousel v-bind="settings" ref="carousel2">
         <slide v-for="(slide, index) in showImage" :key="index">
           <div>
@@ -14,7 +20,9 @@
                 <p class="text-main text-2xl font-semibold">
                   {{ slide.title }}
                 </p>
-                <p class="text-xs font-medium text-main px-8 pt-5">
+                <p
+                  class="text-xs font-medium text-main px-8 pt-5 tracking-wide leading-5"
+                >
                   {{ slide.des }}
                 </p>
                 <div class="flex justify-center items-center mt-5 gap-1">
@@ -31,13 +39,15 @@
                     :class="index == 2 ? 'bg-main' : 'bg-main/40'"
                   ></p>
                 </div>
-                <p
-                  v-if="index == 0"
-                  @click="nextPage"
-                  class="text-white text-xs font-semibold bg-main px-6 py-2 rounded-full mt-5 inline-block"
-                >
-                  {{ slide.button }}
-                </p>
+                <div class="flex justify-end items-center px-6">
+                  <p
+                    v-if="index == 0"
+                    @click="nextPage"
+                    class="text-white text-xs font-semibold bg-main px-6 py-2 rounded-full mt-5 inline-block"
+                  >
+                    {{ slide.button }}
+                  </p>
+                </div>
                 <div
                   class="flex justify-between items-center px-6"
                   v-if="index == 1"
@@ -104,25 +114,22 @@ const simple = [
   {
     id: 1,
     image: image1,
-    title: "looking for a trips?",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-    repellendus eligendi laboriosam, `,
+    title: "ခရီးထွက်ဖို့ စဉ်းစားနေလား ?",
+    des: `ထိုင်းနိုင်ငံအတွင်း ဟိုတယ်ဘိုကင်၊ ကားငှါးဝင်ဆောင်မှုများ၊ ဝင်ကြေးလက်မှတ်များ၊ သီးသန့်ခရီးစဉ်များ၊ အုပ်စုခရီးစဉ်များနှင့် ညအိပ်ခရီးစဉ်များကို ဝယ်ယူနိုင်ပါတယ်။`,
     button: "next page",
   },
   {
     id: 2,
     image: image2,
-    title: "get best deals?",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-    repellendus eligendi laboriosam, `,
+    title: "အတန်ဆုံးဈေးဖြင့် ရယူလိုက်ပါ",
+    des: `ထိုင်းနိုင်ငံရဲ့ Travel & Tour License ကို ရရှိထားပြီး နိုင်ငံတဝှမ်းက ဟိုတယ်များ၊ အလည်အပတ်နေရာများနှင့် Direct Partnership များ ရရှိထားလိုသက်သားစွာ ဘိုကင်တင်နိုင်ပါတယ်`,
     button: "next page",
   },
   {
     id: 3,
     image: image3,
-    title: "enjoy the trip?",
-    des: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-    repellendus eligendi laboriosam, .`,
+    title: "ပိုမိုသိရှိလေ့လာရန်အတွက်",
+    des: `ဧည့်သည်တော်များ ဖတ်ရှုနေတဲ့ ထိုင်းနိုင်ငံအတွင်း Contents တွေဟာ Content နဲ့ Operation Team မှ ကာလကြာမြင့်စွာ အချိန်ယူဖန်တီးထားခဲ့တာပဲ ဖြစ်ပါတယ်`,
     button: "guest",
   },
 ];
