@@ -3,6 +3,7 @@
     <div class="flex justify-between items-center">
       <h1 class="text-main font-semibold px-6">things to do in bangkok</h1>
       <div
+        @click="router.push(`/home/attraction-result/2/Bangkok`)"
         class="text-[10px] font-semibold text-main flex justify-end items-center gap-1 mr-6"
       >
         see more <ChevronDownIcon class="w-3 h-3" />
@@ -15,6 +16,7 @@
         class="bg-white shadow rounded-2xl mb-3"
         :class="index == 0 ? 'ml-6' : 'ml-0'"
         v-for="(i, index) in entrances?.data"
+        @click="router.push('/home/attraction-detail/' + i.id)"
         :key="i"
       >
         <div class="w-[200px] h-[100px] overflow-hidden">
@@ -35,9 +37,9 @@
           <p class="text-main text-[10px]">bangkok</p>
           <p class="font-semibold text-sm">{{ i?.name }}</p>
           <button
-            class="bg-black/30 px-3 mt-2 mb-2 py-1 rounded-lg text-[10px] text-white"
+            class="bg-main px-3 mt-2 mb-2 py-1 rounded-lg text-xs font-semibold text-white"
           >
-            show detail
+            {{ i?.lowest_variation_price }} thb
           </button>
         </div>
       </div>
@@ -50,8 +52,10 @@ import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted } from "vue";
 import { useEntranceStore } from "../../stores/entrance";
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 
 const entranceStore = useEntranceStore();
+const router = useRouter();
 
 const { entrances, loading } = storeToRefs(entranceStore);
 

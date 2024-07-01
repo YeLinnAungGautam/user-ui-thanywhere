@@ -37,9 +37,11 @@ onMounted(() => {});
             <div class="px-6 space-y-6">
               <div class="text-white">
                 <p class="text-base font-semibold tracking-wider">
-                  Hello, Minn
+                  Expore Thailand,
                 </p>
-                <p class="text-xs">can't wait to bring you excitements !</p>
+                <p class="text-xs">
+                  bringing you over 140 partners and counting.
+                </p>
               </div>
               <div class="relative" @click="router.push('/home/search')">
                 <input
