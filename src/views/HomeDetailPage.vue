@@ -42,7 +42,7 @@
               see less
             </p>
           </div>
-          <div class="space-y-4" v-if="detail?.facilities.length > 0">
+          <div class="space-y-4">
             <h1 class="font-medium pt-2">popular amenities</h1>
             <div class="grid grid-cols-2 gap-4">
               <div
@@ -57,13 +57,12 @@
           </div>
           <div class="space-y-3">
             <h1 class="font-medium pt-3">select rooms</h1>
-            <div class="space-y-3">
-              <!-- <h1 class="font-medium">room options</h1> -->
+            <!-- <div class="space-y-3">
               <p class="text-sm font-medium">room options</p>
               <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center gap-2">
                   <input type="checkbox" name="" id="" />
-                  <p class="text-xs">extra</p>
+                  <p class="text-xs">non breakfast</p>
                 </div>
                 <p class="text-xs">+ 0 THB</p>
               </div>
@@ -74,44 +73,45 @@
                 </div>
                 <p class="text-xs">+ 0 THB</p>
               </div>
-            </div>
+            </div> -->
             <div
               class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
             >
-              <div
-                class="bg-white shadow rounded-3xl p-2 border border-black/5"
-                v-for="i in detail?.rooms"
-                :key="i"
-              >
-                <div class="w-[200px] h-[150px] overflow-hidden">
-                  <img
-                    :src="i?.images[0]?.image"
-                    v-if="i?.images.length > 0"
-                    class="w-full h-full object-cover rounded-2xl"
-                    alt=""
-                  />
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-                    v-if="i?.images.length == 0"
-                    class="w-full h-full object-cover rounded-2xl"
-                    alt=""
-                  />
-                </div>
-                <div class="px-3 py-2 space-y-2">
-                  <p class="font-medium text-xs">{{ i?.name }}</p>
-                  <p class="text-green text-[10px]">Breakfast inclusive</p>
-                  <div class="flex justify-between items-center gap-2">
-                    <button
-                      class="bg-main px-4 py-1 rounded-full text-sm text-white"
-                    >
-                      {{ i?.room_price }}THB
-                    </button>
-                    <p
-                      class="text-[10px] text-main underline"
-                      @click="goRoomDetail(i?.id)"
-                    >
-                      view detail
-                    </p>
+              <div v-for="i in detail?.rooms" :key="i">
+                <div
+                  class="bg-white shadow rounded-3xl p-2 border border-black/5 max-w-[220px]"
+                  v-if="i?.is_extra != 1"
+                >
+                  <div class="w-[200px] h-[150px] overflow-hidden">
+                    <img
+                      :src="i?.images[0]?.image"
+                      v-if="i?.images.length > 0"
+                      class="w-full h-full object-cover rounded-2xl"
+                      alt=""
+                    />
+                    <img
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
+                      v-if="i?.images.length == 0"
+                      class="w-full h-full object-cover rounded-2xl"
+                      alt=""
+                    />
+                  </div>
+                  <div class="px-3 py-2 space-y-2">
+                    <p class="font-medium text-xs">{{ i?.name }}</p>
+                    <p class="text-green text-[10px]">Breakfast inclusive</p>
+                    <div class="flex justify-between items-center gap-2">
+                      <button
+                        class="bg-main px-4 py-1 rounded-full text-sm text-white"
+                      >
+                        {{ i?.room_price }}THB
+                      </button>
+                      <p
+                        class="text-[10px] text-main underline"
+                        @click="goRoomDetail(i?.id)"
+                      >
+                        view detail
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -120,7 +120,7 @@
           <div class="space-y-4 border-b border-black/10">
             <h1 class="font-medium">location map</h1>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d496115.45960499597!2d100.3034458542391!3d13.724380961545613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d6032280d61f3%3A0x10100b25de24820!2sBangkok%2C%20Thailand!5e0!3m2!1sen!2smm!4v1718167339230!5m2!1sen!2smm"
+              :src="detail?.location_map"
               class="w-[100%] h-[200px] rounded-xl overflow-hidden"
               style="border: 0"
               allowfullscreen=""
@@ -128,27 +128,35 @@
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
             <p class="text-xs">
-              9/9 king kaew road, soi 64, pratunam area, bangkok
+              {{ detail?.location_map_title }}
             </p>
-            <p class="text-xs text-main pb-6">view in map</p>
+            <!-- <p class="text-xs text-main pb-6">view in map</p> -->
           </div>
           <div class="space-y-6">
             <h1 class="font-medium">nearby places</h1>
             <div class="space-y-2">
               <div
                 class="flex justify-between items-center gap-2"
-                v-for="i in 4"
+                v-for="i in detail?.nearby_places"
                 :key="i"
               >
                 <div class="flex justify-start items-center gap-2">
                   <img
-                    src="https://cdn-icons-png.freepik.com/512/3448/3448609.png"
-                    class="w-8 h-8 rounded-lg"
+                    :src="i?.image"
+                    class="w-7 h-7 rounded-lg"
                     alt=""
+                    v-if="i.image != 'undefined'"
                   />
-                  <p class="text-xs font-medium">fish market restaurant</p>
+                  <img
+                    :src="locationMap"
+                    class="w-7 h-7 rounded-lg"
+                    alt=""
+                    v-if="i.image == 'undefined'"
+                  />
+
+                  <p class="text-xs font-medium">{{ i?.name }}</p>
                 </div>
-                <p class="text-xs font-medium">5 mins drive</p>
+                <p class="text-xs font-medium">{{ i?.distance }}</p>
               </div>
             </div>
           </div>
@@ -245,7 +253,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
-
+import locationMap from "../assets/location.png";
 import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
 import whatsappIcon from "../assets/Booking icons/whatsapp.png";

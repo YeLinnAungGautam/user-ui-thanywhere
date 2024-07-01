@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center">
       <h1 class="text-main font-semibold px-6">best selling van tours</h1>
       <div
-        @click="router.push('/home/van-tour-search')"
+        @click="router.push('/home/van-tour')"
         class="text-[10px] font-semibold text-main flex justify-end items-center gap-1 mr-6"
       >
         <p>see more</p>
