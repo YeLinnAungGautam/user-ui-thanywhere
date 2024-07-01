@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full mx-auto bg-white">
+  <div class="w-full mx-auto bg-white border-t border-black/10">
     <div class="max-w-md px-4 py-2 mx-auto justify-center items-center flex">
       <div class="flex justify-between items-center w-full">
         <router-link to="/home" class="space-y-1">
@@ -16,11 +16,11 @@
             v-if="route.path.includes('home') || route.name == 'Home'"
           />
           <p
-            class="text-xs"
+            class="text-[10px] font-medium"
             :class="
               route.name == 'Home' || route.path.includes('home')
                 ? 'text-main'
-                : 'text-black/90'
+                : 'text-black/80'
             "
           >
             home
@@ -28,19 +28,19 @@
         </router-link>
         <div class="space-y-1">
           <img :src="searchImage" alt="" class="w-5 h-5 mx-auto" />
-          <p class="text-xs text-black/90">search</p>
+          <p class="text-[10px] font-medium text-black/80">search</p>
         </div>
         <div class="space-y-1">
           <img :src="wishlistsImage" alt="" class="w-5 h-5 mx-auto" />
-          <p class="text-xs text-black/90">wishlists</p>
+          <p class="text-[10px] font-medium text-black/80">wishlists</p>
         </div>
         <div class="space-y-1">
           <img :src="tripsImage" alt="" class="w-5 h-5 mx-auto" />
-          <p class="text-xs text-black/90">trips</p>
+          <p class="text-[10px] font-medium text-black/80">trips</p>
         </div>
         <div class="space-y-1">
           <img :src="profileImage" alt="" class="w-5 h-5 mx-auto" />
-          <p class="text-xs text-black/90">account</p>
+          <p class="text-[10px] font-medium text-black/80">account</p>
         </div>
       </div>
     </div>
