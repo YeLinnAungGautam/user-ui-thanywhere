@@ -127,7 +127,7 @@
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
-            <p class="text-xs">
+            <p class="text-xs pb-4 leading-5">
               {{ detail?.location_map_title }}
             </p>
             <!-- <p class="text-xs text-main pb-6">view in map</p> -->
@@ -279,7 +279,7 @@ const getDetail = async (id) => {
   detail.value = res.data;
   setTimeout(() => {
     loading.value = false;
-  }, 2000);
+  }, 1000);
 };
 
 const modalOpen = ref(false);
