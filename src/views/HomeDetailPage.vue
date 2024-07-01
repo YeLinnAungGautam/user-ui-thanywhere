@@ -50,13 +50,31 @@
                 :key="f.id"
                 class="flex justify-start items-center gap-2"
               >
-                <img :src="f.image" alt="" class="w-7 h-7 object-fill" />
+                <img :src="f.image" alt="" class="w-6 h-6 object-fill" />
                 <p class="text-[10px] text-black/80">{{ f.name }}</p>
               </div>
             </div>
           </div>
           <div class="space-y-3">
             <h1 class="font-medium pt-3">select rooms</h1>
+            <div class="space-y-3">
+              <!-- <h1 class="font-medium">room options</h1> -->
+              <p class="text-sm font-medium">room options</p>
+              <div class="flex justify-between items-center">
+                <div class="flex justify-start items-center gap-2">
+                  <input type="checkbox" name="" id="" />
+                  <p class="text-xs">extra</p>
+                </div>
+                <p class="text-xs">+ 0 THB</p>
+              </div>
+              <div class="flex justify-between items-center">
+                <div class="flex justify-start items-center gap-2">
+                  <input type="checkbox" name="" id="" />
+                  <p class="text-xs">breakfast</p>
+                </div>
+                <p class="text-xs">+ 0 THB</p>
+              </div>
+            </div>
             <div
               class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
             >

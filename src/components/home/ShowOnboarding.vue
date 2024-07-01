@@ -21,7 +21,7 @@
                   {{ slide.title }}
                 </p>
                 <p
-                  class="text-xs font-medium text-main px-8 pt-5 tracking-wide leading-5"
+                  class="text-sm font-medium text-main px-8 pt-5 tracking-wide leading-5"
                 >
                   {{ slide.des }}
                 </p>
@@ -96,9 +96,9 @@ import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
 import { onMounted, ref } from "vue";
-import image1 from "../../assets/onboarding screns/onboarding-1.jpg";
-import image2 from "../../assets/onboarding screns/onboarding-2.jpg";
-import image3 from "../../assets/onboarding screns/onboarding-3.jpg";
+import image1 from "../../assets/onboarding screns/onboarding screns/onboarding-1.jpg";
+import image2 from "../../assets/onboarding screns/onboarding screns/onboarding-3.jpg";
+import image3 from "../../assets/onboarding screns/onboarding screns/onboarding-2.jpg";
 import { useRouter } from "vue-router";
 
 const router = useRouter();

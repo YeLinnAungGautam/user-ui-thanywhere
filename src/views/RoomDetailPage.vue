@@ -10,7 +10,8 @@ import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
 import whatsappIcon from "../assets/Booking icons/whatsapp.png";
 import callIcon from "../assets/Booking icons/call.png";
-import logo from "../assets/logo.png";
+// import logo from "../assets/logo.png";
+import LoadingPageVue from "../components/layout/LoadingPage.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -24,7 +25,9 @@ const getDetail = async (id) => {
   const res = await roomStore.getDetailAction(id);
   console.log(res);
   detail.value = res.data;
-  loading.value = false;
+  setTimeout(() => {
+    loading.value = false;
+  }, 2000);
 };
 
 const bathroom = [
@@ -56,12 +59,11 @@ onMounted(async () => {
 
 <template>
   <div>
-    <div
-      v-if="loading"
-      class="bg-black/30 h-screen flex justify-center items-center"
-    >
-      <img :src="logo" alt="" />
-    </div>
+    <transition name="fade">
+      <div v-if="loading" class="animate transition">
+        <LoadingPageVue />
+      </div>
+    </transition>
     <div class="py-5" v-if="!loading">
       <div
         class="flex justify-between items-center gap-2 border-b border-black/5 shadow-sm px-6 pb-4"
@@ -76,7 +78,7 @@ onMounted(async () => {
         <div
           class="bg-white mt-4 mb-10 p-5 rounded-3xl border border-black/10 space-y-3"
         >
-          <h1 class="font-medium">room amenities</h1>
+          <h1 class="font-medium">popular amenities</h1>
           <div class="space-y-2 border-b border-black/10">
             <p class="text-sm font-medium pb-2 pt-2">bathroom</p>
             <div
@@ -102,24 +104,7 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-        <div class="space-y-3">
-          <h1 class="font-medium">room options</h1>
-          <p class="text-sm font-medium">extras</p>
-          <div class="flex justify-between items-center">
-            <div class="flex justify-start items-center gap-2">
-              <input type="checkbox" name="" id="" />
-              <p class="text-xs">no extra</p>
-            </div>
-            <p class="text-xs">+ 0 THB</p>
-          </div>
-          <div class="flex justify-between items-center">
-            <div class="flex justify-start items-center gap-2">
-              <input type="checkbox" name="" id="" />
-              <p class="text-xs">breakfast</p>
-            </div>
-            <p class="text-xs">+ 0 THB</p>
-          </div>
-        </div>
+
         <div class="flex justify-between items-center pt-4">
           <p class="text-xs font-medium">taxs & fees included</p>
           <div class="text-end">
@@ -216,5 +201,12 @@ onMounted(async () => {
 </template>
 
 <style>
-/* Custom CSS for black circle list markers */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
