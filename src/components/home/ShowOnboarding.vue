@@ -97,8 +97,8 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
 import { onMounted, ref } from "vue";
 import image1 from "../../assets/onboarding screns/onboarding screns/onboarding-1.jpg";
-import image2 from "../../assets/onboarding screns/onboarding screns/onboarding-3.jpg";
-import image3 from "../../assets/onboarding screns/onboarding screns/onboarding-2.jpg";
+import image2 from "../../assets/onboarding screns/onboarding screns/onboarding-2.jpg";
+import image3 from "../../assets/onboarding screns/onboarding screns/onboarding-3.jpg";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -129,7 +129,7 @@ const simple = [
     id: 3,
     image: image3,
     title: "ပိုမိုသိရှိလေ့လာရန်အတွက်",
-    des: `ဧည့်သည်တော်များ ဖတ်ရှုနေတဲ့ ထိုင်းနိုင်ငံအတွင်း Contents တွေဟာ Content နဲ့ Operation Team မှ ကာလကြာမြင့်စွာ အချိန်ယူဖန်တီးထားခဲ့တာပဲ ဖြစ်ပါတယ်`,
+    des: `ဧည့်သည်တော်များ အခုလို ထိုင်းနိုင်ငံအတွင်းက နေရာတွေရဲ့ Contents များကို ဖတ်ရှုနိုင်ရန်အတွက် Content နဲ့ Operation Team မှ အချိန်ယူအားထုတ်ကာ ရေးသားဖန်တီးခဲ့ပါတယ်။`,
     button: "guest",
   },
 ];

@@ -168,8 +168,10 @@ const getRange = (data) => {
 };
 
 const placeArray = ref([]);
+const loadingPlace = ref(false);
 
 const setPlaceArray = (data) => {
+  loadingPlace.value = true;
   const uniquePlaces = new Set();
 
   data.forEach((element) => {
@@ -178,6 +180,7 @@ const setPlaceArray = (data) => {
 
   placeArray.value = Array.from(uniquePlaces);
   console.log(placeArray.value, "this is array");
+  loadingPlace.value = false;
 };
 
 onMounted(async () => {
@@ -362,7 +365,8 @@ watch(hotels, async (newValue) => {
                 </div>
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2">
-                <div v-for="(c, index) in placeArray" :key="c">
+                <p v-if="loadingPlace">loading please wait</p>
+                <div v-for="(c, index) in placeArray" :key="c" v-else>
                   <p
                     v-if="index < 8 || placeall"
                     class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
