@@ -17,11 +17,11 @@
                 alt=""
               />
               <div class="absolute top-5 z-50 w-full text-center pt-10">
-                <p class="text-main text-2xl font-semibold">
+                <p class="text-main text-2xl font-bold">
                   {{ slide.title }}
                 </p>
                 <p
-                  class="text-sm font-medium text-main px-8 pt-5 tracking-wide leading-5"
+                  class="text-sm font-medium text-main px-8 pt-5 tracking-wide leading-7"
                 >
                   {{ slide.des }}
                 </p>
@@ -115,7 +115,7 @@ const simple = [
     id: 1,
     image: image1,
     title: "ခရီးထွက်ဖို့ စဉ်းစားနေလား ?",
-    des: `ထိုင်းနိုင်ငံအတွင်း ဟိုတယ်ဘိုကင်၊ ကားငှါးဝင်ဆောင်မှုများ၊ ဝင်ကြေးလက်မှတ်များ၊ သီးသန့်ခရီးစဉ်များ၊ အုပ်စုခရီးစဉ်များနှင့် ညအိပ်ခရီးစဉ်များကို ဝယ်ယူနိုင်ပါတယ်။`,
+    des: `ထိုင်းနိုင်ငံအတွင်း ဟိုတယ်ဘိုကင်၊ ကားငှါး ၊ ဝင်ကြေးလက်မှတ် ၊ သီးသန့်ခရီးစဉ်များ ၊ အုပ်စုခရီးစဉ်များနှင့် ညအိပ်ခရီးစဉ်များကို ဝယ်ယူနိုင်ပါတယ်။`,
     button: "next page",
   },
   {
