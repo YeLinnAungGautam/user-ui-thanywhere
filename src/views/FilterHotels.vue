@@ -22,13 +22,16 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import { useHotelStore } from "../stores/hotel";
+import { useFacilityStore } from "../stores/facility";
 
 const hotelStore = useHotelStore();
 const cityStore = useCityStore();
+const facilityStore = useFacilityStore();
 const router = useRouter();
 const route = useRoute();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
+const { facilities } = storeToRefs(facilityStore);
 
 const open = () => {
   myBottomSheet.value.open();
@@ -44,18 +47,46 @@ const close = () => {
   myBottomSheet.value.close();
 };
 
+const facilitiesArray = ref([]);
+
+const addNewFacility = (id) => {
+  facilitiesArray.value.push(id);
+  console.log(facilitiesArray.value);
+};
+
+const removeFacility = () => {
+  facilitiesArray.value = [];
+  facilityQuery.value = "";
+};
+
+const checkTrue = (id) => {
+  return facilitiesArray.value.some((facility) => facility == id);
+};
+
+const searchFunctionArray = async () => {
+  facilityQuery.value = facilitiesArray.value.join(",");
+  const res = await hotelStore.getSimpleListAction(watchSystem.value);
+  setPlaceArray(hotel?.value.data);
+  console.log(res, "this is data");
+  count_filter.value = res.meta.total;
+};
+
 const filteredHotel = async () => {
+  facilityQuery.value = facilitiesArray.value.join(",");
   router.push({
     name: "FilteredHotelBookings",
     params: {
       id: filterId.value,
       name: city_name.value,
+    },
+    query: {
       price:
         minPrice.value || maxPrice.value
           ? `${minPrice.value}-${maxPrice.value}`
           : "null",
       rating: rating.value ? rating.value : "null",
       place: place.value ? place.value : "null",
+      facilities: facilityQuery.value ? facilityQuery.value : "null",
     },
   });
   close();
@@ -109,6 +140,13 @@ const watchSystem = computed(() => {
   }
   if (place.value != "" && place.value != undefined && place.value != "null") {
     result.place = place.value;
+  }
+  if (
+    facilityQuery.value != "" &&
+    facilityQuery.value != undefined &&
+    facilityQuery.value != "null"
+  ) {
+    result.facilities = facilityQuery.value;
   }
   return result;
 });
@@ -186,27 +224,36 @@ const searchFunction = (data) => {
   filterId.value = data.id;
 };
 
+const facilityQuery = ref("");
+
 onMounted(async () => {
   city_id.value = route.params.id;
-  rating.value = route.params.rating;
-  place.value = route.params.place;
+  rating.value = route.query.rating != "null" ?? route.query.rating;
+
+  place.value = route.query.place != "null" ? route.query.place : "";
   if (
-    route.params.price &&
-    typeof route.params.price === "string" &&
-    route.params.price.includes("-")
+    route.query.price &&
+    typeof route.query.price === "string" &&
+    route.query.price.includes("-")
   ) {
-    price_range.value = route.params.price;
+    price_range.value = route.query.price;
   } else {
-    price.value = route.params.price;
+    price.value = route.query.price;
   }
+  facilityQuery.value = route.query.facilities;
+  facilitiesArray.value =
+    route.query.facilities != "null" ? route.query.facilities.split(",") : [];
   await cityStore.getSimpleListAction();
   window.addEventListener("scroll", handleScroll);
   let res = await hotelStore.getListAction(watchSystem.value);
+
   await hotelStore.getSimpleListAction(watchSystem.value);
+  await facilityStore.getListAction();
   setPlaceArray(hotel?.value.data);
   count.value = res.meta.total;
   searchCityName.value = route.params.name;
 
+  console.log(facilitiesArray.value, "this is array filter faciliy");
   hotelList.value = res.data;
   console.log(hotelList.value, "this is hotel list add");
 });
@@ -473,6 +520,45 @@ watch(search, async (newValue) => {
                   @click="place = c"
                 >
                   {{ c }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="pb-5 pt-5 space-y-4">
+            <div class="flex justify-between items-center">
+              <p class="text-sm font-semibold">select facilities type</p>
+              <div class="flex justify-end items-center gap-2">
+                <p
+                  class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                  @click="removeFacility"
+                >
+                  reset
+                </p>
+                <p
+                  v-if="facilitiesArray.length > 0"
+                  class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                  @click="searchFunctionArray"
+                >
+                  search
+                </p>
+              </div>
+            </div>
+            <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+              <div
+                class="px-2 py-2 space-y-1 w-[70px] mx-auto"
+                v-for="(i, index) in facilities?.data"
+                :key="index"
+                @click="addNewFacility(i.id)"
+              >
+                <div
+                  :class="checkTrue(i.id) ? 'border border-main ' : ''"
+                  class="flex justify-center items-center gap-1 rounded-lg p-1"
+                >
+                  <!-- <StarIcon class="w-10 h-10 text-main" /> -->
+                  <img :src="i.image" class="w-8 h-8" alt="" />
+                </div>
+                <p class="text-[8px] text-black text-center">
+                  {{ i.name }}
                 </p>
               </div>
             </div>

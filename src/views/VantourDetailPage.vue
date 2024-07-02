@@ -9,7 +9,13 @@
       <ImageCarousel :data="detail?.images" />
       <ChevronLeftIcon
         @click="router.back()"
-        class="bg-white rounded-full p-1 w-8 h-8 text-main z-20 absolute top-10 left-6"
+        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
+      />
+      <ArrowUpTrayIcon
+        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+      />
+      <HeartIcon
+        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
       />
       <div class="px-4">
         <div
@@ -160,7 +166,11 @@
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
-import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
+import {
+  ChevronLeftIcon,
+  ArrowUpTrayIcon,
+  HeartIcon,
+} from "@heroicons/vue/24/outline";
 // import logo from "../assets/logo.png";
 import LoadingPageVue from "../components/layout/LoadingPage.vue";
 import messengerIcon from "../assets/Booking icons/messenger.png";

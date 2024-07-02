@@ -9,7 +9,13 @@
       <ImageCarousel :data="detail?.images" />
       <ChevronLeftIcon
         @click="router.back()"
-        class="bg-white rounded-full p-1 w-8 h-8 text-main z-20 absolute top-10 left-6"
+        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
+      />
+      <ArrowUpTrayIcon
+        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+      />
+      <HeartIcon
+        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
       />
       <div class="px-4">
         <div
@@ -134,7 +140,7 @@
           </div>
           <div class="space-y-6">
             <h1 class="font-medium">nearby places</h1>
-            <div class="space-y-2">
+            <div class="space-y-2 border-b border-black/10 pb-5">
               <div
                 class="flex justify-between items-center gap-2"
                 v-for="i in detail?.nearby_places"
@@ -157,6 +163,64 @@
                   <p class="text-xs font-medium">{{ i?.name }}</p>
                 </div>
                 <p class="text-xs font-medium">{{ i?.distance }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <h1 class="font-medium">other hotels in {{ detail?.place }}</h1>
+            <div
+              class="flex justify-start items-center flex-nowrap overflow-scroll scroll-container pb-2"
+            >
+              <div
+                class="border border-black/10 min-w-[230px] rounded-2xl shadow-sm bg-white mr-4"
+                v-for="i in placeList ?? []"
+                :key="i"
+                @click="goDetialPage(i?.id)"
+              >
+                <div
+                  class="w-full col-span-5 h-[150px] overflow-hidden rounded-t-2xl"
+                >
+                  <img
+                    :src="i?.images[0]?.image"
+                    class="w-full h-full object-cover"
+                    alt=""
+                    v-if="i?.images.length > 0"
+                  />
+                  <img
+                    v-if="i?.images.length == 0"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
+                    class="w-full h-full object-cover"
+                    alt=""
+                  />
+                </div>
+                <div class="py-3 px-2 border-b border-black/40">
+                  <p class="text-sm font-semibold">{{ i?.name }}</p>
+                  <p class="text-[10px] text-black font-medium">
+                    {{ i.rating }}-star rating
+                  </p>
+                  <div
+                    class="text-[10px] flex justify-start items-center gap-0.5 py-1"
+                  >
+                    <MapPinIcon class="w-3 h-3 text-black/80" />
+                    <p class="text-black text-xs font-medium">
+                      {{ i?.city.name }} , {{ i?.place }}
+                    </p>
+                  </div>
+                </div>
+                <div class="py-3 px-2">
+                  <div
+                    class="text-[10px] flex justify-start items-center gap-0.5 py-1"
+                  >
+                    <p class="text-black text-xs font-medium">
+                      starting room price
+                    </p>
+                    <p
+                      class="text-main text-sm font-semibold px-3 py-0.5 rounded-full"
+                    >
+                      {{ i.lowest_room_price }} THB
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -252,7 +316,11 @@ import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
-import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
+import {
+  ChevronLeftIcon,
+  ArrowUpTrayIcon,
+  HeartIcon,
+} from "@heroicons/vue/24/outline";
 import locationMap from "../assets/location.png";
 import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
@@ -261,6 +329,7 @@ import callIcon from "../assets/Booking icons/call.png";
 import Modal from "../components/layout/Modal.vue";
 import { DialogPanel, DialogTitle } from "@headlessui/vue";
 import LoadingPageVue from "../components/layout/LoadingPage.vue";
+import { MapPinIcon } from "@heroicons/vue/24/solid";
 
 const route = useRoute();
 const router = useRouter();
@@ -270,6 +339,8 @@ const detail = ref(null);
 const loading = ref(false);
 const seeMoreShow = ref(false);
 
+const placeList = ref(null);
+
 const getDetail = async (id) => {
   loading.value = true;
   const res = await hotelStore.getDetailAction(id);
@@ -277,15 +348,22 @@ const getDetail = async (id) => {
   console.log(res);
   console.log("====================================");
   detail.value = res.data;
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
+  const response = await hotelStore.getSimpleListAction({
+    place: detail.value.place,
+  });
+  console.log(response, "this is list");
+  placeList.value = response.data;
+  loading.value = false;
 };
 
 const modalOpen = ref(false);
 
 const goRoomDetail = (id) => {
   router.push({ name: "HomeRoomDetail", params: { id: id } });
+};
+
+const goDetialPage = (id) => {
+  router.push({ name: "HomeDetail", params: { id: id } });
 };
 
 onMounted(async () => {

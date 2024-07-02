@@ -5,6 +5,7 @@ import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search
 import HotelsGradesVue from "../components/hotelbookings/HotelsGrades.vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
+import { useFacilityStore } from "../stores/facility";
 import { HeartIcon } from "@heroicons/vue/24/outline";
 import {
   MapPinIcon,
@@ -22,8 +23,10 @@ import { useCityStore } from "../stores/city";
 
 const hotelStore = useHotelStore();
 const cityStore = useCityStore();
+const facilityStore = useFacilityStore();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
+const { facilities } = storeToRefs(facilityStore);
 
 const router = useRouter();
 const all = ref(false);
@@ -54,12 +57,18 @@ const filteredHotel = async () => {
     params: {
       id: filterId.value ? filterId.value : "null",
       name: city_name.value ? city_name.value : "null",
+    },
+    query: {
       price:
         minPrice.value || maxPrice.value
           ? `${minPrice.value}-${maxPrice.value}`
           : "null",
       rating: rating.value ? rating.value : "null",
       place: place.value ? place.value : "null",
+      facilities:
+        facilitiesArray.value.length > 0
+          ? facilitiesArray.value.join(",")
+          : "null",
     },
   });
   close();
@@ -116,11 +125,32 @@ const minRange = ref(0);
 const maxRange = ref(100000);
 const minPrice = ref(0);
 const maxPrice = ref(100000);
+const facilitiesArray = ref([]);
+
+const addNewFacility = (id) => {
+  facilitiesArray.value.push(id);
+  console.log(facilitiesArray.value);
+};
+
+const removeFacility = () => {
+  facilitiesArray.value = [];
+};
+
+const checkTrue = (id) => {
+  return facilitiesArray.value.some((facility) => facility === id);
+};
 // const price_range = ref("");
 
 watch(
-  [filterId, minPrice, maxPrice, rating, place],
-  async ([newValue, newPrice, newMaxPrice, newRating, newPlace]) => {
+  [filterId, minPrice, maxPrice, rating, place, facilitiesArray],
+  async ([
+    newValue,
+    newPrice,
+    newMaxPrice,
+    newRating,
+    newPlace,
+    newFacilitiesArray,
+  ]) => {
     let data = {
       city_id: newValue,
     };
@@ -133,12 +163,37 @@ watch(
     if (newPlace) {
       data.place = newPlace;
     }
+    if (facilitiesArray.value.length > 0) {
+      data.facilities = newFacilitiesArray.join(",");
+    }
     const res = await hotelStore.getSimpleListAction(data);
     setPlaceArray(hotel?.value.data);
     console.log(res, "this is data");
     count_filter.value = res.meta.total;
   }
 );
+
+const searchFunctionArray = async () => {
+  let data = {
+    city_id: filterId.value,
+  };
+  if (rating.value != null || rating.value != "null") {
+    data.rating = rating.value;
+  }
+  if (minPrice.value || maxPrice.value) {
+    data.price_range = `${minPrice.value}-${maxPrice.value}`;
+  }
+  if (place.value) {
+    data.place = place.value;
+  }
+  if (facilitiesArray.value.length > 0) {
+    data.facilities = facilitiesArray.value.join(",");
+  }
+  const res = await hotelStore.getSimpleListAction(data);
+  setPlaceArray(hotel?.value.data);
+  console.log(res, "this is data");
+  count_filter.value = res.meta.total;
+};
 
 const showSearch = ref(false);
 
@@ -160,9 +215,9 @@ const getRange = (data) => {
     params: {
       id: 2,
       name: "Bangkok",
+    },
+    query: {
       price: data,
-      rating: "null",
-      place: "null",
     },
   });
 };
@@ -188,6 +243,8 @@ onMounted(async () => {
 
   let res = await hotelStore.getListAction();
   await cityStore.getSimpleListAction();
+  await facilityStore.getListAction();
+  console.log(facilities.value, "this is");
   await hotelStore.getSimpleListAction();
   setPlaceArray(hotel?.value.data);
   hotelList.value = res.data;
@@ -401,6 +458,45 @@ watch(hotels, async (newValue) => {
                 </div>
               </div>
             </div>
+            <div class="pb-5 pt-5 space-y-4">
+              <div class="flex justify-between items-center">
+                <p class="text-sm font-semibold">select facilities type</p>
+                <div class="flex justify-end items-center gap-2">
+                  <p
+                    class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                    @click="removeFacility"
+                  >
+                    reset
+                  </p>
+                  <p
+                    v-if="facilitiesArray.length > 0"
+                    class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                    @click="searchFunctionArray"
+                  >
+                    search
+                  </p>
+                </div>
+              </div>
+              <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                <div
+                  class="px-2 py-2 space-y-1 w-[70px] mx-auto"
+                  v-for="(i, index) in facilities?.data"
+                  :key="index"
+                  @click="addNewFacility(i.id)"
+                >
+                  <div
+                    :class="checkTrue(i.id) ? 'border border-main ' : ''"
+                    class="flex justify-center items-center gap-1 rounded-lg p-1"
+                  >
+                    <!-- <StarIcon class="w-10 h-10 text-main" /> -->
+                    <img :src="i.image" class="w-8 h-8" alt="" />
+                  </div>
+                  <p class="text-[8px] text-black text-center">
+                    {{ i.name }}
+                  </p>
+                </div>
+              </div>
+            </div>
             <div class="space-y-3 pb-8 pt-4">
               <div class="flex justify-between items-center">
                 <p class="text-sm font-semibold">price range</p>
@@ -410,7 +506,7 @@ watch(hotels, async (newValue) => {
                 <p class="text-xs font-medium">
                   {{ minPrice }} THB - {{ maxPrice }} THB
                 </p>
-                <div class="relative grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-4">
                   <div>
                     <input
                       id="small-range-min"
