@@ -140,7 +140,7 @@
           </div>
           <div class="space-y-6">
             <h1 class="font-medium">nearby places</h1>
-            <div class="space-y-2 border-b border-black/10 pb-5">
+            <div class="space-y-2 pb-3">
               <div
                 class="flex justify-between items-center gap-2"
                 v-for="i in detail?.nearby_places"
@@ -166,71 +166,71 @@
               </div>
             </div>
           </div>
-          <div class="space-y-4">
-            <h1 class="font-medium">other hotels in {{ detail?.place }}</h1>
+          <div
+            class="bg-main py-3 mb-10 rounded-3xl text-center text-white text-sm"
+            @click="modalOpen = true"
+          >
+            <p>talk to sales</p>
+          </div>
+        </div>
+        <div
+          class="bg-white mt-4 mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
+        >
+          <h1 class="font-medium">other hotels in {{ detail?.place }}</h1>
+          <div
+            class="flex justify-start items-center flex-nowrap overflow-scroll scroll-container pb-2"
+          >
             <div
-              class="flex justify-start items-center flex-nowrap overflow-scroll scroll-container pb-2"
+              class="border border-black/10 min-w-[230px] rounded-2xl shadow-sm bg-white mr-4"
+              v-for="i in placeList ?? []"
+              :key="i"
+              :class="detail?.name == i?.name ? 'hidden' : ''"
             >
               <div
-                class="border border-black/10 min-w-[230px] rounded-2xl shadow-sm bg-white mr-4"
-                v-for="i in placeList ?? []"
-                :key="i"
                 @click="goDetialPage(i?.id)"
+                class="w-full col-span-5 h-[150px] overflow-hidden rounded-t-2xl"
               >
+                <img
+                  :src="i?.images[0]?.image"
+                  class="w-full h-full object-cover"
+                  alt=""
+                  v-if="i?.images.length > 0"
+                />
+                <img
+                  v-if="i?.images.length == 0"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
+                  class="w-full h-full object-cover"
+                  alt=""
+                />
+              </div>
+              <div class="py-3 px-2">
+                <p class="text-sm font-semibold">{{ i?.name }}</p>
+                <p class="text-[10px] text-black font-medium">
+                  {{ i.rating }}-star rating
+                </p>
                 <div
-                  class="w-full col-span-5 h-[150px] overflow-hidden rounded-t-2xl"
+                  class="text-[10px] flex justify-start items-center gap-0.5 py-1"
                 >
-                  <img
-                    :src="i?.images[0]?.image"
-                    class="w-full h-full object-cover"
-                    alt=""
-                    v-if="i?.images.length > 0"
-                  />
-                  <img
-                    v-if="i?.images.length == 0"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-                    class="w-full h-full object-cover"
-                    alt=""
-                  />
-                </div>
-                <div class="py-3 px-2 border-b border-black/40">
-                  <p class="text-sm font-semibold">{{ i?.name }}</p>
-                  <p class="text-[10px] text-black font-medium">
-                    {{ i.rating }}-star rating
+                  <MapPinIcon class="w-3 h-3 text-black/80" />
+                  <p class="text-black text-xs font-medium">
+                    {{ i?.city.name }} , {{ i?.place }}
                   </p>
-                  <div
-                    class="text-[10px] flex justify-start items-center gap-0.5 py-1"
-                  >
-                    <MapPinIcon class="w-3 h-3 text-black/80" />
-                    <p class="text-black text-xs font-medium">
-                      {{ i?.city.name }} , {{ i?.place }}
-                    </p>
-                  </div>
                 </div>
-                <div class="py-3 px-2">
-                  <div
-                    class="text-[10px] flex justify-start items-center gap-0.5 py-1"
+                <div class="text-[10px] gap-0.5 pt-2 space-y-2">
+                  <p class="text-black text-xs font-medium">
+                    starting room price
+                  </p>
+                  <p
+                    class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
                   >
-                    <p class="text-black text-xs font-medium">
-                      starting room price
-                    </p>
-                    <p
-                      class="text-main text-sm font-semibold px-3 py-0.5 rounded-full"
-                    >
-                      {{ i.lowest_room_price }} THB
-                    </p>
-                  </div>
+                    {{ i.lowest_room_price }} THB
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div
-          class="bg-main py-3 mb-10 rounded-3xl text-center text-white text-sm"
-          @click="modalOpen = true"
-        >
-          <p>talk to sales</p>
-        </div>
+
         <Modal :isOpen="modalOpen" @closeModal="modalOpen = false">
           <DialogPanel
             class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
