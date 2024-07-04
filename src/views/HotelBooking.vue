@@ -224,6 +224,7 @@ const getRange = (data) => {
     },
     query: {
       price: data,
+      facilities: "null",
     },
   });
 };
