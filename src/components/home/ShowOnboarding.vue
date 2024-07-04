@@ -77,7 +77,7 @@
                     class="w-6 h-6 bg-main/40 text-white rounded-full p-1"
                   />
                   <p
-                    @click="customPageChange"
+                    @click="loginPageChange"
                     class="text-white text-xs font-semibold bg-main px-6 py-2 rounded-full mt-5 inline-block"
                   >
                     {{ slide.button }}
@@ -135,7 +135,7 @@ const simple = [
     image: image3,
     title: "ပိုမိုသိရှိလေ့လာရန်အတွက်",
     des: `ထိုင်းနိုင်ငံအတွင်းက နေရာတွေရဲ့ Contents များကို ဖတ်ရှုနိုင်ရန်အတွက် Content နဲ့ Operation Team မှ အချိန်ယူအားထုတ်ကာ ရေးသားဖန်တီးခဲ့ပါတယ်။`,
-    button: "guest",
+    button: "login",
   },
 ];
 
@@ -154,6 +154,10 @@ const perPage = () => {
 
 const customPageChange = () => {
   router.push("/home");
+};
+
+const loginPageChange = () => {
+  router.push("/account/login");
 };
 
 onMounted(() => {

@@ -7,6 +7,7 @@ import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { useFacilityStore } from "../stores/facility";
 import { HeartIcon } from "@heroicons/vue/24/outline";
+import graph from "../assets/icons/graph.png";
 import {
   MapPinIcon,
   BuildingOffice2Icon,
@@ -31,6 +32,7 @@ const { facilities } = storeToRefs(facilityStore);
 const router = useRouter();
 const all = ref(false);
 const placeall = ref(false);
+const facall = ref(false);
 
 const place = ref("");
 
@@ -122,13 +124,20 @@ watch(bottomOfWindow, (newVal) => {
 
 const count_filter = ref(0);
 const minRange = ref(0);
-const maxRange = ref(100000);
+const maxRange = ref(15000);
 const minPrice = ref(0);
-const maxPrice = ref(100000);
+const maxPrice = ref(15000);
 const facilitiesArray = ref([]);
 
 const addNewFacility = (id) => {
-  facilitiesArray.value.push(id);
+  const index = facilitiesArray.value.indexOf(id);
+  if (index !== -1) {
+    // ID exists, remove it
+    facilitiesArray.value.splice(index, 1);
+  } else {
+    // ID does not exist, add it
+    facilitiesArray.value.push(id);
+  }
   console.log(facilitiesArray.value);
 };
 
@@ -141,25 +150,22 @@ const checkTrue = (id) => {
 };
 // const price_range = ref("");
 
+// minPrice, maxPrice
+// newPrice,
+// newMaxPrice,
+
 watch(
-  [filterId, minPrice, maxPrice, rating, place, facilitiesArray],
-  async ([
-    newValue,
-    newPrice,
-    newMaxPrice,
-    newRating,
-    newPlace,
-    newFacilitiesArray,
-  ]) => {
+  [filterId, rating, place, facilitiesArray],
+  async ([newValue, newRating, newPlace, newFacilitiesArray]) => {
     let data = {
       city_id: newValue,
     };
     if (newRating != null || newRating != "null") {
       data.rating = newRating;
     }
-    if (newPrice || newMaxPrice) {
-      data.price_range = `${newPrice}-${newMaxPrice}`;
-    }
+    // if (newPrice || newMaxPrice) {
+    //   data.price_range = `${newPrice}-${newMaxPrice}`;
+    // }
     if (newPlace) {
       data.place = newPlace;
     }
@@ -475,58 +481,96 @@ watch(hotels, async (newValue) => {
                   >
                     search
                   </p>
+                  <p
+                    class="text-black text-[10px] cursor-pointer"
+                    @click="facall = !facall"
+                  >
+                    {{ facall ? "show less" : "show more" }}
+                  </p>
                 </div>
               </div>
-              <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+              <div class="grid grid-cols-1">
                 <div
-                  class="px-2 py-2 space-y-1 w-[70px] mx-auto"
+                  class=""
                   v-for="(i, index) in facilities?.data"
                   :key="index"
                   @click="addNewFacility(i.id)"
                 >
-                  <div
+                  <!-- <div
                     :class="checkTrue(i.id) ? 'border border-main ' : ''"
-                    class="flex justify-center items-center gap-1 rounded-lg p-1"
+                    class="flex justify-between items-center gap-1 rounded-lg p-1"
                   >
-                    <!-- <StarIcon class="w-10 h-10 text-main" /> -->
                     <img :src="i.image" class="w-8 h-8" alt="" />
+                  </div> -->
+                  <div
+                    v-if="index < 8 || facall"
+                    class="flex justify-between space-y-2 items-center"
+                  >
+                    <p class="text-xs text-black text-center">
+                      {{ i.name }}
+                    </p>
+                    <input
+                      type="checkbox"
+                      name=""
+                      id=""
+                      :checked="checkTrue(i.id)"
+                    />
                   </div>
-                  <p class="text-[8px] text-black text-center">
-                    {{ i.name }}
-                  </p>
                 </div>
               </div>
             </div>
-            <div class="space-y-3 pb-8 pt-4">
+            <div class="space-y-3 overflow-hidden pb-8 pt-4">
               <div class="flex justify-between items-center">
                 <p class="text-sm font-semibold">price range</p>
-                <ChevronUpIcon class="w-4 h-4" />
-              </div>
-              <div class="space-y-2">
-                <p class="text-xs font-medium">
-                  {{ minPrice }} THB - {{ maxPrice }} THB
+                <p
+                  class="text-black px-3 py-1 relative z-20 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                  @click="searchFunctionArray"
+                >
+                  search
                 </p>
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <input
-                      id="small-range-min"
-                      type="range"
-                      v-model="minPrice"
-                      :min="minRange"
-                      :max="maxPrice"
-                      class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      id="small-range-max"
-                      type="range"
-                      v-model="maxPrice"
-                      :min="minPrice"
-                      :max="maxRange"
-                      class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
-                    />
-                  </div>
+              </div>
+
+              <div class="range-slider w-full relative">
+                <img :src="graph" class="absolute -top-[51px]" alt="" />
+                <input
+                  type="range"
+                  v-model="minPrice"
+                  :min="minRange"
+                  :max="maxRange"
+                  class="range-min"
+                />
+                <input
+                  type="range"
+                  v-model="maxPrice"
+                  :min="minRange"
+                  :max="maxRange"
+                  class="range-max"
+                />
+              </div>
+              <div class="pt-24 flex justify-between items-center gap-2">
+                <!-- <p class="text-xs text-black text-center">
+                  {{ minPrice }} THB - {{ maxPrice }} THB
+                </p> -->
+                <div class="border border-black/10 w-[45%] rounded-lg p-2">
+                  <p class="text-[10px]">minimum</p>
+                  <input
+                    type="number"
+                    name=""
+                    v-model="minPrice"
+                    class="outline-none focus:outline-none ring-0 w-auto"
+                    id=""
+                  />
+                </div>
+                <p></p>
+                <div class="border border-black/10 w-[45%] rounded-lg p-2">
+                  <p class="text-[10px]">maximum</p>
+                  <input
+                    type="number"
+                    name=""
+                    v-model="maxPrice"
+                    class="outline-none focus:outline-none ring-0 w-auto"
+                    id=""
+                  />
                 </div>
               </div>
             </div>

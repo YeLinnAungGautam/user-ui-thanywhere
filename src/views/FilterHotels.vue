@@ -18,6 +18,7 @@ import {
 import { useRoute, useRouter } from "vue-router";
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
+import graph from "../assets/icons/graph.png";
 import { computed, onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
@@ -50,7 +51,14 @@ const close = () => {
 const facilitiesArray = ref([]);
 
 const addNewFacility = (id) => {
-  facilitiesArray.value.push(id);
+  const index = facilitiesArray.value.indexOf(id);
+  if (index !== -1) {
+    // ID exists, remove it
+    facilitiesArray.value.splice(index, 1);
+  } else {
+    // ID does not exist, add it
+    facilitiesArray.value.push(id);
+  }
   console.log(facilitiesArray.value);
 };
 
@@ -104,6 +112,7 @@ const filterId = ref("");
 const rating = ref("");
 const place = ref("");
 const placeall = ref(false);
+const facall = ref(false);
 
 const watchSystem = computed(() => {
   const result = {};
@@ -228,7 +237,7 @@ const facilityQuery = ref("");
 
 onMounted(async () => {
   city_id.value = route.params.id;
-  rating.value = route.query.rating != "null" ?? route.query.rating;
+  rating.value = route.query.rating != "null" ? route.query.rating : "";
 
   place.value = route.query.place != "null" ? route.query.place : "";
   if (
@@ -282,32 +291,29 @@ watch(hotels, async (newValue) => {
 // });
 
 const minRange = ref(0);
-const maxRange = ref(100000);
+const maxRange = ref(15000);
 const minPrice = ref(0);
-const maxPrice = ref(100000);
+const maxPrice = ref(15000);
 
-watch(
-  [filterId, minPrice, maxPrice, rating, place],
-  async ([newValue, newPrice, newMaxPrice, newRating, newPlace]) => {
-    let data = {};
-    if (newValue && newValue != "null") {
-      data.city_id = newValue;
-    }
-    if (newRating != null && newRating != "null" && newRating) {
-      data.rating = newRating;
-    }
-    if (newPlace) {
-      data.place = newPlace;
-    }
-
-    data.price_range = `${newPrice}-${newMaxPrice}`;
-
-    const res = await hotelStore.getSimpleListAction(data);
-    setPlaceArray(hotel?.value.data);
-    console.log(res, "this is data");
-    count_filter.value = res.meta.total;
+watch([filterId, rating, place], async ([newValue, newRating, newPlace]) => {
+  let data = {};
+  if (newValue && newValue != "null") {
+    data.city_id = newValue;
   }
-);
+  if (newRating != null && newRating != "null" && newRating) {
+    data.rating = newRating;
+  }
+  if (newPlace) {
+    data.place = newPlace;
+  }
+
+  // data.price_range = `${newPrice}-${newMaxPrice}`;
+
+  const res = await hotelStore.getSimpleListAction(data);
+  setPlaceArray(hotel?.value.data);
+  console.log(res, "this is data");
+  count_filter.value = res.meta.total;
+});
 
 const placeArray = ref([]);
 
@@ -524,45 +530,7 @@ watch(search, async (newValue) => {
               </div>
             </div>
           </div>
-          <div class="pb-5 pt-5 space-y-4">
-            <div class="flex justify-between items-center">
-              <p class="text-sm font-semibold">select facilities type</p>
-              <div class="flex justify-end items-center gap-2">
-                <p
-                  class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
-                  @click="removeFacility"
-                >
-                  reset
-                </p>
-                <p
-                  v-if="facilitiesArray.length > 0"
-                  class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
-                  @click="searchFunctionArray"
-                >
-                  search
-                </p>
-              </div>
-            </div>
-            <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
-              <div
-                class="px-2 py-2 space-y-1 w-[70px] mx-auto"
-                v-for="(i, index) in facilities?.data"
-                :key="index"
-                @click="addNewFacility(i.id)"
-              >
-                <div
-                  :class="checkTrue(i.id) ? 'border border-main ' : ''"
-                  class="flex justify-center items-center gap-1 rounded-lg p-1"
-                >
-                  <!-- <StarIcon class="w-10 h-10 text-main" /> -->
-                  <img :src="i.image" class="w-8 h-8" alt="" />
-                </div>
-                <p class="text-[8px] text-black text-center">
-                  {{ i.name }}
-                </p>
-              </div>
-            </div>
-          </div>
+
           <div class="space-y-3 pb-4">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">start rating</p>
@@ -586,53 +554,113 @@ watch(search, async (newValue) => {
               </div>
             </div>
           </div>
-          <div class="space-y-3 pb-8 pt-4">
+          <div class="pb-5 pt-5 space-y-4">
+            <div class="flex justify-between items-center">
+              <p class="text-sm font-semibold">select facilities type</p>
+              <div class="flex justify-end items-center gap-2">
+                <p
+                  class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                  @click="removeFacility"
+                >
+                  reset
+                </p>
+                <p
+                  v-if="facilitiesArray.length > 0"
+                  class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                  @click="searchFunctionArray"
+                >
+                  search
+                </p>
+                <p
+                  class="text-black text-[10px] cursor-pointer"
+                  @click="facall = !facall"
+                >
+                  {{ facall ? "show less" : "show more" }}
+                </p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1">
+              <div
+                class=""
+                v-for="(i, index) in facilities?.data"
+                :key="index"
+                @click="addNewFacility(i.id)"
+              >
+                <!-- <div
+                  :class="checkTrue(i.id) ? 'border border-main ' : ''"
+                  class="flex justify-between items-center gap-1 rounded-lg p-1"
+                >
+                  <img :src="i.image" class="w-8 h-8" alt="" />
+                </div> -->
+                <div
+                  v-if="index < 8 || facall"
+                  class="flex justify-between space-y-2 items-center"
+                >
+                  <p class="text-xs text-black text-center">
+                    {{ i.name }}
+                  </p>
+                  <input
+                    type="checkbox"
+                    name=""
+                    id=""
+                    :checked="checkTrue(i.id)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-3 overflow-hidden pb-8 pt-4">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">price range</p>
-              <ChevronUpIcon class="w-4 h-4" />
+              <p
+                class="text-black px-3 py-1 relative z-20 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                @click="searchFunctionArray"
+              >
+                search
+              </p>
             </div>
-            <!-- <div class="space-y-2">
-              <p class="text-xs font-medium">0 THB - {{ price }} THB</p>
-              <div class="relative">
-                <div
-                  class="bg-white w-6 h-6 absolute bottom-3.5 rounded-full border border-main"
-                ></div>
+
+            <div class="range-slider w-full relative">
+              <img :src="graph" class="absolute -top-[51px]" alt="" />
+              <input
+                type="range"
+                v-model="minPrice"
+                :min="minRange"
+                :max="maxRange"
+                class="range-min"
+              />
+              <input
+                type="range"
+                v-model="maxPrice"
+                :min="minRange"
+                :max="maxRange"
+                class="range-max"
+              />
+            </div>
+            <div class="pt-24 flex justify-between items-center gap-2">
+              <!-- <p class="text-xs text-black text-center">
+                {{ minPrice }} THB - {{ maxPrice }} THB
+              </p> -->
+              <div class="border border-black/10 w-[45%] rounded-lg p-2">
+                <p class="text-[10px]">minimum</p>
                 <input
-                  id="small-range"
-                  type="range"
-                  v-model="price"
-                  min="0"
-                  max="100000"
-                  value="100000"
-                  class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
+                  type="number"
+                  name=""
+                  v-model="minPrice"
+                  class="outline-none focus:outline-none ring-0 w-auto"
+                  id=""
                 />
               </div>
-            </div> -->
-            <div class="space-y-2">
-              <p class="text-xs font-medium">
-                {{ minPrice }} THB - {{ maxPrice }} THB
-              </p>
-              <div class="relative grid grid-cols-2 gap-4">
-                <div>
-                  <input
-                    id="small-range-min"
-                    type="range"
-                    v-model="minPrice"
-                    :min="minRange"
-                    :max="maxPrice"
-                    class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
-                  />
-                </div>
-                <div>
-                  <input
-                    id="small-range-max"
-                    type="range"
-                    v-model="maxPrice"
-                    :min="minPrice"
-                    :max="maxRange"
-                    class="w-full h-0.5 mb-6 focus:outline-none bg-main rounded-lg appearance-none cursor-pointer range-sm"
-                  />
-                </div>
+              <p></p>
+              <div class="border border-black/10 w-[45%] rounded-lg p-2">
+                <p class="text-[10px]">maximum</p>
+                <input
+                  type="number"
+                  name=""
+                  v-model="maxPrice"
+                  class="outline-none focus:outline-none ring-0 w-auto"
+                  id=""
+                />
               </div>
             </div>
           </div>

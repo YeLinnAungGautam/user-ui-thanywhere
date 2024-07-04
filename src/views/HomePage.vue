@@ -43,7 +43,7 @@ onMounted(() => {});
                   bringing you over 140 partners and counting.
                 </p>
               </div>
-              <div class="relative" @click="router.push('/home/search')">
+              <div class="relative" @click="router.push('/search')">
                 <input
                   type="search"
                   name=""
