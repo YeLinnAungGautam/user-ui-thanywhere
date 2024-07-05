@@ -73,8 +73,8 @@ const checkTrue = (id) => {
 
 const searchFunctionArray = async () => {
   facilityQuery.value = facilitiesArray.value.join(",");
-  const res = await hotelStore.getSimpleListAction(watchSystem.value);
-  setPlaceArray(hotel?.value.data);
+  const res = await hotelStore.getListAction(watchSystem.value);
+  // setPlaceArray(hotel?.value.data);
   console.log(res, "this is data");
   count_filter.value = res.meta.total;
 };
@@ -162,11 +162,7 @@ const watchSystem = computed(() => {
 
 const all = ref(false);
 
-// onMounted(async () => {
-
-// });
-
-const { hotels, loading, hotel } = storeToRefs(hotelStore);
+const { hotels, loading } = storeToRefs(hotelStore);
 
 const changePage = async (url) => {
   console.log(url);
@@ -231,12 +227,23 @@ const goDetialPage = (id) => {
 const searchFunction = (data) => {
   city_name.value = data.name;
   filterId.value = data.id;
+  placeArray.value = data.places;
+  place.value = "";
 };
 
 const facilityQuery = ref("");
 
+const choosePlaceArray = (id) => {
+  // console.log(id, cities.value, "this is city place choose");
+  if (id != "null") {
+    const city = cities.value.data?.find((city) => city.id == id);
+    placeArray.value = city.places;
+  }
+};
+
 onMounted(async () => {
   city_id.value = route.params.id;
+
   rating.value = route.query.rating != "null" ? route.query.rating : "";
 
   place.value = route.query.place != "null" ? route.query.place : "";
@@ -252,13 +259,14 @@ onMounted(async () => {
   facilityQuery.value = route.query.facilities;
   facilitiesArray.value =
     route.query.facilities != "null" ? route.query.facilities.split(",") : [];
-  await cityStore.getSimpleListAction();
+  await cityStore.getListHotelCityAction();
+  choosePlaceArray(city_id.value);
   window.addEventListener("scroll", handleScroll);
   let res = await hotelStore.getListAction(watchSystem.value);
 
-  await hotelStore.getSimpleListAction(watchSystem.value);
+  await hotelStore.getListAction(watchSystem.value);
   await facilityStore.getListAction();
-  setPlaceArray(hotel?.value.data);
+  // setPlaceArray(hotel?.value.data);
   count.value = res.meta.total;
   searchCityName.value = route.params.name;
 
@@ -309,24 +317,24 @@ watch([filterId, rating, place], async ([newValue, newRating, newPlace]) => {
 
   // data.price_range = `${newPrice}-${newMaxPrice}`;
 
-  const res = await hotelStore.getSimpleListAction(data);
-  setPlaceArray(hotel?.value.data);
+  const res = await hotelStore.getListAction(data);
+  // setPlaceArray(hotel?.value.data);
   console.log(res, "this is data");
   count_filter.value = res.meta.total;
 });
 
 const placeArray = ref([]);
 
-const setPlaceArray = (data) => {
-  const uniquePlaces = new Set();
+// const setPlaceArray = (data) => {
+//   const uniquePlaces = new Set();
 
-  data.forEach((element) => {
-    uniquePlaces.add(element.place);
-  });
+//   data.forEach((element) => {
+//     uniquePlaces.add(element.place);
+//   });
 
-  placeArray.value = Array.from(uniquePlaces);
-  console.log(placeArray.value, "this is array");
-};
+//   placeArray.value = Array.from(uniquePlaces);
+//   console.log(placeArray.value, "this is array");
+// };
 
 watch(search, async (newValue) => {
   if (newValue) {
@@ -504,12 +512,6 @@ watch(search, async (newValue) => {
               <p class="text-sm font-semibold">choose place</p>
               <div class="flex justify-end items-center gap-4">
                 <p
-                  class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
-                  @click="place = ''"
-                >
-                  all places
-                </p>
-                <p
                   class="text-black text-[10px] cursor-pointer"
                   @click="placeall = !placeall"
                 >
@@ -518,6 +520,12 @@ watch(search, async (newValue) => {
               </div>
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2">
+              <p
+                v-if="placeArray.length == 0 || !placeArray"
+                class="text-[9px] text-red"
+              >
+                choose city first !
+              </p>
               <div v-for="(c, index) in placeArray" :key="c">
                 <p
                   v-if="index < 8 || placeall"
@@ -610,7 +618,7 @@ watch(search, async (newValue) => {
             </div>
           </div>
           <div class="space-y-3 overflow-hidden pb-8 pt-4">
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center pb-5">
               <p class="text-sm font-semibold">price range</p>
               <p
                 class="text-black px-3 py-1 relative z-20 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
@@ -621,7 +629,7 @@ watch(search, async (newValue) => {
             </div>
 
             <div class="range-slider w-full relative">
-              <img :src="graph" class="absolute -top-[51px]" alt="" />
+              <img :src="graph" class="absolute -bottom-[45px]" alt="" />
               <input
                 type="range"
                 v-model="minPrice"

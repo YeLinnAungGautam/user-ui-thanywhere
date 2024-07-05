@@ -49,7 +49,6 @@ const filteredHotel = async () => {
 const { entrances, loading } = storeToRefs(entranceStore);
 
 const changePage = async (url) => {
-  console.log(url);
   if (url != null) {
     await entranceStore.getChangePage(url);
   }
@@ -177,20 +176,28 @@ watch(entrances, async (newValue) => {
         class="flex justify-between items-center sticky top-0 py-2 px-6 z-10 bg-background w-full"
       >
         <h1 class="text-main font-semibold">attractions</h1>
-        <div
-          class="flex justify-end items-center gap-2 cursor-pointer"
-          @click="openBottomSheet"
-        >
-          <p class="text-[10px] text-main font-semibold">filter by</p>
-          <ChevronDownIcon class="w-3 h-3 text-main" />
+        <div class="flex justify-end items-center gap-4">
+          <div
+            class="flex justify-end items-center gap-2 cursor-pointer"
+            @click="openBottomSheet"
+          >
+            <p class="text-[10px] text-main font-semibold">filter by</p>
+            <ChevronDownIcon class="w-3 h-3 text-main" />
+          </div>
         </div>
       </div>
       <div
-        class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
+        class="border border-black/10 mx-6 rounded-2xl shadow-sm relative bg-white grid grid-cols-11 gap-3 p-2.5"
         v-for="i in entrancesList"
         :key="i"
         @click="goDetialPage(i.id)"
       >
+        <p
+          v-if="i?.total_booking_count != 0"
+          class="bg-main text-white absolute top-4 -left-3 ml-2 text-xs px-3 inline-block py-1 rounded-r-full"
+        >
+          sell count - {{ i?.total_booking_count }}
+        </p>
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
           <img
             v-if="i?.cover_image"
@@ -234,6 +241,7 @@ watch(entrances, async (newValue) => {
             >
               coming soon !
             </p>
+
             <div class="absolute bottom-0 space-y-0.5">
               <p class="text-[10px] pb-1">starting price</p>
               <p
