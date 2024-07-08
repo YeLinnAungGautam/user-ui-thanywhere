@@ -11,15 +11,17 @@ import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { ref, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import activitydb from "../assets/activitydb";
+import { useSettingStore } from "../stores/setting";
 
 // const data = vantourdb;
 
 const router = useRouter();
-
+const settingStore = useSettingStore();
 const entranceStore = useEntranceStore();
 const cityStore = useCityStore();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
+const { language } = storeToRefs(settingStore);
 
 const all = ref(false);
 
@@ -127,6 +129,7 @@ const goDetialPage = (id) => {
 //  activitydb = activitydb;
 
 onMounted(async () => {
+  await settingStore.getLanguage();
   window.addEventListener("scroll", handleScroll);
   let res = await entranceStore.getListAction();
   await cityStore.getSimpleListAction();
@@ -192,12 +195,12 @@ watch(entrances, async (newValue) => {
         :key="i"
         @click="goDetialPage(i.id)"
       >
-        <p
+        <!-- <p
           v-if="i?.total_booking_count != 0"
           class="bg-main text-white absolute top-4 -left-3 ml-2 text-xs px-3 inline-block py-1 rounded-r-full"
         >
           sell count - {{ i?.total_booking_count }}
-        </p>
+        </p> -->
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
           <img
             v-if="i?.cover_image"
@@ -233,7 +236,9 @@ watch(entrances, async (newValue) => {
               class="text-[8px] h-[70px] overflow-hidden"
               v-if="i?.description && i?.description != 'null'"
             >
-              {{ i?.description }}
+              {{
+                language == "english" ? i?.full_description_en : i?.description
+              }}
             </p>
             <p
               class="text-[8px] h-[70px] overflow-hidden"

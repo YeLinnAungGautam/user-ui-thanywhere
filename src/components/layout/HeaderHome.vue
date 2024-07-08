@@ -1,10 +1,16 @@
 <script setup>
 import logoIcon from "../../assets/logo.png";
-import profileIcon from "../../assets/icons/Search Bar Icons & Headline icons/account icon.svg";
+// import profileIcon from "../../assets/icons/Search Bar Icons & Headline icons/account icon.svg";
+import Myanmar from "../../assets/onboarding screns/myanmar.png";
+import English from "../../assets/onboarding screns/english.png";
 import { useRouter } from "vue-router";
-import { defineProps } from "vue";
+import { defineProps, onMounted } from "vue";
+import { useSettingStore } from "../../stores/setting";
+import { storeToRefs } from "pinia";
 
 const router = useRouter();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 const props = defineProps({
   showTitle: Boolean,
 });
@@ -12,6 +18,10 @@ const props = defineProps({
 const goHomePage = () => {
   router.push("/home");
 };
+
+onMounted(() => {
+  settingStore.getLanguage();
+});
 </script>
 
 <template>
@@ -24,7 +34,24 @@ const goHomePage = () => {
         <img :src="logoIcon" class="w-10 h-10" alt="" @click="goHomePage" />
         <p class="font-semibold tracking-wide text-lg">THAILAND ANYWHERE</p>
         <!-- <UserCircleIcon class="w-6 h-6 text-white" /> -->
-        <img :src="profileIcon" class="w-6 h-6" alt="" />
+        <div
+          @click="router.push('/translationPage')"
+          class="flex justify-end items-center gap-2 border border-white p-1 rounded-full"
+        >
+          <img
+            :src="English"
+            class="w-6 h-6"
+            alt=""
+            v-if="language == 'english'"
+          />
+          <img
+            :src="Myanmar"
+            class="w-6 h-6"
+            alt=""
+            v-if="language == 'myanmar'"
+          />
+          <p class="text-xs pr-2">{{ language == "english" ? "en" : "mm" }}</p>
+        </div>
       </div>
       <slot />
     </div>

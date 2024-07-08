@@ -24,8 +24,10 @@ import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import { useHotelStore } from "../stores/hotel";
 import { useFacilityStore } from "../stores/facility";
+import { useSettingStore } from "../stores/setting";
 
 const hotelStore = useHotelStore();
+const settingStore = useSettingStore();
 const cityStore = useCityStore();
 const facilityStore = useFacilityStore();
 const router = useRouter();
@@ -33,6 +35,7 @@ const route = useRoute();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { facilities } = storeToRefs(facilityStore);
+const { language } = storeToRefs(settingStore);
 
 const open = () => {
   myBottomSheet.value.open();
@@ -243,7 +246,7 @@ const choosePlaceArray = (id) => {
 
 onMounted(async () => {
   city_id.value = route.params.id;
-
+  await settingStore.getLanguage();
   rating.value = route.query.rating != "null" ? route.query.rating : "";
 
   place.value = route.query.place != "null" ? route.query.place : "";
@@ -441,9 +444,17 @@ watch(search, async (newValue) => {
                   <p>{{ i?.city.name }}</p>
                 </div>
               </div>
-              <p class="text-[8px] h-[36px] overflow-hidden">
+              <!-- <p class="text-[8px] h-[36px] overflow-hidden">
                 {{ i.description }}
-              </p>
+              </p> -->
+              <p
+                class="text-[8px] h-[36px] overflow-hidden"
+                v-html="
+                  language == 'english'
+                    ? i.full_description_en
+                    : i.full_description
+                "
+              ></p>
               <div class="absolute bottom-0">
                 <p class="text-[8px]">location area</p>
                 <div class="flex justify-start gap-2 items-center">

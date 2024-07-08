@@ -8,6 +8,7 @@ import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { useFacilityStore } from "../stores/facility";
 import { HeartIcon } from "@heroicons/vue/24/outline";
 import graph from "../assets/icons/graph.png";
+import { useSettingStore } from "../stores/setting";
 import {
   MapPinIcon,
   BuildingOffice2Icon,
@@ -22,12 +23,14 @@ import { storeToRefs } from "pinia";
 import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 
+const settingStore = useSettingStore();
 const hotelStore = useHotelStore();
 const cityStore = useCityStore();
 const facilityStore = useFacilityStore();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { facilities } = storeToRefs(facilityStore);
+const { language } = storeToRefs(settingStore);
 
 const router = useRouter();
 const all = ref(false);
@@ -249,7 +252,7 @@ const placeArray = ref([]);
 
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
-
+  await settingStore.getLanguage();
   let res = await hotelStore.getListAction();
   await cityStore.getListHotelCityAction();
   console.log(cities.value, "this is city");
@@ -348,9 +351,14 @@ watch(hotels, async (newValue) => {
                   <p>{{ i?.city.name }}</p>
                 </div>
               </div>
-              <p class="text-[8px] h-[36px] overflow-hidden">
-                {{ i.description }}
-              </p>
+              <p
+                class="text-[8px] h-[36px] overflow-hidden"
+                v-html="
+                  language == 'english'
+                    ? i.full_description_en
+                    : i.full_description
+                "
+              ></p>
               <div class="absolute bottom-0 space-y-0.5">
                 <p class="text-[10px]">location area</p>
                 <div class="flex justify-start gap-2 items-center">

@@ -23,12 +23,12 @@
               />
               <div class="absolute top-5 z-50 w-full text-center pt-10">
                 <p class="text-main text-2xl font-bold">
-                  {{ slide.title }}
+                  {{ language == "english" ? slide.title_en : slide.title }}
                 </p>
                 <p
                   class="text-sm font-medium text-main px-8 pt-5 tracking-wide leading-7"
                 >
-                  {{ slide.des }}
+                  {{ language == "english" ? slide.des_en : slide.des }}
                 </p>
                 <div class="flex justify-center items-center mt-5 gap-1">
                   <p
@@ -105,8 +105,12 @@ import image1 from "../../assets/onboarding screns/onboarding screns/onboarding-
 import image2 from "../../assets/onboarding screns/onboarding screns/onboarding-2.jpg";
 import image3 from "../../assets/onboarding screns/onboarding screns/onboarding-3.jpg";
 import { useRouter } from "vue-router";
+import { useSettingStore } from "../../stores/setting";
+import { storeToRefs } from "pinia";
 
 const router = useRouter();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 
 const settings = {
   itemsToShow: 1,
@@ -120,21 +124,28 @@ const simple = [
     id: 1,
     image: image1,
     title: "ခရီးထွက်ဖို့ စဉ်းစားနေလား ?",
+    title_en: "Are you thinking of traveling?",
     des: `ထိုင်းနိုင်ငံအတွင်း ဟိုတယ်ဘိုကင်၊ ကားငှါး ၊ ဝင်ကြေးလက်မှတ် ၊ သီးသန့်ခရီးစဉ်များ ၊ အုပ်စုခရီးစဉ်များနှင့် ညအိပ်ခရီးစဉ်များကို ဝယ်ယူနိုင်ပါတယ်။`,
+    des_en:
+      "Hotel booking in Thailand rent a car Entrance ticket private tours Group tours and overnight tours can be purchased.",
     button: "next page",
   },
   {
     id: 2,
     image: image2,
     title: "အတန်ဆုံးဈေးဖြင့် ရယူလိုက်ပါ",
+    title_en: "Get it at the best price",
     des: `ထိုင်းနိုင်ငံရဲ့ TAT License ကို ရရှိထားပြီး နိုင်ငံတဝှမ်းက Direct Partnership ပေါင်း 150 ကျော်ကို အသက်သာဆုံးဈေး နှင့် booking တင်နိုင်ပါသည်။`,
+    des_en: `We have obtained Thailand's TAT ​​License and can book more than 150 Direct Partnerships across the country at the cheapest price.`,
     button: "next page",
   },
   {
     id: 3,
     image: image3,
     title: "ပိုမိုသိရှိလေ့လာရန်အတွက်",
+    title_en: "For more information",
     des: `ထိုင်းနိုင်ငံအတွင်းက နေရာတွေရဲ့ Contents များကို ဖတ်ရှုနိုင်ရန်အတွက် Content နဲ့ Operation Team မှ အချိန်ယူအားထုတ်ကာ ရေးသားဖန်တီးခဲ့ပါတယ်။`,
+    des_en: `In order to read the contents of the places in Thailand, the content and operation team took the time to write and create.`,
     button: "login",
   },
 ];
@@ -160,7 +171,8 @@ const loginPageChange = () => {
   router.push("/account/login");
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await settingStore.getLanguage();
   showImage.value = simple;
   console.log("hello");
 });

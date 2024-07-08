@@ -17,6 +17,7 @@ import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 // import { useCarStore } from "../stores/car";
+import { useSettingStore } from "../stores/setting";
 import { useVantourStore } from "../stores/vantour";
 
 // const carStore = useCarStore();
@@ -24,9 +25,11 @@ const cityStore = useCityStore();
 const router = useRouter();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
+const settingStore = useSettingStore();
 const vantourStore = useVantourStore();
 const { vantours, loading } = storeToRefs(vantourStore);
 // const { cars } = storeToRefs(carStore);
+const { language } = storeToRefs(settingStore);
 const route = useRoute();
 
 const open = () => {
@@ -259,7 +262,11 @@ watch(search, async (newValue) => {
                 </p>
               </div>
               <p class="text-[8px] h-[70px] overflow-hidden">
-                {{ i.long_description }}
+                {{
+                  language == "english"
+                    ? i.full_description_en
+                    : i.long_description
+                }}
               </p>
               <div class="absolute bottom-0 space-y-0.5 w-full">
                 <div class="flex justify-between items-center w-full">
@@ -324,25 +331,7 @@ watch(search, async (newValue) => {
               </div>
             </div>
           </div>
-          <!-- <div class="space-y-3 pb-4">
-            <div class="flex justify-between items-center">
-              <p class="text-sm font-semibold">choose car type</p>
-              <ChevronUpIcon class="w-4 h-4" />
-            </div>
-            <div class="flex flex-wrap justify-start items-center gap-2 mr-5">
-              <div class="" v-for="(i, index) in cars?.data" :key="index">
-                <div class="flex justify-center items-center gap-1">
-                  <p
-                    class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
-                    :class="car_id == i.id ? 'bg-main text-white' : ''"
-                    @click="car_id = i.id"
-                  >
-                    {{ i?.name }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div> -->
+
           <div class="space-y-3 pb-8 pt-4">
             <div class="border border-green rounded-2xl p-3">
               <div

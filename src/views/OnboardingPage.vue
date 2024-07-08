@@ -1,13 +1,24 @@
 <template>
   <div>
     <div>
-      <ShowOnboardingVue @change="onchangeComponent" />
+      <div v-if="!next">
+        <LanguagePartVue @change="change" />
+      </div>
+      <div v-if="next">
+        <ShowOnboardingVue @change="onchangeComponent" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import ShowOnboardingVue from "../components/home/ShowOnboarding.vue";
-</script>
+import LanguagePartVue from "../components/home/LanguagePart.vue";
+import { ref } from "vue";
 
-<style lang="stylus" scoped></style>
+const next = ref(false);
+
+const change = () => {
+  next.value = true;
+};
+</script>
