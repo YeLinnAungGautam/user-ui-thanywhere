@@ -35,7 +35,11 @@
             <p
               class="text-[13.5px] text-black/80 leading-6"
               :class="!seeMoreShow ? 'h-[147px] overflow-hidden' : 'h-auto'"
-              v-html="detail?.description"
+              v-html="
+                language == 'english'
+                  ? detail?.full_description_en
+                  : detail?.description
+              "
             ></p>
             <p
               class="text-[8px] text-main"
@@ -169,10 +173,14 @@ import { DialogPanel, DialogTitle } from "@headlessui/vue";
 import { useEntranceStore } from "../stores/entrance";
 // import { StarIcon } from "@heroicons/vue/24/solid";
 import EntranceVariationCartVue from "../components/cart/EntranceVariationCart.vue";
+import { useSettingStore } from "../stores/setting";
+import { storeToRefs } from "pinia";
 
 const route = useRoute();
 const router = useRouter();
 const entranceStore = useEntranceStore();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 
 const detail = ref(null);
 const loading = ref(false);
@@ -198,6 +206,7 @@ const modalOpen = ref(false);
 // };
 
 onMounted(async () => {
+  await settingStore.getLanguage();
   await getDetail(route.params.id);
 });
 </script>

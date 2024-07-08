@@ -31,7 +31,11 @@
             <p
               class="text-[13.5px] text-black/80 leading-6"
               :class="!seeMoreShow ? 'h-[147px] overflow-hidden' : 'h-auto'"
-              v-html="detail?.full_description"
+              v-html="
+                language == 'english'
+                  ? detail?.full_description_en
+                  : detail?.full_description
+              "
             ></p>
             <p
               class="text-[12px] text-main"
@@ -316,6 +320,7 @@ import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
+import { useSettingStore } from "../stores/setting";
 import {
   ChevronLeftIcon,
   ArrowUpTrayIcon,
@@ -330,14 +335,17 @@ import Modal from "../components/layout/Modal.vue";
 import { DialogPanel, DialogTitle } from "@headlessui/vue";
 import LoadingPageVue from "../components/layout/LoadingPage.vue";
 import { MapPinIcon } from "@heroicons/vue/24/solid";
+import { storeToRefs } from "pinia";
 
 const route = useRoute();
 const router = useRouter();
 const hotelStore = useHotelStore();
+const settingStore = useSettingStore();
 
 const detail = ref(null);
 const loading = ref(false);
 const seeMoreShow = ref(false);
+const { language } = storeToRefs(settingStore);
 
 const placeList = ref(null);
 
@@ -367,6 +375,7 @@ const goDetialPage = (id) => {
 };
 
 onMounted(async () => {
+  await settingStore.getLanguage();
   await getDetail(route.params.id);
 });
 </script>

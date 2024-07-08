@@ -31,7 +31,11 @@
             <p
               class="text-[13.5px] text-black/80 leading-6"
               :class="!seeMoreShow ? 'h-[147px] overflow-hidden' : 'h-auto'"
-              v-html="detail?.long_description"
+              v-html="
+                language == 'english'
+                  ? detail?.full_description_en
+                  : detail?.long_description
+              "
             ></p>
             <p
               class="text-[10px] text-main"
@@ -173,6 +177,7 @@ import {
 } from "@heroicons/vue/24/outline";
 // import logo from "../assets/logo.png";
 import LoadingPageVue from "../components/layout/LoadingPage.vue";
+import { useSettingStore } from "../stores/setting";
 import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
 import whatsappIcon from "../assets/Booking icons/whatsapp.png";
@@ -181,6 +186,7 @@ import Modal from "../components/layout/Modal.vue";
 import { DialogPanel, DialogTitle } from "@headlessui/vue";
 import { useVantourStore } from "../stores/vantour";
 // import { StarIcon } from "@heroicons/vue/24/solid";
+import { storeToRefs } from "pinia";
 
 const route = useRoute();
 const router = useRouter();
@@ -188,6 +194,8 @@ const vantourStore = useVantourStore();
 
 const detail = ref(null);
 const loading = ref(false);
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 const seeMoreShow = ref(false);
 
 const getDetail = async (id) => {
@@ -205,6 +213,7 @@ const getDetail = async (id) => {
 const modalOpen = ref(false);
 
 onMounted(async () => {
+  await settingStore.getLanguage();
   await getDetail(route.params.id);
 });
 </script>
