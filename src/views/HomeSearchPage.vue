@@ -276,7 +276,7 @@ onMounted(async () => {
               @click="router.push(`/home/detail/` + i.id)"
             >
               <img
-                :src="i?.images[0].image"
+                :src="i?.images[0]?.image"
                 alt=""
                 class="w-full h-full rounded-xl"
               />

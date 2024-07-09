@@ -19,7 +19,7 @@
       >
         <div class="w-full h-[140px] p-1.5 overflow-hidden">
           <img
-            :src="i.images[0].image"
+            :src="i.images[0]?.image"
             class="w-full h-full object-cover rounded-xl"
             alt=""
           />
