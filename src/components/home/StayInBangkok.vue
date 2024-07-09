@@ -13,7 +13,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6">
       <div
         class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10"
-        v-for="(i, index) in data"
+        v-for="(i, index) in lists"
         :key="index"
         @click="goDetialPage(i?.id)"
       >
@@ -33,9 +33,14 @@
           <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
             {{ i.place }}
           </p>
-          <p class="text-[9px] pt-1 max-h-[44px] overflow-hidden">
-            {{ i.description }}
-          </p>
+          <p
+            class="text-[9px] pt-1 max-h-[44px] overflow-hidden"
+            v-html="
+              language == 'english'
+                ? i?.full_description_en
+                : i?.full_description
+            "
+          ></p>
           <div class="">
             <p class="text-xs font-medium mt-2">starting price</p>
             <button
@@ -54,24 +59,32 @@
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 // import StarPartVue from "./StarPart.vue";
-import stayinbangkok from "../../assets/db";
+// import stayinbangkok from "../../assets/db";
 import { useRouter } from "vue-router";
+import { useHotelStore } from "../../stores/hotel";
+import { storeToRefs } from "pinia";
+import { useSettingStore } from "../../stores/setting";
 
-const data = ref(null);
+// const data = ref(null);
 const router = useRouter();
+const hotelStore = useHotelStore();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 
 const goDetialPage = (id) => {
   router.push({ name: "HomeDetail", params: { id: id } });
 };
 
+const lists = ref(null);
+
 const goMore = () => {
   router.push(`/home/hotel-filter/2/Bangkok`);
 };
 
-onMounted(() => {
-  data.value = stayinbangkok;
-  console.log("====================================");
-  console.log(data.value);
-  console.log("====================================");
+onMounted(async () => {
+  // data.value = stayinbangkok;
+  const res = await hotelStore.getListAction({ city_id: 2, limit: 8 });
+  lists.value = res.data;
+  settingStore.getLanguage();
 });
 </script>

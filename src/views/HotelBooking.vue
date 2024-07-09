@@ -286,7 +286,7 @@ watch(hotels, async (newValue) => {
             type="search"
             @focus="router.push('/home/hotel-search')"
             name=""
-            placeholder=" search would you like to stay"
+            placeholder=" where would you like to stay"
             class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
             id=""
           />

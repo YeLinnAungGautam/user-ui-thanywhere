@@ -124,17 +124,17 @@ const simple = [
     id: 1,
     image: image1,
     title: "ခရီးထွက်ဖို့ စဉ်းစားနေလား ?",
-    title_en: "Thinking of traveling to Thailand?",
+    title_en: "Traveling to Thailand?",
     des: `ထိုင်းနိုင်ငံအတွင်း ဟိုတယ်ဘိုကင်၊ ကားငှါး ၊ ဝင်ကြေးလက်မှတ် ၊ သီးသန့်ခရီးစဉ်များ ၊ အုပ်စုခရီးစဉ်များနှင့် ညအိပ်ခရီးစဉ်များကို ဝယ်ယူနိုင်ပါတယ်။`,
     des_en:
-      "Book hotels, cars, tickets to attractions & tours in one place. Skip lines, explore hidden gems and craft your dream holiday.",
+      "Book hotels, vantours, tickets to attractions & tours in one place. Skip lines, explore hidden gems and craft your dream holiday.",
     button: "next page",
   },
   {
     id: 2,
     image: image2,
     title: "အတန်ဆုံးဈေးဖြင့် ရယူလိုက်ပါ",
-    title_en: "Explore unbeatable prices with us!",
+    title_en: "Get unbeatable prices !",
     des: `ထိုင်းနိုင်ငံရဲ့ TAT License ကို ရရှိထားပြီး နိုင်ငံတဝှမ်းက Direct Partnership ပေါင်း 150 ကျော်ကို အသက်သာဆုံးဈေး နှင့် booking တင်နိုင်ပါသည်။`,
     des_en: `THAnywhere is TAT-licensed agency. Our team is in Direct-Partnerships with over 150 hotels, attractions and tour operators. Get your next best holiday deals here!`,
     button: "next page",
@@ -145,7 +145,7 @@ const simple = [
     title: "ပိုမိုသိရှိလေ့လာရန်အတွက်",
     title_en: "Discover the details!",
     des: `ထိုင်းနိုင်ငံအတွင်းက နေရာတွေရဲ့ Contents များကို ဖတ်ရှုနိုင်ရန်အတွက် Content နဲ့ Operation Team မှ အချိန်ယူအားထုတ်ကာ ရေးသားဖန်တီးခဲ့ပါတယ်။`,
-    des_en: `Learn about Thailand before traveling to Thailand. Our dedicated content and operation worked meticulously to provide you with exclusive contents about top destinations in Thailand.`,
+    des_en: `Thailand before you trip. Our dedicated content and operation worked meticulously to provide you with exclusive contents about top destinations in Thailand.`,
     button: "login",
   },
 ];
@@ -168,7 +168,7 @@ const customPageChange = () => {
 };
 
 const loginPageChange = () => {
-  router.push("/account/login");
+  router.push("/home");
 };
 
 onMounted(async () => {

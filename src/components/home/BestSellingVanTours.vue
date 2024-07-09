@@ -30,7 +30,11 @@
             {{ i?.cities[0]?.name }}
           </p>
           <p class="text-[9px] pt-1 max-h-[44px] overflow-hidden">
-            {{ i?.long_description }}
+            {{
+              language == "english"
+                ? i?.full_description_en
+                : i?.long_description
+            }}
           </p>
           <p class="text-xs mt-2 font-medium">starting car price</p>
           <button
@@ -48,17 +52,21 @@
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 import StarPartVue from "./StarPart.vue";
-import vantourdb from "../../assets/vantourdb";
+import { storeToRefs } from "pinia";
+import { useSettingStore } from "../../stores/setting";
 import { useRouter } from "vue-router";
+import { useVantourStore } from "../../stores/vantour";
 
 // const seeMore = ref(true);
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
+const vantourStore = useVantourStore();
+
 const router = useRouter();
 const data = ref(null);
 
-onMounted(() => {
-  data.value = vantourdb;
-  console.log("====================================");
-  console.log(data.value);
-  console.log("====================================");
+onMounted(async () => {
+  const res = await vantourStore.getListAction({ limit: 8 });
+  data.value = res.data;
 });
 </script>

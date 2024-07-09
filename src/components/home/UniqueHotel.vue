@@ -13,7 +13,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6">
       <div
         class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10"
-        v-for="(i, index) in data"
+        v-for="(i, index) in lists"
         :key="index"
         @click="goDetialPage(i?.id)"
       >
@@ -42,11 +42,13 @@
           </p>
 
           <p
-            class="text-[9px] pt-1 min-h-[44px] max-h-[44px] overflow-hidden"
-            v-if="i.description != 'null'"
-          >
-            {{ i.description }}
-          </p>
+            class="text-[9px] pt-1 max-h-[44px] overflow-hidden"
+            v-html="
+              language == 'english'
+                ? i?.full_description_en
+                : i?.full_description
+            "
+          ></p>
           <div class="">
             <p class="text-xs font-medium mt-2">starting price</p>
             <button
@@ -64,14 +66,20 @@
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
-// import StarPartVue from "./StarPart.vue";
-import unidb from "../../assets/unquiddb";
+import { useHotelStore } from "../../stores/hotel";
+import { storeToRefs } from "pinia";
+import { useSettingStore } from "../../stores/setting";
 import { useRouter } from "vue-router";
 
-const data = ref(null);
+// const data = ref(null);
 
 // const seeMore = ref(true);
 const router = useRouter();
+const hotelStore = useHotelStore();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
+
+const lists = ref(null);
 
 const goDetialPage = (id) => {
   router.push({ name: "HomeDetail", params: { id: id } });
@@ -81,10 +89,9 @@ const goMore = () => {
   router.push(`/home/hotel-filter/2/Bangkok`);
 };
 
-onMounted(() => {
-  data.value = unidb;
-  console.log("====================================");
-  console.log(data.value);
-  console.log("====================================");
+onMounted(async () => {
+  const res = await hotelStore.getListAction({ category_id: 5, limit: 8 });
+  lists.value = res.data;
+  settingStore.getLanguage();
 });
 </script>
