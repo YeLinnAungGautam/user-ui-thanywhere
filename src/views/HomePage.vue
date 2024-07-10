@@ -11,6 +11,7 @@ import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
 import { useRouter } from "vue-router";
 import { onMounted } from "vue";
+// import InstallAppVue from "../components/home/InstallApp.vue";
 // import ShowOnboardingVue from "../components/home/ShowOnboarding.vue";
 // import { useSettingStore } from "../stores/setting";
 // import { storeToRefs } from "pinia";
@@ -64,6 +65,7 @@ onMounted(() => {});
           </HeaderHomeVue>
         </div>
         <div class="h-auto pb-20 pt-8 space-y-10">
+          <!-- <InstallAppVue /> -->
           <AllProductPartVue />
           <ReadDestinationVue />
 

@@ -3,7 +3,19 @@ import router from "./router";
 import { createApp } from "vue";
 import App from "./App.vue";
 import axios from "axios";
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL =
+    import.meta.env.VITE_API_URL;
 import { createPinia } from "pinia";
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+        .register("/serviceworker.js", { scope: "/" })
+        .then((registration) => {
+            console.log("Service Worker registered with scope:", registration.scope);
+        })
+        .catch((error) => {
+            console.error("Service Worker registration failed:", error);
+        });
+}
 
 createApp(App).use(createPinia()).use(router).mount("#app");

@@ -3,14 +3,78 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="./src/assets/logo.png">
+    <link rel="icon" href="./src/assets/web-logo.png">
+    <link rel="manifest" href="./public/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="./src/assets/web-logo.png">
+    <meta name="theme-color" content="#ffffff">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Thanywhere App</title>
 </head>
 
 <body>
+    <div id="divInstallApp"></div>
     <div id="app"></div>
+
     <script type="module" src="/src/main.js"></script>
+    <script type="text/javascript">
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+                .register("/serviceworker.js", {
+                    scope: "/"
+                })
+                .then((registration) => {
+                    // Service worker registered successfully
+                })
+                .catch((error) => {
+                    console.error('Service worker registration failed:', error);
+                });
+
+            // Function to handle beforeinstallprompt event
+            // '<button id="installApp" class=" py-2">Install App</button>'
+            function handleInstallPrompt(event) {
+                event.preventDefault();
+                const installDiv = document.getElementById('divInstallApp');
+                installDiv.innerHTML = `
+                        <div class="flex justify-between py-2 items-center px-6 shadow-lg font-poppins text-xs">
+                            <div class="flex justify-start items-center gap-2">
+                                <button id="closeInstallPrompt" class="text-lg text-gray-500 hover:text-gray-800">x</button>
+                                <img src="./src/assets/logo.png" alt="Thanywhere App Logo" class="h-10 w-10 bg-main rounded-lg">
+                                <div><h2 class="text-base font-semibold">Get the app</h2>
+                                <p class="text-[10px]">The fastest, easiest way to TH Anywhere</p></div>
+                            </div>
+                            <button id="installApp" class="py-1 font-poppins font-semibold bg-main px-3 rounded-full text-white">USE APP</button>
+    
+                    </div>`;
+                // Add event listener to close button
+                const closeInstallPromptBtn = installDiv.querySelector('#closeInstallPrompt');
+                closeInstallPromptBtn.addEventListener('click', () => {
+                    installDiv.innerHTML = ""; // Remove the prompt div
+                });
+                installDiv.addEventListener('click', () => {
+                    event.prompt().catch(error => {
+                        console.error('Failed to prompt install:', error);
+                    });
+                    installDiv.innerHTML = ""; // Remove the button after prompting
+                });
+
+            }
+
+            // Add event listener for beforeinstallprompt
+            window.addEventListener('beforeinstallprompt', handleInstallPrompt);
+
+            // Optional: Remove event listener once prompt is shown or app is installed
+            window.addEventListener('appinstalled', (event) => {
+                // Remove the install button or any related UI
+                const installDiv = document.getElementById('divInstallApp');
+                if (installDiv) {
+                    installDiv.innerHTML = "";
+                }
+                // Optionally, you can unregister the beforeinstallprompt listener
+                window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
+            });
+        }
+    </script>
 </body>
 
 </html>
