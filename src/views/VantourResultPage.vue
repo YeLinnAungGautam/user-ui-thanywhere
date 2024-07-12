@@ -19,6 +19,7 @@ import { storeToRefs } from "pinia";
 // import { useCarStore } from "../stores/car";
 import { useSettingStore } from "../stores/setting";
 import { useVantourStore } from "../stores/vantour";
+import debounce from "lodash.debounce";
 
 // const carStore = useCarStore();
 const cityStore = useCityStore();
@@ -159,25 +160,28 @@ watch([filterId], async ([newValue]) => {
   count_filter.value = res.meta.total;
 });
 
-watch(search, async (newValue) => {
-  if (newValue) {
-    vantoursList.value = [];
-    searchCityName.value = "null";
-    let res = await vantourStore.getListAction({
-      search: newValue,
-    });
-    count.value = res.meta.total;
-    vantoursList.value = res.data;
-  } else {
-    vantoursList.value = [];
-    searchCityName.value = route.params.name;
-    let res = await vantourStore.getListAction({
-      city_id: filterId.value,
-    });
-    count.value = res.meta.total;
-    vantoursList.value = res.data;
-  }
-});
+watch(
+  search,
+  debounce(async (newValue) => {
+    if (newValue) {
+      vantoursList.value = [];
+      searchCityName.value = "null";
+      let res = await vantourStore.getListAction({
+        search: newValue,
+      });
+      count.value = res.meta.total;
+      vantoursList.value = res.data;
+    } else {
+      vantoursList.value = [];
+      searchCityName.value = route.params.name;
+      let res = await vantourStore.getListAction({
+        city_id: filterId.value,
+      });
+      count.value = res.meta.total;
+      vantoursList.value = res.data;
+    }
+  }, 500)
+);
 </script>
 
 <template>

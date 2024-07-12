@@ -20,6 +20,7 @@ import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import graph from "../assets/icons/graph.png";
 import { computed, onMounted, ref, watch } from "vue";
+import debounce from "lodash.debounce";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import { useHotelStore } from "../stores/hotel";
@@ -339,23 +340,26 @@ const placeArray = ref([]);
 //   console.log(placeArray.value, "this is array");
 // };
 
-watch(search, async (newValue) => {
-  if (newValue) {
-    hotelList.value = [];
-    searchCityName.value = "null";
-    let res = await hotelStore.getListAction({
-      search: newValue,
-    });
-    count.value = res.meta.total;
-    hotelList.value = res.data;
-  } else {
-    hotelList.value = [];
-    searchCityName.value = route.params.name;
-    let res = await hotelStore.getListAction(watchSystem.value);
-    count.value = res.meta.total;
-    hotelList.value = res.data;
-  }
-});
+watch(
+  search,
+  debounce(async (newValue) => {
+    if (newValue) {
+      hotelList.value = [];
+      searchCityName.value = "null";
+      let res = await hotelStore.getListAction({
+        search: newValue,
+      });
+      count.value = res.meta.total;
+      hotelList.value = res.data;
+    } else {
+      hotelList.value = [];
+      searchCityName.value = route.params.name;
+      let res = await hotelStore.getListAction(watchSystem.value);
+      count.value = res.meta.total;
+      hotelList.value = res.data;
+    }
+  }, 500)
+);
 </script>
 
 <template>

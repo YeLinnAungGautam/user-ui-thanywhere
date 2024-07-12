@@ -14,6 +14,7 @@ import { useRouter, useRoute } from "vue-router";
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import { onMounted, ref, watch } from "vue";
+import debounce from "lodash.debounce";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import activitydb from "../assets/activitydb";
@@ -149,25 +150,28 @@ const count = ref(0);
 const search = ref("");
 const searchCityName = ref("");
 
-watch(search, async (newValue) => {
-  if (newValue) {
-    entrancesList.value = [];
-    searchCityName.value = "null";
-    let res = await entranceStore.getListAction({
-      search: search.value,
-    });
-    count.value = res.meta.total;
-    entrancesList.value = res.data;
-  } else {
-    entrancesList.value = [];
-    searchCityName.value = route.params.name;
-    let res = await entranceStore.getListAction({
-      city_id: filterId.value,
-    });
-    count.value = res.meta.total;
-    entrancesList.value = res.data;
-  }
-});
+watch(
+  search,
+  debounce(async (newValue) => {
+    if (newValue) {
+      entrancesList.value = [];
+      searchCityName.value = "null";
+      let res = await entranceStore.getListAction({
+        search: search.value,
+      });
+      count.value = res.meta.total;
+      entrancesList.value = res.data;
+    } else {
+      entrancesList.value = [];
+      searchCityName.value = route.params.name;
+      let res = await entranceStore.getListAction({
+        city_id: filterId.value,
+      });
+      count.value = res.meta.total;
+      entrancesList.value = res.data;
+    }
+  }, 500)
+);
 
 onMounted(async () => {
   await settingStore.getLanguage();

@@ -8,6 +8,7 @@ import Layout from "../components/layout/LayoutHome.vue";
 import { useHotelStore } from "../stores/hotel";
 import { useVantourStore } from "../stores/vantour";
 import { useEntranceStore } from "../stores/entrance";
+import debounce from "lodash.debounce";
 
 const hotelStore = useHotelStore();
 const entranceStore = useEntranceStore();
@@ -74,22 +75,25 @@ const getVantourList = async (city_id) => {
   searchLoading.value = false;
 };
 
-watch(search, async () => {
-  if (type.value == "hotel") {
-    await getHotelList();
-  } else if (type.value == "entrance") {
-    await getEntranceList();
-  } else if (type.value == "vantour") {
-    await getVantourList();
-  }
-  router.push({
-    name: "HomeSearch",
-    query: {
-      search: search.value,
-      type: type.value,
-    },
-  });
-});
+watch(
+  search,
+  debounce(async () => {
+    if (type.value == "hotel") {
+      await getHotelList();
+    } else if (type.value == "entrance") {
+      await getEntranceList();
+    } else if (type.value == "vantour") {
+      await getVantourList();
+    }
+    router.push({
+      name: "HomeSearch",
+      query: {
+        search: search.value,
+        type: type.value,
+      },
+    });
+  }, 500)
+);
 
 watch(type, async () => {
   if (type.value == "hotel") {
