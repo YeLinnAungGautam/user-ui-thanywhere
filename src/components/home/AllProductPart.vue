@@ -79,7 +79,7 @@
 import hotel from "../../assets/icons/products icons/hotel booking icon.svg";
 import inclusive from "../../assets/icons/products icons/all inclusive icon.svg";
 import attraction from "../../assets/icons/products icons/attractions icon.svg";
-import vantour from "../../assets/icons/products icons/van tours icon.svg";
+import vantour from "../../assets/icons/products icons/van.png";
 import flight from "../../assets/icons/products icons/flight icon.svg";
 import { useRouter } from "vue-router";
 
