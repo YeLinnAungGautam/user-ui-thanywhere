@@ -3,11 +3,136 @@ import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import { useRouter } from "vue-router";
-// import { HeartIcon } from "@heroicons/vue/24/outline";
-
-// const data = vantourdb;
+import { useSettingStore } from "../stores/setting";
+import { useCityStore } from "../stores/city";
+import { ref, watch, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useDestinationStore } from "../stores/destination";
 
 const router = useRouter();
+const destinationStore = useDestinationStore();
+const settingStore = useSettingStore();
+const cityStore = useCityStore();
+const myBottomSheet = ref(null);
+const { dests } = storeToRefs(destinationStore);
+// const { cars } = storeToRefs(carStore);
+const { language } = storeToRefs(settingStore);
+
+const open = () => {
+  myBottomSheet.value.open();
+};
+
+// const openBottomSheet = async () => {
+//   open();
+// };
+
+const close = () => {
+  myBottomSheet.value.close();
+};
+
+const filterId = ref("");
+const city_name = ref("");
+
+// const filteredHotel = async () => {
+//   router.push({
+//     name: "HomeVantourResult",
+//     params: { id: filterId.value, name: city_name.value },
+//   });
+//   close();
+// };
+
+const changePage = async (url) => {
+  console.log(url);
+  if (url != null) {
+    await destinationStore.getChangePage(url);
+  }
+};
+
+const bottomOfWindow = ref(false);
+const isStickey = ref(false);
+
+const handleScroll = () => {
+  bottomOfWindow.value =
+    Math.floor(document.documentElement.scrollTop + window.innerHeight) >=
+    document.documentElement.offsetHeight - 100;
+
+  const scrolledDown = document.documentElement.scrollTop > 250.39999389648438;
+  isStickey.value = document.documentElement.scrollTop > 270;
+
+  if (scrolledDown) {
+    showSearch.value = true;
+  } else {
+    showSearch.value = false;
+  }
+};
+
+watch(bottomOfWindow, (newVal) => {
+  if (bottomOfWindow.value == true) {
+    let changePageCalled = false;
+    if (newVal && !changePageCalled) {
+      console.log("This is the bottom of the window");
+      if (dests?.value?.meta?.current_page < dests?.value?.meta?.last_page) {
+        changePageCalled = true; // Set the flag to true
+        changePage(
+          dests?.value?.meta?.links[dests?.value?.meta?.current_page + 1].url
+        );
+      }
+    }
+  }
+});
+
+const count_filter = ref(0);
+// const car_id = ref("");
+
+watch([filterId], async ([newValue]) => {
+  let data = {
+    city_id: newValue,
+  };
+
+  const res = await destinationStore.getFilterAction(data);
+  console.log(res, "this is data");
+  count_filter.value = res.meta.total;
+});
+
+const showSearch = ref(false);
+
+const searchFunction = (data) => {
+  city_name.value = data.name;
+  filterId.value = data.id;
+};
+
+const destList = ref([]);
+
+const goDetialPage = (id) => {
+  router.push({ name: "HomeVantourDetail", params: { id: id } });
+};
+
+// const getRange = (data) => {
+//   // console.log(data);
+//   router.push({
+//     name: "HomeAttractionResult",
+//     params: { id: 2, name: "Bangkok" },
+//   });
+// };
+//  activitydb = activitydb;
+
+onMounted(async () => {
+  window.addEventListener("scroll", handleScroll);
+  let res = await destinationStore.getListAction();
+  await cityStore.getSimpleListAction();
+  destList.value = res.data;
+  console.log(destList.value, "this is entrance list add");
+  // await carStore.getSimpleListAction();
+  // console.log(cars.value, "this is car");
+});
+
+watch(dests, async (newValue) => {
+  if (newValue) {
+    destList.value = [...destList.value, ...newValue.data];
+  }
+
+  console.log(destList.value, "this is add new");
+});
 </script>
 
 <template>
@@ -41,7 +166,7 @@ const router = useRouter();
       <h1 class="text-main font-semibold">explore in bangkok</h1>
       <div
         class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
-        v-for="i in 10"
+        v-for="i in destList ?? []"
         :key="i"
       >
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
