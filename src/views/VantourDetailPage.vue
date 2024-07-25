@@ -22,7 +22,7 @@
         <div
           class="bg-white mt-4 mb-4 p-5 rounded-3xl border border-black/10 space-y-4"
         >
-          <div class="space-y-2 border-b border-black/10 pb-4">
+          <div class="space-y-2 pb-4">
             <h1 class="text-main font-medium">{{ detail?.name }}</h1>
             <div class="flex justify-start items-center gap-1">
               <p class="text-[10px] py-0.5 rounded inline-block text-main">
@@ -43,7 +43,7 @@
                 </ul>
               </div>
               <div
-                class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
+                class="flex flex-1 justify-start space-x-3 mt-6 pb-4 items-center overflow-x-scroll scroll-container border-b border-black/10"
                 v-if="detail?.destinations.length > 0"
               >
                 <div v-for="i in detail?.destinations" :key="i">
@@ -69,6 +69,7 @@
             </div>
 
             <div>
+              <p class="text-sm font-semibold text-main pb-2">summary</p>
               <p
                 class="text-[13.5px] text-black/80 leading-6"
                 :class="!seeMoreShow ? 'h-[147px] overflow-hidden' : 'h-auto'"

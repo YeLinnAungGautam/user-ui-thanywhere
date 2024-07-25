@@ -26,7 +26,7 @@ export const useVantourStore = defineStore("vantour", {
             try {
                 this.loading = true;
                 const response = await axios.get(
-                    "/private-van-tours?order_by=top_selling_products", {
+                    "/private-van-tours?order_by=top_selling_products&type=van_tour", {
                         params: params,
                     }
                 );
