@@ -117,7 +117,7 @@ const searchFunction = (data) => {
   filterId.value = data.id;
 };
 
-const vantourList = ref([]);
+const destsList = ref([]);
 
 const goDetialPage = (id) => {
   router.push({ name: "HomeVantourDetail", params: { id: id } });
@@ -136,18 +136,18 @@ onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
   let res = await vantourStore.getListAction();
   await cityStore.getSimpleListAction();
-  vantourList.value = res.data;
-  console.log(vantourList.value, "this is entrance list add");
+  destsList.value = res.data;
+  console.log(destsList.value, "this is entrance list add");
   // await carStore.getSimpleListAction();
   // console.log(cars.value, "this is car");
 });
 
 watch(vantours, async (newValue) => {
   if (newValue) {
-    vantourList.value = [...vantourList.value, ...newValue.data];
+    destsList.value = [...destsList.value, ...newValue.data];
   }
 
-  console.log(vantourList.value, "this is add new");
+  console.log(destsList.value, "this is add new");
 });
 </script>
 
@@ -194,7 +194,7 @@ watch(vantours, async (newValue) => {
       </div>
       <div
         class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
-        v-for="i in vantourList"
+        v-for="i in destsList"
         :key="i"
       >
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">

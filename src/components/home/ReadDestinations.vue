@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between items-center mb-2">
-      <h1 class="text-black/60 font-semibold px-6">read about destinations</h1>
+      <h1 class="text-main font-semibold px-6">read about destinations</h1>
       <!-- <div
         class="text-[10px] font-semibold text-main flex mr-6 justify-end items-center gap-1"
       >
@@ -10,7 +10,11 @@
     </div>
     <div class="py-4">
       <carousel v-bind="settings" :breakpoints="breakpoints">
-        <slide v-for="(slide, index) in data" :key="index">
+        <slide
+          v-for="(slide, index) in data"
+          :key="index"
+          @click="goResultPage(slide.id, slide.name)"
+        >
           <div :class="index == 0 ? 'ml-6' : 'ml-3'">
             <div class="w-full h-[120px] overflow-hidden">
               <img
@@ -36,6 +40,12 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
 import { onMounted, ref } from "vue";
 import citydb from "../../assets/citydb";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const goResultPage = (id, name) => {
+  router.push(`/home/destination-result/${id}/${name}`);
+};
 
 const settings = {
   itemsToShow: 1.6,

@@ -3,28 +3,28 @@ import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import { useRouter } from "vue-router";
-// import { useSettingStore } from "../stores/setting";
+import { useSettingStore } from "../stores/setting";
 import { useCityStore } from "../stores/city";
 import { ref, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 // import { useDestinationStore } from "../stores/destination";
 import activitydb from "../assets/activitydb";
-import { useVantourStore } from "../stores/vantour";
+import { useDestinationStore } from "../stores/destination";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 
 const router = useRouter();
 // const destinationStore = useDestinationStore();
-// const settingStore = useSettingStore();
+const settingStore = useSettingStore();
 const cityStore = useCityStore();
 const myBottomSheet = ref(null);
 // const { dests } = storeToRefs(destinationStore);
-const vantourStore = useVantourStore();
+const destinationStore = useDestinationStore();
 const { cities } = storeToRefs(cityStore);
-const { vantours, loading } = storeToRefs(vantourStore);
+const { dests, loading } = storeToRefs(destinationStore);
 // const { cars } = storeToRefs(carStore);
-// const { language } = storeToRefs(settingStore);
+const { language } = storeToRefs(settingStore);
 
 const all = ref(false);
 
@@ -54,7 +54,7 @@ const filteredHotel = async () => {
 const changePage = async (url) => {
   console.log(url);
   if (url != null) {
-    await vantourStore.getChangePage(url);
+    await destinationStore.getChangePage(url);
   }
 };
 
@@ -81,13 +81,10 @@ watch(bottomOfWindow, (newVal) => {
     let changePageCalled = false;
     if (newVal && !changePageCalled) {
       console.log("This is the bottom of the window");
-      if (
-        vantours?.value?.meta?.current_page < vantours?.value?.meta?.last_page
-      ) {
+      if (dests?.value?.meta?.current_page < dests?.value?.meta?.last_page) {
         changePageCalled = true; // Set the flag to true
         changePage(
-          vantours?.value?.meta?.links[vantours?.value?.meta?.current_page + 1]
-            .url
+          dests?.value?.meta?.links[dests?.value?.meta?.current_page + 1].url
         );
       }
     }
@@ -102,7 +99,7 @@ watch([filterId], async ([newValue]) => {
     city_id: newValue,
   };
 
-  const res = await vantourStore.getFilterAction(data);
+  const res = await destinationStore.getFilterAction(data);
   console.log(res, "this is data");
   count_filter.value = res.meta.total;
 });
@@ -114,11 +111,11 @@ const searchFunction = (data) => {
   filterId.value = data.id;
 };
 
-const vantourList = ref([]);
+const destsList = ref([]);
 
-// const goDetialPage = (id) => {
-//   router.push({ name: "HomeVantourDetail", params: { id: id } });
-// };
+const goDetialPage = (id) => {
+  router.push({ name: "HomeDestinationDetail", params: { id: id } });
+};
 
 // const getRange = (data) => {
 //   // console.log(data);
@@ -131,20 +128,21 @@ const vantourList = ref([]);
 
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
-  let res = await vantourStore.getListAction();
+  let res = await destinationStore.getListAction();
   await cityStore.getSimpleListAction();
-  vantourList.value = res.data;
-  console.log(vantourList.value, "this is entrance list add");
+  await settingStore.getLanguage();
+  destsList.value = res.data;
+  console.log(destsList.value, "this is entrance list add");
   // await carStore.getSimpleListAction();
   // console.log(cars.value, "this is car");
 });
 
-watch(vantours, async (newValue) => {
+watch(dests, async (newValue) => {
   if (newValue) {
-    vantourList.value = [...vantourList.value, ...newValue.data];
+    destsList.value = [...destsList.value, ...newValue.data];
   }
 
-  console.log(vantourList.value, "this is add new");
+  console.log(destsList.value, "this is add new");
 });
 </script>
 
@@ -191,11 +189,18 @@ watch(vantours, async (newValue) => {
       </div>
       <div
         class="border border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
-        v-for="i in vantourList ?? []"
+        v-for="i in destsList ?? []"
         :key="i"
       >
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
           <img
+            v-if="i?.feature_img"
+            :src="i?.feature_img"
+            class="w-full h-full object-cover"
+            alt=""
+          />
+          <img
+            v-if="!i?.feature_img"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
             class="w-full h-full object-cover"
             alt=""
@@ -205,26 +210,24 @@ watch(vantours, async (newValue) => {
           <div class="overflow-hidden space-y-1">
             <div>
               <p class="text-xs font-semibold text-main pr-4">
-                bangkok day trip 1
+                {{ i?.name }}
               </p>
               <!-- <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" /> -->
             </div>
             <div class="flex justify-start gap-1 flex-wrap items-center">
               <p
                 class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
-                v-for="a in 2"
-                :key="a"
               >
-                bangkok
+                {{ i?.city?.name }}
               </p>
             </div>
             <p class="text-[8px] h-[70px] overflow-hidden">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe id
-              labore fuga esse, nesciunt sapiente impedit odit voluptatibus
-              molestiae, consequuntur deleniti, magni quasi expedita velit
-              tenetur cum dolorum minus libero!
+              {{ language == "english" ? i.place_id : i.summary }}
             </p>
-            <div class="absolute bottom-0 space-y-0.5">
+            <div
+              class="absolute bottom-0 space-y-0.5"
+              @click="goDetialPage(i.id)"
+            >
               <!-- <p class="text-[10px] pb-1">starting price</p> -->
               <p
                 class="bg-main text-white text-xs font-medium px-3 inline-block py-1 rounded-full"
@@ -311,7 +314,7 @@ watch(vantours, async (newValue) => {
                 @click="filteredHotel"
                 class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
               >
-                see {{ count_filter }} vantours
+                see {{ count_filter }} destinations
               </button>
             </div>
           </div>

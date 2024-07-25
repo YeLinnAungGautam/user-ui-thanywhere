@@ -18,7 +18,7 @@ const router = useRouter();
 const searchTag = ref(1);
 
 const goResultPage = () => {
-  router.push("/home/destination-result");
+  router.push("/home/destination-result/2/bangkok");
 };
 
 const all = ref(false);

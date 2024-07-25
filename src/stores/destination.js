@@ -11,7 +11,7 @@ export const useDestinationStore = defineStore("destination", {
                 const response = await axios.get("/destinations?limit=1000&page=1", {
                     params: params,
                 });
-                this.dests = response.data.result;
+                this.dests = response.data;
                 this.loading = false;
 
                 return response.data;
@@ -23,7 +23,7 @@ export const useDestinationStore = defineStore("destination", {
         async getChangePage(url, params) {
             this.loading = true;
             const response = await axios.get(url, { params: params });
-            this.dests = response.data.result;
+            this.dests = response.data;
             this.loading = false;
             return response.data;
         },
@@ -33,7 +33,7 @@ export const useDestinationStore = defineStore("destination", {
                 const response = await axios.get("/destinations", {
                     params: params,
                 });
-                this.dests = response.data.result;
+                this.dests = response.data;
                 this.loading = false;
                 console.log(response);
                 return response.data;
@@ -41,6 +41,25 @@ export const useDestinationStore = defineStore("destination", {
                 this.loading = false;
                 throw error;
             }
+        },
+        async getFilterAction(params) {
+            const response = await axios.get("/destinations", {
+                params: params,
+            });
+
+            return response.data;
+        },
+        async getRelativeTour(id) {
+            const response = await axios.get(
+                "/destinations/" + id + "/related-tours"
+            );
+
+            return response.data;
+        },
+        async getDetailAction(id) {
+            const response = await axios.get("/destinations/" + id);
+
+            return response.data;
         },
     },
 });

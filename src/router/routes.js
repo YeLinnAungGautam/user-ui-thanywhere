@@ -17,6 +17,7 @@ import HomeInclusiveResultVue from "../views/InclusiveResultPage.vue";
 import HomeAirLineSearchVue from "../views/AirLineSearchPage.vue";
 import HomeAirLineResultVue from "../views/AirLineResultPage.vue";
 import HomeDestinationSearchVue from "../views/DestinationSearchPage.vue";
+import HomeDestinationDetailVue from "../views/DestinationDetailPage.vue";
 import HomeDestinationResultVue from "../views/DestinationResultPage.vue";
 import HomeDetailVue from "../views/HomeDetailPage.vue";
 import HomeRoomDetailVue from "../views/RoomDetailPage.vue";
@@ -161,6 +162,11 @@ const routes = [{
         path: "/home/destination-search",
         name: "HomeDestinationSearch",
         component: HomeDestinationSearchVue,
+    },
+    {
+        path: "/home/destination-detail/:id",
+        name: "HomeDestinationDetail",
+        component: HomeDestinationDetailVue,
     },
     {
         path: "/home/destination-result/:id/:name",

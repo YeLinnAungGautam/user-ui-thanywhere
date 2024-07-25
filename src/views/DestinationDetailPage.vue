@@ -25,20 +25,16 @@
             <h1 class="text-main font-medium">{{ detail?.name }}</h1>
             <div class="flex justify-start items-center gap-1">
               <p
-                v-for="c in detail?.cities"
-                :key="c"
                 class="text-[10px] px-2 py-0.5 bg-black/10 rounded inline-block text-black/70"
               >
-                {{ c?.name }}
+                {{ detail?.city?.name }}
               </p>
             </div>
             <p
               class="text-[13.5px] text-black/80 leading-6"
               :class="!seeMoreShow ? 'h-[147px] overflow-hidden' : 'h-auto'"
               v-html="
-                language == 'english'
-                  ? detail?.full_description_en
-                  : detail?.description
+                language == 'english' ? detail?.description : detail?.detail
               "
             ></p>
             <p
@@ -57,12 +53,52 @@
             </p>
           </div>
           <div class="space-y-3">
-            <h1 class="font-medium pt-3">ticket variations</h1>
+            <h1 class="font-medium pt-3 text-main">relative car packages</h1>
             <div
               class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
             >
-              <div v-for="i in detail?.variations" :key="i">
-                <EntranceVariationCartVue :data="i" />
+              <div
+                class="border border-black/10 min-w-[230px] rounded-2xl shadow-sm bg-white mr-4"
+                v-for="i in related_list ?? []"
+                :key="i"
+              >
+                <!-- @click="goDetialPage(i?.id)" -->
+                <div
+                  @click="goDetailPage(i?.id)"
+                  class="w-full col-span-5 h-[150px] overflow-hidden rounded-t-2xl"
+                >
+                  <img
+                    :src="i?.cover_image"
+                    class="w-full h-full object-cover"
+                    alt=""
+                    v-if="i?.cover_image != null"
+                  />
+                  <img
+                    v-if="i?.cover_image == null"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
+                    class="w-full h-full object-cover"
+                    alt=""
+                  />
+                </div>
+                <div class="py-3 px-2">
+                  <p class="text-sm font-semibold min-h-[40px]">
+                    {{ i?.name }}
+                  </p>
+                  <p class="text-[10px] py-0.5 rounded inline-block text-main">
+                    {{ i?.destinations?.length }} destinations
+                  </p>
+
+                  <div class="text-[10px] gap-0.5 pt-1 space-y-2">
+                    <p class="text-black text-xs font-medium">
+                      starting car price
+                    </p>
+                    <p
+                      class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
+                    >
+                      {{ i.lowest_car_price }} THB
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -170,33 +206,41 @@ import whatsappIcon from "../assets/Booking icons/whatsapp.png";
 import callIcon from "../assets/Booking icons/call.png";
 import Modal from "../components/layout/Modal.vue";
 import { DialogPanel, DialogTitle } from "@headlessui/vue";
-import { useEntranceStore } from "../stores/entrance";
+import { useDestinationStore } from "../stores/destination";
+// import { useVantourStore } from "../stores/vantour";
 // import { StarIcon } from "@heroicons/vue/24/solid";
-import EntranceVariationCartVue from "../components/cart/EntranceVariationCart.vue";
+// import EntranceVariationCartVue from "../components/cart/EntranceVariationCart.vue";
 import { useSettingStore } from "../stores/setting";
 import { storeToRefs } from "pinia";
 
 const route = useRoute();
 const router = useRouter();
-const entranceStore = useEntranceStore();
+const destinationStore = useDestinationStore();
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
+// const vantourStore = useVantourStore();
 
 const detail = ref(null);
 const loading = ref(false);
 const seeMoreShow = ref(false);
+const related_list = ref(null);
 
 const getDetail = async (id) => {
   loading.value = true;
-  const res = await entranceStore.getDetailAction(id);
+  const res = await destinationStore.getDetailAction(id);
   console.log("====================================");
   console.log(res);
   console.log("====================================");
   detail.value = res.data;
   // loading.value = false;
-  setTimeout(() => {
-    loading.value = false;
-  }, 2000);
+
+  const relative = await destinationStore.getRelativeTour(res.data.id);
+  console.log("====================================");
+  console.log(relative, "this is relative");
+  related_list.value = relative?.data;
+  console.log("====================================");
+
+  loading.value = false;
 };
 
 const modalOpen = ref(false);
@@ -204,6 +248,16 @@ const modalOpen = ref(false);
 // const goRoomDetail = (id) => {
 //   router.push({ name: "HomeRoomDetail", params: { id: id } });
 // };
+
+const goDetailPage = (id) => {
+  router.push({
+    name: "HomeVantourDetail",
+    params: { id: id },
+  });
+  setTimeout(() => {
+    window.location.reload();
+  }, 500);
+};
 
 onMounted(async () => {
   await settingStore.getLanguage();

@@ -15,6 +15,7 @@
         class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10"
         v-for="(i, index) in data"
         :key="index"
+        @click="goDetialPage(i.id)"
       >
         <div class="w-full h-[140px] p-1.5 overflow-hidden">
           <img
@@ -64,6 +65,10 @@ const vantourStore = useVantourStore();
 
 const router = useRouter();
 const data = ref(null);
+
+const goDetialPage = (id) => {
+  router.push({ name: "HomeVantourDetail", params: { id: id } });
+};
 
 onMounted(async () => {
   const res = await vantourStore.getListAction({ limit: 8 });

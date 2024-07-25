@@ -46,7 +46,11 @@
                 class="flex flex-1 justify-start space-x-3 mt-6 pb-4 items-center overflow-x-scroll scroll-container border-b border-black/10"
                 v-if="detail?.destinations.length > 0"
               >
-                <div v-for="i in detail?.destinations" :key="i">
+                <div
+                  v-for="i in detail?.destinations"
+                  :key="i"
+                  @click="goDetialDesPage(i.id)"
+                >
                   <div class="w-[200px] h-[150px] overflow-hidden rounded-2xl">
                     <img
                       :src="i?.feature_img"
@@ -114,7 +118,7 @@
           class="bg-white mt-4 mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
         >
           <h1 class="font-medium">
-            other destinations in {{ detail?.cities[0].name }}
+            other packages in {{ detail?.cities[0].name }}
           </h1>
           <div
             class="flex justify-start items-center flex-nowrap overflow-scroll scroll-container pb-2"
@@ -331,6 +335,10 @@ const goDetailPage = (id) => {
   setTimeout(() => {
     window.location.reload();
   }, 500);
+};
+
+const goDetialDesPage = (id) => {
+  router.push({ name: "HomeDestinationDetail", params: { id: id } });
 };
 
 const modalOpen = ref(false);
