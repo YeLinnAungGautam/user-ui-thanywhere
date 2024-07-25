@@ -277,7 +277,7 @@ watch(
                   <p class="text-[8px] pb-1">starting price</p>
                   <p class="text-xs text-main font-semibold">
                     {{ i.lowest_car_price }}THB
-                    <span class="text-[8px] text-black/50">/person</span>
+                    <span class="text-[8px] text-black/50">/car</span>
                   </p>
                 </div>
                 <p
