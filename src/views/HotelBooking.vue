@@ -6,16 +6,19 @@ import HotelsGradesVue from "../components/hotelbookings/HotelsGrades.vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { useFacilityStore } from "../stores/facility";
-import { HeartIcon } from "@heroicons/vue/24/outline";
+import HotelCartVue from "../components/LoadingCarts/HotelCart.vue";
+import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
+// import { HeartIcon } from "@heroicons/vue/24/outline";
 import graph from "../assets/icons/graph.png";
-import { useSettingStore } from "../stores/setting";
-import {
-  MapPinIcon,
-  BuildingOffice2Icon,
-  StarIcon,
-  ChevronDownIcon,
-  XMarkIcon,
-} from "@heroicons/vue/24/solid";
+// import { useSettingStore } from "../stores/setting";
+// import {
+//   MapPinIcon,
+//   BuildingOffice2Icon,
+//   StarIcon,
+//   ChevronDownIcon,
+//   XMarkIcon,
+// } from "@heroicons/vue/24/solid";
+import { StarIcon, ChevronDownIcon, XMarkIcon } from "@heroicons/vue/24/solid";
 // import StarPartVue from "../components/home/StarPart.vue";
 import { useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
@@ -23,14 +26,14 @@ import { storeToRefs } from "pinia";
 import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 
-const settingStore = useSettingStore();
+// const settingStore = useSettingStore();
 const hotelStore = useHotelStore();
 const cityStore = useCityStore();
 const facilityStore = useFacilityStore();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { facilities } = storeToRefs(facilityStore);
-const { language } = storeToRefs(settingStore);
+// const { language } = storeToRefs(settingStore);
 
 const router = useRouter();
 const all = ref(false);
@@ -252,7 +255,7 @@ const placeArray = ref([]);
 
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
-  await settingStore.getLanguage();
+  // await settingStore.getLanguage();
   let res = await hotelStore.getListAction();
   await cityStore.getListHotelCityAction();
   console.log(cities.value, "this is city");
@@ -315,72 +318,17 @@ watch(hotels, async (newValue) => {
             <ChevronDownIcon class="w-3 h-3 text-main" />
           </div>
         </div>
+
         <div
-          class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
+          class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
           v-for="i in hotelList ? hotelList : []"
           :key="i"
           @click="goDetialPage(i?.id)"
         >
-          <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
-            <img
-              :src="i?.images[0]?.image"
-              class="w-full h-full object-cover"
-              alt=""
-              v-if="i?.images.length > 0"
-            />
-            <img
-              v-if="i?.images.length == 0"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-              class="w-full h-full object-cover"
-              alt=""
-            />
-          </div>
-          <div class="col-span-6 relative">
-            <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" />
-            <div class="mr-6 overflow-hidden">
-              <p class="text-xs font-semibold text-main">{{ i.name }}</p>
-              <div class="flex justify-between items-center">
-                <!-- <StarPartVue :count="i.rating" /> -->
-                <p class="text-[10px] text-black font-medium">
-                  {{ i.rating }}-star rating
-                </p>
-                <div
-                  class="text-[10px] flex justify-end items-center gap-0.5 py-1"
-                >
-                  <MapPinIcon class="w-3 h-3 text-black/50" />
-                  <p>{{ i?.city.name }}</p>
-                </div>
-              </div>
-              <p
-                class="text-[8px] h-[36px] overflow-hidden"
-                v-html="
-                  language == 'english'
-                    ? i.full_description_en
-                    : i.full_description
-                "
-              ></p>
-              <div class="absolute bottom-0 space-y-0.5">
-                <p class="text-[10px]">location area</p>
-                <div class="flex justify-start gap-2 items-center">
-                  <div
-                    class="text-[8px] flex justify-end text-main items-center gap-0.5 py-1"
-                  >
-                    <BuildingOffice2Icon class="w-2.5 h-2.5 text-main" />
-                    <p>{{ i.place }}</p>
-                  </div>
-                </div>
-                <p class="text-[10px] pb-1">start price</p>
-                <p
-                  class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
-                >
-                  {{ i.lowest_room_price }} THB
-                </p>
-              </div>
-            </div>
-          </div>
+          <HotelCartVue :i="i" />
         </div>
       </div>
-      <div
+      <!-- <div
         class="relative flex justify-center items-center py-[30%]"
         v-if="loading"
       >
@@ -388,8 +336,55 @@ watch(hotels, async (newValue) => {
           class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
         ></div>
         <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
-        <!-- <p>loading</p> -->
+      </div> -->
+      <div
+        v-if="loading"
+        class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
+      >
+        <div class="grid grid-cols-11 gap-3">
+          <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
+            <img
+              :src="LoadingImageCover"
+              class="w-full h-full object-cover opacity-30"
+              alt=""
+            />
+          </div>
+          <div class="col-span-6 relative">
+            <div class="mr-6 overflow-hidden">
+              <p
+                class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-1"
+              ></p>
+              <p
+                class="font-semibold text-sm bg-black/20 w-full h-3 animate-pulse mt-2"
+              ></p>
+              <p
+                class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+              ></p>
+              <p
+                class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+              ></p>
+              <p
+                class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+              ></p>
+              <p
+                class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-5"
+              ></p>
+              <p
+                class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+              ></p>
+              <p
+                class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+              ></p>
+              <button
+                class="bg-main animate-pulse px-3 mt-2 mb-2 py-1 rounded-xl text-xs font-semibold text-white"
+              >
+                loading
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+
       <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
         <div class="font-poppins">
           <div class="flex justify-between items-center px-6 pb-4">

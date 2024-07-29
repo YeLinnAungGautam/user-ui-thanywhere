@@ -2,17 +2,14 @@
 import Layout from "../components/layout/LayoutHome.vue";
 import {
   ChevronLeftIcon,
-  HeartIcon,
   ChevronDownIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
+import HotelCartVue from "../components/LoadingCarts/HotelCart.vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
-import {
-  MapPinIcon,
-  BuildingOffice2Icon,
-  StarIcon,
-} from "@heroicons/vue/24/solid";
+import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
+import { StarIcon } from "@heroicons/vue/24/solid";
 // import stayinbangkok from "../assets/db";
 // import StarPartVue from "../components/home/StarPart.vue";
 import { useRoute, useRouter } from "vue-router";
@@ -25,10 +22,10 @@ import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import { useHotelStore } from "../stores/hotel";
 import { useFacilityStore } from "../stores/facility";
-import { useSettingStore } from "../stores/setting";
+// import { useSettingStore } from "../stores/setting";
 
 const hotelStore = useHotelStore();
-const settingStore = useSettingStore();
+// const settingStore = useSettingStore();
 const cityStore = useCityStore();
 const facilityStore = useFacilityStore();
 const router = useRouter();
@@ -36,7 +33,7 @@ const route = useRoute();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { facilities } = storeToRefs(facilityStore);
-const { language } = storeToRefs(settingStore);
+// const { language } = storeToRefs(settingStore);
 
 const open = () => {
   myBottomSheet.value.open();
@@ -247,7 +244,7 @@ const choosePlaceArray = (id) => {
 
 onMounted(async () => {
   city_id.value = route.params.id;
-  await settingStore.getLanguage();
+  // await settingStore.getLanguage();
   rating.value = route.query.rating != "null" ? route.query.rating : "";
 
   place.value = route.query.place != "null" ? route.query.place : "";
@@ -409,77 +406,14 @@ watch(
           </div>
         </div>
         <div
-          class="border mx-6 border-black/10 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
+          class="border mx-6 border-black/10 rounded-2xl shadow-sm bg-white p-2.5"
           v-for="i in hotelList ?? []"
           :key="i"
           @click="goDetialPage(i?.id)"
         >
-          <div class="w-full col-span-5 h-[182px] overflow-hidden rounded-2xl">
-            <img
-              :src="i?.images[0]?.image"
-              class="w-full h-full object-cover"
-              alt=""
-              v-if="i?.images.length > 0"
-            />
-            <img
-              v-if="i?.images.length == 0"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-              class="w-full h-full object-cover"
-              alt=""
-            />
-          </div>
-          <div class="col-span-6 relative">
-            <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" />
-            <div class="mr-6 overflow-hidden">
-              <p
-                class="text-sm font-semibold text-main max-h-[40px] overflow-hidden"
-              >
-                {{ i.name }}
-              </p>
-              <div class="flex justify-between items-center">
-                <!-- <StarPartVue :count="i.rating" /> -->
-                <p class="text-[10px] text-black font-medium">
-                  {{ i.rating }}-star rating
-                </p>
-                <div
-                  class="text-[10px] flex justify-end items-center gap-0.5 py-1"
-                >
-                  <MapPinIcon class="w-3 h-3 text-black/50" />
-                  <p>{{ i?.city.name }}</p>
-                </div>
-              </div>
-              <!-- <p class="text-[8px] h-[36px] overflow-hidden">
-                {{ i.description }}
-              </p> -->
-              <p
-                class="text-[8px] h-[36px] overflow-hidden"
-                v-html="
-                  language == 'english'
-                    ? i.full_description_en
-                    : i.full_description
-                "
-              ></p>
-              <div class="absolute bottom-0">
-                <p class="text-[8px]">location area</p>
-                <div class="flex justify-start gap-2 items-center">
-                  <div
-                    class="text-[8px] flex justify-end text-main items-center gap-0.5 py-1"
-                  >
-                    <BuildingOffice2Icon class="w-2.5 h-2.5 text-main" />
-                    <p>{{ i.place }}</p>
-                  </div>
-                </div>
-                <p class="text-[10px] pb-1">start price</p>
-                <p
-                  class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
-                >
-                  {{ i.lowest_room_price }} THB
-                </p>
-              </div>
-            </div>
-          </div>
+          <HotelCartVue :i="i" />
         </div>
-        <div
+        <!-- <div
           class="relative flex justify-center items-center py-[30%]"
           v-if="loading"
         >
@@ -487,7 +421,55 @@ watch(
             class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
           ></div>
           <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
-          <!-- <p>loading</p> -->
+        </div> -->
+        <div
+          v-if="loading"
+          class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
+        >
+          <div class="grid grid-cols-11 gap-3">
+            <div
+              class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl"
+            >
+              <img
+                :src="LoadingImageCover"
+                class="w-full h-full object-cover opacity-30"
+                alt=""
+              />
+            </div>
+            <div class="col-span-6 relative">
+              <div class="mr-6 overflow-hidden">
+                <p
+                  class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-1"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-3 animate-pulse mt-2"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-5"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                ></p>
+                <button
+                  class="bg-main animate-pulse px-3 mt-2 mb-2 py-1 rounded-xl text-xs font-semibold text-white"
+                >
+                  loading
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

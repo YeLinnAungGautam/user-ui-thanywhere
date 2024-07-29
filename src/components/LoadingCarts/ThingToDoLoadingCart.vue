@@ -3,15 +3,12 @@
     <div v-show="imageLoaded">
       <div class="w-[200px] h-[100px] overflow-hidden">
         <img
-          :src="i?.cover_image"
+          :src="
+            i?.cover_image
+              ? i?.cover_image
+              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s'
+          "
           @load="onImageLoad"
-          v-if="i?.cover_image"
-          class="w-full h-full object-cover rounded-2xl"
-          alt=""
-        />
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-          v-if="!i?.cover_image"
           class="w-full h-full object-cover rounded-2xl"
           alt=""
         />

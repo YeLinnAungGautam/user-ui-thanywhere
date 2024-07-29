@@ -10,14 +10,62 @@
         <ChevronDownIcon class="w-3 h-3" />
       </div>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6">
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6"
+      v-if="data.length == 0"
+    >
+      <div v-for="a in 4" :key="a">
+        <!-- v-if="data.length == 0" -->
+        <div class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10">
+          <div class="w-full h-[140px] p-1.5 overflow-hidden">
+            <img
+              :src="LoadingImageCover"
+              class="w-full h-full object-cover opacity-30 rounded-xl"
+              alt=""
+            />
+          </div>
+          <div class="px-3 py-1">
+            <p
+              class="text-main text-[10px] bg-black/20 w-10 h-2 animate-pulse"
+            ></p>
+            <p
+              class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-2"
+            ></p>
+            <p
+              class="text-main text-[10px] bg-black/20 w-10 h-3 mt-2 animate-pulse"
+            ></p>
+            <p
+              class="text-main text-[10px] bg-black/20 w-full h-2 mt-2 animate-pulse"
+            ></p>
+            <p
+              class="text-main text-[10px] bg-black/20 w-full h-2 mt-1 animate-pulse"
+            ></p>
+            <p
+              class="text-main text-[10px] bg-black/20 w-full h-2 mt-1 animate-pulse"
+            ></p>
+            <p
+              class="text-main text-[10px] bg-black/20 w-10 h-3 mt-4 animate-pulse"
+            ></p>
+            <button
+              class="bg-main animate-pulse px-3 mt-2 mb-2 py-1 rounded-xl text-xs font-semibold text-white"
+            >
+              loading
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6"
+      v-if="data.length > 0"
+    >
       <div
         class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10"
         v-for="(i, index) in data"
         :key="index"
         @click="goDetialPage(i.id)"
       >
-        <div class="w-full h-[140px] p-1.5 overflow-hidden">
+        <!-- <div class="w-full h-[140px] p-1.5 overflow-hidden">
           <img
             :src="i.cover_image"
             class="w-full h-full object-cover rounded-xl"
@@ -43,7 +91,8 @@
           >
             {{ i?.lowest_car_price }}THB
           </button>
-        </div>
+        </div> -->
+        <BestSellingVantourVue :i="i" />
       </div>
     </div>
   </div>
@@ -52,25 +101,28 @@
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
-import StarPartVue from "./StarPart.vue";
-import { storeToRefs } from "pinia";
-import { useSettingStore } from "../../stores/setting";
+// import StarPartVue from "./StarPart.vue";
+// import { storeToRefs } from "pinia";
+// import { useSettingStore } from "../../stores/setting";
 import { useRouter } from "vue-router";
 import { useVantourStore } from "../../stores/vantour";
+import BestSellingVantourVue from "../../components/LoadingCarts/BestSellingVantour.vue";
+import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 
 // const seeMore = ref(true);
-const settingStore = useSettingStore();
-const { language } = storeToRefs(settingStore);
+// const settingStore = useSettingStore();
+// const { language } = storeToRefs(settingStore);
 const vantourStore = useVantourStore();
 
 const router = useRouter();
-const data = ref(null);
+const data = ref([]);
 
 const goDetialPage = (id) => {
   router.push({ name: "HomeVantourDetail", params: { id: id } });
 };
 
 onMounted(async () => {
+  data.value = [];
   const res = await vantourStore.getListAction({ limit: 8 });
   data.value = res.data;
 });
