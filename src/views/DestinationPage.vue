@@ -221,7 +221,7 @@ watch(dests, async (newValue) => {
                 {{ i?.city?.name }}
               </p>
             </div>
-            <p class="text-[8px] h-[70px] overflow-hidden">
+            <p class="text-[10px] h-[75px] overflow-hidden">
               {{ language == "english" ? i.place_id : i.summary }}
             </p>
             <div

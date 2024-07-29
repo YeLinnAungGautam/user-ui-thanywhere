@@ -2,9 +2,9 @@
   <div>
     <Layout>
       <p
-        class="text-center py-3 border-b border-black/10 text-sm font-semibold"
+        class="text-center py-3 text-main border-b border-black/10 text-sm font-semibold"
       >
-        log in or sign up
+        log in
       </p>
       <div class="mt-10 px-6">
         <p class="font-medium pb-6">welcome to thanywhere</p>
@@ -36,6 +36,12 @@
         >
           continue
         </button>
+        <button
+          @click="router.push('/account/signup')"
+          class="py-3 text-center w-full text-sm font-medium border border-black/30 mt-4 bg-background rounded-lg"
+        >
+          go to sign up
+        </button>
       </div>
       <div class="relative px-6 py-10">
         <div
@@ -58,7 +64,7 @@
             continue with facebook
           </button>
         </div>
-        <div class="relative">
+        <div class="relative" @click="getGoogleLink">
           <img
             :src="google"
             class="w-5 h-5 object-cover absolute top-3 left-6"
@@ -70,6 +76,13 @@
             continue with google
           </button>
         </div>
+        <Modal
+          :show="showModal"
+          :iframeSrc="googleOAuthLink"
+          @close="showModal = false"
+        >
+          <p>Google OAuth link is shown in the modal.</p>
+        </Modal>
       </div>
     </Layout>
   </div>
@@ -79,4 +92,47 @@
 import Layout from "../components/layout/LayoutHome.vue";
 import facebook from "../assets/icons/Social_icon/341099_facebook_icon.png";
 import google from "../assets/icons/Social_icon/icons8-google-48.png";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
+import Modal from "../components/auth/ModalAuth.vue";
+import { ref } from "vue";
+
+const authStore = useAuthStore();
+const router = useRouter();
+const showModal = ref(false);
+const googleOAuthLink = ref("");
+
+const getGoogleLink = async () => {
+  // Logic to get Google OAuth link
+  const res = await authStore.getGoogleLink();
+  console.log(res);
+
+  const popup = window.open(
+    res.data.data.url,
+    "_blank",
+    "width=500,height=600"
+  );
+
+  if (!popup || popup.closed || typeof popup.closed == "undefined") {
+    alert("Popup blocked. Please allow popups for this website.");
+    return;
+  }
+
+  showModal.value = true;
+
+  // Monitor the popup window and close the modal when the popup is closed
+  const popupTimer = setInterval(() => {
+    if (popup.closed) {
+      clearInterval(popupTimer);
+      showModal.value = false;
+      // Optionally, handle the OAuth flow completion
+      handleOAuthCompletion();
+    }
+  }, 500);
+};
+
+const handleOAuthCompletion = () => {
+  // Logic to handle OAuth flow completion
+  console.log("OAuth flow completed.");
+};
 </script>
