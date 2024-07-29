@@ -34,6 +34,16 @@
               />
             </div>
             <div>
+              <p class="px-4 py-2 text-xs">phone</p>
+              <input
+                type="text"
+                name=""
+                class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
+                id=""
+                placeholder=" enter your phone number"
+              />
+            </div>
+            <div>
               <p class="px-4 py-2 text-xs">email</p>
               <input
                 type="email"
