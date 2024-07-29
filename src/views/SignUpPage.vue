@@ -13,90 +13,87 @@
             class="border border-black/10 rounded-lg overflow-hidden divide-y divide-black/10"
           >
             <div>
-              <p class="px-4 py-2 text-xs">name</p>
               <input
                 type="text"
                 name=""
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
                 id=""
-                placeholder=" enter your name"
+                placeholder="first name"
               />
             </div>
-
             <div>
-              <p class="px-4 py-2 text-xs">birthday</p>
+              <input
+                type="text"
+                name=""
+                class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
+                id=""
+                placeholder="last name"
+              />
+            </div>
+          </div>
+          <p class="text-[10px] py-1">
+            make sure it matches the name on your goverment ID
+          </p>
+          <div
+            class="border border-black/10 mt-3 rounded-lg overflow-hidden divide-y divide-black/10"
+          >
+            <div>
               <input
                 type="date"
                 name=""
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
                 id=""
-                placeholder=" enter your birth day"
+                placeholder="birth date"
               />
             </div>
+          </div>
+          <p class="text-[10px] py-1">
+            to sign up , you need to be at least 18 . your birthday won't be
+            shared with other people who use thanywhere
+          </p>
+          <div
+            class="border border-black/10 mt-3 rounded-lg overflow-hidden divide-y divide-black/10"
+          >
             <div>
-              <p class="px-4 py-2 text-xs">phone</p>
-              <input
-                type="text"
-                name=""
-                class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
-                id=""
-                placeholder=" enter your phone number"
-              />
-            </div>
-            <div>
-              <p class="px-4 py-2 text-xs">email</p>
               <input
                 type="email"
                 name=""
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
                 id=""
-                placeholder=" enter your email adddress"
+                placeholder="email address"
               />
             </div>
+          </div>
+          <p class="text-[10px] py-1">
+            we'll email you trip confirmations and receipts.
+          </p>
+
+          <div
+            class="border border-black/10 mt-3 rounded-lg overflow-hidden divide-y divide-black/10"
+          >
             <div>
-              <p class="px-4 py-2 text-xs">password</p>
               <input
                 type="password"
                 name=""
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
                 id=""
-                placeholder=" enter your password"
+                placeholder="password"
               />
             </div>
             <div>
-              <p class="px-4 py-2 text-xs">gender</p>
-              <div class="flex justify-between items-center">
-                <div class="flex justify-start px-4 py-2 items-center">
-                  <input
-                    type="checkbox"
-                    name=""
-                    class="outline-none focus:outline-none bg-background text-sm w-full ring-0"
-                    id=""
-                  />
-                  <p class="text-xs font-semibold px-2">male</p>
-                </div>
-                <div class="flex justify-start px-4 py-2 items-center">
-                  <input
-                    type="checkbox"
-                    name=""
-                    class="outline-none focus:outline-none bg-background text-sm w-full ring-0"
-                    id=""
-                  />
-                  <p class="text-xs font-semibold px-2">female</p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <p class="px-4 py-2 text-xs">address</p>
-              <textarea
+              <input
+                type="password"
                 name=""
+                class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
                 id=""
-                cols="5"
-                rows="4"
-                class="outline-none px-4 focus:outline-none bg-background text-sm w-full ring-0"
-              ></textarea>
+                placeholder="confirmation password"
+              />
             </div>
           </div>
+          <p class="text-[10px] py-4">
+            we'll send you marketing promotions , special offers , inspiration
+            and policy updates via email,
+          </p>
           <p class="text-[10px] py-4">
             we'll send confirmation code to confirm your email. Standard message
             and data rates apply .

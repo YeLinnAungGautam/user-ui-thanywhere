@@ -58,7 +58,7 @@
           <img :src="profileImage" alt="" class="w-5 h-5 mx-auto" />
           <p class="text-[10px] font-medium text-black/80">account</p>
         </div> -->
-        <router-link to="/account/profile" class="space-y-1">
+        <router-link to="/account/login" class="space-y-1">
           <img
             :src="profileImage"
             alt=""
