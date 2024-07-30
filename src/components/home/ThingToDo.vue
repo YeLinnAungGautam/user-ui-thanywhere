@@ -15,9 +15,9 @@
     >
       <!-- <ThingToDoLoadingCartVue /> -->
       <div
-        class="bg-white shadow rounded-2xl mb-3"
+        class="bg-white shadow rounded-3xl mb-3 px-2 pt-2"
         :class="index == 0 ? 'ml-6' : 'ml-0'"
-        v-for="(i, index) in 4"
+        v-for="(i, index) in 8"
         :key="i"
       >
         <!-- <div>
@@ -75,7 +75,7 @@
     >
       <!-- <ThingToDoLoadingCartVue /> -->
       <div
-        class="bg-white shadow rounded-2xl mb-3"
+        class="bg-white shadow rounded-3xl mb-3 px-2 pt-2"
         :class="index == 0 ? 'ml-6' : 'ml-0'"
         v-for="(i, index) in entrances?.data"
         @click="router.push('/home/attraction-detail/' + i.id)"

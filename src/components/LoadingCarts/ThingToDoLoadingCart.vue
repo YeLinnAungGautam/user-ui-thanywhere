@@ -13,7 +13,7 @@
           alt=""
         />
       </div>
-      <div class="px-3 py-2">
+      <div class="px-1 py-2">
         <p class="text-main text-[10px]">bangkok</p>
         <p class="font-semibold text-sm line-clamp-1">{{ i?.name }}</p>
         <button

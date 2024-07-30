@@ -8,10 +8,14 @@ import Layout from "../components/layout/LayoutHome.vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import stayinbangkok from "../assets/db";
+import debounce from "lodash.debounce";
+import { useHotelStore } from "../stores/hotel";
 
 const cityStore = useCityStore();
+const hotelStore = useHotelStore();
 
-const { cities, loading } = storeToRefs(cityStore);
+const { hotels, loading } = storeToRefs(hotelStore);
+const { cities } = storeToRefs(cityStore);
 
 const router = useRouter();
 
@@ -25,9 +29,13 @@ const goResultPage = () => {
       params: {
         id: searchId.value ? searchId.value : "null",
         name: search.value ? search.value : "null",
+      },
+      query: {
         price: "null",
         rating: "null",
         place: "null",
+        facilities: "null",
+        search: search_by_name.value ? search_by_name.value : "",
       },
     });
   }
@@ -35,6 +43,7 @@ const goResultPage = () => {
 
 const search = ref("Bangkok");
 const searchId = ref(2);
+const search_by_name = ref("");
 
 const searchFunction = (data) => {
   search.value = data.name;
@@ -48,14 +57,29 @@ const getCityData = async () => {
   await cityStore.getSimpleListAction();
 };
 
+const getHotelData = async () => {
+  await hotelStore.getListAction({
+    search: search_by_name.value,
+    city_id: searchId.value,
+  });
+};
+
 onMounted(async () => {
   await getCityData();
+  await getHotelData();
   console.log(cities.value);
 });
 
-watch(searchId, () => {
-  goResultPage();
-});
+// watch(searchId, () => {
+//   goResultPage();
+// });
+
+watch(
+  [search_by_name, searchId],
+  debounce(async () => {
+    await getHotelData();
+  }, 500)
+);
 </script>
 
 <template>
@@ -66,9 +90,9 @@ watch(searchId, () => {
           <ChevronLeftIcon class="w-6 h-6 text-white" @click="router.back()" />
           <div class="relative w-full">
             <input
-              type="search"
+              type="text"
               name=""
-              v-model="search"
+              v-model="search_by_name"
               placeholder=" search"
               class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
               id=""
@@ -94,10 +118,7 @@ watch(searchId, () => {
               {{ all ? "show less" : "show more" }}
             </p>
           </div>
-          <div
-            class="flex justify-start items-center gap-2 flex-wrap"
-            v-if="!loading"
-          >
+          <div class="flex justify-start items-center gap-2 flex-wrap">
             <div v-for="(c, index) in cities?.data" :key="c.id">
               <p
                 v-if="index < 6 || all"
@@ -126,7 +147,7 @@ watch(searchId, () => {
           @click="searchTag = 1"
         >
           <p class="text-xs text-main font-semibold text-center text-nowrap">
-            top searches
+            {{ hotels?.meta.total }} searches
           </p>
         </div>
         <div
@@ -141,10 +162,13 @@ watch(searchId, () => {
       </div>
       <div class="px-6">
         <transition-group name="slide" mode="out-in">
-          <div class="space-y-3 min-h-[600px]" v-if="searchTag == 1">
+          <div
+            class="space-y-3 min-h-[600px]"
+            v-if="searchTag == 1 && !loading"
+          >
             <div
               class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in data"
+              v-for="i in hotels?.data"
               :key="i"
             >
               <img

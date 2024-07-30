@@ -4,13 +4,14 @@
       <carousel v-bind="settings">
         <slide v-for="(slide, index) in showImage" :key="index">
           <div>
-            <div class="w-full h-[420px] overflow-hidden">
+            <!-- <div class="w-full h-[420px] overflow-hidden">
               <img
                 :src="slide.image"
                 class="w-full h-full object-cover rounded-b-[60px]"
                 alt=""
               />
-            </div>
+            </div> -->
+            <ImageCarouselCart :i="slide.image" />
           </div>
         </slide>
 
@@ -27,6 +28,7 @@
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
 import { onMounted, defineProps, ref } from "vue";
+import ImageCarouselCart from "../LoadingCarts/ImageCarouselCart.vue";
 // import homeGradesdb from "../../assets/homeGrades";
 
 const settings = {

@@ -67,23 +67,6 @@
           </div>
           <div class="space-y-3">
             <h1 class="font-medium pt-3">select rooms</h1>
-            <!-- <div class="space-y-3">
-              <p class="text-sm font-medium">room options</p>
-              <div class="flex justify-between items-center">
-                <div class="flex justify-start items-center gap-2">
-                  <input type="checkbox" name="" id="" />
-                  <p class="text-xs">non breakfast</p>
-                </div>
-                <p class="text-xs">+ 0 THB</p>
-              </div>
-              <div class="flex justify-between items-center">
-                <div class="flex justify-start items-center gap-2">
-                  <input type="checkbox" name="" id="" />
-                  <p class="text-xs">breakfast</p>
-                </div>
-                <p class="text-xs">+ 0 THB</p>
-              </div>
-            </div> -->
             <div
               class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
             >
@@ -107,7 +90,9 @@
                     />
                   </div>
                   <div class="px-3 py-2 space-y-2">
-                    <p class="font-medium text-xs">{{ i?.name }}</p>
+                    <p class="font-medium text-xs line-clamp-2">
+                      {{ i?.name }}
+                    </p>
                     <p class="text-green text-[10px]">Breakfast inclusive</p>
                     <div class="flex justify-between items-center gap-2">
                       <button
@@ -208,7 +193,7 @@
                 />
               </div>
               <div class="py-3 px-2">
-                <p class="text-sm font-semibold">{{ i?.name }}</p>
+                <p class="text-sm font-semibold line-clamp-2">{{ i?.name }}</p>
                 <p class="text-[10px] text-black font-medium">
                   {{ i.rating }}-star rating
                 </p>
@@ -316,7 +301,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
@@ -326,7 +311,7 @@ import {
   ArrowUpTrayIcon,
   HeartIcon,
 } from "@heroicons/vue/24/outline";
-import locationMap from "../assets/location.png";
+import locationMap from "../assets/web/maps_15107618.png";
 import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
 import whatsappIcon from "../assets/Booking icons/whatsapp.png";
@@ -373,6 +358,13 @@ const goRoomDetail = (id) => {
 const goDetialPage = (id) => {
   router.push({ name: "HomeDetail", params: { id: id } });
 };
+
+watch(
+  () => route.params.id,
+  (newId) => {
+    getDetail(newId); // Re-fetch data when the ID changes
+  }
+);
 
 onMounted(async () => {
   await settingStore.getLanguage();

@@ -14,7 +14,7 @@
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6"
       v-if="data.length == 0"
     >
-      <div v-for="a in 4" :key="a">
+      <div v-for="a in 8" :key="a">
         <!-- v-if="data.length == 0" -->
         <div class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10">
           <div class="w-full h-[140px] p-1.5 overflow-hidden">

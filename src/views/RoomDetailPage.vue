@@ -25,9 +25,7 @@ const getDetail = async (id) => {
   const res = await roomStore.getDetailAction(id);
   console.log(res);
   detail.value = res.data;
-  setTimeout(() => {
-    loading.value = false;
-  }, 2000);
+  loading.value = false;
 };
 
 const bathroom = [

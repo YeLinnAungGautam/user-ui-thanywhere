@@ -16,20 +16,22 @@ import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 // import { useCarStore } from "../stores/car";
-import { useSettingStore } from "../stores/setting";
+// import { useSettingStore } from "../stores/setting";
 import { useDestinationStore } from "../stores/destination";
 import debounce from "lodash.debounce";
+import DestinationCart from "../components/LoadingCarts/DestinationCart.vue";
+import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
 
 // const carStore = useCarStore();
 const cityStore = useCityStore();
 const router = useRouter();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
-const settingStore = useSettingStore();
+// const settingStore = useSettingStore();
 const destinationStore = useDestinationStore();
 const { dests, loading } = storeToRefs(destinationStore);
 // const { cars } = storeToRefs(carStore);
-const { language } = storeToRefs(settingStore);
+// const { language } = storeToRefs(settingStore);
 const route = useRoute();
 
 const open = () => {
@@ -231,65 +233,64 @@ watch(
           </div>
         </div>
         <div
-          class="border border-black/10 mx-4 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
+          class="border border-black/10 mx-4 rounded-2xl shadow-sm bg-white p-2.5"
           v-for="i in destsList ?? []"
           :key="i"
+          @click="goDetialPage(i.id)"
         >
-          <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
-            <img
-              v-if="i?.feature_img"
-              :src="i?.feature_img"
-              class="w-full h-full object-cover"
-              alt=""
-            />
-            <img
-              v-if="!i?.feature_img"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-              class="w-full h-full object-cover"
-              alt=""
-            />
-          </div>
-          <div class="col-span-6 relative">
-            <div class="overflow-hidden space-y-1">
-              <div>
-                <p class="text-xs font-semibold text-main pr-4">
-                  {{ i?.name }}
-                </p>
-                <!-- <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" /> -->
-              </div>
-              <div class="flex justify-start gap-1 flex-wrap items-center">
-                <p
-                  class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
-                >
-                  {{ i?.city?.name }}
-                </p>
-              </div>
-              <p class="text-[8px] h-[70px] overflow-hidden">
-                {{ language == "english" ? i.place_id : i.summary }}
-              </p>
+          <DestinationCart :i="i" />
+        </div>
+        <div v-if="loading" class="space-y-4">
+          <div
+            v-for="a in 8"
+            :key="a"
+            class="border border-black/10 rounded-2xl mx-4 shadow-sm bg-white p-2.5"
+          >
+            <div class="grid grid-cols-11 gap-3">
               <div
-                class="absolute bottom-0 space-y-0.5"
-                @click="goDetialPage(i.id)"
+                class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl"
               >
-                <!-- <p class="text-[10px] pb-1">starting price</p> -->
-                <p
-                  class="bg-main text-white text-xs font-medium px-3 inline-block py-1 rounded-full"
-                >
-                  read details
-                </p>
+                <img
+                  :src="LoadingImageCover"
+                  class="w-full h-full object-cover opacity-30"
+                  alt=""
+                />
+              </div>
+              <div class="col-span-6 relative">
+                <div class="mr-6 overflow-hidden">
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-1"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-3 animate-pulse mt-2"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-5"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                  ></p>
+                  <button
+                    class="bg-main animate-pulse px-3 mt-2 mb-2 py-1 rounded-xl text-xs font-semibold text-white"
+                  >
+                    loading
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="relative flex justify-center items-center py-[30%]"
-          v-if="loading"
-        >
-          <div
-            class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
-          ></div>
-          <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
-          <!-- <p>loading</p> -->
         </div>
       </div>
     </div>

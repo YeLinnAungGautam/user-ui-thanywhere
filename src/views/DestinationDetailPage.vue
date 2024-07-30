@@ -190,7 +190,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import {
@@ -254,10 +254,14 @@ const goDetailPage = (id) => {
     name: "HomeVantourDetail",
     params: { id: id },
   });
-  setTimeout(() => {
-    window.location.reload();
-  }, 500);
 };
+
+watch(
+  () => route.params.id,
+  (newId) => {
+    getDetail(newId); // Re-fetch data when the ID changes
+  }
+);
 
 onMounted(async () => {
   await settingStore.getLanguage();

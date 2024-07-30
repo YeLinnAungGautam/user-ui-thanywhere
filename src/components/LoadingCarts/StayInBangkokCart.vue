@@ -23,7 +23,7 @@
           {{ i.place }}
         </p>
         <p
-          class="text-[9px] pt-1 line-clamp-3"
+          class="text-[9px] pt-1 line-clamp-3 max-h-[44px] overflow-hidden"
           v-html="
             language == 'english' ? i?.full_description_en : i?.full_description
           "

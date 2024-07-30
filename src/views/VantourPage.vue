@@ -10,7 +10,9 @@ import { onMounted, ref, watch } from "vue";
 import { useVantourStore } from "../stores/vantour";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
-import { useSettingStore } from "../stores/setting";
+import VantourCart from "../components/LoadingCarts/VantourCart.vue";
+import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
+// import { useSettingStore } from "../stores/setting";
 import {
   ChevronDownIcon,
   XMarkIcon,
@@ -20,14 +22,14 @@ import {
 
 const router = useRouter();
 // const carStore = useCarStore();
-const settingStore = useSettingStore();
+// const settingStore = useSettingStore();
 const vantourStore = useVantourStore();
 const cityStore = useCityStore();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { vantours, loading } = storeToRefs(vantourStore);
 // const { cars } = storeToRefs(carStore);
-const { language } = storeToRefs(settingStore);
+// const { language } = storeToRefs(settingStore);
 
 const all = ref(false);
 
@@ -193,70 +195,65 @@ watch(vantours, async (newValue) => {
         </div>
       </div>
       <div
-        class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white grid grid-cols-11 gap-3 p-2.5"
+        class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
         v-for="i in destsList"
         :key="i"
+        @click="goDetialPage(i.id)"
       >
-        <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
-          <img
-            v-if="i?.cover_image"
-            :src="i?.cover_image"
-            class="w-full h-full object-cover"
-            alt=""
-          />
-          <img
-            v-if="!i?.cover_image"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-            class="w-full h-full object-cover"
-            alt=""
-          />
-        </div>
-        <div class="col-span-6 relative">
-          <div class="overflow-hidden space-y-1">
-            <p class="text-xs font-semibold text-main">{{ i.name }}</p>
-            <div class="flex justify-start gap-1 flex-wrap items-center">
-              <p
-                v-for="c in i?.cities"
-                :key="c"
-                class="bg-black/10 px-1 text-[8px] py-0.5 rounded-md"
-              >
-                {{ c.name }}
-              </p>
+        <!-- add cart -->
+        <VantourCart :i="i" />
+      </div>
+      <div v-if="loading" class="space-y-4">
+        <div
+          v-for="a in 8"
+          :key="a"
+          class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
+        >
+          <div class="grid grid-cols-11 gap-3">
+            <div
+              class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl"
+            >
+              <img
+                :src="LoadingImageCover"
+                class="w-full h-full object-cover opacity-30"
+                alt=""
+              />
             </div>
-            <p class="text-[8px] h-[70px] overflow-hidden">
-              {{
-                language == "english"
-                  ? i.full_description_en
-                  : i.long_description
-              }}
-            </p>
-            <div class="absolute bottom-0 space-y-0.5 w-full">
-              <div class="flex justify-between items-center w-full">
-                <p class="text-[8px] pb-1">starting price</p>
-                <p class="text-xs text-main font-semibold">
-                  {{ i.lowest_car_price }}THB
-                  <span class="text-[8px] text-black/50">/car</span>
-                </p>
+            <div class="col-span-6 relative">
+              <div class="mr-6 overflow-hidden">
+                <p
+                  class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-1"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-3 animate-pulse mt-2"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-5"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                ></p>
+                <p
+                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                ></p>
+                <button
+                  class="bg-main animate-pulse px-3 mt-2 mb-2 py-1 rounded-xl text-xs font-semibold text-white"
+                >
+                  loading
+                </button>
               </div>
-              <p
-                @click="goDetialPage(i.id)"
-                class="bg-main text-white text-xs font-medium px-3 inline-block py-1 rounded-full"
-              >
-                view more
-              </p>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        class="relative flex justify-center items-center py-[30%]"
-        v-if="loading"
-      >
-        <div
-          class="absolute animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-main"
-        ></div>
-        <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
-        <!-- <p>loading</p> -->
       </div>
       <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
         <div class="font-poppins">

@@ -193,10 +193,7 @@ const getDetail = async (id) => {
   console.log(res);
   console.log("====================================");
   detail.value = res.data;
-  // loading.value = false;
-  setTimeout(() => {
-    loading.value = false;
-  }, 2000);
+  loading.value = false;
 };
 
 const modalOpen = ref(false);

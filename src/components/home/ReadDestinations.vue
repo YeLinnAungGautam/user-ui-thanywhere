@@ -16,13 +16,14 @@
           @click="goResultPage(slide.id, slide.name)"
         >
           <div :class="index == 0 ? 'ml-6' : 'ml-3'">
-            <div class="w-full h-[120px] overflow-hidden">
+            <!-- <div class="w-full h-[120px] overflow-hidden">
               <img
                 :src="slide.image"
                 class="w-full h-full object-cover rounded-2xl"
                 alt=""
               />
-            </div>
+            </div> -->
+            <ReadDestinationCart :i="slide.image" />
           </div>
         </slide>
 
@@ -40,6 +41,7 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
 import { onMounted, ref } from "vue";
 import citydb from "../../assets/citydb";
+import ReadDestinationCart from "../../components/LoadingCarts/ReadDestinationCart.vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 

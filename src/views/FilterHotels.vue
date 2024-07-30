@@ -244,6 +244,8 @@ const choosePlaceArray = (id) => {
 
 onMounted(async () => {
   city_id.value = route.params.id;
+  searchCityName.value = route.params.name;
+
   // await settingStore.getLanguage();
   rating.value = route.query.rating != "null" ? route.query.rating : "";
 
@@ -259,7 +261,7 @@ onMounted(async () => {
   }
   facilityQuery.value = route.query.facilities;
   facilitiesArray.value =
-    route.query.facilities != "null" ? route.query.facilities.split(",") : [];
+    route.query.facilities != "null" ? route.query.facilities?.split(",") : [];
   await cityStore.getListHotelCityAction();
   choosePlaceArray(city_id.value);
   window.addEventListener("scroll", handleScroll);
@@ -267,9 +269,9 @@ onMounted(async () => {
 
   await hotelStore.getListAction(watchSystem.value);
   await facilityStore.getListAction();
+  search.value = route.query.search ? route.query.search : "";
   // setPlaceArray(hotel?.value.data);
   count.value = res.meta.total;
-  searchCityName.value = route.params.name;
 
   console.log(facilitiesArray.value, "this is array filter faciliy");
   hotelList.value = res.data;
@@ -422,51 +424,54 @@ watch(
           ></div>
           <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
         </div> -->
-        <div
-          v-if="loading"
-          class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
-        >
-          <div class="grid grid-cols-11 gap-3">
-            <div
-              class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl"
-            >
-              <img
-                :src="LoadingImageCover"
-                class="w-full h-full object-cover opacity-30"
-                alt=""
-              />
-            </div>
-            <div class="col-span-6 relative">
-              <div class="mr-6 overflow-hidden">
-                <p
-                  class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-1"
-                ></p>
-                <p
-                  class="font-semibold text-sm bg-black/20 w-full h-3 animate-pulse mt-2"
-                ></p>
-                <p
-                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
-                ></p>
-                <p
-                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
-                ></p>
-                <p
-                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
-                ></p>
-                <p
-                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-5"
-                ></p>
-                <p
-                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
-                ></p>
-                <p
-                  class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
-                ></p>
-                <button
-                  class="bg-main animate-pulse px-3 mt-2 mb-2 py-1 rounded-xl text-xs font-semibold text-white"
-                >
-                  loading
-                </button>
+        <div v-if="loading" class="space-y-4">
+          <div
+            v-for="a in 8"
+            :key="a"
+            class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
+          >
+            <div class="grid grid-cols-11 gap-3">
+              <div
+                class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl"
+              >
+                <img
+                  :src="LoadingImageCover"
+                  class="w-full h-full object-cover opacity-30"
+                  alt=""
+                />
+              </div>
+              <div class="col-span-6 relative">
+                <div class="mr-6 overflow-hidden">
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-1"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-3 animate-pulse mt-2"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-1"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-5"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                  ></p>
+                  <p
+                    class="font-semibold text-sm bg-black/20 w-full h-2 animate-pulse mt-2"
+                  ></p>
+                  <button
+                    class="bg-main animate-pulse px-3 mt-2 mb-2 py-1 rounded-xl text-xs font-semibold text-white"
+                  >
+                    loading
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -626,7 +631,11 @@ watch(
             </div>
 
             <div class="range-slider w-full relative">
-              <img :src="graph" class="absolute -bottom-[45px]" alt="" />
+              <img
+                :src="graph"
+                class="absolute opacity-60 -bottom-[45px]"
+                alt=""
+              />
               <input
                 type="range"
                 v-model="minPrice"

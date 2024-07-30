@@ -5,7 +5,7 @@ import AllProductPartVue from "../components/home/AllProductPart.vue";
 import ReadDestinationVue from "../components/home/ReadDestinations.vue";
 import ThingToDoVue from "../components/home/ThingToDo.vue";
 import StayinBangkokVue from "../components/home/StayInBangkok.vue";
-import UniqueHotelVue from "../components/home/UniqueHotel.vue";
+// import UniqueHotelVue from "../components/home/UniqueHotel.vue";
 import BestSellingVanTours from "../components/home/BestSellingVanTours.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
@@ -72,7 +72,7 @@ onMounted(() => {});
           <ThingToDoVue />
           <StayinBangkokVue />
           <!-- <ExporeAboutCityVue /> -->
-          <UniqueHotelVue />
+          <!-- <UniqueHotelVue /> -->
           <BestSellingVanTours />
         </div>
       </Layout>
