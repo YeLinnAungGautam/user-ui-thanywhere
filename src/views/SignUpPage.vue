@@ -17,7 +17,7 @@
                 type="text"
                 name=""
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
-                id=""
+                v-model="formData.first_name"
                 placeholder="first name"
               />
             </div>
@@ -25,8 +25,8 @@
               <input
                 type="text"
                 name=""
+                v-model="formData.last_name"
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
-                id=""
                 placeholder="last name"
               />
             </div>
@@ -40,9 +40,9 @@
             <div>
               <input
                 type="date"
+                v-model="formData.dob"
                 name=""
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
-                id=""
                 placeholder="birth date"
               />
             </div>
@@ -57,9 +57,9 @@
             <div>
               <input
                 type="email"
+                v-model="formData.email"
                 name=""
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
-                id=""
                 placeholder="email address"
               />
             </div>
@@ -74,18 +74,18 @@
             <div>
               <input
                 type="password"
+                v-model="formData.password"
                 name=""
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
-                id=""
                 placeholder="password"
               />
             </div>
             <div>
               <input
                 type="password"
+                v-model="formData.password_confirmation"
                 name=""
                 class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
-                id=""
                 placeholder="confirmation password"
               />
             </div>
@@ -100,6 +100,7 @@
             <span class="underline font-medium">privacy policy</span>
           </p>
           <button
+            @click="handleSubmit"
             class="py-3 text-center w-full text-sm font-medium bg-main text-white rounded-lg"
           >
             continue
@@ -119,6 +120,44 @@
 <script setup>
 import Layout from "../components/layout/LayoutHome.vue";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
+import { useAuthStore } from "../stores/auth";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
+const authStore = useAuthStore();
 const router = useRouter();
+
+const formData = ref({
+  first_name: "",
+  last_name: "",
+  email: "",
+  dob: "",
+  password: "",
+  password_confirmation: "",
+});
+
+const handleSubmit = async () => {
+  try {
+    const frmData = new FormData();
+    frmData.append("first_name", formData.value.first_name);
+    frmData.append("last_name", formData.value.last_name);
+    frmData.append("email", formData.value.email);
+    frmData.append("dob", formData.value.dob);
+    frmData.append("password", formData.value.password);
+    frmData.append(
+      "password_confirmation",
+      formData.value.password_confirmation
+    );
+    const res = await authStore.registerAction(frmData);
+    console.log(res, "this is response");
+    if (res.data != null) {
+      toast.success(res.message);
+      router.push("/account/login");
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error(error.response.data.message);
+  }
+};
 </script>

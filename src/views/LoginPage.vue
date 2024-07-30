@@ -13,16 +13,16 @@
         >
           <input
             type="email"
+            v-model="formData.email"
             name=""
             class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
-            id=""
             placeholder=" enter your email address"
           />
           <input
             type="password"
             name=""
+            v-model="formData.password"
             class="outline-none focus:outline-none px-4 py-3 bg-background text-sm w-full ring-0"
-            id=""
             placeholder=" enter password"
           />
         </div>
@@ -32,6 +32,7 @@
           <span class="underline font-medium">privacy policy</span>
         </p>
         <button
+          @click="handleSubmit"
           class="py-3 text-center w-full text-sm font-medium bg-main text-white rounded-lg"
         >
           continue
@@ -96,11 +97,33 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import Modal from "../components/auth/ModalAuth.vue";
 import { ref } from "vue";
+import { useToast } from "vue-toastification";
 
 const authStore = useAuthStore();
 const router = useRouter();
 const showModal = ref(false);
 const googleOAuthLink = ref("");
+const toast = useToast();
+
+const formData = ref({
+  email: "",
+  password: "",
+});
+
+const handleSubmit = async () => {
+  const frmData = new FormData();
+  frmData.append("email", formData.value.email);
+  frmData.append("password", formData.value.password);
+  const res = await authStore.loginAction(frmData);
+  console.log(res, "this is response");
+  // toast.success(res.data.message);
+  if (res.data == null) {
+    toast.error(`${res.message} `);
+  } else {
+    toast.success(`${res.message} , thank you from thanywhere! `);
+    router.push("/home");
+  }
+};
 
 const getGoogleLink = async () => {
   // Logic to get Google OAuth link

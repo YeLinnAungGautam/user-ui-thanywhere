@@ -17,10 +17,10 @@
             <PencilSquareIcon class="w-6 h-6 text-white" />
           </div>
         </div>
-        <p class="text-center text-lg text-main font-semibold">Guest</p>
-        <div
-          class="mx-4 p-4 rounded-xl shadow-custom divide-y divide-black/10 opacity-50"
-        >
+        <p class="text-center text-lg text-main font-semibold">
+          {{ user?.name }}
+        </p>
+        <div class="mx-4 p-4 rounded-xl shadow-custom divide-y divide-black/10">
           <div class="flex justify-between items-center py-2">
             <div class="flex justify-start items-center gap-2">
               <PencilSquareIcon class="w-5 h-5" />
@@ -49,10 +49,18 @@
             </div>
             <ChevronRightIcon class="w-5 h-5" />
           </div>
+          <div
+            class="flex justify-between items-center py-2"
+            @click="logoutAction"
+          >
+            <div class="flex justify-start items-center gap-2">
+              <ArrowRightStartOnRectangleIcon class="w-5 h-5" />
+              <p class="text-xs">logout</p>
+            </div>
+            <ChevronRightIcon class="w-5 h-5" />
+          </div>
         </div>
-        <div
-          class="mx-4 p-4 rounded-xl shadow-custom divide-y divide-black/10 opacity-50"
-        >
+        <div class="mx-4 p-4 rounded-xl shadow-custom divide-y divide-black/10">
           <div class="flex justify-between items-center py-2">
             <div class="flex justify-start items-center gap-2">
               <LockClosedIcon class="w-5 h-5" />
@@ -75,12 +83,6 @@
             <ChevronRightIcon class="w-5 h-5" />
           </div>
         </div>
-        <p
-          class="text-center text-sm px-4 py-2 border border-main mx-4 rounded-lg shadow-custom text-main font-semibold"
-          @click="router.push('/account/login')"
-        >
-          need to login fast
-        </p>
       </div>
     </Layout>
   </div>
@@ -93,6 +95,7 @@ import { useRouter } from "vue-router";
 import {
   PencilSquareIcon,
   ChevronRightIcon,
+  ArrowRightStartOnRectangleIcon,
   BookOpenIcon,
   DocumentTextIcon,
   TicketIcon,
@@ -100,6 +103,23 @@ import {
   ExclamationTriangleIcon,
   NewspaperIcon,
 } from "@heroicons/vue/24/outline";
+import { useAuthStore } from "../stores/auth";
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 
 const router = useRouter();
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
+
+const logoutAction = () => {
+  const res = authStore.logoutAction();
+  if (res) {
+    router.push("/home");
+  }
+};
+
+onMounted(() => {
+  authStore.getAction();
+  console.log(user.value.first_name);
+});
 </script>
