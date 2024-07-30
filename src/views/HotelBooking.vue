@@ -531,7 +531,7 @@ watch(hotels, async (newValue) => {
               </div>
             </div>
             <div class="space-y-3 overflow-hidden pb-8 pt-4">
-              <div class="flex justify-between items-center pb-5">
+              <div class="flex justify-between items-center">
                 <p class="text-sm font-semibold">price range</p>
                 <p
                   class="text-black px-3 py-1 relative z-20 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
@@ -542,11 +542,9 @@ watch(hotels, async (newValue) => {
               </div>
 
               <div class="range-slider w-full">
-                <img
-                  :src="graph"
-                  class="absolute opacity-60 -bottom-[45px]"
-                  alt=""
-                />
+                <div
+                  class="w-full h-1 rounded-xl absolute top-[37px] bg-main"
+                ></div>
                 <input
                   type="range"
                   v-model="minPrice"
@@ -562,28 +560,28 @@ watch(hotels, async (newValue) => {
                   class="range-max"
                 />
               </div>
-              <div class="pt-24 flex justify-between items-center gap-2">
+              <div class="pt-16 flex justify-between items-center gap-2">
                 <!-- <p class="text-xs text-black text-center">
                   {{ minPrice }} THB - {{ maxPrice }} THB
                 </p> -->
-                <div class="border border-black/10 w-[45%] rounded-lg p-2">
+                <div class="border border-black/50 w-[45%] rounded-lg p-2">
                   <p class="text-[10px]">minimum</p>
                   <input
                     type="number"
                     name=""
                     v-model="minPrice"
-                    class="outline-none focus:outline-none ring-0 w-auto"
+                    class="outline-none focus:outline-none ring-0 w-full"
                     id=""
                   />
                 </div>
-                <p></p>
-                <div class="border border-black/10 w-[45%] rounded-lg p-2">
+                <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
+                <div class="border border-black/50 w-[45%] rounded-lg p-2">
                   <p class="text-[10px]">maximum</p>
                   <input
                     type="number"
                     name=""
                     v-model="maxPrice"
-                    class="outline-none focus:outline-none ring-0 w-auto"
+                    class="outline-none focus:outline-none ring-0 w-full"
                     id=""
                   />
                 </div>

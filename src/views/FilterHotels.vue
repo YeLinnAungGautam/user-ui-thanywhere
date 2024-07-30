@@ -243,22 +243,24 @@ const choosePlaceArray = (id) => {
 };
 
 onMounted(async () => {
-  city_id.value = route.params.id;
-  searchCityName.value = route.params.name;
-
-  // await settingStore.getLanguage();
-  rating.value = route.query.rating != "null" ? route.query.rating : "";
-
-  place.value = route.query.place != "null" ? route.query.place : "";
-  if (
-    route.query.price &&
-    typeof route.query.price === "string" &&
-    route.query.price.includes("-")
-  ) {
-    price_range.value = route.query.price;
+  if (route.query.search != "") {
+    search.value = route.query.search ? route.query.search : "";
   } else {
-    price.value = route.query.price;
+    city_id.value = route.params.id;
+    searchCityName.value = route.params.name;
+    rating.value = route.query.rating != "null" ? route.query.rating : "";
+    place.value = route.query.place != "null" ? route.query.place : "";
+    if (
+      route.query.price &&
+      typeof route.query.price === "string" &&
+      route.query.price.includes("-")
+    ) {
+      price_range.value = route.query.price;
+    } else {
+      price.value = route.query.price;
+    }
   }
+  // await settingStore.getLanguage();
   facilityQuery.value = route.query.facilities;
   facilitiesArray.value =
     route.query.facilities != "null" ? route.query.facilities?.split(",") : [];
@@ -269,7 +271,7 @@ onMounted(async () => {
 
   await hotelStore.getListAction(watchSystem.value);
   await facilityStore.getListAction();
-  search.value = route.query.search ? route.query.search : "";
+
   // setPlaceArray(hotel?.value.data);
   count.value = res.meta.total;
 
@@ -631,11 +633,9 @@ watch(
             </div>
 
             <div class="range-slider w-full relative">
-              <img
-                :src="graph"
-                class="absolute opacity-60 -bottom-[45px]"
-                alt=""
-              />
+              <div
+                class="w-full h-1 rounded-xl absolute top-[37px] bg-main"
+              ></div>
               <input
                 type="range"
                 v-model="minPrice"
@@ -651,28 +651,28 @@ watch(
                 class="range-max"
               />
             </div>
-            <div class="pt-24 flex justify-between items-center gap-2">
+            <div class="pt-16 flex justify-between items-center gap-2">
               <!-- <p class="text-xs text-black text-center">
                 {{ minPrice }} THB - {{ maxPrice }} THB
               </p> -->
-              <div class="border border-black/10 w-[45%] rounded-lg p-2">
+              <div class="border border-black/50 w-[45%] rounded-lg p-2">
                 <p class="text-[10px]">minimum</p>
                 <input
                   type="number"
                   name=""
                   v-model="minPrice"
-                  class="outline-none focus:outline-none ring-0 w-auto"
+                  class="outline-none focus:outline-none ring-0 w-full"
                   id=""
                 />
               </div>
-              <p></p>
-              <div class="border border-black/10 w-[45%] rounded-lg p-2">
+              <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
+              <div class="border border-black/50 w-[45%] rounded-lg p-2">
                 <p class="text-[10px]">maximum</p>
                 <input
                   type="number"
                   name=""
                   v-model="maxPrice"
-                  class="outline-none focus:outline-none ring-0 w-auto"
+                  class="outline-none focus:outline-none ring-0 w-full"
                   id=""
                 />
               </div>
