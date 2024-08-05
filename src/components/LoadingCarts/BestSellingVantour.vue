@@ -14,21 +14,33 @@
         />
       </div>
       <div class="px-3 py-0">
-        <StarPartVue :count="3" />
+        <!-- <StarPartVue :count="5" /> -->
+        <div class="flex justify-between items-center gap-1">
+          <p
+            class="text-[10px] text-black font-medium flex justify-start items-center gap-0.5"
+          >
+            5 <StarIcon class="w-4 h-4 text-main" />
+          </p>
+          <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
+            <MapPinIcon class="w-3 h-3 text-black/50" />
+            <p class="pt-0.5">{{ i?.cities[0]?.name }}</p>
+          </div>
+        </div>
         <p class="font-semibold text-sm pt-1 line-clamp-1">{{ i.name }}</p>
-        <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
+        <!-- <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
           {{ i?.cities[0]?.name }}
-        </p>
-        <p class="text-[9px] pt-1 line-clamp-3">
-          {{
-            language == "english" ? i?.full_description_en : i?.long_description
-          }}
-        </p>
-        <p class="text-xs mt-2 font-medium">starting car price</p>
+        </p> -->
+        <p
+          class="text-[9px] pt-1 line-clamp-3"
+          v-html="
+            language == 'english' ? i?.full_description_en : i?.long_description
+          "
+        ></p>
+        <p class="text-[10px] mt-2 font-medium">Van price to Saloon price</p>
         <button
           class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
         >
-          {{ i?.lowest_car_price }}THB
+          {{ i?.lowest_car_price }}THB / car
         </button>
       </div>
     </div>
@@ -79,7 +91,8 @@ import { ref, defineProps, onMounted } from "vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
-import StarPartVue from "../home/StarPart.vue";
+// import StarPartVue from "../home/StarPart.vue";
+import { StarIcon, MapPinIcon } from "@heroicons/vue/24/solid";
 
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);

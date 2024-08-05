@@ -11,9 +11,15 @@
         @click="router.back()"
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
       />
-      <ArrowUpTrayIcon
+      <!-- <ArrowUpTrayIcon
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
-      />
+      /> -->
+      <div
+        @click="shareContent"
+        class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+      >
+        <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
+      </div>
       <HeartIcon
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
       />
@@ -23,11 +29,21 @@
         >
           <div class="space-y-2">
             <h1 class="text-main font-medium">{{ detail?.name }}</h1>
-            <p
+            <!-- <p
               class="text-[10px] px-2 py-0.5 bg-black/10 rounded inline-block text-black/80"
             >
               {{ detail?.place }}
-            </p>
+            </p> -->
+
+            <div
+              class="text-[10px] flex justify-start items-center gap-0.5 py-1"
+            >
+              <MapPinIcon class="w-3 h-3 text-black/50" />
+              <p class="pt-0.5">
+                {{ detail?.city?.name }} , {{ detail?.place }}
+              </p>
+            </div>
+
             <p
               class="text-[13.5px] text-black/80 leading-6"
               :class="!seeMoreShow ? 'h-[147px] overflow-hidden' : 'h-auto'"
@@ -144,7 +160,7 @@
                   />
                   <img
                     :src="locationMap"
-                    class="w-7 h-7 rounded-lg"
+                    class="w-5 h-5 rounded-lg"
                     alt=""
                     v-if="i.image == 'undefined'"
                   />
@@ -306,12 +322,9 @@ import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { useSettingStore } from "../stores/setting";
-import {
-  ChevronLeftIcon,
-  ArrowUpTrayIcon,
-  HeartIcon,
-} from "@heroicons/vue/24/outline";
-import locationMap from "../assets/web/maps_15107618.png";
+import { ChevronLeftIcon, HeartIcon } from "@heroicons/vue/24/outline";
+import locationMap from "../assets/web/pin.svg";
+import ShareIcon from "../assets/web/send.png";
 import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
 import whatsappIcon from "../assets/Booking icons/whatsapp.png";
@@ -365,6 +378,22 @@ watch(
     getDetail(newId); // Re-fetch data when the ID changes
   }
 );
+
+const shareContent = () => {
+  // Check if the Web Share API is supported
+  if (navigator.share) {
+    navigator
+      .share({
+        title: "Check out this awesome content!",
+        text: "Here is some interesting content you might like.",
+        url: window.location.href, // Current page URL
+      })
+      .then(() => console.log("Successful share"))
+      .catch((error) => console.error("Error sharing", error));
+  } else {
+    console.error("Web Share API not supported");
+  }
+};
 
 onMounted(async () => {
   await settingStore.getLanguage();

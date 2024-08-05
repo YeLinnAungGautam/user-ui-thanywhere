@@ -10,6 +10,8 @@ import { storeToRefs } from "pinia";
 import stayinbangkok from "../assets/db";
 import debounce from "lodash.debounce";
 import { useHotelStore } from "../stores/hotel";
+import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
+import SearchCart from "../components/LoadingCarts/SearchCart.vue";
 
 const cityStore = useCityStore();
 const hotelStore = useHotelStore();
@@ -93,6 +95,7 @@ watch(
               type="text"
               name=""
               v-model="search_by_name"
+              @keyup.enter="goResultPage"
               placeholder=" search"
               class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
               id=""
@@ -142,86 +145,107 @@ watch(
         class="flex flex-1 justify-start space-x-4 pr-4 items-center overflow-x-scroll scroll-container"
       >
         <div
-          class="space-y-2 w-[5.5rem] cursor-pointer ml-6"
-          :class="searchTag == 1 ? 'border-b-2 border-main' : ''"
+          class="space-y-1 w-[5.5rem] cursor-pointer ml-6"
+          :class="searchTag == 1 ? 'text-main' : 'text-black/60'"
           @click="searchTag = 1"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
+          <p class="text-xs font-semibold text-center text-nowrap">
             {{ hotels?.meta.total }} searches
           </p>
+          <p
+            class="bg-main w-1 h-1 rounded-full mx-auto"
+            :class="searchTag == 1 ? 'opacity-100' : 'opacity-0'"
+          ></p>
         </div>
         <div
-          class="space-y-2 w-[6.5rem] cursor-pointer ml-6"
-          :class="searchTag == 2 ? 'border-b-2 border-main' : ''"
+          class="space-y-1 w-[6.5rem] cursor-pointer ml-6"
+          :class="searchTag == 2 ? 'text-main' : 'text-black/60'"
           @click="searchTag = 2"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
+          <p class="text-xs font-semibold text-center text-nowrap">
             trending hotels
           </p>
+          <p
+            class="bg-main w-1 h-1 rounded-full mx-auto"
+            :class="searchTag == 2 ? 'opacity-100' : 'opacity-0'"
+          ></p>
+        </div>
+      </div>
+      <div class="px-6 space-y-3" v-show="loading">
+        <div
+          class="grid grid-cols-3 gap-3 rounded-2xl bg-white shadow px-3 py-3"
+          v-for="i in 10"
+          :key="i"
+        >
+          <div class="w-full h-[80px] overflow-hidden">
+            <img
+              :src="LoadingImageCover"
+              alt=""
+              class="w-full h-full rounded-xl opacity-50"
+            />
+          </div>
+          <div class="col-span-2 space-y-2">
+            <p
+              class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-1"
+            ></p>
+            <p
+              class="font-semibold text-sm bg-black/20 w-[50px] h-3 animate-pulse mt-2"
+            ></p>
+
+            <button
+              class="bg-main animate-pulse text-sm font-semibold text-white px-3 py-1 rounded-lg inline-block"
+            >
+              loading
+            </button>
+          </div>
         </div>
       </div>
       <div class="px-6">
-        <transition-group name="slide" mode="out-in">
+        <div class="space-y-3 min-h-[600px]" v-if="searchTag == 1 && !loading">
           <div
-            class="space-y-3 min-h-[600px]"
-            v-if="searchTag == 1 && !loading"
+            class="rounded-2xl bg-white shadow gap-3"
+            v-for="i in hotels?.data"
+            :key="i"
           >
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in hotels?.data"
-              :key="i"
-            >
-              <img
-                :src="i?.images[0]?.image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p class="bg-black/10 text-[8px] px-2 py-0.5 rounded">
-                    {{ i?.place }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_room_price }}THB
+            <!-- <img
+              :src="i?.images[0]?.image"
+              alt=""
+              class="w-full h-full rounded-xl"
+            />
+            <div class="col-span-2 space-y-1">
+              <p class="text-sm font-medium">{{ i?.name }}</p>
+              <div class="flex justify-start items-center gap-2 pb-2 flex-wrap">
+                <p class="bg-black/10 text-[8px] px-2 py-0.5 rounded">
+                  {{ i?.place }}
                 </p>
               </div>
-            </div>
+              <p
+                class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
+              >
+                {{ i?.lowest_room_price }}THB
+              </p> -->
+            <SearchCart
+              :image="i?.images[0]?.image"
+              :name="i?.name"
+              :city_name="i?.city?.name"
+              :price="i?.lowest_room_price"
+            />
           </div>
-          <div class="space-y-3 min-h-[600px]" v-if="searchTag == 2">
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in data"
-              :key="i"
-            >
-              <img
-                :src="i?.images[0]?.image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p class="bg-black/10 text-[8px] px-2 py-0.5 rounded">
-                    {{ i?.place }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_room_price }}THB
-                </p>
-              </div>
-            </div>
-          </div>
-        </transition-group>
+        </div>
+      </div>
+      <div class="space-y-3 mx-6 min-h-[600px]" v-if="searchTag == 2">
+        <div
+          class="rounded-2xl bg-white shadow gap-3"
+          v-for="i in data"
+          :key="i"
+        >
+          <SearchCart
+            :image="i?.images[0]?.image"
+            :name="i?.name"
+            :city_name="i?.city?.name"
+            :price="i?.lowest_room_price"
+          />
+        </div>
       </div>
     </div>
   </Layout>

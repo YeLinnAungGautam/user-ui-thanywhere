@@ -15,7 +15,7 @@ import { StarIcon } from "@heroicons/vue/24/solid";
 import { useRoute, useRouter } from "vue-router";
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import graph from "../assets/icons/graph.png";
+// import graph from "../assets/icons/graph.png";
 import { computed, onMounted, ref, watch } from "vue";
 import debounce from "lodash.debounce";
 import { useCityStore } from "../stores/city";
@@ -238,7 +238,7 @@ const choosePlaceArray = (id) => {
   // console.log(id, cities.value, "this is city place choose");
   if (id != "null") {
     const city = cities.value.data?.find((city) => city.id == id);
-    placeArray.value = city.places;
+    placeArray.value = city?.places;
   }
 };
 
@@ -525,7 +525,7 @@ watch(
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2">
               <p
-                v-if="placeArray.length == 0 || !placeArray"
+                v-if="placeArray?.length == 0 || !placeArray"
                 class="text-[9px] text-red"
               >
                 choose city first !

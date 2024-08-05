@@ -53,7 +53,7 @@
         <div class="w-full h-0.5 bg-black/10"></div>
       </div>
       <div class="px-6 space-y-5">
-        <div class="relative">
+        <!-- <div class="relative">
           <img
             :src="facebook"
             class="w-5 h-5 object-cover absolute top-3 left-6"
@@ -64,7 +64,7 @@
           >
             continue with facebook
           </button>
-        </div>
+        </div> -->
         <div class="relative" @click="getGoogleLink">
           <img
             :src="google"

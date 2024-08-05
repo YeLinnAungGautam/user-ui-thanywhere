@@ -9,7 +9,7 @@ import { useFacilityStore } from "../stores/facility";
 import HotelCartVue from "../components/LoadingCarts/HotelCart.vue";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
 // import { HeartIcon } from "@heroicons/vue/24/outline";
-import graph from "../assets/icons/graph.png";
+// import graph from "../assets/icons/graph.png";
 // import { useSettingStore } from "../stores/setting";
 // import {
 //   MapPinIcon,
@@ -282,7 +282,7 @@ watch(hotels, async (newValue) => {
       <div class="px-6 space-y-6">
         <div class="text-white">
           <p class="text-base font-semibold tracking-wider">hotel bookings</p>
-          <p class="text-xs">bangkok, pattaya, phuket, etc...</p>
+          <p class="text-xs">find best prices to hotels in thailand</p>
         </div>
         <div class="relative">
           <input

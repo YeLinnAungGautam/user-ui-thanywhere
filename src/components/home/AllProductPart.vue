@@ -53,7 +53,8 @@
           read destination
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="inclusivePage">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer">
+        <!-- @click="inclusivePage" -->
         <div
           class="bg-black/30 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -65,7 +66,8 @@
           inclusive packages
         </p>
       </div>
-      <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="airlinePage">
+      <div class="space-y-2 w-[3.5rem] cursor-pointer">
+        <!-- @click="airlinePage" -->
         <div
           class="bg-black/30 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
@@ -85,7 +87,7 @@
 import hotel from "../../assets/icons/products icons/hotel booking icon.svg";
 import inclusive from "../../assets/icons/products icons/all inclusive icon.svg";
 import attraction from "../../assets/icons/products icons/attractions icon.svg";
-import vantour from "../../assets/icons/products icons/van.png";
+import vantour from "../../assets/web/road-trip.png";
 import flight from "../../assets/icons/products icons/flight icon.svg";
 import { useRouter } from "vue-router";
 import AllProductCart from "../../components/LoadingCarts/AllProductCart.vue";
@@ -101,12 +103,12 @@ const vantourPage = () => {
 const attractionPage = () => {
   router.push("/home/attraction");
 };
-const inclusivePage = () => {
-  router.push("/home/inclusive");
-};
-const airlinePage = () => {
-  router.push("/home/airline");
-};
+// const inclusivePage = () => {
+//   router.push("/home/inclusive");
+// };
+// const airlinePage = () => {
+//   router.push("/home/airline");
+// };
 const destinationPage = () => {
   router.push("/home/destination");
 };

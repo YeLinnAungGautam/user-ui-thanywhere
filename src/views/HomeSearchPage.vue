@@ -8,7 +8,9 @@ import Layout from "../components/layout/LayoutHome.vue";
 import { useHotelStore } from "../stores/hotel";
 import { useVantourStore } from "../stores/vantour";
 import { useEntranceStore } from "../stores/entrance";
+import SearchCart from "../components/LoadingCarts/SearchCart.vue";
 import debounce from "lodash.debounce";
+import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
 
 const hotelStore = useHotelStore();
 const entranceStore = useEntranceStore();
@@ -23,6 +25,7 @@ const searchLoading = ref(false);
 const search = ref("");
 
 const type = ref("hotel");
+// const loading = ref(false);
 
 const searchTagChange = async (tag, city_id) => {
   searchTag.value = tag;
@@ -52,8 +55,8 @@ const getHotelList = async (city_id) => {
     city_id: city_id,
   });
   console.log(response.data);
-  searchLists.value = response.data;
   searchLoading.value = false;
+  searchLists.value = response.data;
 };
 const getEntranceList = async (city_id) => {
   searchLoading.value = true;
@@ -61,8 +64,8 @@ const getEntranceList = async (city_id) => {
     search: search.value,
     city_id: city_id,
   });
-  searchLists.value = response.data;
   searchLoading.value = false;
+  searchLists.value = response.data;
 };
 const getVantourList = async (city_id) => {
   searchLoading.value = true;
@@ -71,8 +74,8 @@ const getVantourList = async (city_id) => {
     city_id: city_id,
   });
   console.log(response.data);
-  searchLists.value = response.data;
   searchLoading.value = false;
+  searchLists.value = response.data;
 };
 
 watch(
@@ -96,6 +99,7 @@ watch(
 );
 
 watch(type, async () => {
+  searchTag.value = 1;
   if (type.value == "hotel") {
     await getHotelList();
   } else if (type.value == "entrance") {
@@ -112,6 +116,26 @@ watch(type, async () => {
   });
 });
 
+const goSearchResultPage = () => {
+  console.log("hello , ", type.value);
+  if (type.value == "hotel") {
+    router.push({
+      name: "FilteredHotelBookings",
+      params: {
+        id: "null",
+        name: "null",
+      },
+      query: {
+        price: "null",
+        rating: "null",
+        place: "null",
+        facilities: "null",
+        search: search.value ? search.value : "",
+      },
+    });
+  }
+};
+
 onMounted(async () => {
   search.value = route.query.search ? route.query.search : "";
   type.value = route.query.type ? route.query.type : "hotel";
@@ -124,7 +148,10 @@ onMounted(async () => {
     <HeaderHome :showTitle="false">
       <div class="px-6">
         <div class="flex justify-start items-center gap-6">
-          <ChevronLeftIcon class="w-6 h-6 text-white" @click="router.back()" />
+          <ChevronLeftIcon
+            class="w-6 h-6 text-white"
+            @click="router.push('/home')"
+          />
           <div class="relative w-full">
             <input
               type="text"
@@ -136,6 +163,7 @@ onMounted(async () => {
             />
 
             <img
+              @click="goSearchResultPage"
               :src="searchIcon"
               class="w-5 h-5 absolute top-3.5 right-5 text-main"
               alt=""
@@ -181,7 +209,7 @@ onMounted(async () => {
               vantours
             </p>
 
-            <p
+            <!-- <p
               class="px-4 py-1.5 text-xs rounded-full"
               :class="
                 type == 'inclusive'
@@ -213,7 +241,7 @@ onMounted(async () => {
               @click="type = 'ticket'"
             >
               flight tickets
-            </p>
+            </p> -->
           </div>
         </div>
       </div>
@@ -223,276 +251,213 @@ onMounted(async () => {
         class="flex flex-1 justify-start space-x-4 pr-4 items-center overflow-x-scroll scroll-container"
       >
         <div
-          class="space-y-2 w-[6.5rem] cursor-pointer ml-6"
-          :class="searchTag == 1 ? 'border-b-2 border-main' : ''"
+          class="space-y-1 w-auto cursor-pointer ml-6"
           @click="searchTagChange(1, null)"
         >
           <p
-            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+            class="text-xs font-semibold text-center whitespace-nowrap"
+            :class="searchTag == 1 ? 'text-main' : 'text-black/40'"
           >
-            search products
+            Top selling
           </p>
+          <p
+            class="bg-main w-1 h-1 rounded-full mx-auto"
+            :class="searchTag == 1 ? 'opacity-100' : 'opacity-0'"
+          ></p>
         </div>
         <div
-          class="space-y-2 w-[4rem] cursor-pointer ml-6"
-          :class="searchTag == 2 ? 'border-b-2 border-main' : ''"
+          class="space-y-1 w-auto cursor-pointer ml-6"
           @click="searchTagChange(2, 2)"
         >
           <p
-            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+            class="text-xs font-semibold text-center whitespace-nowrap"
+            :class="searchTag == 2 ? 'text-main' : 'text-black/40'"
           >
-            bangkok
+            Bangkok
           </p>
+          <p
+            class="bg-main w-1 h-1 rounded-full mx-auto"
+            :class="searchTag == 2 ? 'opacity-100' : 'opacity-0'"
+          ></p>
         </div>
         <div
-          class="space-y-2 w-[4rem] cursor-pointer ml-6"
-          :class="searchTag == 3 ? 'border-b-2 border-main' : ''"
+          class="space-y-1 w-auto cursor-pointer ml-6"
           @click="searchTagChange(3, 4)"
         >
           <p
-            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+            class="text-xs font-semibold text-center whitespace-nowrap"
+            :class="searchTag == 3 ? 'text-main' : 'text-black/40'"
           >
-            pattaya
+            Pattaya
           </p>
+          <p
+            class="bg-main w-1 h-1 rounded-full mx-auto"
+            :class="searchTag == 3 ? 'opacity-100' : 'opacity-0'"
+          ></p>
         </div>
         <div
-          class="space-y-2 w-[4rem] cursor-pointer ml-6"
-          :class="searchTag == 4 ? 'border-b-2 border-main' : ''"
+          class="space-y-1 w-auto cursor-pointer ml-6"
           @click="searchTagChange(4, 9)"
         >
           <p
-            class="text-xs text-main font-semibold text-center whitespace-nowrap"
+            class="text-xs font-semibold text-center whitespace-nowrap"
+            :class="searchTag == 4 ? 'text-main' : 'text-black/40'"
           >
             Phuket
           </p>
+          <p
+            class="bg-main w-1 h-1 rounded-full mx-auto"
+            :class="searchTag == 4 ? 'opacity-100' : 'opacity-0'"
+          ></p>
         </div>
       </div>
-      <div class="px-6">
-        <transition-group name="slide" mode="out-in">
-          <div
-            class="space-y-3 min-h-[600px]"
-            v-if="searchTag == 1 && type == 'hotel'"
-          >
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in searchLists"
-              :key="i"
-              @click="router.push(`/home/detail/` + i.id)"
-            >
-              <img
-                :src="i?.images[0]?.image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p class="bg-black/10 text-[8px] px-2 py-0.5 rounded">
-                    {{ i?.city?.name }}
-                  </p>
-                  <p class="bg-black/10 text-[8px] px-2 py-0.5 rounded">
-                    {{ i?.place }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_room_price }}THB
-                </p>
-              </div>
-            </div>
+      <div class="px-6 space-y-3" v-show="searchLoading">
+        <div
+          class="grid grid-cols-3 gap-3 rounded-2xl bg-white shadow px-3 py-3"
+          v-for="i in 10"
+          :key="i"
+        >
+          <div class="w-full h-[80px] overflow-hidden">
+            <img
+              :src="LoadingImageCover"
+              alt=""
+              class="w-full h-full rounded-xl opacity-50"
+            />
           </div>
-          <div
-            class="space-y-3 min-h-[600px]"
-            v-if="searchTag == 1 && type == 'entrance'"
-          >
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in searchLists"
-              :key="i"
-              @click="router.push(`/home/attraction-detail/` + i.id)"
+          <div class="col-span-2 space-y-2">
+            <p
+              class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-1"
+            ></p>
+            <p
+              class="font-semibold text-sm bg-black/20 w-[50px] h-3 animate-pulse mt-2"
+            ></p>
+
+            <button
+              class="bg-main animate-pulse text-sm font-semibold text-white px-3 py-1 rounded-lg inline-block"
             >
-              <img
-                :src="i?.cover_image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.legal_name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p
-                    class="bg-black/10 text-[8px] px-2 py-0.5 rounded"
-                    v-for="c in i?.cities"
-                    :key="c"
-                  >
-                    {{ c?.name }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_variation_price }}THB
-                </p>
-              </div>
-            </div>
+              loading
+            </button>
           </div>
+        </div>
+      </div>
+      <div class="px-6" v-show="!searchLoading">
+        <div
+          class="space-y-3 min-h-[600px]"
+          v-if="searchTag == 1 && type == 'hotel'"
+        >
           <div
-            class="space-y-3 min-h-[600px]"
-            v-if="searchTag == 1 && type == 'vantour'"
+            class="rounded-2xl bg-white shadow gap-3"
+            v-for="i in searchLists"
+            :key="i"
+            @click="router.push(`/home/detail/` + i.id)"
           >
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in searchLists"
-              :key="i"
-              @click="router.push(`/home/van-tour-detail/` + i.id)"
-            >
-              <img
-                :src="i?.cover_image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p
-                    class="bg-black/10 text-[8px] px-2 py-0.5 rounded"
-                    v-for="c in i?.cities"
-                    :key="c"
-                  >
-                    {{ c?.name }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_car_price }}THB
-                </p>
-              </div>
-            </div>
+            <SearchCart
+              :image="i?.images[0]?.image"
+              :name="i?.name"
+              :city_name="i?.city?.name"
+              :price="i?.lowest_room_price"
+            />
           </div>
+        </div>
+        <div
+          class="space-y-3 min-h-[600px]"
+          v-if="searchTag == 1 && type == 'entrance'"
+        >
           <div
-            class="space-y-3 min-h-[600px]"
-            v-if="
-              (searchTag == 2 || searchTag == 3 || searchTag == 4) &&
-              type == 'hotel'
-            "
+            class="rounded-2xl bg-white shadow gap-3"
+            v-for="i in searchLists"
+            :key="i"
+            @click="router.push(`/home/attraction-detail/` + i.id)"
           >
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in searchLists"
-              :key="i"
-              @click="router.push(`/home/detail/` + i.id)"
-            >
-              <img
-                :src="i?.images[0]?.image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p class="bg-black/10 text-[8px] px-2 py-0.5 rounded">
-                    {{ i?.city?.name }}
-                  </p>
-                  <p class="bg-black/10 text-[8px] px-2 py-0.5 rounded">
-                    {{ i?.place }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_room_price }}THB
-                </p>
-              </div>
-            </div>
+            <SearchCart
+              :image="i?.cover_image"
+              :name="i?.legal_name"
+              :city_name="i?.cities"
+              :price="i?.lowest_variation_price"
+            />
           </div>
+        </div>
+        <div
+          class="space-y-3 min-h-[600px]"
+          v-if="searchTag == 1 && type == 'vantour'"
+        >
           <div
-            class="space-y-3 min-h-[600px]"
-            v-if="
-              (searchTag == 2 || searchTag == 3 || searchTag == 4) &&
-              type == 'entrance'
-            "
+            class="rounded-2xl bg-white shadow gap-3"
+            v-for="i in searchLists"
+            :key="i"
+            @click="router.push(`/home/van-tour-detail/` + i.id)"
           >
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in searchLists"
-              :key="i"
-              @click="router.push(`/home/attraction-detail/` + i.id)"
-            >
-              <img
-                :src="i?.cover_image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.legal_name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p
-                    class="bg-black/10 text-[8px] px-2 py-0.5 rounded"
-                    v-for="c in i?.cities"
-                    :key="c"
-                  >
-                    {{ c?.name }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_variation_price }}THB
-                </p>
-              </div>
-            </div>
+            <SearchCart
+              :image="i?.cover_image"
+              :name="i?.name"
+              :city_name="i?.cities"
+              :price="i?.lowest_car_price"
+            />
           </div>
+        </div>
+        <div
+          class="space-y-3 min-h-[600px]"
+          v-if="
+            (searchTag == 2 || searchTag == 3 || searchTag == 4) &&
+            type == 'hotel'
+          "
+        >
           <div
-            class="space-y-3 min-h-[600px]"
-            v-if="
-              (searchTag == 2 || searchTag == 3 || searchTag == 4) &&
-              type == 'vantour'
-            "
+            class="rounded-2xl bg-white shadow gap-3"
+            v-for="i in searchLists"
+            :key="i"
+            @click="router.push(`/home/detail/` + i.id)"
           >
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in searchLists"
-              :key="i"
-              @click="router.push(`/home/van-tour-detail/` + i.id)"
-            >
-              <img
-                :src="i?.cover_image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p
-                    class="bg-black/10 text-[8px] px-2 py-0.5 rounded"
-                    v-for="c in i?.cities"
-                    :key="c"
-                  >
-                    {{ c?.name }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_car_price }}THB
-                </p>
-              </div>
-            </div>
+            <SearchCart
+              :image="i?.images[0]?.image"
+              :name="i?.name"
+              :city_name="i?.city?.name"
+              :price="i?.lowest_room_price"
+            />
           </div>
-        </transition-group>
+        </div>
+        <div
+          class="space-y-3 min-h-[600px]"
+          v-if="
+            (searchTag == 2 || searchTag == 3 || searchTag == 4) &&
+            type == 'entrance'
+          "
+        >
+          <div
+            class="rounded-2xl bg-white shadow gap-3"
+            v-for="i in searchLists"
+            :key="i"
+            @click="router.push(`/home/attraction-detail/` + i.id)"
+          >
+            <SearchCart
+              :image="i?.cover_image"
+              :name="i?.legal_name"
+              :city_name="i?.cities"
+              :price="i?.lowest_variation_price"
+            />
+          </div>
+        </div>
+        <div
+          class="space-y-3 min-h-[600px]"
+          v-if="
+            (searchTag == 2 || searchTag == 3 || searchTag == 4) &&
+            type == 'vantour'
+          "
+        >
+          <div
+            class="rounded-2xl bg-white shadow gap-3"
+            v-for="i in searchLists"
+            :key="i"
+            @click="router.push(`/home/van-tour-detail/` + i.id)"
+          >
+            <SearchCart
+              :image="i?.cover_image"
+              :name="i?.name"
+              :city_name="i?.cities"
+              :price="i?.lowest_car_price"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </Layout>

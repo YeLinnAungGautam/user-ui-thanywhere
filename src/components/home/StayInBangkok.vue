@@ -129,7 +129,22 @@ const goDetialPage = (id) => {
 const lists = ref([]);
 
 const goMore = () => {
-  router.push(`/home/hotel-filter/2/Bangkok`);
+  router.push(
+    `/home/hotel-filter/2/Bangkok/?price=null&rating=null&place=null&facilities=null&search=`
+  );
+  // router.push({
+  //   name: "FilteredHotelBookings",
+  //   params: {
+  //     id: 2,
+  //     name: "Bangkok",
+  //   },
+  //   query: {
+  //     price: "null",
+  //     rating: "null",
+  //     place: "null",
+  //     facilities: "null",
+  //   },
+  // });
 };
 
 onMounted(async () => {

@@ -15,13 +15,21 @@
       </div>
       <div class="px-3 py-0">
         <!-- <StarPartVue :count="5" /> -->
-        <p class="text-[10px] text-black font-medium">
-          {{ i.rating }}-star rating
-        </p>
+        <div class="flex justify-between items-center gap-1">
+          <p
+            class="text-[10px] text-black font-medium flex justify-start items-center gap-0.5"
+          >
+            {{ i.rating }} <StarIcon class="w-4 h-4 text-main" />
+          </p>
+          <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
+            <MapPinIcon class="w-3 h-3 text-black/50" />
+            <p class="pt-0.5">{{ i.place }}</p>
+          </div>
+        </div>
         <p class="font-semibold text-sm pt-1 line-clamp-1">{{ i.name }}</p>
-        <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
+        <!-- <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
           {{ i.place }}
-        </p>
+        </p> -->
         <p
           class="text-[9px] pt-1 line-clamp-3 max-h-[44px] overflow-hidden"
           v-html="
@@ -85,6 +93,7 @@ import { ref, defineProps, onMounted } from "vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
+import { StarIcon, MapPinIcon } from "@heroicons/vue/24/solid";
 
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);

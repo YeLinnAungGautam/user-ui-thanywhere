@@ -1,23 +1,30 @@
 <template>
   <div>
-    <div class="relative">
+    <div class="relative" :class="loading ? 'opacity-20' : 'opacity-100'">
       <div
         class="absolute top-0 right-6 text-white text-[10px] font-semibold bg-main px-5 py-1 rounded-full mt-5 inline-block z-20"
         @click="customPageChange"
       >
         skip
       </div>
+      <!-- <div v-show="loading">
+        <LoadingPageVue />
+      </div> -->
       <carousel v-bind="settings" ref="carousel2">
         <slide v-for="(slide, index) in showImage" :key="index">
           <div>
-            <div class="w-screen h-screen overflow-hidden relative z-20">
+            <div class="w-screen h-screen overflow-hidden relative z-50">
               <img
                 :src="slide.image"
+                @load="onImageLoad"
                 class="w-screen h-screen object-cover -z-1 absolute bottom-[-80px]"
+                :class="loading ? ' opacity-30' : 'opacity-100'"
                 alt=""
               />
               <img
                 :src="slide.image"
+                @load="onImageLoad"
+                :class="loading ? ' opacity-0' : 'opacity-100'"
                 class="w-screen h-screen object-cover -z-1 absolute top-0"
                 alt=""
               />
@@ -106,6 +113,7 @@ import image2 from "../../assets/onboarding screns/onboarding screns/onboarding-
 import image3 from "../../assets/onboarding screns/onboarding screns/onboarding-3.jpg";
 import { useRouter } from "vue-router";
 import { useSettingStore } from "../../stores/setting";
+// import LoadingPageVue from "../layout/LoadingPage.vue";
 import { storeToRefs } from "pinia";
 
 const router = useRouter();
@@ -146,7 +154,7 @@ const simple = [
     title_en: "Discover the details!",
     des: `ထိုင်းနိုင်ငံအတွင်းက နေရာတွေရဲ့ Contents များကို ဖတ်ရှုနိုင်ရန်အတွက် Content နဲ့ Operation Team မှ အချိန်ယူအားထုတ်ကာ ရေးသားဖန်တီးခဲ့ပါတယ်။`,
     des_en: `Thailand before you trip. Our dedicated content and operation worked meticulously to provide you with exclusive contents about top destinations in Thailand.`,
-    button: "login",
+    button: "explore",
   },
 ];
 
@@ -171,7 +179,20 @@ const loginPageChange = () => {
   router.push("/home");
 };
 
+const imageLoaded = ref(0);
+const loading = ref(true);
+const onImageLoad = () => {
+  loading.value = true;
+  imageLoaded.value += 1;
+  console.log("Image loaded", imageLoaded.value);
+  if (imageLoaded.value > 5) {
+    loading.value = false;
+  }
+};
+
 onMounted(async () => {
+  loading.value = true;
+  imageLoaded.value = 0;
   await settingStore.getLanguage();
   showImage.value = simple;
   console.log("hello");

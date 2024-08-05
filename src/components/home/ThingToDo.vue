@@ -1,12 +1,13 @@
 <template>
   <div v-if="!loading">
     <div class="flex justify-between items-center">
-      <h1 class="text-main font-semibold px-6">things to do in bangkok</h1>
+      <h1 class="text-main font-semibold px-6">top things to do in bangkok</h1>
       <div
         @click="router.push(`/home/attraction-result/2/Bangkok`)"
         class="text-[10px] font-semibold text-main flex justify-end items-center gap-1 mr-6"
       >
-        see more <ChevronDownIcon class="w-3 h-3" />
+        <p class="whitespace-nowrap">see more</p>
+        <ChevronDownIcon class="w-3 h-3" />
       </div>
     </div>
     <div
