@@ -11,9 +11,15 @@
         @click="router.back()"
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
       />
-      <ArrowUpTrayIcon
+      <!-- <ArrowUpTrayIcon
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
-      />
+      /> -->
+      <div
+        @click="shareContent"
+        class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+      >
+        <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
+      </div>
       <HeartIcon
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
       />
@@ -157,12 +163,9 @@
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
-import {
-  ChevronLeftIcon,
-  ArrowUpTrayIcon,
-  HeartIcon,
-} from "@heroicons/vue/24/outline";
+import { ChevronLeftIcon, HeartIcon } from "@heroicons/vue/24/outline";
 // import logo from "../assets/logo.png";
+import ShareIcon from "../assets/web/send.png";
 import LoadingPageVue from "../components/layout/LoadingPage.vue";
 import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
@@ -194,6 +197,22 @@ const getDetail = async (id) => {
   console.log("====================================");
   detail.value = res.data;
   loading.value = false;
+};
+
+const shareContent = () => {
+  // Check if the Web Share API is supported
+  if (navigator.share) {
+    navigator
+      .share({
+        title: "Check out this awesome content!",
+        text: "Here is some interesting content you might like.",
+        url: window.location.href, // Current page URL
+      })
+      .then(() => console.log("Successful share"))
+      .catch((error) => console.error("Error sharing", error));
+  } else {
+    console.error("Web Share API not supported");
+  }
 };
 
 const modalOpen = ref(false);

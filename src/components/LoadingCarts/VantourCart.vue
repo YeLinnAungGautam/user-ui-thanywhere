@@ -25,11 +25,12 @@
               {{ c.name }}
             </p>
           </div>
-          <p class="text-[8px] h-[73px] line-clamp-6 overflow-hidden">
-            {{
-              language == "english" ? i.full_description_en : i.long_description
-            }}
-          </p>
+          <p
+            class="text-[8px] h-[73px] line-clamp-6 overflow-hidden"
+            v-html="
+              language == 'english' ? i.full_description_en : i.long_description
+            "
+          ></p>
           <div class="absolute bottom-0 space-y-0.5 w-full">
             <div class="flex justify-between items-center w-full">
               <p class="text-[8px] pb-1">starting price</p>
