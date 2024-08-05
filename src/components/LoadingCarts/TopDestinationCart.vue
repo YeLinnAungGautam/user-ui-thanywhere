@@ -4,8 +4,8 @@
       <div class="w-full h-[140px] p-1.5 overflow-hidden">
         <img
           :src="
-            i?.cover_image
-              ? i?.cover_image
+            i?.feature_img
+              ? i?.feature_img
               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s'
           "
           @load="onImageLoad"
@@ -18,7 +18,7 @@
         <div class="flex justify-between items-center gap-1">
           <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
             <MapPinIcon class="w-3 h-3 text-black/50" />
-            <p class="pt-0.5">{{ i?.cities[0]?.name }}</p>
+            <p class="pt-0.5">{{ i?.city?.name }}</p>
           </div>
           <p
             class="text-[10px] text-black font-medium flex justify-start items-center gap-0.5"
@@ -31,16 +31,14 @@
           {{ i?.cities[0]?.name }}
         </p> -->
         <p
-          class="text-[9px] pt-1 line-clamp-3"
-          v-html="
-            language == 'english' ? i?.full_description_en : i?.long_description
-          "
+          class="text-[9px] pt-1 line-clamp-5"
+          v-html="language == 'english' ? i?.place_id : i?.summary"
         ></p>
-        <p class="text-[10px] mt-2 font-medium">Van price to Saloon price</p>
+        <!-- <p class="text-[10px] mt-2 font-medium">starting ticket price</p> -->
         <button
           class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
         >
-          {{ i?.lowest_car_price }}THB / <span class="text-[10px]">car</span>
+          read more ...
         </button>
       </div>
     </div>

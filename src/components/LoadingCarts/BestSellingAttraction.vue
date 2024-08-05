@@ -33,14 +33,14 @@
         <p
           class="text-[9px] pt-1 line-clamp-3"
           v-html="
-            language == 'english' ? i?.full_description_en : i?.long_description
+            language == 'english' ? i?.full_description_en : i?.description
           "
         ></p>
-        <p class="text-[10px] mt-2 font-medium">Van price to Saloon price</p>
+        <p class="text-[10px] mt-2 font-medium">starting ticket price</p>
         <button
           class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
         >
-          {{ i?.lowest_car_price }}THB / <span class="text-[10px]">car</span>
+          {{ i?.lowest_variation_price }}THB
         </button>
       </div>
     </div>
@@ -109,7 +109,7 @@ const onImageLoad = () => {
 };
 
 onMounted(() => {
-  console.log(props.i, "this is i");
+  // console.log(props.i, "this is i");
   settingStore.getLanguage();
 });
 </script>

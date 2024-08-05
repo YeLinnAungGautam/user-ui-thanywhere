@@ -2,10 +2,13 @@
 import Layout from "../components/layout/LayoutHome.vue";
 import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import AllProductPartVue from "../components/home/AllProductPart.vue";
+import BestSellingAttractions from "../components/home/BestSellingAttraction.vue";
 import ReadDestinationVue from "../components/home/ReadDestinations.vue";
+import StayInPattaya from "../components/home/StayInPattaya.vue";
 import ThingToDoVue from "../components/home/ThingToDo.vue";
 import StayinBangkokVue from "../components/home/StayInBangkok.vue";
 // import UniqueHotelVue from "../components/home/UniqueHotel.vue";
+import TopDestinationVue from "../components/home/TopDestinations.vue";
 import BestSellingVanTours from "../components/home/BestSellingVanTours.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
@@ -74,6 +77,9 @@ onMounted(() => {});
           <!-- <ExporeAboutCityVue /> -->
           <!-- <UniqueHotelVue /> -->
           <BestSellingVanTours />
+          <BestSellingAttractions />
+          <TopDestinationVue />
+          <StayInPattaya />
         </div>
       </Layout>
     </div>
