@@ -7,6 +7,7 @@
             <div class="w-full h-[150px] overflow-hidden rounded-2xl">
               <img
                 :src="slide.image"
+                @load="onImageLoad"
                 class="w-full h-full object-cover"
                 alt=""
               />
@@ -25,9 +26,12 @@
 <script setup>
 // import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
+
 import { Carousel, Slide, Pagination } from "vue3-carousel";
-import { onMounted, defineProps, ref } from "vue";
+import { onMounted, defineProps, ref, defineEmits } from "vue";
 // import homeGradesdb from "../../assets/homeGrades";
+
+const emit = defineEmits();
 
 const settings = {
   itemsToShow: 1,
@@ -47,6 +51,19 @@ const simple = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s",
   },
 ];
+
+const imageLoaded = ref(0);
+const loading = ref(true);
+const onImageLoad = () => {
+  loading.value = true;
+  imageLoaded.value += 1;
+  console.log("Image loaded", imageLoaded.value);
+  if (imageLoaded.value == showImage.value.length) {
+    loading.value = false;
+    // console.log(loading.value);
+    emit("change", loading.value);
+  }
+};
 
 onMounted(() => {
   console.log("====================================");

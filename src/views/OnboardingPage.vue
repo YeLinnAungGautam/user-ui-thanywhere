@@ -1,13 +1,11 @@
 <template>
   <div>
-    <div>
+    <div class="bg-black/5">
       <div v-if="!next">
         <LanguagePartVue @change="change" />
       </div>
-      <div v-if="loading">
-        <LoadingPageVue />
-      </div>
-      <div v-if="next && !loading">
+
+      <div v-if="next">
         <ShowOnboardingVue @change="onchangeComponent" />
       </div>
     </div>
@@ -18,7 +16,6 @@
 import ShowOnboardingVue from "../components/home/ShowOnboarding.vue";
 import LanguagePartVue from "../components/home/LanguagePart.vue";
 import { ref } from "vue";
-import LoadingPageVue from "../components/layout/LoadingPage.vue";
 
 const next = ref(false);
 

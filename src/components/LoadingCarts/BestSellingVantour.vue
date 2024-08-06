@@ -15,6 +15,11 @@
       </div>
       <div class="px-3 py-0">
         <!-- <StarPartVue :count="5" /> -->
+
+        <p class="font-semibold text-sm pt-1 line-clamp-1">{{ i.name }}</p>
+        <!-- <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
+          {{ i?.cities[0]?.name }}
+        </p> -->
         <div class="flex justify-between items-center gap-1">
           <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
             <MapPinIcon class="w-3 h-3 text-black/50" />
@@ -26,10 +31,6 @@
             5 <StarIcon class="w-4 h-4 text-main" />
           </p>
         </div>
-        <p class="font-semibold text-sm pt-1 line-clamp-1">{{ i.name }}</p>
-        <!-- <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
-          {{ i?.cities[0]?.name }}
-        </p> -->
         <p
           class="text-[9px] pt-1 line-clamp-3"
           v-html="

@@ -44,7 +44,7 @@ onMounted(() => {});
                   Expore Thailand,
                 </p>
                 <p class="text-xs">
-                  bringing you over 140 partners and counting.
+                  bringing you over 140 direct partners and counting.
                 </p>
               </div>
               <div class="relative" @click="router.push('/search')">

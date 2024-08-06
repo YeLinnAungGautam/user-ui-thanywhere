@@ -86,44 +86,13 @@
             <div
               class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
             >
-              <div v-for="i in detail?.rooms" :key="i">
-                <div
-                  class="bg-white shadow rounded-3xl p-2 border border-black/5 max-w-[220px]"
-                  v-if="i?.is_extra != 1"
-                >
-                  <div class="w-[200px] h-[150px] overflow-hidden">
-                    <img
-                      :src="i?.images[0]?.image"
-                      v-if="i?.images.length > 0"
-                      class="w-full h-full object-cover rounded-2xl"
-                      alt=""
-                    />
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-                      v-if="i?.images.length == 0"
-                      class="w-full h-full object-cover rounded-2xl"
-                      alt=""
-                    />
-                  </div>
-                  <div class="px-3 py-2 space-y-2">
-                    <p class="font-medium text-xs line-clamp-2">
-                      {{ i?.name }}
-                    </p>
-                    <p class="text-green text-[10px]">Breakfast inclusive</p>
-                    <div class="flex justify-between items-center gap-2">
-                      <button
-                        class="bg-main px-4 py-1 rounded-full text-sm text-white"
-                      >
-                        {{ i?.room_price }}THB
-                      </button>
-                      <p
-                        class="text-[10px] text-main underline"
-                        @click="goRoomDetail(i?.id)"
-                      >
-                        view detail
-                      </p>
-                    </div>
-                  </div>
+              <div
+                v-for="i in detail?.rooms"
+                :key="i"
+                @click="goRoomDetail(i?.id)"
+              >
+                <div v-if="i?.is_extra != 1">
+                  <RoomCart :i="i" />
                 </div>
               </div>
             </div>
@@ -334,6 +303,7 @@ import { DialogPanel, DialogTitle } from "@headlessui/vue";
 import LoadingPageVue from "../components/layout/LoadingPage.vue";
 import { MapPinIcon } from "@heroicons/vue/24/solid";
 import { storeToRefs } from "pinia";
+import RoomCart from "../components/LoadingCarts/RoomCart.vue";
 
 const route = useRoute();
 const router = useRouter();

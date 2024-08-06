@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="relative" :class="loading ? 'opacity-20' : 'opacity-100'">
+    <div class="relative" :class="loading ? 'bg-gray-300' : 'bg-gray-100'">
       <div
         class="absolute top-0 right-6 text-white text-[10px] font-semibold bg-main px-5 py-1 rounded-full mt-5 inline-block z-20"
         @click="customPageChange"
@@ -96,7 +96,7 @@
         </slide>
 
         <template #addons>
-          <pagination class="custom2" />
+          <!-- <pagination class="custom2" /> -->
         </template>
       </carousel>
     </div>
@@ -106,7 +106,7 @@
 <script setup>
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination } from "vue3-carousel";
+import { Carousel, Slide } from "vue3-carousel";
 import { onMounted, ref } from "vue";
 import image1 from "../../assets/onboarding screns/onboarding screns/onboarding-1.jpg";
 import image2 from "../../assets/onboarding screns/onboarding screns/onboarding-2.jpg";
