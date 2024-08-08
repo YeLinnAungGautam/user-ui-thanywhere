@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <div class="flex justify-between items-center">
+  <div class="relative">
+    <div
+      class="flex justify-between items-center sticky top-0 py-2 bg-background"
+    >
       <h1 class="text-main font-semibold px-6">top destinations to read</h1>
       <div
         @click="router.push('/home/destination')"
@@ -11,7 +13,7 @@
       </div>
     </div>
     <div
-      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6"
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
       v-if="data.length == 0"
     >
       <div v-for="a in 8" :key="a">
@@ -56,7 +58,7 @@
       </div>
     </div>
     <div
-      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6"
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
       v-if="data.length > 0"
     >
       <div

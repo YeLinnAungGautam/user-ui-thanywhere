@@ -16,8 +16,8 @@
       <div class="px-1 py-2">
         <p class="font-semibold text-sm line-clamp-1">{{ i?.name }}</p>
         <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
-          <MapPinIcon class="w-3 h-3 text-black/50" />
-          <p class="pt-0.5">Bangkok</p>
+          <MapPinIcon class="w-3 h-3 text-main" />
+          <p class="pt-0.5 text-main">Bangkok</p>
         </div>
         <p class="text-[10px] pt-1">starting price</p>
         <button

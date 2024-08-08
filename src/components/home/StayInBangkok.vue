@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <div class="flex justify-between items-center">
+  <div class="relative">
+    <div
+      class="flex justify-between items-center sticky top-0 py-2 bg-background"
+    >
       <h1 class="text-main font-semibold px-6">stays in bangkok</h1>
       <div
         @click="goMore()"
@@ -11,7 +13,7 @@
       </div>
     </div>
     <div
-      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6"
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
       v-if="lists.length == 0"
     >
       <div v-for="a in 8" :key="a">
@@ -43,9 +45,7 @@
             <p
               class="text-main text-[10px] bg-black/20 w-full h-2 mt-1 animate-pulse"
             ></p>
-            <p
-              class="text-main text-[10px] bg-black/20 w-10 h-3 mt-4 animate-pulse"
-            ></p>
+
             <button
               class="bg-main animate-pulse px-3 mt-2 mb-2 py-1 rounded-xl text-xs font-semibold text-white"
             >
@@ -56,7 +56,7 @@
       </div>
     </div>
     <div
-      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-6"
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
       v-if="lists.length > 0"
     >
       <div

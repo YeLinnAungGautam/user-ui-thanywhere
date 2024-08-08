@@ -22,8 +22,8 @@
         </p> -->
         <div class="flex justify-between items-center gap-1">
           <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
-            <MapPinIcon class="w-3 h-3 text-black/50" />
-            <p class="pt-0.5">{{ i?.cities[0]?.name }}</p>
+            <MapPinIcon class="w-3 h-3 text-main" />
+            <p class="pt-0.5 text-main">{{ i?.cities[0]?.name }}</p>
           </div>
           <p
             class="text-[10px] text-black font-medium flex justify-start items-center gap-0.5"
@@ -37,7 +37,7 @@
             language == 'english' ? i?.full_description_en : i?.long_description
           "
         ></p>
-        <p class="text-[10px] mt-2 font-medium">Van price to Saloon price</p>
+        <p class="text-[10px] mt-2 font-medium">starting car price</p>
         <button
           class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
         >

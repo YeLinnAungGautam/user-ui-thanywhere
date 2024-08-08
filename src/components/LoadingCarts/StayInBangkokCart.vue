@@ -22,8 +22,8 @@
         </p> -->
         <div class="flex justify-between items-center gap-1">
           <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
-            <MapPinIcon class="w-3 h-3 text-black/50" />
-            <p class="pt-0.5 line-clamp-1">{{ i.place }}</p>
+            <MapPinIcon class="w-3 h-3 text-main" />
+            <p class="pt-0.5 line-clamp-1 text-main">{{ i.place }}</p>
           </div>
           <p
             class="text-[10px] text-black font-medium flex justify-start items-center gap-0.5"
