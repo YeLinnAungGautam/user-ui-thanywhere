@@ -97,7 +97,10 @@
               </div>
             </div>
           </div>
-          <div class="space-y-4 border-b border-black/10">
+          <div
+            class="space-y-4 border-b border-black/10"
+            v-if="detail?.location_map != 'null'"
+          >
             <h1 class="font-medium">location map</h1>
             <iframe
               :src="detail?.location_map"
@@ -325,7 +328,7 @@ const getDetail = async (id) => {
   console.log("====================================");
   detail.value = res.data;
   const response = await hotelStore.getSimpleListAction({
-    place: detail.value.place,
+    place: detail.value?.place,
   });
   console.log(response, "this is list");
   placeList.value = response.data;
