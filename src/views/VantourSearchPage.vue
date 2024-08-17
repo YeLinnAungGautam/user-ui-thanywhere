@@ -1,7 +1,7 @@
 <script setup>
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
-import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
+import searchIcon from "../assets/icons/search.png";
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import Layout from "../components/layout/LayoutHome.vue";
@@ -45,12 +45,13 @@ onMounted(async () => {
               id=""
             />
 
-            <img
+            <div
               @click="goResultPage"
-              :src="searchIcon"
-              class="w-5 h-5 absolute top-3.5 right-5 text-main"
-              alt=""
-            />
+              class="absolute top-2 right-2 bg-main px-3 py-2 rounded-full shadow-custom flex justify-end items-center gap-1"
+            >
+              <img :src="searchIcon" class="w-4 h-4" alt="" />
+              <p class="text-white text-xs">search</p>
+            </div>
           </div>
         </div>
         <div class="pt-5 space-y-2">

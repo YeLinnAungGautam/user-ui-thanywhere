@@ -47,7 +47,7 @@
         >
           <!-- <PaperAirplaneIcon class="max-w-7 max-h-7 text-white" /> -->
           <!-- <img :src="attraction" alt="" class="w-6 h-6 mx-auto" /> -->
-          <AllProductCart :i="attraction" />
+          <AllProductCart :i="destination" />
         </div>
         <p class="text-[10px] text-black text-center text-wrap">
           read destination
@@ -87,6 +87,7 @@
 import hotel from "../../assets/icons/products icons/hotel booking icon.svg";
 import inclusive from "../../assets/icons/products icons/all inclusive icon.svg";
 import attraction from "../../assets/icons/products icons/attractions icon.svg";
+import destination from "../../assets/icons/destination.png";
 import vantour from "../../assets/web/road-trip.png";
 import flight from "../../assets/icons/products icons/flight icon.svg";
 import { useRouter } from "vue-router";

@@ -129,8 +129,8 @@ watch(bottomOfWindow, (newVal) => {
 });
 
 const count_filter = ref(0);
-const minRange = ref(0);
-const maxRange = ref(15000);
+// const minRange = ref(0);
+// const maxRange = ref(15000);
 const minPrice = ref(0);
 const maxPrice = ref(15000);
 const facilitiesArray = ref([]);
@@ -227,8 +227,8 @@ const getRange = (data) => {
   router.push({
     name: "FilteredHotelBookings",
     params: {
-      id: 2,
-      name: "Bangkok",
+      id: "null",
+      name: "null",
     },
     query: {
       price: data,
@@ -419,6 +419,12 @@ watch(hotels, async (newValue) => {
                     {{ c?.name }}
                   </p>
                 </div>
+                <p
+                  @click="all = !all"
+                  class="border border-black/60 bg-black/10 text-[10px] rounded-lg px-4 py-1"
+                >
+                  {{ all ? "see less" : "see more" }}
+                </p>
               </div>
             </div>
             <div class="space-y-3 pb-10">
@@ -440,16 +446,28 @@ watch(hotels, async (newValue) => {
                 >
                   choose city first !
                 </p>
-                <div v-for="(c, index) in placeArray" :key="c" v-else>
-                  <p
-                    v-if="index < 8 || placeall"
-                    class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
-                    :class="place == c ? 'bg-main text-white' : ''"
-                    @click="place = c"
-                  >
-                    {{ c }}
-                  </p>
+                <div
+                  class="flex justify-start items-center flex-wrap gap-1"
+                  v-else
+                >
+                  <div v-for="(c, index) in placeArray" :key="c">
+                    <p
+                      v-if="index < 8 || placeall"
+                      class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                      :class="place == c ? 'bg-main text-white' : ''"
+                      @click="place = c"
+                    >
+                      {{ c }}
+                    </p>
+                  </div>
                 </div>
+                <p
+                  v-show="placeArray.length != 0 && placeArray"
+                  @click="placeall = !placeall"
+                  class="border border-black/60 bg-black/10 text-[10px] rounded-lg px-4 py-1"
+                >
+                  {{ placeall ? "see less" : "see more" }}
+                </p>
               </div>
             </div>
             <div class="space-y-3 pb-4">
@@ -471,7 +489,7 @@ watch(hotels, async (newValue) => {
                     <p class="text-sm">{{ index + 1 }}</p>
                     <StarIcon class="w-5 h-5 text-main" />
                   </div>
-                  <p class="text-[8px] text-black/70">6+hotels</p>
+                  <!-- <p class="text-[8px] text-black/70">6+hotels</p> -->
                 </div>
               </div>
             </div>
@@ -541,7 +559,7 @@ watch(hotels, async (newValue) => {
                 </p>
               </div>
 
-              <div class="range-slider w-full">
+              <!-- <div class="range-slider w-full">
                 <div
                   class="w-full h-1 rounded-xl absolute top-[37px] bg-main"
                 ></div>
@@ -559,8 +577,8 @@ watch(hotels, async (newValue) => {
                   :max="maxRange"
                   class="range-max"
                 />
-              </div>
-              <div class="pt-16 flex justify-between items-center gap-2">
+              </div> -->
+              <div class="flex justify-between items-center gap-2">
                 <!-- <p class="text-xs text-black text-center">
                   {{ minPrice }} THB - {{ maxPrice }} THB
                 </p> -->

@@ -243,40 +243,53 @@ const choosePlaceArray = (id) => {
 };
 
 onMounted(async () => {
-  if (route.query.search != "") {
+  if (route.query.search) {
     search.value = route.query.search ? route.query.search : "";
-  } else {
+    console.log(route.query.search);
+  } else if (!route.query.search) {
     city_id.value = route.params.id;
     searchCityName.value = route.params.name;
-    rating.value = route.query.rating != "null" ? route.query.rating : "";
-    place.value = route.query.place != "null" ? route.query.place : "";
+    rating.value =
+      route.query.rating != "null" && route.query.rating
+        ? route.query.rating
+        : "";
+    place.value =
+      route.query.place != "null" && route.query.place ? route.query.place : "";
     if (
       route.query.price &&
       typeof route.query.price === "string" &&
       route.query.price.includes("-")
     ) {
       price_range.value = route.query.price;
+      let [min, max] = route.query.price.split("-");
+      minPrice.value = min;
+      maxPrice.value = max;
     } else {
       price.value = route.query.price;
     }
+    facilityQuery.value = route.query.facilities;
+    facilitiesArray.value =
+      route.query.facilities != "null"
+        ? route.query.facilities?.split(",")
+        : [];
+    let res = await hotelStore.getListAction(watchSystem.value);
+    count.value = res.meta.total;
+    hotelList.value = res.data;
   }
   // await settingStore.getLanguage();
-  facilityQuery.value = route.query.facilities;
-  facilitiesArray.value =
-    route.query.facilities != "null" ? route.query.facilities?.split(",") : [];
+
   await cityStore.getListHotelCityAction();
   choosePlaceArray(city_id.value);
   window.addEventListener("scroll", handleScroll);
-  let res = await hotelStore.getListAction(watchSystem.value);
 
-  await hotelStore.getListAction(watchSystem.value);
+  console.log(watchSystem.value, "this is watch system");
+  // await hotelStore.getListAction(watchSystem.value);
   await facilityStore.getListAction();
 
   // setPlaceArray(hotel?.value.data);
-  count.value = res.meta.total;
 
   console.log(facilitiesArray.value, "this is array filter faciliy");
-  hotelList.value = res.data;
+
   console.log(hotelList.value, "this is hotel list add");
 });
 
@@ -303,8 +316,8 @@ watch(hotels, async (newValue) => {
 //   count_filter.value = res.meta.total;
 // });
 
-const minRange = ref(0);
-const maxRange = ref(15000);
+// const minRange = ref(0);
+// const maxRange = ref(15000);
 const minPrice = ref(0);
 const maxPrice = ref(15000);
 
@@ -322,10 +335,12 @@ watch([filterId, rating, place], async ([newValue, newRating, newPlace]) => {
 
   // data.price_range = `${newPrice}-${newMaxPrice}`;
 
-  const res = await hotelStore.getListAction(data);
-  // setPlaceArray(hotel?.value.data);
-  console.log(res, "this is data");
-  count_filter.value = res.meta.total;
+  if (newValue || newRating || newPlace) {
+    const res = await hotelStore.getFilterAction(data);
+    // setPlaceArray(hotel?.value.data);
+    console.log(res, "this is data");
+    count_filter.value = res.meta.total;
+  }
 });
 
 const placeArray = ref([]);
@@ -395,11 +410,23 @@ watch(
           :class="isStickey ? 'shadow-custom' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
         >
-          <h1 class="text-main font-semibold" v-if="searchCityName != 'null'">
+          <h1
+            class="text-main font-semibold"
+            v-if="searchCityName != 'null' && !search"
+          >
             hotels in {{ searchCityName }}
           </h1>
-          <h1 class="text-main font-semibold" v-if="searchCityName == 'null'">
+          <h1
+            class="text-main font-semibold"
+            v-if="searchCityName == 'null' && !search"
+          >
             hotels
+          </h1>
+          <h1
+            class="text-main font-semibold"
+            v-if="searchCityName == 'null' && search"
+          >
+            '{{ search }}' search hotels
           </h1>
           <div
             class="flex justify-end items-center gap-2 cursor-pointer"
@@ -407,6 +434,48 @@ watch(
           >
             <p class="text-[10px] text-main font-semibold">filter by</p>
             <ChevronDownIcon class="w-3 h-3 text-main" />
+          </div>
+        </div>
+        <div class="flex justify-start items-center flex-wrap gap-2 px-6">
+          <p
+            class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
+            v-if="searchCityName != 'null' && searchCityName != ''"
+          >
+            {{ searchCityName }}
+          </p>
+          <p
+            class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
+            v-if="place != 'null' && place != ''"
+          >
+            {{ place }}
+          </p>
+          <p
+            class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
+            v-if="rating != 'null' && rating != ''"
+          >
+            {{ rating }} star
+          </p>
+          <p
+            class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
+            v-if="minPrice != 'null' || maxPrice != 'null'"
+          >
+            {{ minPrice }} - {{ maxPrice }}
+          </p>
+          <div
+            v-if="facilitiesArray.length > 0"
+            class="flex justify-start flex-wrap items-center gap-1"
+          >
+            <p
+              class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
+              v-for="f in facilitiesArray"
+              :key="f"
+            >
+              <span v-for="s in facilities?.data" :key="s">
+                <span v-if="s.id == f" class="whitespace-nowrap">{{
+                  s.name
+                }}</span>
+              </span>
+            </p>
           </div>
         </div>
         <div
@@ -562,7 +631,7 @@ watch(
                   <p class="text-sm">{{ index + 1 }}</p>
                   <StarIcon class="w-5 h-5 text-main" />
                 </div>
-                <p class="text-[8px] text-black/70">6+hotels</p>
+                <!-- <p class="text-[8px] text-black/70">6+hotels</p> -->
               </div>
             </div>
           </div>
@@ -632,7 +701,7 @@ watch(
               </p>
             </div>
 
-            <div class="range-slider w-full relative">
+            <!-- <div class="range-slider w-full relative">
               <div
                 class="w-full h-1 rounded-xl absolute top-[37px] bg-main"
               ></div>
@@ -650,8 +719,8 @@ watch(
                 :max="maxRange"
                 class="range-max"
               />
-            </div>
-            <div class="pt-16 flex justify-between items-center gap-2">
+            </div> -->
+            <div class="flex justify-between items-center gap-2">
               <!-- <p class="text-xs text-black text-center">
                 {{ minPrice }} THB - {{ maxPrice }} THB
               </p> -->
