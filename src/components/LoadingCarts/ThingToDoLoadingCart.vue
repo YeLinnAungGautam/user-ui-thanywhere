@@ -15,7 +15,7 @@
           />
         </div>
         <p
-          class="text-xs bg-red/90 text-white rounded-full absolute -bottom-3 right-1 px-3 py-1 font-medium"
+          class="text-xs hidden bg-red/90 text-white rounded-full absolute -bottom-3 right-1 px-3 py-1 font-medium"
         >
           10% OFF
         </p>
@@ -30,10 +30,12 @@
         <p class="text-[10px] pt-1">starting price</p>
         <div class="flex justify-between items-center">
           <button
-            class="text-main mt-2 mb-2 py-1 rounded-base text-base font-semibold"
+            class="text-main mt-2 mb-2 py-1 rounded-base text-lg font-semibold"
           >
             {{ i?.lowest_variation_price }} thb
-            <span class="text-[10px] line-through text-black/70">100 thb</span>
+            <span class="text-[10px] line-through text-black/70 hidden"
+              >100 thb</span
+            >
           </button>
           <p
             class="text-xs bg-main text-white rounded-full px-3 py-1 font-medium"
