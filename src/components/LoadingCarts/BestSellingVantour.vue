@@ -32,7 +32,7 @@
           </p>
         </div>
         <p
-          class="text-[9px] pt-1 line-clamp-3"
+          class="text-[9px] h-[45px] overflow-hidden pt-1 line-clamp-3"
           v-html="
             language == 'english' ? i?.full_description_en : i?.long_description
           "

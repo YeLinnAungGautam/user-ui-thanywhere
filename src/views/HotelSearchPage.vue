@@ -66,6 +66,10 @@ const getHotelData = async () => {
   });
 };
 
+const goDetail = (id) => {
+  router.push(`/home/detail/${id}`);
+};
+
 onMounted(async () => {
   await getCityData();
   await getHotelData();
@@ -207,6 +211,7 @@ watch(
             class="rounded-2xl bg-white shadow gap-3"
             v-for="i in hotels?.data"
             :key="i"
+            @click="goDetail(i?.id)"
           >
             <!-- <img
               :src="i?.images[0]?.image"
@@ -239,6 +244,7 @@ watch(
           class="rounded-2xl bg-white shadow gap-3"
           v-for="i in data"
           :key="i"
+          @click="goDetail(i?.id)"
         >
           <SearchCart
             :image="i?.images[0]?.image"

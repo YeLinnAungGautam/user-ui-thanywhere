@@ -112,8 +112,55 @@
               <p class="text-sm font-semibold text-main">{{ d.name }}</p>
               <p class="text-[13.5px]">{{ d.summary }}</p>
             </div>
+            <div class="space-y-3">
+              <h1 class="font-medium pt-3">select cars</h1>
+              <div
+                class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
+              >
+                <div
+                  v-for="i in detail?.cars"
+                  :key="i"
+                  class="border border-black/10 min-w-[200px] rounded-2xl shadow-sm bg-white"
+                >
+                  <div
+                    class="w-full col-span-5 h-[150px] overflow-hidden rounded-t-2xl"
+                  >
+                    <img
+                      :src="getCarTypeImage(i?.name)"
+                      class="w-full h-full object-cover"
+                      alt=""
+                    />
+                  </div>
+                  <div class="py-3 px-2">
+                    <p class="text-sm font-semibold line-clamp-1">
+                      {{ i?.name }}
+                    </p>
+
+                    <div class="text-[10px] gap-0.5 pt-1 space-y-2">
+                      <div class="flex justify-between items-center">
+                        <p class="text-green text-xs font-medium">
+                          max persons
+                        </p>
+                        <p
+                          class="text-main bg-green/10 px-4 py-0.5 rounded-lg text-xs font-medium"
+                        >
+                          {{ i?.max_person }}
+                        </p>
+                      </div>
+                      <p class="text-black text-xs font-medium">car price</p>
+                      <p
+                        class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
+                      >
+                        {{ i.price }} THB
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
         <div
           class="bg-main py-3 mb-10 rounded-3xl text-center text-white text-sm"
           @click="modalOpen = true"
@@ -154,7 +201,9 @@
                 />
               </div>
               <div class="py-3 px-2">
-                <p class="text-sm font-semibold min-h-[40px]">{{ i?.name }}</p>
+                <p class="text-sm font-semibold line-clamp-1">
+                  {{ i?.name }}
+                </p>
                 <p class="text-[10px] py-0.5 rounded inline-block text-main">
                   {{ detail?.destinations?.length }} destinations
                 </p>
@@ -294,20 +343,23 @@ const getDetail = async (id) => {
   if (res.data.cover_image) {
     images.value.push({ image: res.data.cover_image });
   }
-  if (res.data.images.length > 0) {
-    for (let i = 0; i < res.data.images.length; i++) {
-      images.value.push({ image: res.data.images[i].image });
-    }
-  }
+  // if (res.data.images.length > 0) {
+  //   for (let i = 0; i < res.data.images.length; i++) {
+  //     images.value.push({ image: res.data.images[i].image });
+  //   }
+  // }
   if (res.data.destinations.length > 0) {
     for (let i = 0; i < res.data.destinations.length; i++) {
-      if (res.data.destinations[i].images.length > 0) {
-        for (let j = 0; j < res.data.destinations[i].images.length; j++) {
-          images.value.push({
-            image: res.data.destinations[i].images[j].image,
-          });
-        }
-      }
+      // if (res.data.destinations[i].images.length > 0) {
+      //   for (let j = 0; j < res.data.destinations[i].images.length; j++) {
+      //     images.value.push({
+      //       image: res.data.destinations[i].images[j].image,
+      //     });
+      //   }
+      // }
+      images.value.push({
+        image: res.data.destinations[i].feature_img,
+      });
     }
   }
   console.log("====================================");
@@ -316,6 +368,31 @@ const getDetail = async (id) => {
 
   await getRelative(res.data?.cities[0]?.id);
   loading.value = false;
+};
+
+const getCarTypeImage = (cartype) => {
+  switch (cartype.toLowerCase()) {
+    case "saloon":
+      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+    case "suv":
+      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-67409.jpg?t=st=1723999608~exp=1724003208~hmac=39673ad52ce4b6941be751facd1002140ee220e95ff309dc64e54fb3aeca35a2&w=900";
+    case "vip van":
+      return "https://img.freepik.com/free-photo/3d-car-with-simple-background_23-2150796878.jpg?t=st=1723999724~exp=1724003324~hmac=90bc086f1c3138107e3a513d861ef2bfe8b06a55b92e1e3bb90b5f9079abdff8&w=740";
+    case "vvip van (luxury)":
+      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+    case "bus (30 seaters)":
+      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+    case "bus (20 seaters)":
+      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+    case "50 seaters bus":
+      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+    case "40 seaters bus":
+      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+    case "14 seater":
+      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+    default:
+      return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"; // Default image
+  }
 };
 
 const shareContent = () => {

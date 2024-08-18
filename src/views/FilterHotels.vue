@@ -432,7 +432,9 @@ watch(
             class="flex justify-end items-center gap-2 cursor-pointer"
             @click="openBottomSheet"
           >
-            <p class="text-[10px] text-main font-semibold">filter by</p>
+            <p class="text-[10px] text-main font-semibold whitespace-nowrap">
+              filter by
+            </p>
             <ChevronDownIcon class="w-3 h-3 text-main" />
           </div>
         </div>
@@ -457,7 +459,7 @@ watch(
           </p>
           <p
             class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
-            v-if="minPrice != 'null' || maxPrice != 'null'"
+            v-if="maxPrice != 'null' && maxPrice != 15000"
           >
             {{ minPrice }} - {{ maxPrice }}
           </p>

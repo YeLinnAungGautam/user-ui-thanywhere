@@ -163,17 +163,24 @@ watch(
 
 onMounted(async () => {
   // await settingStore.getLanguage();
-  filterId.value = route.params.id;
-  city_name.value = route.params.name;
-  searchCityName.value = route.params.name;
-  window.addEventListener("scroll", handleScroll);
-  let res = await entranceStore.getListAction({
-    city_id: filterId.value,
-    search: search.value,
-  });
-  count.value = res.meta.total;
+  if (route.query.search) {
+    search.value = route.query.search ? route.query.search : "";
+    console.log(route.query.search);
+  } else {
+    filterId.value = route.params.id;
+    city_name.value = route.params.name;
+    searchCityName.value = route.params.name;
+    window.addEventListener("scroll", handleScroll);
+    let res = await entranceStore.getListAction({
+      city_id: filterId.value,
+      search: search.value,
+    });
+    count.value = res.meta.total;
+    entrancesList.value = res.data;
+  }
+
   await cityStore.getSimpleListAction();
-  entrancesList.value = res.data;
+
   console.log(entrancesList.value, "this is entrance list add");
 });
 
@@ -220,19 +227,41 @@ watch(entrances, async (newValue) => {
           :class="isStickey ? 'shadow-custom' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
         >
-          <h1 class="text-main font-semibold" v-if="searchCityName != 'null'">
+          <h1
+            class="text-main font-semibold"
+            v-if="searchCityName != 'null' && !search"
+          >
             attractions in {{ searchCityName }}
           </h1>
-          <h1 class="text-main font-semibold" v-if="searchCityName == 'null'">
+          <h1
+            class="text-main font-semibold"
+            v-if="searchCityName == 'null' && !search"
+          >
             attractions
+          </h1>
+          <h1
+            class="text-main font-semibold"
+            v-if="searchCityName == 'null' && search"
+          >
+            '{{ search }}' search
           </h1>
           <div
             class="flex justify-end items-center gap-2 cursor-pointer"
             @click="open"
           >
-            <p class="text-[10px] text-main font-semibold">filter by</p>
+            <p class="text-[10px] text-main font-semibold whitespace-nowrap">
+              filter by
+            </p>
             <ChevronDownIcon class="w-3 h-3 text-main" />
           </div>
+        </div>
+        <div class="flex justify-start items-center flex-wrap gap-2 px-6">
+          <p
+            class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
+            v-if="searchCityName != 'null' && searchCityName != ''"
+          >
+            {{ searchCityName }}
+          </p>
         </div>
         <div
           class="border border-black/10 mx-6 rounded-2xl relative shadow-sm bg-white p-2.5"

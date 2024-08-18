@@ -134,6 +134,18 @@ const goSearchResultPage = () => {
       },
     });
   }
+  if (type.value == "entrance") {
+    router.push({
+      name: "HomeAttractionResult",
+      params: {
+        id: "null",
+        name: "null",
+      },
+      query: {
+        search: search.value ? search.value : "",
+      },
+    });
+  }
 };
 
 onMounted(async () => {

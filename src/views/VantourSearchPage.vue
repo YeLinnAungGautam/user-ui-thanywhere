@@ -3,31 +3,75 @@ import HeaderHome from "../components/layout/HeaderHome.vue";
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import searchIcon from "../assets/icons/search.png";
 import { useRouter } from "vue-router";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
-import vantourdb from "../assets/vantourdb";
+// import vantourdb from "../assets/vantourdb";
+import debounce from "lodash.debounce";
+import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
+import SearchCart from "../components/LoadingCarts/SearchCart.vue";
+import { useVantourStore } from "../stores/vantour";
 
 const cityStore = useCityStore();
+const vantourStore = useVantourStore();
 
-const { cities, loading } = storeToRefs(cityStore);
+const { cities } = storeToRefs(cityStore);
+const { vantours, loading } = storeToRefs(vantourStore);
 
 const router = useRouter();
 
 const searchTag = ref(1);
 
 const goResultPage = () => {
-  router.push("/home/van-tour-result");
+  router.push({
+    name: "HomeVantourResult",
+    params: {
+      id: searchId.value ? searchId.value : "null",
+      name: search.value ? search.value : "null",
+    },
+    query: {
+      search: search_by_name.value ? search_by_name.value : "",
+    },
+  });
 };
 
 const all = ref(false);
-const data = vantourdb;
+// const data = vantourdb;
+
+const search = ref("Bangkok");
+const searchId = ref(2);
+const search_by_name = ref("");
+
+const searchFunction = (data) => {
+  search.value = data.name;
+  searchId.value = data.id;
+};
+
+const getHotelData = async () => {
+  await vantourStore.getListAction({
+    search: search_by_name.value,
+    city_id: searchId.value,
+  });
+  console.log(vantours.value, "this is vantour");
+};
+
+const goDetail = (id) => {
+  router.push(`/home/van-tour-detail/${id}`);
+};
 
 onMounted(async () => {
   await cityStore.getSimpleListAction();
+  await getHotelData();
   console.log(cities.value);
 });
+
+watch(
+  [search_by_name, searchId],
+  debounce(async () => {
+    await getHotelData();
+  }, 500)
+);
 </script>
 
 <template>
@@ -40,6 +84,8 @@ onMounted(async () => {
             <input
               type="search"
               name=""
+              v-model="search_by_name"
+              @keyup.enter="goResultPage"
               placeholder=" search"
               class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
               id=""
@@ -66,14 +112,17 @@ onMounted(async () => {
               {{ all ? "show less" : "show more" }}
             </p>
           </div>
-          <div
-            class="flex justify-start items-center gap-2 flex-wrap"
-            v-if="!loading"
-          >
+          <div class="flex justify-start items-center gap-2 flex-wrap">
             <div v-for="(c, index) in cities?.data" :key="c.id">
               <p
                 v-if="index < 6 || all"
-                class="px-4 py-1.5 bg-white text-[10px] text-main rounded-full"
+                @click="searchFunction(c)"
+                class="px-4 py-1.5 text-[10px] rounded-full"
+                :class="
+                  searchId == c.id
+                    ? 'bg-main/40 border border-white text-white'
+                    : 'bg-white text-main'
+                "
               >
                 {{ c?.name }}
               </p>
@@ -87,83 +136,92 @@ onMounted(async () => {
         class="flex flex-1 justify-start space-x-4 pr-4 items-center overflow-x-scroll scroll-container"
       >
         <div
-          class="space-y-2 w-[5.5rem] cursor-pointer ml-6"
-          :class="searchTag == 1 ? 'border-b-2 border-main' : ''"
+          class="space-y-1 w-[5.5rem] cursor-pointer ml-6"
+          :class="searchTag == 1 ? 'text-main' : 'text-black/60'"
           @click="searchTag = 1"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
-            top searches
+          <p class="text-xs font-semibold text-center text-nowrap">
+            {{ vantours?.meta.total }} searches
           </p>
+          <p
+            class="bg-main w-1 h-1 rounded-full mx-auto"
+            :class="searchTag == 1 ? 'opacity-100' : 'opacity-0'"
+          ></p>
         </div>
         <div
-          class="space-y-2 w-[6.5rem] cursor-pointer ml-6"
-          :class="searchTag == 2 ? 'border-b-2 border-main' : ''"
+          class="space-y-1 w-[6.5rem] cursor-pointer ml-6"
+          :class="searchTag == 2 ? 'text-main' : 'text-black/60'"
           @click="searchTag = 2"
         >
-          <p class="text-xs text-main font-semibold text-center text-nowrap">
-            trending van tours
+          <p class="text-xs font-semibold text-center text-nowrap">
+            trending vantours
           </p>
+          <p
+            class="bg-main w-1 h-1 rounded-full mx-auto"
+            :class="searchTag == 2 ? 'opacity-100' : 'opacity-0'"
+          ></p>
+        </div>
+      </div>
+      <div class="px-6 space-y-3" v-show="loading">
+        <div
+          class="grid grid-cols-3 gap-3 rounded-2xl bg-white shadow px-3 py-3"
+          v-for="i in 10"
+          :key="i"
+        >
+          <div class="w-full h-[80px] overflow-hidden">
+            <img
+              :src="LoadingImageCover"
+              alt=""
+              class="w-full h-full rounded-xl opacity-50"
+            />
+          </div>
+          <div class="col-span-2 space-y-2">
+            <p
+              class="font-semibold text-sm bg-black/20 w-32 h-4 animate-pulse mt-1"
+            ></p>
+            <p
+              class="font-semibold text-sm bg-black/20 w-[50px] h-3 animate-pulse mt-2"
+            ></p>
+
+            <button
+              class="bg-main animate-pulse text-sm font-semibold text-white px-3 py-1 rounded-lg inline-block"
+            >
+              loading
+            </button>
+          </div>
         </div>
       </div>
       <div class="px-6">
-        <transition-group name="slide" mode="out-in">
-          <div class="space-y-3 min-h-[600px]" v-if="searchTag == 1">
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in data"
-              :key="i"
-            >
-              <img
-                :src="i?.cover_image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p class="bg-black/10 text-[8px] px-2 py-0.5 rounded">
-                    {{ i?.cities[0].name }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_car_price }}THB
-                </p>
-              </div>
-            </div>
+        <div class="space-y-3 min-h-[600px]" v-if="searchTag == 1 && !loading">
+          <div
+            class="rounded-2xl bg-white shadow gap-3"
+            v-for="i in vantours?.data"
+            :key="i"
+            @click="goDetail(i?.id)"
+          >
+            <SearchCart
+              :image="i?.cover_image"
+              :name="i?.name"
+              :city_name="i?.cities"
+              :price="i?.lowest_room_price"
+            />
           </div>
-          <div class="space-y-3 min-h-[600px]" v-if="searchTag == 2">
-            <div
-              class="rounded-2xl bg-white shadow grid grid-cols-3 p-3 gap-3"
-              v-for="i in data"
-              :key="i"
-            >
-              <img
-                :src="i?.cover_image"
-                alt=""
-                class="w-full h-full rounded-xl"
-              />
-              <div class="col-span-2 space-y-1">
-                <p class="text-sm font-medium">{{ i?.name }}</p>
-                <div
-                  class="flex justify-start items-center gap-2 pb-2 flex-wrap"
-                >
-                  <p class="bg-black/10 text-[8px] px-2 py-0.5 rounded">
-                    {{ i?.cities[0].name }}
-                  </p>
-                </div>
-                <p
-                  class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
-                >
-                  {{ i?.lowest_car_price }}THB
-                </p>
-              </div>
-            </div>
-          </div>
-        </transition-group>
+        </div>
+      </div>
+      <div class="space-y-3 mx-6 min-h-[600px]" v-if="searchTag == 2">
+        <div
+          class="rounded-2xl bg-white shadow gap-3"
+          v-for="i in vantours?.data"
+          :key="i"
+          @click="goDetail(i?.id)"
+        >
+          <SearchCart
+            :image="i?.cover_image"
+            :name="i?.name"
+            :city_name="i?.cities"
+            :price="i?.lowest_room_price"
+          />
+        </div>
       </div>
     </div>
   </Layout>

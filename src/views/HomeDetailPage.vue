@@ -89,9 +89,27 @@
               <div
                 v-for="i in detail?.rooms"
                 :key="i"
+                :class="i?.is_extra != 1 ? '' : 'hidden'"
                 @click="goRoomDetail(i?.id)"
               >
                 <div v-if="i?.is_extra != 1">
+                  <RoomCart :i="i" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <h1 class="font-medium pt-3">extra rooms</h1>
+            <div
+              class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
+            >
+              <div
+                v-for="i in detail?.rooms"
+                :key="i"
+                @click="goRoomDetail(i?.id)"
+                :class="i?.is_extra == 1 ? '' : 'hidden'"
+              >
+                <div v-if="i?.is_extra == 1">
                   <RoomCart :i="i" />
                 </div>
               </div>
