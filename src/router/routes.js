@@ -23,7 +23,7 @@ import HomeDetailVue from "../views/HomeDetailPage.vue";
 import HomeRoomDetailVue from "../views/RoomDetailPage.vue";
 import HomeAttractionDetailVue from "../views/EntranceDetailPage.vue";
 import HomeVantourDetailVue from "../views/VantourDetailPage.vue";
-import OnboardingPage from "../views/OnboardingPage.vue";
+import OnboardingPage from "../views/OnboardingHomePage.vue";
 import WebVersionHomePage from "../views/WebHomePage.vue";
 import LoginVuePage from "../views/LoginPage.vue";
 import ProfileVuePage from "../views/ProfilePage.vue";

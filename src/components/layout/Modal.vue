@@ -10,11 +10,20 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-black bg-opacity-25" />
+        <div class="fixed inset-0 bg-black bg-opacity-40" />
       </TransitionChild>
 
       <div class="fixed inset-0 overflow-y-auto">
-        <div class="flex h-100 mt-[50%] justify-center p-4 text-center">
+        <!-- <div class="mt-[20%] flex justify-end px-4 text-center">
+          <p
+            v-show="isOpen"
+            class="bg-white px-2 shadow-xl rounded-full py-2"
+            @click="closeModal"
+          >
+            <XMarkIcon class="w-5 h-5" />
+          </p>
+        </div> -->
+        <div class="flex h-500 mt-[10%] justify-center p-4 text-center">
           <TransitionChild
             as="template"
             enter="duration-300 ease-out"
@@ -41,6 +50,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/vue";
+// import { XMarkIcon } from "@heroicons/vue/24/outline";
 
 const emit = defineEmits(["closeModal"]);
 const props = defineProps({

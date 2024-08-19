@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="w-full h-[85vh] overflow-hidden">
     <div class="relative" :class="loading ? 'bg-gray-300' : 'bg-gray-100'">
       <div
-        class="absolute top-0 right-6 text-white text-[10px] font-semibold bg-main px-5 py-1 rounded-full mt-5 inline-block z-20"
+        class="absolute top-0 right-4 text-white text-[10px] font-semibold bg-main px-5 py-1 rounded-full mt-5 inline-block z-20"
         @click="customPageChange"
       >
         skip
@@ -12,28 +12,29 @@
       </div> -->
       <carousel v-bind="settings" ref="carousel2">
         <slide v-for="(slide, index) in showImage" :key="index">
-          <div>
-            <div class="w-screen h-screen overflow-hidden relative z-50">
+          <div class="w-full h-full">
+            <div class="w-[100%] min-w-lg h-screen relative z-50 right-0">
               <img
                 :src="slide.image"
                 @load="onImageLoad"
-                class="w-screen h-screen object-cover -z-1 absolute bottom-[-80px]"
-                :class="loading ? ' opacity-30' : 'opacity-100'"
+                class="w-full h-full object-cover -z-1 absolute bottom-0 right-0"
                 alt=""
+                :class="!loading ? ' opacity-0' : 'opacity-100'"
               />
-              <img
+              <!--  -->
+              <!-- <img
                 :src="slide.image"
                 @load="onImageLoad"
                 :class="loading ? ' opacity-0' : 'opacity-100'"
                 class="w-screen h-screen object-cover -z-1 absolute top-0"
                 alt=""
-              />
+              /> -->
               <div class="absolute top-5 z-50 w-full text-center pt-10">
                 <p class="text-main text-2xl font-bold">
                   {{ language == "english" ? slide.title_en : slide.title }}
                 </p>
                 <p
-                  class="text-sm font-medium text-main px-8 pt-5 tracking-wide leading-7"
+                  class="text-sm font-medium text-main px-4 pt-5 tracking-wide leading-7"
                 >
                   {{ language == "english" ? slide.des_en : slide.des }}
                 </p>
@@ -51,17 +52,17 @@
                     :class="index == 2 ? 'bg-main' : 'bg-main/40'"
                   ></p>
                 </div>
-                <div class="flex justify-end items-center px-6">
+                <div class="flex justify-end items-center px-4">
                   <p
                     v-if="index == 0"
                     @click="nextPage"
-                    class="text-white text-xs font-semibold bg-main px-6 py-2 rounded-full mt-5 inline-block"
+                    class="text-white text-xs font-semibold bg-main px-4 py-2 rounded-full mt-5 inline-block"
                   >
                     {{ slide.button }}
                   </p>
                 </div>
                 <div
-                  class="flex justify-between items-center px-6"
+                  class="flex justify-between items-center px-4"
                   v-if="index == 1"
                 >
                   <ChevronLeftIcon
@@ -70,13 +71,13 @@
                   />
                   <p
                     @click="nextPage"
-                    class="text-white text-xs font-semibold bg-main px-6 py-2 rounded-full mt-5 inline-block"
+                    class="text-white text-xs font-semibold bg-main px-4 py-2 rounded-full mt-5 inline-block"
                   >
                     {{ slide.button }}
                   </p>
                 </div>
                 <div
-                  class="flex justify-between items-center px-6"
+                  class="flex justify-between items-center px-4"
                   v-if="index == 2"
                 >
                   <ChevronLeftIcon
@@ -85,7 +86,7 @@
                   />
                   <p
                     @click="loginPageChange"
-                    class="text-white text-xs font-semibold bg-main px-6 py-2 rounded-full mt-5 inline-block"
+                    class="text-white text-xs font-semibold bg-main px-4 py-2 rounded-full mt-5 inline-block"
                   >
                     {{ slide.button }}
                   </p>
@@ -107,7 +108,7 @@
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide } from "vue3-carousel";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, defineEmits } from "vue";
 import image1 from "../../assets/onboarding screns/onboarding screns/onboarding-1.jpg";
 import image2 from "../../assets/onboarding screns/onboarding screns/onboarding-2.jpg";
 import image3 from "../../assets/onboarding screns/onboarding screns/onboarding-3.jpg";
@@ -119,6 +120,8 @@ import { storeToRefs } from "pinia";
 const router = useRouter();
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
+
+const emit = defineEmits();
 
 const settings = {
   itemsToShow: 1,

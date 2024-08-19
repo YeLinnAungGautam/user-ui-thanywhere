@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div>
-      <div class="w-screen h-screen overflow-hidden relative z-20">
+    <div class="w-full h-[85vh]">
+      <div class="w-full h-full overflow-hidden relative z-20">
         <img
           :src="LanguageImage"
-          class="w-screen h-screen object-cover -z-1 absolute bottom-[-80px]"
+          class="w-full h-full object-cover -z-1 absolute bottom-[-80px]"
           alt=""
         />
         <img
           :src="LanguageImage"
-          class="w-screen h-screen object-cover -z-1 absolute top-0"
+          class="w-full h-full object-cover -z-1 absolute top-0"
           alt=""
         />
         <div class="absolute top-5 z-50 w-full text-center pt-10">
@@ -90,7 +90,7 @@
 import LanguageImage from "../assets/onboarding screns/Language screen.jpg";
 import English from "../assets/onboarding screns/english.png";
 import Myanmar from "../assets/onboarding screns/myanmar.png";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineEmits } from "vue";
 import { useSettingStore } from "../stores/setting";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
@@ -104,12 +104,12 @@ const handleLanguageChange = (language) => {
   chooseLanguage.value = language;
 };
 
-// const emit = defineEmits();
+const emit = defineEmits();
 
 const choose = () => {
   settingStore.changeLanguage(chooseLanguage.value);
-  // emit("change", "changes");
-  router.back();
+  emit("change", "changes");
+  // router.back();
 };
 
 onMounted(async () => {

@@ -30,9 +30,7 @@
         </div>
         <p class="text-[10px] pt-1">starting price</p>
         <div class="flex justify-between items-center">
-          <button
-            class="text-main mt-2 mb-2 py-1 rounded-base text-xl font-semibold"
-          >
+          <button class="text-main py-1 rounded-base text-xl font-semibold">
             {{ i?.lowest_variation_price }} thb
             <span
               class="text-[10px] line-through text-black/70"

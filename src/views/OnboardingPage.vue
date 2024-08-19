@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="w-full h-full">
     <div class="bg-black/5">
-      <div v-if="!next">
+      <div v-if="!next" class="w-full">
         <LanguagePartVue @change="change" />
       </div>
 
-      <div v-if="next">
+      <div v-if="next" class="w-full">
         <ShowOnboardingVue @change="onchangeComponent" />
       </div>
     </div>

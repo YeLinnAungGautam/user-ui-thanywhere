@@ -1,15 +1,15 @@
 <template>
   <div>
     <div>
-      <div class="w-screen h-screen overflow-hidden relative z-20">
+      <div class="w-full h-[85vh] overflow-hidden relative z-20">
         <img
           :src="LanguageImage"
-          class="w-screen h-screen object-cover -z-1 absolute bottom-[-80px]"
+          class="w-full h-full object-cover -z-1 absolute bottom-[-80px]"
           alt=""
         />
         <img
           :src="LanguageImage"
-          class="w-screen h-screen object-cover -z-1 absolute top-0"
+          class="w-full h-full object-cover -z-1 absolute top-0"
           alt=""
         />
         <div class="absolute top-5 z-50 w-full text-center pt-10">
