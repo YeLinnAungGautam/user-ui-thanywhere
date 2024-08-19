@@ -15,9 +15,10 @@
           />
         </div>
         <p
-          class="text-xs hidden bg-red/90 text-white rounded-full absolute -bottom-3 right-1 px-3 py-1 font-medium"
+          v-if="percent != 0 && percent != NaN"
+          class="text-xs bg-red/90 text-white rounded-full absolute -bottom-3 right-1 px-3 py-1 font-medium"
         >
-          10% OFF
+          {{ percent }}% OFF
         </p>
       </div>
 
@@ -33,8 +34,13 @@
             class="text-main mt-2 mb-2 py-1 rounded-base text-xl font-semibold"
           >
             {{ i?.lowest_variation_price }} thb
-            <span class="text-[10px] line-through text-black/70 hidden"
-              >100 thb</span
+            <span
+              class="text-[10px] line-through text-black/70"
+              v-if="
+                i?.lowest_walk_in_price != 'null' &&
+                i?.lowest_walk_in_price != 0
+              "
+              >{{ i?.lowest_walk_in_price }} thb</span
             >
           </button>
           <p
@@ -69,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps, onMounted, computed } from "vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { MapPinIcon } from "@heroicons/vue/24/solid";
 
@@ -83,6 +89,23 @@ const onImageLoad = () => {
   imageLoaded.value = true;
   console.log("Image loaded");
 };
+
+const percent = computed(() => {
+  if (
+    props.i?.lowest_walk_in_price &&
+    props.i?.lowest_variation_price &&
+    props.i?.lowest_walk_in_price != "null"
+  ) {
+    const calculatedPercent = (
+      ((props.i?.lowest_walk_in_price - props.i?.lowest_variation_price) /
+        props.i?.lowest_variation_price) *
+      100
+    ).toFixed(0); // Round to 2 decimal places if necessary
+    return `${calculatedPercent}`;
+  } else {
+    return `0`;
+  }
+});
 
 onMounted(() => {
   console.log(props.i, "this is i");
