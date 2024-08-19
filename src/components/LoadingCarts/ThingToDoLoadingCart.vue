@@ -33,12 +33,13 @@
           <button class="text-main py-1 rounded-base text-xl font-semibold">
             {{ i?.lowest_variation_price }} thb
             <span
-              class="text-[10px] line-through text-black/70"
+              class="text-[11px] line-through text-black/70"
               v-if="
                 i?.lowest_walk_in_price != 'null' &&
-                i?.lowest_walk_in_price != 0
+                i?.lowest_walk_in_price != 0 &&
+                i?.lowest_walk_in_price != i?.lowest_variation_price
               "
-              >{{ i?.lowest_walk_in_price }} thb</span
+              >{{ i?.lowest_walk_in_price }}thb</span
             >
           </button>
           <p
