@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="grid grid-cols-11 gap-3" v-show="imageLoaded">
-      <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
+      <div
+        class="w-full col-span-5 h-[180px] relative overflow-hidden rounded-xl"
+      >
         <img
           :src="
             i?.images[0]?.image
@@ -12,6 +14,12 @@
           alt=""
           @load="onImageLoad"
         />
+        <p
+          v-if="percent != 0 && percent != NaN"
+          class="text-xs bg-red/90 text-white rounded-full absolute top-0 right-0 px-3 py-1 font-medium"
+        >
+          {{ percent }}% OFF
+        </p>
       </div>
       <div class="col-span-6 relative">
         <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" />
@@ -45,12 +53,24 @@
                 <p>{{ i.place }}</p>
               </div>
             </div>
-            <p class="text-[10px] pb-1">start price</p>
-            <p
+            <p class="text-xs font-medium pb-1">start price</p>
+            <!-- <p
               class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
             >
               {{ i.lowest_room_price }} THB
-            </p>
+            </p> -->
+            <button class="text-main rounded-base text-xl font-semibold">
+              {{ i?.lowest_room_price }} thb
+              <span
+                class="text-[11px] line-through text-black/70"
+                v-if="
+                  i?.lowest_walk_in_price != 'null' &&
+                  i?.lowest_walk_in_price != 0 &&
+                  i?.lowest_walk_in_price != i?.lowest_room_price
+                "
+                >{{ i?.lowest_walk_in_price }}thb</span
+              >
+            </button>
           </div>
         </div>
       </div>
@@ -104,7 +124,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps, onMounted, computed } from "vue";
 import { HeartIcon } from "@heroicons/vue/24/outline";
 import { MapPinIcon, BuildingOffice2Icon } from "@heroicons/vue/24/solid";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
@@ -124,6 +144,23 @@ const onImageLoad = () => {
   imageLoaded.value = true;
   console.log("Image loaded");
 };
+
+const percent = computed(() => {
+  if (
+    props.i?.lowest_walk_in_price &&
+    props.i?.lowest_room_price &&
+    props.i?.lowest_walk_in_price != "null"
+  ) {
+    const calculatedPercent = (
+      ((props.i?.lowest_walk_in_price * 1 - props.i?.lowest_room_price * 1) /
+        props.i?.lowest_walk_in_price) *
+      100
+    ).toFixed(0); // Round to 2 decimal places if necessary
+    return `${calculatedPercent}`;
+  } else {
+    return `0`;
+  }
+});
 
 onMounted(() => {
   console.log(props.i, "this is i");

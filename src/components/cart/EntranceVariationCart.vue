@@ -57,7 +57,7 @@ onMounted(() => {
     >
       <p
         v-if="percent != 0 && percent != NaN"
-        class="text-xs bg-red/90 text-white rounded-full absolute top-4 z-20 right-4 px-3 py-1 font-medium"
+        class="text-xs bg-red/90 text-white rounded-full absolute top-2 z-20 right-2 px-3 py-1 font-medium"
       >
         {{ percent }}% OFF
       </p>

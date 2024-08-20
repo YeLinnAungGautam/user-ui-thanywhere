@@ -37,7 +37,7 @@
         ></p>
         <!-- <p class="text-[10px] mt-2 font-medium">starting ticket price</p> -->
         <button
-          class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
+          class="mt-2 mb-3 font-semibold py-0.5 rounded-2xl text-sm text-main"
         >
           read more ...
         </button>

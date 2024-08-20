@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="grid grid-cols-11 gap-3" v-show="imageLoaded">
-      <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
+      <div
+        class="w-full col-span-5 h-[180px] relative overflow-hidden rounded-xl"
+      >
         <img
           :src="
             i?.cover_image
@@ -12,11 +14,17 @@
           class="w-full h-full object-cover"
           alt=""
         />
+        <p
+          v-if="percent != 0 && percent != NaN"
+          class="text-xs bg-red/90 text-white rounded-full absolute top-0 right-0 px-3 py-1 font-medium"
+        >
+          {{ percent }}% OFF
+        </p>
       </div>
       <div class="col-span-6 relative">
         <div class="overflow-hidden space-y-1">
           <div>
-            <p class="text-xs font-semibold text-main pr-4">
+            <p class="text-xs font-semibold text-main pr-4 line-clamp-1">
               {{ i?.name }}
             </p>
             <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" />
@@ -24,10 +32,19 @@
           <div class="flex justify-start gap-1 flex-wrap items-center">
             <p
               class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
-              v-for="a in i?.cities"
+              v-for="(a, index) in i?.cities"
               :key="a"
+              :class="index > 2 ? 'hidden' : ''"
             >
               {{ a.name }}
+            </p>
+            <p
+              class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
+              v-for="(a, index) in i?.cities"
+              :key="a"
+              :class="index == 3 ? '' : 'hidden'"
+            >
+              ..
             </p>
           </div>
           <p
@@ -46,12 +63,31 @@
           </p>
 
           <div class="absolute bottom-0 space-y-0.5">
-            <p class="text-[10px] pb-1">starting price</p>
-            <p
+            <p class="text-xs font-medium pb-1">starting price</p>
+            <!-- <p
               class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
             >
               {{ i?.lowest_variation_price }}THB
-            </p>
+            </p> -->
+            <div class="flex justify-between items-center">
+              <button class="text-main rounded-base text-xl font-semibold">
+                {{ i?.lowest_variation_price }} thb
+                <span
+                  class="text-[11px] line-through text-black/70"
+                  v-if="
+                    i?.lowest_walk_in_price != 'null' &&
+                    i?.lowest_walk_in_price != 0 &&
+                    i?.lowest_walk_in_price != i?.lowest_variation_price
+                  "
+                  >{{ i?.lowest_walk_in_price }}thb</span
+                >
+              </button>
+              <!-- <p
+                class="text-xs bg-main text-white rounded-full px-3 py-1 font-medium"
+              >
+                book
+              </p> -->
+            </div>
           </div>
         </div>
       </div>
@@ -105,7 +141,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps, onMounted, computed } from "vue";
 import { HeartIcon } from "@heroicons/vue/24/outline";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
@@ -124,6 +160,24 @@ const onImageLoad = () => {
   imageLoaded.value = true;
   console.log("Image loaded");
 };
+
+const percent = computed(() => {
+  if (
+    props.i?.lowest_walk_in_price &&
+    props.i?.lowest_variation_price &&
+    props.i?.lowest_walk_in_price != "null"
+  ) {
+    const calculatedPercent = (
+      ((props.i?.lowest_walk_in_price * 1 -
+        props.i?.lowest_variation_price * 1) /
+        props.i?.lowest_walk_in_price) *
+      100
+    ).toFixed(0); // Round to 2 decimal places if necessary
+    return `${calculatedPercent}`;
+  } else {
+    return `0`;
+  }
+});
 
 onMounted(() => {
   console.log(props.i, "this is i");

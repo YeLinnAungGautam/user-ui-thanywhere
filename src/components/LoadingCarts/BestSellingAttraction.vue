@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="imageLoaded">
+    <div v-show="imageLoaded" class="relative z-0">
       <div class="w-full h-[140px] p-1.5 overflow-hidden">
         <img
           :src="
@@ -13,6 +13,12 @@
           alt=""
         />
       </div>
+      <p
+        v-if="percent != 0 && percent != NaN"
+        class="text-xs bg-red/90 text-white rounded-full absolute top-1.5 right-1.5 px-3 py-1 font-medium"
+      >
+        {{ percent }}% OFF
+      </p>
       <div class="px-3 py-0">
         <!-- <StarPartVue :count="5" /> -->
 
@@ -37,11 +43,23 @@
             language == 'english' ? i?.full_description_en : i?.description
           "
         ></p>
-        <p class="text-[10px] mt-2 font-medium">starting ticket price</p>
-        <button
+        <p class="text-xs mt-2 font-medium">starting ticket price</p>
+        <!-- <button
           class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
         >
           {{ i?.lowest_variation_price }}THB
+        </button> -->
+        <button class="text-main py-1 rounded-base text-xl font-semibold">
+          {{ i?.lowest_variation_price }} thb
+          <span
+            class="text-[11px] line-through text-black/70"
+            v-if="
+              i?.lowest_walk_in_price != 'null' &&
+              i?.lowest_walk_in_price != 0 &&
+              i?.lowest_walk_in_price != i?.lowest_variation_price
+            "
+            >{{ i?.lowest_walk_in_price }}thb</span
+          >
         </button>
       </div>
     </div>
@@ -88,7 +106,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps, onMounted, computed } from "vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
@@ -103,6 +121,24 @@ const props = defineProps({
 });
 
 const imageLoaded = ref(false);
+
+const percent = computed(() => {
+  if (
+    props.i?.lowest_walk_in_price &&
+    props.i?.lowest_variation_price &&
+    props.i?.lowest_walk_in_price != "null"
+  ) {
+    const calculatedPercent = (
+      ((props.i?.lowest_walk_in_price * 1 -
+        props.i?.lowest_variation_price * 1) /
+        props.i?.lowest_walk_in_price) *
+      100
+    ).toFixed(0); // Round to 2 decimal places if necessary
+    return `${calculatedPercent}`;
+  } else {
+    return `0`;
+  }
+});
 
 const onImageLoad = () => {
   imageLoaded.value = true;

@@ -70,7 +70,6 @@ onMounted(() => {});
         <div class="h-auto pb-20 pt-8 space-y-10">
           <!-- <InstallAppVue /> -->
           <AllProductPartVue />
-          <ReadDestinationVue />
 
           <ThingToDoVue />
           <StayinBangkokVue />
@@ -80,6 +79,7 @@ onMounted(() => {});
           <BestSellingAttractions />
           <TopDestinationVue />
           <StayInPattaya />
+          <ReadDestinationVue />
         </div>
       </Layout>
     </div>

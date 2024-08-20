@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div
-      class="flex justify-between items-center sticky top-0 py-2 bg-background"
+      class="flex justify-between items-center sticky top-0 z-10 py-2 bg-background"
     >
       <h1 class="text-main font-semibold px-6">stays in pattaya</h1>
       <div

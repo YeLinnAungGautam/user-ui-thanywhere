@@ -3,7 +3,7 @@
     <div class="min-h-screen">
       <slot />
     </div>
-    <div class="fixed bottom-0 w-full">
+    <div class="fixed z-30 bottom-0 w-full">
       <Footer />
     </div>
   </div>

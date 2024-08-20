@@ -32,16 +32,18 @@
           </p>
         </div>
         <p
-          class="text-[9px] h-[45px] overflow-hidden pt-1 line-clamp-3"
+          class="text-[9px] h-[44px] overflow-hidden pt-1 line-clamp-3"
           v-html="
             language == 'english' ? i?.full_description_en : i?.long_description
           "
         ></p>
-        <p class="text-[10px] mt-2 font-medium">starting car price</p>
-        <button
-          class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
-        >
+        <p class="mt-2 text-xs font-medium">starting car price</p>
+        <!-- <button class="px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-main">
           {{ i?.lowest_car_price }}THB / <span class="text-[10px]">car</span>
+        </button> -->
+        <button class="text-main py-1 rounded-base text-xl font-semibold">
+          {{ i?.lowest_car_price }} thb
+          <span class="text-[11px] text-black/70"> / car</span>
         </button>
       </div>
     </div>

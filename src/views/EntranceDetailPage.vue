@@ -30,7 +30,7 @@
         >
           <div class="space-y-2">
             <h1 class="text-main font-medium">{{ detail?.name }}</h1>
-            <div class="flex justify-between items-center">
+            <!-- <div class="flex justify-between items-center">
               <button class="text-main py-1 rounded-base text-xl font-semibold">
                 {{ detail?.lowest_variation_price }} thb
                 <span
@@ -50,12 +50,12 @@
               >
                 {{ percent }}% OFF
               </p>
-            </div>
-            <div class="flex justify-start items-center gap-1">
+            </div> -->
+            <div class="flex justify-start flex-wrap items-center gap-1">
               <p
                 v-for="c in detail?.cities"
                 :key="c"
-                class="text-[10px] px-2 py-0.5 bg-black/10 rounded inline-block text-black/70"
+                class="text-[10px] px-2 whitespace-nowrap py-0.5 bg-black/10 rounded inline-block text-black/70"
               >
                 {{ c?.name }}
               </p>
@@ -201,7 +201,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { ChevronLeftIcon, HeartIcon } from "@heroicons/vue/24/outline";
@@ -258,27 +258,27 @@ const shareContent = () => {
 
 const modalOpen = ref(false);
 
-const percent = computed(() => {
-  if (detail.value != null) {
-    if (
-      detail.value.lowest_walk_in_price &&
-      detail.value.lowest_variation_price &&
-      detail.value.lowest_walk_in_price != "null"
-    ) {
-      const calculatedPercent = (
-        ((detail.value.lowest_walk_in_price * 1 -
-          detail.value.lowest_variation_price * 1) /
-          detail.value.lowest_walk_in_price) *
-        100
-      ).toFixed(0); // Round to 2 decimal places if necessary
-      return `${calculatedPercent}`;
-    } else {
-      return `0`;
-    }
-  } else {
-    return 0;
-  }
-});
+// const percent = computed(() => {
+//   if (detail.value != null) {
+//     if (
+//       detail.value.lowest_walk_in_price &&
+//       detail.value.lowest_variation_price &&
+//       detail.value.lowest_walk_in_price != "null"
+//     ) {
+//       const calculatedPercent = (
+//         ((detail.value.lowest_walk_in_price * 1 -
+//           detail.value.lowest_variation_price * 1) /
+//           detail.value.lowest_walk_in_price) *
+//         100
+//       ).toFixed(0); // Round to 2 decimal places if necessary
+//       return `${calculatedPercent}`;
+//     } else {
+//       return `0`;
+//     }
+//   } else {
+//     return 0;
+//   }
+// });
 
 // const goRoomDetail = (id) => {
 //   router.push({ name: "HomeRoomDetail", params: { id: id } });

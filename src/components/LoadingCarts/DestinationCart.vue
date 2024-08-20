@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="grid grid-cols-11 gap-3" v-show="imageLoaded">
-      <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
+      <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-xl">
         <img
           :src="
             i?.feature_img
@@ -34,9 +34,9 @@
           <div class="absolute bottom-0 space-y-0.5">
             <!-- <p class="text-[10px] pb-1">starting price</p> -->
             <p
-              class="bg-main text-white text-xs font-medium px-3 inline-block py-1 rounded-full"
+              class="text-main text-sm font-semibold inline-block py-1 rounded-full"
             >
-              read details
+              read more ...
             </p>
           </div>
         </div>
