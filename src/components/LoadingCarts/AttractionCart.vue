@@ -1,22 +1,22 @@
 <template>
   <div>
     <div class="grid grid-cols-11 gap-3" v-show="imageLoaded">
-      <div
-        class="w-full col-span-5 h-[180px] relative overflow-hidden rounded-xl"
-      >
-        <img
-          :src="
-            i?.cover_image
-              ? i?.cover_image
-              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s'
-          "
-          @load="onImageLoad"
-          class="w-full h-full object-cover"
-          alt=""
-        />
+      <div class="w-full col-span-5 h-[180px] relative rounded-xl">
+        <div class="w-full h-[180px] overflow-hidden rounded-xl">
+          <img
+            :src="
+              i?.cover_image
+                ? i?.cover_image
+                : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s'
+            "
+            @load="onImageLoad"
+            class="w-full h-full object-cover"
+            alt=""
+          />
+        </div>
         <p
           v-if="percent != 0 && percent != NaN"
-          class="text-xs bg-red/90 text-white rounded-full absolute top-0 right-0 px-3 py-1 font-medium"
+          class="text-xs bg-red/90 text-white rounded-full absolute -bottom-2 right-2 px-3 py-1 font-medium"
         >
           {{ percent }}% OFF
         </p>

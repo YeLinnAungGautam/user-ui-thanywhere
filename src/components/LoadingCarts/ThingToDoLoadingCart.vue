@@ -16,13 +16,13 @@
         </div>
         <p
           v-if="percent != 0 && percent != NaN"
-          class="text-xs bg-red/90 text-white rounded-full absolute top-0 right-0 px-3 py-1 font-medium"
+          class="text-xs bg-red/90 text-white rounded-full absolute -bottom-3 right-2 px-3 py-1 font-medium"
         >
           {{ percent }}% OFF
         </p>
       </div>
 
-      <div class="px-1 pb-2 pt-2">
+      <div class="px-1 pb-2 pt-4">
         <p class="font-semibold text-sm line-clamp-1">{{ i?.name }}</p>
         <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
           <MapPinIcon class="w-3 h-3 text-main" />

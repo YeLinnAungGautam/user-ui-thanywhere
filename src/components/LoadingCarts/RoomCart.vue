@@ -4,25 +4,27 @@
       v-show="imageLoaded"
       class="bg-white shadow rounded-3xl p-2 border border-black/5 max-w-[220px]"
     >
-      <div class="w-[200px] h-[150px] relative overflow-hidden">
-        <img
-          :src="
-            i?.images[0]?.image
-              ? i.images[0]?.image
-              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s'
-          "
-          @load="onImageLoad"
-          class="w-full h-full object-cover rounded-2xl"
-          alt=""
-        />
+      <div class="w-[200px] h-[150px] relative">
+        <div class="w-full h-full overflow-hidden">
+          <img
+            :src="
+              i?.images[0]?.image
+                ? i.images[0]?.image
+                : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s'
+            "
+            @load="onImageLoad"
+            class="w-full h-full object-cover rounded-2xl"
+            alt=""
+          />
+        </div>
         <p
           v-if="percent != 0 && percent != NaN"
-          class="text-xs bg-red/90 text-white rounded-full absolute top-0 z-20 right-0 px-3 py-1 font-medium"
+          class="text-xs bg-red/90 text-white rounded-full absolute -bottom-2 z-20 right-2 px-3 py-1 font-medium"
         >
           {{ percent }}% OFF
         </p>
       </div>
-      <div class="bg-white p-2 space-y-2">
+      <div class="bg-white px-2 pb-2 pt-3 space-y-2">
         <p class="font-medium text-xs line-clamp-2">
           {{ i?.name }}
         </p>

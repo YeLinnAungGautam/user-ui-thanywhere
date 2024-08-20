@@ -15,11 +15,11 @@
       </div>
       <p
         v-if="percent != 0 && percent != NaN"
-        class="text-xs bg-red/90 text-white rounded-full absolute top-1.5 right-1.5 px-3 py-1 font-medium"
+        class="text-xs bg-red/90 text-white rounded-full absolute top-[120px] right-4 px-3 py-1 font-medium"
       >
         {{ percent }}% OFF
       </p>
-      <div class="px-3 py-0">
+      <div class="px-3 py-1">
         <!-- <StarPartVue :count="5" /> -->
 
         <p class="font-semibold text-sm pt-1 line-clamp-1">{{ i.name }}</p>

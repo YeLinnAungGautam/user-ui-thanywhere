@@ -57,14 +57,14 @@ onMounted(() => {
     >
       <p
         v-if="percent != 0 && percent != NaN"
-        class="text-xs bg-red/90 text-white rounded-full absolute top-2 z-20 right-2 px-3 py-1 font-medium"
+        class="text-xs bg-red/90 text-white rounded-full absolute top-[145px] z-20 right-4 px-3 py-1 font-medium"
       >
         {{ percent }}% OFF
       </p>
       <div class="w-[200px] h-[150px] overflow-hidden">
         <ImageCarousel :data="data?.image_links" @change="getstatus" />
       </div>
-      <div class="px-3 py-2 space-y-2">
+      <div class="px-3 pb-2 pt-3 space-y-2">
         <p class="font-medium text-xs">{{ data?.name }}</p>
         <div class="space-y-1" v-if="data?.including_services">
           <div
