@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-import hotel from "../../assets/icons/products icons/hotel booking icon.svg";
+import hotel from "../../assets/icons/hotel.png";
 import inclusive from "../../assets/icons/products icons/all inclusive icon.svg";
 import attraction from "../../assets/icons/products icons/attractions icon.svg";
 import destination from "../../assets/icons/destination.png";

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-[80vh] overflow-hidden rounded-lg">
     <div class="bg-black/5">
       <div v-if="!next" class="w-full">
         <LanguagePartVue @change="change" />

@@ -96,8 +96,9 @@ const percent = computed(() => {
     props.i?.lowest_walk_in_price != "null"
   ) {
     const calculatedPercent = (
-      ((props.i?.lowest_walk_in_price - props.i?.lowest_variation_price) /
-        props.i?.lowest_variation_price) *
+      ((props.i?.lowest_walk_in_price * 1 -
+        props.i?.lowest_variation_price * 1) /
+        props.i?.lowest_walk_in_price) *
       100
     ).toFixed(0); // Round to 2 decimal places if necessary
     return `${calculatedPercent}`;

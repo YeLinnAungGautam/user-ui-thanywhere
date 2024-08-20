@@ -99,7 +99,7 @@
             </div>
           </div>
           <div class="space-y-3">
-            <h1 class="font-medium pt-3">extra rooms</h1>
+            <h1 class="font-medium pt-3">other options</h1>
             <div
               class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
             >

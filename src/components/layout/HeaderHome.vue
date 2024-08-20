@@ -69,7 +69,7 @@ onMounted(() => {
       <DialogPanel
         class="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-2 text-left align-middle shadow-xl transition-all"
       >
-        <div class="w-full h-full">
+        <div class="w-full h-[80vh] overflow-hidden rounded-lg">
           <TranslationPageVue @change="changePageFunction" />
         </div>
       </DialogPanel>

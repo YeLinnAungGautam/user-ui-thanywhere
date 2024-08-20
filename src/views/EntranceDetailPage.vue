@@ -23,12 +23,34 @@
       <HeartIcon
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
       />
+
       <div class="px-4">
         <div
           class="bg-white mt-4 mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
         >
           <div class="space-y-2">
             <h1 class="text-main font-medium">{{ detail?.name }}</h1>
+            <div class="flex justify-between items-center">
+              <button class="text-main py-1 rounded-base text-xl font-semibold">
+                {{ detail?.lowest_variation_price }} thb
+                <span
+                  class="text-[11px] line-through text-black/70"
+                  v-if="
+                    detail?.lowest_walk_in_price != 'null' &&
+                    detail?.lowest_walk_in_price != 0 &&
+                    detail?.lowest_walk_in_price !=
+                      detail?.lowest_variation_price
+                  "
+                  >{{ detail?.lowest_walk_in_price }}thb</span
+                >
+              </button>
+              <p
+                v-if="percent != 0 && percent != NaN"
+                class="text-xs bg-red/90 text-white rounded-full px-3 py-1 font-medium"
+              >
+                {{ percent }}% OFF
+              </p>
+            </div>
             <div class="flex justify-start items-center gap-1">
               <p
                 v-for="c in detail?.cities"
@@ -38,9 +60,10 @@
                 {{ c?.name }}
               </p>
             </div>
+
             <p
               class="text-[13.5px] text-black/80 leading-6"
-              :class="!seeMoreShow ? 'h-[147px] overflow-hidden' : 'h-auto'"
+              :class="!seeMoreShow ? 'h-[145px] overflow-hidden' : 'h-auto'"
               v-html="
                 language == 'english'
                   ? detail?.full_description_en
@@ -67,7 +90,25 @@
             <div
               class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
             >
-              <div v-for="i in detail?.variations" :key="i">
+              <div
+                v-for="i in detail?.variations"
+                :key="i"
+                :class="i?.is_add_on != 1 ? '' : 'hidden'"
+              >
+                <EntranceVariationCartVue :data="i" />
+              </div>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <h1 class="font-medium pt-3">other options</h1>
+            <div
+              class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
+            >
+              <div
+                v-for="i in detail?.variations"
+                :key="i"
+                :class="i?.is_add_on != 0 ? '' : 'hidden'"
+              >
                 <EntranceVariationCartVue :data="i" />
               </div>
             </div>
@@ -160,7 +201,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { ChevronLeftIcon, HeartIcon } from "@heroicons/vue/24/outline";
@@ -216,6 +257,28 @@ const shareContent = () => {
 };
 
 const modalOpen = ref(false);
+
+const percent = computed(() => {
+  if (detail.value != null) {
+    if (
+      detail.value.lowest_walk_in_price &&
+      detail.value.lowest_variation_price &&
+      detail.value.lowest_walk_in_price != "null"
+    ) {
+      const calculatedPercent = (
+        ((detail.value.lowest_walk_in_price * 1 -
+          detail.value.lowest_variation_price * 1) /
+          detail.value.lowest_walk_in_price) *
+        100
+      ).toFixed(0); // Round to 2 decimal places if necessary
+      return `${calculatedPercent}`;
+    } else {
+      return `0`;
+    }
+  } else {
+    return 0;
+  }
+});
 
 // const goRoomDetail = (id) => {
 //   router.push({ name: "HomeRoomDetail", params: { id: id } });

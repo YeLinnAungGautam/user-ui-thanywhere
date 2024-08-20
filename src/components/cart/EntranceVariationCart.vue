@@ -10,16 +10,27 @@ const props = defineProps({
 
 const showMore = ref(false);
 
-const items = ref([
-  "all rides included",
-  "some rides included",
-  "few rides included",
-  "no rides included",
-  "extra rides included",
-]);
+const items = ref(["data empty", "data empty", "data empty"]);
 
 const filteredItems = computed(() => {
   return showMore.value ? items.value : items.value.slice(0, 3);
+});
+
+const percent = computed(() => {
+  if (
+    props.data?.owner_price &&
+    props.data?.price &&
+    props.data?.owner_price != "null"
+  ) {
+    const calculatedPercent = (
+      ((props.data?.owner_price * 1 - props.data?.price * 1) /
+        props.data?.owner_price) *
+      100
+    ).toFixed(0); // Round to 2 decimal places if necessary
+    return `${calculatedPercent}`;
+  } else {
+    return `0`;
+  }
 });
 
 const toggleShowMore = () => {
@@ -41,32 +52,67 @@ onMounted(() => {
 <template>
   <div>
     <div
-      class="bg-white shadow rounded-3xl p-2 border border-black/5"
+      class="bg-white shadow relative rounded-3xl p-2 border border-black/5"
       v-show="!loading"
     >
+      <p
+        v-if="percent != 0 && percent != NaN"
+        class="text-xs bg-red/90 text-white rounded-full absolute top-4 z-20 right-4 px-3 py-1 font-medium"
+      >
+        {{ percent }}% OFF
+      </p>
       <div class="w-[200px] h-[150px] overflow-hidden">
         <ImageCarousel :data="data?.image_links" @change="getstatus" />
       </div>
       <div class="px-3 py-2 space-y-2">
         <p class="font-medium text-xs">{{ data?.name }}</p>
-        <div class="space-y-1">
+        <div class="space-y-1" v-if="data?.including_services">
           <div
             class="flex justify-start items-center gap-1"
-            v-for="i in filteredItems"
+            v-for="i in JSON.parse(data?.including_services)"
             :key="i"
           >
             <StarIcon class="w-3 h-3 text-main" />
-            <p class="text-[10px] text-black font-medium">all rides included</p>
+            <p class="text-[10px] text-black font-medium">{{ i }}</p>
           </div>
+
+          <p @click="toggleShowMore" class="text-[8px] font-medium text-main">
+            {{ showMore ? "show less" : "show more" }}
+          </p>
+        </div>
+        <div class="space-y-1" v-if="!data?.including_services">
+          <div
+            class="flex justify-start items-center gap-1"
+            v-for="i in items"
+            :key="i"
+          >
+            <StarIcon class="w-3 h-3 text-main" />
+            <p class="text-[10px] text-black font-medium">{{ i }}</p>
+          </div>
+
           <p @click="toggleShowMore" class="text-[8px] font-medium text-main">
             {{ showMore ? "show less" : "show more" }}
           </p>
         </div>
         <p class="text-black/80 text-[10px]">starting price (adult/child)</p>
-        <div class="flex justify-between items-center gap-2">
-          <button class="bg-main px-4 py-1 rounded-full text-sm text-white">
-            {{ data?.price }}THB
+        <div class="flex justify-between items-center">
+          <button class="text-main py-1 rounded-base text-base font-semibold">
+            {{ data?.price }} thb
+            <span
+              class="text-[11px] line-through text-black/70"
+              v-if="
+                data?.owner_price != 'null' &&
+                data?.owner_price != 0 &&
+                data?.owner_price != data?.price
+              "
+              >{{ data?.owner_price }}thb</span
+            >
           </button>
+          <p
+            class="text-xs bg-main text-white rounded-full px-3 py-1 font-medium"
+          >
+            book
+          </p>
         </div>
       </div>
     </div>
