@@ -91,7 +91,7 @@
 
 <script setup>
 import Layout from "../components/layout/LayoutHome.vue";
-import facebook from "../assets/icons/Social_icon/341099_facebook_icon.png";
+// import facebook from "../assets/icons/Social_icon/341099_facebook_icon.png";
 import google from "../assets/icons/Social_icon/icons8-google-48.png";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
@@ -125,37 +125,80 @@ const handleSubmit = async () => {
   }
 };
 
+// Fetch the Google OAuth link and handle the popup logic
 const getGoogleLink = async () => {
-  // Logic to get Google OAuth link
-  const res = await authStore.getGoogleLink();
-  console.log(res);
+  try {
+    const res = await authStore.getGoogleLink();
+    console.log(res);
 
-  const popup = window.open(
-    res.data.data.url,
-    "_blank",
-    "width=500,height=600"
-  );
+    // const popup = window.open(
+    //   res.data.data.url,
+    //   "_blank",
+    //   "width=500,height=600"
+    // );
+    showModal.value = true;
+    googleOAuthLink.value = res.data.data.url;
+    console.log(googleOAuthLink.value, "this is url");
 
-  if (!popup || popup.closed || typeof popup.closed == "undefined") {
-    alert("Popup blocked. Please allow popups for this website.");
-    return;
+    // if (!popup || popup.closed || typeof popup.closed == "undefined") {
+    //   alert("Popup blocked. Please allow popups for this website.");
+    //   return;
+    // }
+
+    // Listen for messages from the popup
+    window.addEventListener("message", handlePopupMessage, false);
+
+    // const popupTimer = setInterval(() => {
+    //   if (popup.closed) {
+    //     clearInterval(popupTimer);
+    //     showModal.value = false;
+    //     window.removeEventListener("message", handlePopupMessage); // Cleanup the event listener
+    //   }
+    // }, 500);
+  } catch (error) {
+    console.error("Error during Google OAuth:", error);
+    showModal.value = false;
+  }
+};
+
+// Handle the message from the popup window
+const handlePopupMessage = (event) => {
+  // if (event.origin !== "https://thanywhere.com") {
+  //   return;
+  // }
+
+  const data = event.data;
+
+  if (data.type === "oauth-success") {
+    toast.success(`${data.message}, thank you from anywhere!`);
+    router.push("/home");
+  } else if (data.type === "oauth-error") {
+    toast.error(`${data.message}`);
   }
 
-  showModal.value = true;
-
-  // Monitor the popup window and close the modal when the popup is closed
-  const popupTimer = setInterval(() => {
-    if (popup.closed) {
-      clearInterval(popupTimer);
-      showModal.value = false;
-      // Optionally, handle the OAuth flow completion
-      handleOAuthCompletion();
-    }
-  }, 500);
+  // showModal.value = false;
 };
 
-const handleOAuthCompletion = () => {
-  // Logic to handle OAuth flow completion
-  console.log("OAuth flow completed.");
-};
+// Handle OAuth completion within the popup window
+// const handleOAuthCompletion = (response) => {
+//   const data = {
+//     type: "oauth-success",
+//     message: "OAuth completed successfully!",
+//     token: response.data.token,
+//   };
+
+//   window.opener.postMessage(data, "https://thanywhere.com");
+//   window.close();
+// };
+
+// // Handle OAuth error within the popup window
+// const handleOAuthError = (error) => {
+//   const data = {
+//     type: "oauth-error",
+//     message: "OAuth failed. Please try again.",
+//   };
+
+//   window.opener.postMessage(data, "https://thanywhere.com");
+//   window.close();
+// };
 </script>

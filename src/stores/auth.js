@@ -19,6 +19,32 @@ export const useAuthStore = defineStore("auth", {
         throw error;
       }
     },
+
+    async verifyOAuth() {
+      try {
+        this.loading = true;
+
+        // Make a request to your backend to verify OAuth
+        const response = await axios.get("/api/auth/verify", {
+          provider: "google",
+        });
+
+        // Assume response contains user data and token
+        this.user = response.data.user;
+        this.token = response.data.token;
+
+        // Save the token in localStorage for persistence
+        localStorage.setItem("user", JSON.stringify(this.user));
+        localStorage.setItem("token", this.token);
+
+        return response.data;
+      } catch (error) {
+        console.error("Error verifying OAuth:", error);
+        throw error;
+      } finally {
+        this.loading = false;
+      }
+    },
     async loginAction(params) {
       try {
         this.loading = true;

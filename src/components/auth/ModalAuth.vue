@@ -9,8 +9,8 @@ import { onMounted } from 'vue';
         width="100%"
         height="500px"
         frameborder="0"
-      ></iframe>
-      <p>{{ iframeSrc }}</p> -->
+      ></iframe> -->
+      <pre>{{ jsonData }}</pre>
       <button @click="close">Close</button>
     </div>
   </div>
@@ -25,13 +25,49 @@ export default {
     },
     iframeSrc: {
       type: String,
-      required: false,
+      required: true,
       default: "",
+    },
+  },
+  data() {
+    return {
+      jsonData: null,
+    };
+  },
+  watch: {
+    iframeSrc: {
+      immediate: true,
+      handler(newVal) {
+        this.extractJsonFromUrl(newVal);
+      },
     },
   },
   methods: {
     close() {
       this.$emit("close");
+    },
+    extractJsonFromUrl(url) {
+      try {
+        const urlObj = new URL(url);
+        // Example: Assuming JSON is in a parameter called 'json'
+        const jsonString = urlObj.searchParams.get("json");
+        if (jsonString) {
+          this.jsonData = JSON.parse(decodeURIComponent(jsonString));
+        } else {
+          // Fetch from the server if not present in the URL directly
+          this.fetchJsonData(url);
+        }
+      } catch (error) {
+        console.error("Error parsing JSON from URL:", error);
+      }
+    },
+    async fetchJsonData(url) {
+      try {
+        const response = await fetch(url);
+        this.jsonData = await response.json();
+      } catch (error) {
+        console.error("Error fetching JSON data:", error);
+      }
     },
   },
 };
@@ -40,7 +76,7 @@ export default {
 <style>
 .modal-overlay {
   position: fixed;
-  top: 0;
+  top: -50px;
   left: 0;
   width: 100%;
   height: 100%;

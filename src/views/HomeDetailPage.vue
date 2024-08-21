@@ -238,7 +238,7 @@
               <p class="text-sm font-medium text-main">
                 select on option to book
               </p>
-              <XMarkIcon class="w-5 h-5" @click="modalOpen = false" />
+              <XMarkIcon class="w-5 h-5 text-main" @click="modalOpen = false" />
             </DialogTitle>
             <div class="grid grid-cols-2 gap-5">
               <a
@@ -256,9 +256,9 @@
                   <p class="text-xs font-medium">messenger</p>
                 </div>
               </a>
-              <a
-                href=""
+              <div
                 class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+                @click="viberModalOpenFunction"
               >
                 <img
                   :src="viberIcon"
@@ -269,7 +269,7 @@
                   <p class="text-[10px]">book with</p>
                   <p class="text-xs font-medium">viber</p>
                 </div>
-              </a>
+              </div>
               <a
                 href=""
                 class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
@@ -301,6 +301,28 @@
             </div>
           </DialogPanel>
         </Modal>
+        <Modal :isOpen="viberModalOpen" @closeModal="viberModalOpen = false">
+          <DialogPanel
+            class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+          >
+            <DialogTitle
+              as="div"
+              class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
+            >
+              <p class="opacity-0">...</p>
+              <p class="text-sm font-medium text-main">
+                select on option to book
+              </p>
+              <XMarkIcon
+                class="w-5 h-5 text-main"
+                @click="viberModalOpen = false"
+              />
+            </DialogTitle>
+            <div>
+              <SaleModalVue />
+            </div>
+          </DialogPanel>
+        </Modal>
       </div>
     </div>
   </div>
@@ -312,7 +334,11 @@ import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { useSettingStore } from "../stores/setting";
-import { ChevronLeftIcon, HeartIcon } from "@heroicons/vue/24/outline";
+import {
+  ChevronLeftIcon,
+  HeartIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 import locationMap from "../assets/web/pin.svg";
 import ShareIcon from "../assets/web/send.png";
 import messengerIcon from "../assets/Booking icons/messenger.png";
@@ -325,6 +351,7 @@ import LoadingPageVue from "../components/layout/LoadingPage.vue";
 import { MapPinIcon } from "@heroicons/vue/24/solid";
 import { storeToRefs } from "pinia";
 import RoomCart from "../components/LoadingCarts/RoomCart.vue";
+import SaleModalVue from "../components/cart/SaleModalVue.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -354,6 +381,12 @@ const getDetail = async (id) => {
 };
 
 const modalOpen = ref(false);
+const viberModalOpen = ref(false);
+
+const viberModalOpenFunction = () => {
+  modalOpen.value = false;
+  viberModalOpen.value = true;
+};
 
 const goRoomDetail = (id) => {
   router.push({ name: "HomeRoomDetail", params: { id: id } });
