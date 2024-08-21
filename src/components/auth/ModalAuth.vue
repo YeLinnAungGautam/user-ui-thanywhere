@@ -1,4 +1,3 @@
-import { onMounted } from 'vue';
 <!-- src/components/Modal.vue -->
 <template>
   <div v-if="show" class="modal-overlay" @click.self="close">
@@ -17,6 +16,7 @@ import { onMounted } from 'vue';
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: {
     show: {
@@ -47,26 +47,25 @@ export default {
       this.$emit("close");
     },
     extractJsonFromUrl(url) {
-      try {
-        const urlObj = new URL(url);
-        // Example: Assuming JSON is in a parameter called 'json'
-        const jsonString = urlObj.searchParams.get("json");
-        if (jsonString) {
-          this.jsonData = JSON.parse(decodeURIComponent(jsonString));
-        } else {
+      if (url) {
+        try {
+          console.log(url, "this is url");
+
           // Fetch from the server if not present in the URL directly
           this.fetchJsonData(url);
+        } catch (error) {
+          console.log("Error parsing JSON from URL:", error);
         }
-      } catch (error) {
-        console.error("Error parsing JSON from URL:", error);
       }
     },
     async fetchJsonData(url) {
       try {
-        const response = await fetch(url);
-        this.jsonData = await response.json();
+        const response = await axios.get(url, { provider: "Google" });
+        console.log(response);
+
+        this.jsonData = response;
       } catch (error) {
-        console.error("Error fetching JSON data:", error);
+        console.log("Error fetching JSON data:", error);
       }
     },
   },

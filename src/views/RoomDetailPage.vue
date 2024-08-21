@@ -12,6 +12,7 @@ import whatsappIcon from "../assets/Booking icons/whatsapp.png";
 import callIcon from "../assets/Booking icons/call.png";
 // import logo from "../assets/logo.png";
 import LoadingPageVue from "../components/layout/LoadingPage.vue";
+import SaleModalVue from "../components/cart/SaleModalVue.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -49,6 +50,19 @@ const food = [
 ];
 
 const modalOpen = ref(false);
+const viberModalOpen = ref(false);
+const type = ref("");
+
+const viberModalOpenFunction = (data) => {
+  modalOpen.value = false;
+  type.value = data;
+  viberModalOpen.value = true;
+};
+
+const viberModalCloseFunction = () => {
+  type.value = "";
+  viberModalOpen.value = false;
+};
 
 onMounted(async () => {
   await getDetail(route.params.id);
@@ -131,7 +145,7 @@ onMounted(async () => {
             <p class="text-sm font-medium text-main">
               select on option to book
             </p>
-            <XMarkIcon class="w-5 h-5" @click="modalOpen = false" />
+            <XMarkIcon class="w-5 h-5 text-main" @click="modalOpen = false" />
           </DialogTitle>
           <div class="grid grid-cols-2 gap-5">
             <a
@@ -149,9 +163,9 @@ onMounted(async () => {
                 <p class="text-xs font-medium">messenger</p>
               </div>
             </a>
-            <a
-              href=""
+            <div
               class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+              @click="viberModalOpenFunction('viber')"
             >
               <img
                 :src="viberIcon"
@@ -162,9 +176,9 @@ onMounted(async () => {
                 <p class="text-[10px]">book with</p>
                 <p class="text-xs font-medium">viber</p>
               </div>
-            </a>
-            <a
-              href=""
+            </div>
+            <div
+              @click="viberModalOpenFunction('whatsapp')"
               class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
             >
               <img
@@ -176,9 +190,9 @@ onMounted(async () => {
                 <p class="text-[10px]">book with</p>
                 <p class="text-xs font-medium">whats app</p>
               </div>
-            </a>
-            <a
-              href=""
+            </div>
+            <div
+              @click="viberModalOpenFunction('phone')"
               class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
             >
               <img
@@ -190,7 +204,48 @@ onMounted(async () => {
                 <p class="text-[10px]">book with</p>
                 <p class="text-xs font-medium">call center</p>
               </div>
-            </a>
+            </div>
+          </div>
+        </DialogPanel>
+      </Modal>
+      <Modal :isOpen="viberModalOpen" @closeModal="viberModalCloseFunction">
+        <DialogPanel
+          class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+        >
+          <DialogTitle
+            as="div"
+            class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
+          >
+            <div class="">
+              <img
+                :src="viberIcon"
+                class="w-10 h-10"
+                alt=""
+                v-if="type == 'viber'"
+              />
+              <img
+                :src="whatsappIcon"
+                class="w-10 h-10"
+                alt=""
+                v-if="type == 'whatsapp'"
+              />
+              <img
+                :src="callIcon"
+                class="w-10 h-10"
+                alt=""
+                v-if="type == 'phone'"
+              />
+            </div>
+            <p class="text-sm font-medium text-main">
+              select on option to book
+            </p>
+            <XMarkIcon
+              class="w-5 h-5 text-main"
+              @click="viberModalCloseFunction"
+            />
+          </DialogTitle>
+          <div>
+            <SaleModalVue :type="type" />
           </div>
         </DialogPanel>
       </Modal>

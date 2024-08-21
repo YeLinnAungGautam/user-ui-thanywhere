@@ -258,7 +258,7 @@
               </a>
               <div
                 class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
-                @click="viberModalOpenFunction"
+                @click="viberModalOpenFunction('viber')"
               >
                 <img
                   :src="viberIcon"
@@ -270,8 +270,8 @@
                   <p class="text-xs font-medium">viber</p>
                 </div>
               </div>
-              <a
-                href=""
+              <div
+                @click="viberModalOpenFunction('whatsapp')"
                 class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
               >
                 <img
@@ -283,9 +283,9 @@
                   <p class="text-[10px]">book with</p>
                   <p class="text-xs font-medium">whats app</p>
                 </div>
-              </a>
-              <a
-                href=""
+              </div>
+              <div
+                @click="viberModalOpenFunction('phone')"
                 class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
               >
                 <img
@@ -297,11 +297,11 @@
                   <p class="text-[10px]">book with</p>
                   <p class="text-xs font-medium">call center</p>
                 </div>
-              </a>
+              </div>
             </div>
           </DialogPanel>
         </Modal>
-        <Modal :isOpen="viberModalOpen" @closeModal="viberModalOpen = false">
+        <Modal :isOpen="viberModalOpen" @closeModal="viberModalCloseFunction">
           <DialogPanel
             class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
           >
@@ -309,17 +309,36 @@
               as="div"
               class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
             >
-              <p class="opacity-0">...</p>
+              <div class="">
+                <img
+                  :src="viberIcon"
+                  class="w-10 h-10"
+                  alt=""
+                  v-if="type == 'viber'"
+                />
+                <img
+                  :src="whatsappIcon"
+                  class="w-10 h-10"
+                  alt=""
+                  v-if="type == 'whatsapp'"
+                />
+                <img
+                  :src="callIcon"
+                  class="w-10 h-10"
+                  alt=""
+                  v-if="type == 'phone'"
+                />
+              </div>
               <p class="text-sm font-medium text-main">
                 select on option to book
               </p>
               <XMarkIcon
                 class="w-5 h-5 text-main"
-                @click="viberModalOpen = false"
+                @click="viberModalCloseFunction"
               />
             </DialogTitle>
             <div>
-              <SaleModalVue />
+              <SaleModalVue :type="type" />
             </div>
           </DialogPanel>
         </Modal>
@@ -382,10 +401,17 @@ const getDetail = async (id) => {
 
 const modalOpen = ref(false);
 const viberModalOpen = ref(false);
+const type = ref("");
 
-const viberModalOpenFunction = () => {
+const viberModalOpenFunction = (data) => {
   modalOpen.value = false;
+  type.value = data;
   viberModalOpen.value = true;
+};
+
+const viberModalCloseFunction = () => {
+  type.value = "";
+  viberModalOpen.value = false;
 };
 
 const goRoomDetail = (id) => {
