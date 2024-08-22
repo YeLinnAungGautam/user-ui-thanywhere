@@ -25,7 +25,7 @@ import HomeAttractionDetailVue from "../views/EntranceDetailPage.vue";
 import HomeVantourDetailVue from "../views/VantourDetailPage.vue";
 import OnboardingPage from "../views/OnboardingHomePage.vue";
 import WebVersionHomePage from "../views/WebHomePage.vue";
-import LoginVuePage from "../views/LoginTesting.vue";
+import LoginVuePage from "../views/LoginPage.vue";
 import ProfileVuePage from "../views/ProfilePage.vue";
 import SignUpVuePage from "../views/SignUpPage.vue";
 import TranslationPage from "../views/TranslationPage.vue";

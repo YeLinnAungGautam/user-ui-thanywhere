@@ -20,31 +20,6 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    async verifyOAuth() {
-      try {
-        this.loading = true;
-
-        // Make a request to your backend to verify OAuth
-        const response = await axios.get("/api/auth/verify", {
-          provider: "google",
-        });
-
-        // Assume response contains user data and token
-        this.user = response.data.user;
-        this.token = response.data.token;
-
-        // Save the token in localStorage for persistence
-        localStorage.setItem("user", JSON.stringify(this.user));
-        localStorage.setItem("token", this.token);
-
-        return response.data;
-      } catch (error) {
-        console.error("Error verifying OAuth:", error);
-        throw error;
-      } finally {
-        this.loading = false;
-      }
-    },
     async loginAction(params) {
       try {
         this.loading = true;
@@ -81,10 +56,26 @@ export const useAuthStore = defineStore("auth", {
     },
     async getAction() {
       this.loading = true;
-      let userget = localStorage.getItem("user");
-      this.user = JSON.parse(userget);
-      //   console.log(this.user.name, "this is get");
       this.token = localStorage.getItem("token");
+      if (this.token) {
+        let userget = localStorage.getItem("user");
+        if (!userget) {
+          let res = await axios.get("https://api-blog.thanywhere.com/api/user");
+          console.log("====================================");
+          console.log(res, "this is get");
+          console.log("====================================");
+          // this.user = res.data;
+          localStorage.setItem("user", JSON.stringify(res.data));
+          let user = localStorage.getItem("user");
+          this.user = JSON.parse(user);
+        } else {
+          this.user = JSON.parse(userget);
+        }
+      } else {
+        this.loading = false;
+        return "fail";
+      }
+      //   console.log(this.user.name, "this is get");
       this.loading = false;
       return "finish";
     },
@@ -94,6 +85,13 @@ export const useAuthStore = defineStore("auth", {
       this.token = null;
       localStorage.removeItem("user");
       localStorage.removeItem("token");
+      this.loading = false;
+      return "finish";
+    },
+    async googleSignToken(token) {
+      this.loading = true;
+      this.token = token;
+      localStorage.setItem("token", this.token);
       this.loading = false;
       return "finish";
     },

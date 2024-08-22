@@ -1,16 +1,31 @@
 <template>
-  <button class="btn btn-dark ms-auto" type="button" @click="login">
+  <!-- <button class="btn btn-dark ms-auto" type="button" @click="login">
     Login
-  </button>
+  </button> -->
+  <div class="relative" @click="login">
+    <img
+      :src="google"
+      class="w-5 h-5 object-cover absolute top-3 left-6"
+      alt=""
+    />
+    <button
+      class="py-3 text-center w-full text-sm font-medium bg-background text-black/80 border border-black/30 rounded-lg"
+    >
+      continue with google
+    </button>
+  </div>
 </template>
 
 <script setup>
+import google from "../assets/icons/Social_icon/icons8-google-48.png";
 import { onBeforeUnmount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { useToast } from "vue-toastification";
 
 const router = useRouter();
 const authStore = useAuthStore();
+const toast = useToast();
 
 const login = async () => {
   // Open the popup window immediately to avoid being blocked by the browser
@@ -31,16 +46,20 @@ const login = async () => {
 
 const onMessage = (e) => {
   // Adjust this to allow for different origins if necessary
-  if (e.origin !== 'https://api-blog.thanywhere.com' || !e.data.token) {
+  if (e.origin !== "https://api-blog.thanywhere.com" || !e.data.token) {
     return;
   }
 
   console.log("Token received:", e.data.token);
-
+  toast.success(`success login , thank you from thanywhere! `);
   // Perform your token saving here
   // store.dispatch("auth/saveToken", { token: e.data.token });
 
-  router.push({ name: "home" });
+  authStore.googleSignToken(e.data.token);
+
+  setTimeout(() => {
+    router.push({ name: "ProfileVuePage" });
+  }, 1000);
 };
 
 onMounted(() => {

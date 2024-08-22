@@ -65,7 +65,7 @@
             continue with facebook
           </button>
         </div> -->
-        <div class="relative" @click="getGoogleLink">
+        <!-- <div class="relative" @click="getGoogleLink">
           <img
             :src="google"
             class="w-5 h-5 object-cover absolute top-3 left-6"
@@ -76,14 +76,9 @@
           >
             continue with google
           </button>
-        </div>
-        <Modal
-          :show="showModal"
-          :iframeSrc="googleOAuthLink"
-          @close="showModal = false"
-        >
-          <p>Google OAuth link is shown in the modal.</p>
-        </Modal>
+        </div> -->
+        <LoginTestingVue />
+
         <!-- <GoogleLogin :callback="callback" prompt auto-login /> -->
       </div>
     </Layout>
@@ -93,29 +88,21 @@
 <script setup>
 import Layout from "../components/layout/LayoutHome.vue";
 // import facebook from "../assets/icons/Social_icon/341099_facebook_icon.png";
-import google from "../assets/icons/Social_icon/icons8-google-48.png";
+
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
-import Modal from "../components/auth/ModalAuth.vue";
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
+import LoginTestingVue from "./LoginTesting.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
-const showModal = ref(false);
-const googleOAuthLink = ref("");
 const toast = useToast();
 
 const formData = ref({
   email: "",
   password: "",
 });
-
-// const callback = (response) => {
-//   // This callback will be triggered when the user selects or login to
-//   // his Google account from the popup
-//   console.log("Credential JWT string", response.credential);
-// };
 
 const handleSubmit = async () => {
   const frmData = new FormData();
@@ -130,66 +117,5 @@ const handleSubmit = async () => {
     toast.success(`${res.message} , thank you from thanywhere! `);
     router.push("/home");
   }
-};
-
-// Fetch the Google OAuth link and handle the popup logic
-// Fetch the Google OAuth link and handle the popup logic
-const getGoogleLink = async () => {
-  try {
-    const res = await authStore.getGoogleLink();
-    console.log(res);
-
-    const popup = window.open(
-      res.data.data.url,
-      "_blank",
-      "width=500,height=600"
-    );
-
-    if (!popup || popup.closed || typeof popup.closed == "undefined") {
-      alert("Popup blocked. Please allow popups for this website.");
-      return;
-    }
-
-    showModal.value = true;
-
-    // Listen for messages from the popup
-    window.addEventListener("message", handlePopupMessage, false);
-
-    const popupTimer = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(popupTimer);
-        showModal.value = false;
-        window.removeEventListener("message", handlePopupMessage); // Cleanup the event listener
-      }
-    }, 500);
-  } catch (error) {
-    console.error("Error during Google OAuth:", error);
-    showModal.value = false;
-  }
-};
-
-// Handle the message from the popup window
-const handlePopupMessage = (event) => {
-  // Ensure the message is from the correct origin
-  const expectedOrigin = "http://localhost:5173"; // Replace with your actual frontend origin
-  if (event.origin !== expectedOrigin) {
-    console.warn(`Unexpected origin: ${event.origin}`);
-    return;
-  }
-
-  console.log(event.data);
-
-  const data = event.data;
-
-  if (data.type === "oauth-success") {
-    toast.success(`${data.message}, thank you from anywhere!`);
-    router.push("/home");
-  } else if (data.type === "oauth-error") {
-    toast.error(`${data.message}`);
-  }
-
-  // Close the modal after handling the message
-  showModal.value = false;
-  window.removeEventListener("message", handlePopupMessage); // Cleanup the event listener
 };
 </script>

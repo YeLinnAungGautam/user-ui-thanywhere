@@ -118,8 +118,18 @@ const logoutAction = () => {
   }
 };
 
-onMounted(() => {
-  authStore.getAction();
-  console.log(user.value.first_name);
+const getActionCheck = async () => {
+  const res = await authStore.getAction();
+  console.log("====================================");
+  console.log(res, "this is getAction");
+  console.log("====================================");
+  if (res == "fail") {
+    router.push("/home");
+  }
+};
+
+onMounted(async () => {
+  await getActionCheck();
+  // console.log(user.value.first_name);
 });
 </script>
