@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount } from "vue";
+import { onBeforeUnmount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 
@@ -31,7 +31,7 @@ const login = async () => {
 
 const onMessage = (e) => {
   // Adjust this to allow for different origins if necessary
-  if (e.origin !== window.origin || !e.data.token) {
+  if (e.origin !== 'https://api-blog.thanywhere.com' || !e.data.token) {
     return;
   }
 
