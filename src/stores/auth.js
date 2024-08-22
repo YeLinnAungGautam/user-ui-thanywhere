@@ -8,12 +8,28 @@ export const useAuthStore = defineStore("auth", {
     async getGoogleLink() {
       try {
         this.loading = true;
-        const response = await axios.post(
-          "https://api-blog.thanywhere.com/api/oauth/google/redirect"
+
+        const response = await fetch(
+          "https://api-blog.thanywhere.com/api/oauth/google/redirect",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json", // Set the appropriate headers
+              // Include any other headers if necessary, e.g., Authorization
+            },
+            // body: JSON.stringify({}) // Add this line if the API expects a request body
+          }
         );
+
+        // Check if the response is OK (status 200-299)
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json(); // Parse the JSON response
         this.loading = false;
 
-        return response;
+        return data; // Return the parsed data
       } catch (error) {
         this.loading = false;
         throw error;
