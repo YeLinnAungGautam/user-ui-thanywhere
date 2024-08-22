@@ -28,12 +28,16 @@ const login = async () => {
 
     // Listen for messages
     const onMessage = (event) => {
-      if (
-        event.origin !== "https://api-blog.thanywhere.com" ||
-        !event.data.token
-      ) {
-        return;
-      }
+      // if (
+      //   event.origin !== "https://api-blog.thanywhere.com" ||
+      //   !event.data.token
+      // ) {
+      //   return;
+      // }
+
+      console.log("====================================");
+      console.log(event.data.token);
+      console.log("====================================");
 
       if (event.data.token) {
         localStorage.setItem("auth_token", event.data.token);
@@ -52,18 +56,18 @@ const login = async () => {
   }
 };
 
-const onMessage = (e) => {
-  // Adjust this to allow for different origins if necessary
-  if (e.origin !== window.origin || !e.data.token) {
-    return;
-  }
+// const onMessage = (e) => {
+//   // Adjust this to allow for different origins if necessary
+//   if (e.origin !== window.origin || !e.data.token) {
+//     return;
+//   }
 
-  if (event.data.token) {
-    localStorage.setItem("auth_token", event.data.token);
-    router.push({ name: "home" });
-    // Close the popup window
-  }
-};
+//   if (event.data.token) {
+//     localStorage.setItem("auth_token", event.data.token);
+//     router.push({ name: "home" });
+//     // Close the popup window
+//   }
+// };
 
 onMounted(() => {
   window.removeEventListener("message", onMessage);
