@@ -5,12 +5,13 @@ import App from "./App.vue";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import axios from "axios";
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL =
+    import.meta.env.VITE_API_URL;
 import { createPinia } from "pinia";
 
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("thany_token");
 if (token) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
 // if ("serviceWorker" in navigator) {
@@ -25,7 +26,7 @@ if (token) {
 // }
 
 const options = {
-  timeout: 1500,
+    timeout: 1500,
 };
 
 createApp(App).use(createPinia()).use(router).use(Toast, options).mount("#app");
