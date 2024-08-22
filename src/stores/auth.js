@@ -28,14 +28,14 @@ export const useAuthStore = defineStore("auth", {
         this.user = response.data.data.user;
         this.token = response.data.data.token;
         localStorage.setItem("user", JSON.stringify(this.user));
-        localStorage.setItem("token", this.token);
+        localStorage.setItem("thany_token", this.token);
         return response.data;
       } catch (error) {
         this.loading = false;
         this.user = null;
         this.token = null;
         localStorage.removeItem("user");
-        localStorage.removeItem("token");
+        localStorage.removeItem("thany_token");
         throw error;
       } finally {
         this.loading = false;
@@ -56,18 +56,33 @@ export const useAuthStore = defineStore("auth", {
     },
     async getAction() {
       this.loading = true;
-      this.token = localStorage.getItem("token");
+      this.token = localStorage.getItem("thany_token");
       if (this.token) {
         let userget = localStorage.getItem("user");
         if (!userget) {
-          let res = await axios.get("https://api-blog.thanywhere.com/api/user");
-          console.log("====================================");
-          console.log(res, "this is get");
-          console.log("====================================");
-          // this.user = res.data;
-          localStorage.setItem("user", JSON.stringify(res.data));
-          let user = localStorage.getItem("user");
-          this.user = JSON.parse(user);
+          try {
+            let res = await fetch("https://api-blog.thanywhere.com/api/user", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${this.token}`, // Include the token in the Authorization header
+              },
+            });
+
+            if (!res.ok) {
+              throw new Error("Network response was not ok");
+            }
+
+            let data = await res.json(); // Await the parsing of the JSON
+            console.log("====================================");
+            console.log(data, "this is get");
+            console.log("====================================");
+
+            localStorage.setItem("user", JSON.stringify(data));
+            this.user = data;
+          } catch (error) {
+            console.error("Failed to fetch user data:", error);
+          }
         } else {
           this.user = JSON.parse(userget);
         }
@@ -75,23 +90,23 @@ export const useAuthStore = defineStore("auth", {
         this.loading = false;
         return "fail";
       }
-      //   console.log(this.user.name, "this is get");
       this.loading = false;
       return "finish";
     },
+
     async logoutAction() {
       this.loading = true;
       this.user = null;
       this.token = null;
       localStorage.removeItem("user");
-      localStorage.removeItem("token");
+      localStorage.removeItem("thany_token");
       this.loading = false;
       return "finish";
     },
     async googleSignToken(token) {
       this.loading = true;
       this.token = token;
-      localStorage.setItem("token", this.token);
+      localStorage.setItem("thany_token", this.token);
       this.loading = false;
       return "finish";
     },

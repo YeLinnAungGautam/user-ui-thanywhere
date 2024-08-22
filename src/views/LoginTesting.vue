@@ -57,7 +57,7 @@ const onMessage = (e) => {
 
   authStore.googleSignToken(e.data.token);
 
-  if (localStorage.getItem("token")) {
+  if (localStorage.getItem("thany_token")) {
     setTimeout(() => {
       router.push({ name: "ProfileVuePage" });
     }, 2000);
