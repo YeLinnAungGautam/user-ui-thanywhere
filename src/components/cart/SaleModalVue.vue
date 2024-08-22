@@ -14,9 +14,14 @@
         <img
           :src="d.image"
           :alt="d.name"
-          class="w-full h-auto absolute -bottom-[36px] z-10 object-cover rounded-lg"
+          class="h-auto absolute -bottom-[36px] z-10 object-cover rounded-lg"
+          :class="d.id == 1 ? 'w-full' : 'w-[80px] left-4'"
         />
-        <img :src="background" class="absolute z-0 -bottom-[56px]" alt="" />
+        <img
+          :src="background"
+          class="absolute w-[89px] z-0 -bottom-[49px]"
+          alt=""
+        />
       </div>
       <div class="col-span-2 w-[65%]">
         <p class="text-base line-clamp-1 font-semibold">{{ d.name }}</p>

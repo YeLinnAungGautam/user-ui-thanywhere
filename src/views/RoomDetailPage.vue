@@ -64,6 +64,12 @@ const viberModalCloseFunction = () => {
   viberModalOpen.value = false;
 };
 
+const backLeftFunction = () => {
+  type.value = "";
+  viberModalOpen.value = false;
+  modalOpen.value = true;
+};
+
 onMounted(async () => {
   await getDetail(route.params.id);
 });
@@ -216,22 +222,26 @@ onMounted(async () => {
             as="div"
             class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
           >
-            <div class="">
+            <div class="flex justify-start items-center gap-1">
+              <ChevronLeftIcon
+                class="w-5 h-5 text-main"
+                @click="backLeftFunction"
+              />
               <img
                 :src="viberIcon"
-                class="w-10 h-10"
+                class="w-8 h-8"
                 alt=""
                 v-if="type == 'viber'"
               />
               <img
                 :src="whatsappIcon"
-                class="w-10 h-10"
+                class="w-8 h-8"
                 alt=""
                 v-if="type == 'whatsapp'"
               />
               <img
                 :src="callIcon"
-                class="w-10 h-10"
+                class="w-8 h-8"
                 alt=""
                 v-if="type == 'phone'"
               />

@@ -1,8 +1,8 @@
 import HninPanei from "../../assets/s/Hnin_Panei__Senior_Sales_Manager-removebg-preview.png";
-import Chaw from "../../assets/s/Chaw_Kalayar__Sales_Executive-removebg-preview.png";
-import TinZar from "../../assets/s/Tinzar_Wai__Sales_Executive-removebg-preview.png";
-import Nyein from "../../assets/s/Nyein_Nyein__Sales_Executive-removebg-preview.png";
-import Khaing from "../../assets/s/Nyein_Nyein__Sales_Executive__2_-removebg-preview.png";
+import Chaw from "../../assets/s/Chaw_Kalayar-removebg-preview.png";
+import TinZar from "../../assets/s/Thinzar_wai-removebg-preview.png";
+import Nyein from "../../assets/s/NyeinNyein-removebg-preview.png";
+import Khaing from "../../assets/s/Khaing_Hnin_Kyi-removebg-preview.png";
 
 const saleTeam = [
   {

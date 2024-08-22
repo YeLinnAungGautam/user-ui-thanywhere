@@ -84,6 +84,7 @@
         >
           <p>Google OAuth link is shown in the modal.</p>
         </Modal>
+        <!-- <GoogleLogin :callback="callback" prompt auto-login /> -->
       </div>
     </Layout>
   </div>
@@ -110,6 +111,12 @@ const formData = ref({
   password: "",
 });
 
+// const callback = (response) => {
+//   // This callback will be triggered when the user selects or login to
+//   // his Google account from the popup
+//   console.log("Credential JWT string", response.credential);
+// };
+
 const handleSubmit = async () => {
   const frmData = new FormData();
   frmData.append("email", formData.value.email);
@@ -126,35 +133,35 @@ const handleSubmit = async () => {
 };
 
 // Fetch the Google OAuth link and handle the popup logic
+// Fetch the Google OAuth link and handle the popup logic
 const getGoogleLink = async () => {
   try {
     const res = await authStore.getGoogleLink();
     console.log(res);
 
-    // const popup = window.open(
-    //   res.data.data.url,
-    //   "_blank",
-    //   "width=500,height=600"
-    // );
-    showModal.value = true;
-    googleOAuthLink.value = res.data.data.url;
-    console.log(googleOAuthLink.value, "this is url");
+    const popup = window.open(
+      res.data.data.url,
+      "_blank",
+      "width=500,height=600"
+    );
 
-    // if (!popup || popup.closed || typeof popup.closed == "undefined") {
-    //   alert("Popup blocked. Please allow popups for this website.");
-    //   return;
-    // }
+    if (!popup || popup.closed || typeof popup.closed == "undefined") {
+      alert("Popup blocked. Please allow popups for this website.");
+      return;
+    }
+
+    showModal.value = true;
 
     // Listen for messages from the popup
     window.addEventListener("message", handlePopupMessage, false);
 
-    // const popupTimer = setInterval(() => {
-    //   if (popup.closed) {
-    //     clearInterval(popupTimer);
-    //     showModal.value = false;
-    //     window.removeEventListener("message", handlePopupMessage); // Cleanup the event listener
-    //   }
-    // }, 500);
+    const popupTimer = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(popupTimer);
+        showModal.value = false;
+        window.removeEventListener("message", handlePopupMessage); // Cleanup the event listener
+      }
+    }, 500);
   } catch (error) {
     console.error("Error during Google OAuth:", error);
     showModal.value = false;
@@ -163,9 +170,14 @@ const getGoogleLink = async () => {
 
 // Handle the message from the popup window
 const handlePopupMessage = (event) => {
-  // if (event.origin !== "https://thanywhere.com") {
-  //   return;
-  // }
+  // Ensure the message is from the correct origin
+  const expectedOrigin = "http://localhost:5173"; // Replace with your actual frontend origin
+  if (event.origin !== expectedOrigin) {
+    console.warn(`Unexpected origin: ${event.origin}`);
+    return;
+  }
+
+  console.log(event.data);
 
   const data = event.data;
 
@@ -176,29 +188,8 @@ const handlePopupMessage = (event) => {
     toast.error(`${data.message}`);
   }
 
-  // showModal.value = false;
+  // Close the modal after handling the message
+  showModal.value = false;
+  window.removeEventListener("message", handlePopupMessage); // Cleanup the event listener
 };
-
-// Handle OAuth completion within the popup window
-// const handleOAuthCompletion = (response) => {
-//   const data = {
-//     type: "oauth-success",
-//     message: "OAuth completed successfully!",
-//     token: response.data.token,
-//   };
-
-//   window.opener.postMessage(data, "https://thanywhere.com");
-//   window.close();
-// };
-
-// // Handle OAuth error within the popup window
-// const handleOAuthError = (error) => {
-//   const data = {
-//     type: "oauth-error",
-//     message: "OAuth failed. Please try again.",
-//   };
-
-//   window.opener.postMessage(data, "https://thanywhere.com");
-//   window.close();
-// };
 </script>

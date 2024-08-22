@@ -14,6 +14,7 @@ import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
 import { useRouter } from "vue-router";
 import { onMounted } from "vue";
+import WhyChooseUsVue from "../components/home/WhyChooseUs.vue";
 // import InstallAppVue from "../components/home/InstallApp.vue";
 // import ShowOnboardingVue from "../components/home/ShowOnboarding.vue";
 // import { useSettingStore } from "../stores/setting";
@@ -75,6 +76,7 @@ onMounted(() => {});
           <StayinBangkokVue />
           <!-- <ExporeAboutCityVue /> -->
           <!-- <UniqueHotelVue /> -->
+          <WhyChooseUsVue />
           <BestSellingVanTours />
           <BestSellingAttractions />
           <TopDestinationVue />

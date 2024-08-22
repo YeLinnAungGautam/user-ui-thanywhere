@@ -8,7 +8,7 @@
     <div class="relative" v-if="!loading">
       <ImageCarousel :data="images" />
       <ChevronLeftIcon
-        @click="router.back()"
+        @click="router.push('/home/van-tour')"
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
       />
       <!-- <ArrowUpTrayIcon
@@ -305,22 +305,26 @@
               as="div"
               class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
             >
-              <div class="">
+              <div class="flex justify-start items-center gap-1">
+                <ChevronLeftIcon
+                  class="w-5 h-5 text-main"
+                  @click="backLeftFunction"
+                />
                 <img
                   :src="viberIcon"
-                  class="w-10 h-10"
+                  class="w-8 h-8"
                   alt=""
                   v-if="type == 'viber'"
                 />
                 <img
                   :src="whatsappIcon"
-                  class="w-10 h-10"
+                  class="w-8 h-8"
                   alt=""
                   v-if="type == 'whatsapp'"
                 />
                 <img
                   :src="callIcon"
-                  class="w-10 h-10"
+                  class="w-8 h-8"
                   alt=""
                   v-if="type == 'phone'"
                 />
@@ -493,6 +497,11 @@ const viberModalOpenFunction = (data) => {
 const viberModalCloseFunction = () => {
   type.value = "";
   viberModalOpen.value = false;
+};
+const backLeftFunction = () => {
+  type.value = "";
+  viberModalOpen.value = false;
+  modalOpen.value = true;
 };
 
 watch(

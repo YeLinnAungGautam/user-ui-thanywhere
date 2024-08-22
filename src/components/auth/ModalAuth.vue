@@ -9,14 +9,12 @@
         height="500px"
         frameborder="0"
       ></iframe> -->
-      <pre>{{ jsonData }}</pre>
       <button @click="close">Close</button>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 export default {
   props: {
     show: {
@@ -38,35 +36,13 @@ export default {
     iframeSrc: {
       immediate: true,
       handler(newVal) {
-        this.extractJsonFromUrl(newVal);
+        console.log(newVal);
       },
     },
   },
   methods: {
     close() {
       this.$emit("close");
-    },
-    extractJsonFromUrl(url) {
-      if (url) {
-        try {
-          console.log(url, "this is url");
-
-          // Fetch from the server if not present in the URL directly
-          this.fetchJsonData(url);
-        } catch (error) {
-          console.log("Error parsing JSON from URL:", error);
-        }
-      }
-    },
-    async fetchJsonData(url) {
-      try {
-        const response = await axios.get(url, { provider: "Google" });
-        console.log(response);
-
-        this.jsonData = response;
-      } catch (error) {
-        console.log("Error fetching JSON data:", error);
-      }
     },
   },
 };

@@ -72,6 +72,28 @@
 
             }
 
+            // In the popup window (OAuth callback):
+            function handleOAuthCompletion(response) {
+                const data = {
+                    type: "oauth-success",
+                    message: "OAuth completed successfully!",
+                    token: response.data.token, // or other relevant data
+                };
+
+                window.opener.postMessage(data, "http://localhost:5173"); // Replace with your actual frontend origin
+                window.close(); // Optionally close the popup
+            }
+
+            function handleOAuthError(error) {
+                const data = {
+                    type: "oauth-error",
+                    message: "OAuth failed. Please try again.",
+                };
+
+                window.opener.postMessage(data, "http://localhost:5173"); // Replace with your actual frontend origin
+                window.close(); // Optionally close the popup
+            }
+
             // Add event listener for beforeinstallprompt
             window.addEventListener('beforeinstallprompt', handleInstallPrompt);
 
