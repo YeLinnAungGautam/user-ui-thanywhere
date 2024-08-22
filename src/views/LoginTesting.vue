@@ -52,8 +52,9 @@ const login = async () => {
   }
 };
 
-const onMessage = (event) => {
-  if (event.origin !== window.location.origin) {
+const onMessage = (e) => {
+  // Adjust this to allow for different origins if necessary
+  if (e.origin !== window.origin || !e.data.token) {
     return;
   }
 
