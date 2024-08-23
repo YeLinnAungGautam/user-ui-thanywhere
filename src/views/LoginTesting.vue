@@ -60,7 +60,7 @@ const onMessage = (e) => {
   if (localStorage.getItem("thany_token")) {
     setTimeout(() => {
       router.push({ name: "ProfileVuePage" });
-    }, 2000);
+    }, 3000);
   }
 };
 
