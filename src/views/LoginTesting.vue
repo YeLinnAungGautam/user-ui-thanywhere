@@ -44,6 +44,8 @@ const login = async () => {
   }
 };
 
+// const loading = ref(false);
+
 const onMessage = (e) => {
   // Adjust this to allow for different origins if necessary
   if (e.origin !== "https://api-blog.thanywhere.com" || !e.data.token) {
@@ -62,6 +64,17 @@ const onMessage = (e) => {
       router.push({ name: "ProfileVuePage" });
     }, 3000);
   }
+  // if (localStorage.getItem("thany_token")) {
+  //   loading.value = true;
+  //   const res = await authStore.getAction();
+  //   if (res.data) {
+  //     loading.value = false;
+  //     router.push({ name: "ProfileVuePage" });
+  //   } else {
+  //     loading.value = false;
+  //     toast.error("Failed to get action data");
+  //   }
+  // }
 };
 
 onMounted(() => {

@@ -62,7 +62,11 @@ export const useAuthStore = defineStore("auth", {
                 if (!userget) {
                     try {
                         let res = await axios.get(
-                            "https://api-blog.thanywhere.com/api/user"
+                            "https://api-blog.thanywhere.com/api/user", {
+                                headers: {
+                                    Authorization: `Bearer ${this.token}`, // Include the token here
+                                },
+                            }
                         );
                         console.log("====================================");
                         console.log(res, "this is res");
