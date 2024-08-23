@@ -2,7 +2,7 @@
   <!-- <button class="btn btn-dark ms-auto" type="button" @click="login">
     Login
   </button> -->
-  <div class="relative" @click="login">
+  <div class="relative mb-5" @click="login">
     <img
       :src="google"
       class="w-5 h-5 object-cover absolute top-3 left-6"
