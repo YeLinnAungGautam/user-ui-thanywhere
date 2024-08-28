@@ -11,7 +11,11 @@
           <div
             class="relative w-[130px] mx-auto h-[130px] shadow-custom rounded-full border border-main"
           >
-            <img :src="logo" class="w-full h-full object-cover p-2" alt="" />
+            <div
+              class="w-[130px] h-[130px] overflow-hidden rounded-full border border-main"
+            >
+              <img :src="profile" class="w-full h-full object-cover" alt="" />
+            </div>
             <div
               class="w-8 h-8 flex justify-center items-center bg-main rounded-full absolute bottom-2 right-0"
             >
@@ -24,7 +28,10 @@
           <div
             class="mx-4 p-4 rounded-xl shadow-custom divide-y divide-black/10"
           >
-            <div class="flex justify-between items-center py-2">
+            <div
+              class="flex justify-between items-center py-2"
+              @click="router.push('/account/profile/update')"
+            >
               <div class="flex justify-start items-center gap-2">
                 <PencilSquareIcon class="w-5 h-5" />
                 <p class="text-xs">update personal info</p>
@@ -111,7 +118,7 @@ import {
 } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "../stores/auth";
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -124,9 +131,15 @@ const logoutAction = () => {
   }
 };
 
+const profile = ref("");
+
 const getActionCheck = async () => {
   const res = await authStore.getAction();
-  console.log("====================================");
+  (profile.value =
+    user.value?.profile == `https://api-blog.thanywhere.com/storage/images/`
+      ? logo
+      : user.value?.profile),
+    console.log("====================================");
   console.log(res, "this is getAction");
   console.log("====================================");
   if (res == "fail") {

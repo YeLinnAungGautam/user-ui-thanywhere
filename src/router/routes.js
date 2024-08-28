@@ -29,6 +29,7 @@ import LoginVuePage from "../views/LoginPage.vue";
 import ProfileVuePage from "../views/ProfilePage.vue";
 import SignUpVuePage from "../views/SignUpPage.vue";
 import TranslationPage from "../views/TranslationPage.vue";
+import ProfileUpdateVuePage from "../views/UpdateUserInfo.vue";
 
 const routes = [
   {
@@ -55,6 +56,11 @@ const routes = [
     path: "/account/profile",
     name: "ProfileVuePage",
     component: ProfileVuePage,
+  },
+  {
+    path: "/account/profile/update",
+    name: "ProfileUpdateVuePage",
+    component: ProfileUpdateVuePage,
   },
   {
     path: "/account/signup",
