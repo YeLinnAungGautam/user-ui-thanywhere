@@ -1,27 +1,66 @@
 <template>
   <div class="font-poppins">
-    <transition name="slide-fade" mode="out-in">
+    <transition :name="transitionName" mode="out-in">
       <router-view />
     </transition>
   </div>
 </template>
 
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const transitionName = ref("slide-left"); // Default transition
+
+const router = useRouter();
+
+// Listen to route changes to adjust the transition direction
+router.beforeEach((to, from, next) => {
+  const toDepth = to.path.split("/").length;
+  const fromDepth = from.path.split("/").length;
+
+  // Determine the direction based on path depth (can be customized)
+  if (toDepth > fromDepth) {
+    transitionName.value = "slide-left"; // Navigating forward
+  } else {
+    transitionName.value = "slide-right"; // Navigating backward
+  }
+  next();
+});
+</script>
+
 <style>
-/* Slide transition effect */
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: transform 0.2s ease;
-  /* You can also transition opacity if desired */
+/* Slide left transition effect */
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: transform 0.2s ease, opacity 0.2s ease;
   opacity: 1;
 }
 
-.slide-fade-enter-from {
+.slide-left-enter-from {
   transform: translateX(100%);
   opacity: 0;
 }
 
-.slide-fade-leave-to {
+.slide-left-leave-to {
   transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* Slide right transition effect */
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 1;
+}
+
+.slide-right-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-right-leave-to {
+  transform: translateX(100%);
   opacity: 0;
 }
 </style>
