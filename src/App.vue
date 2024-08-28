@@ -50,17 +50,14 @@ router.beforeEach((to, from, next) => {
 /* Slide right transition effect */
 .slide-right-enter-active,
 .slide-right-leave-active {
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  opacity: 1;
+  transition: transform 0.2s ease;
 }
 
 .slide-right-enter-from {
-  transform: translateX(-100%);
-  opacity: 0;
+  transform: 0;
 }
 
 .slide-right-leave-to {
-  transform: translateX(100%);
-  opacity: 0;
+  transform: 0;
 }
 </style>
