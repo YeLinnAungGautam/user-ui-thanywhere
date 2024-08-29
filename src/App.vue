@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
 /* Slide left transition effect */
 .slide-left-enter-active,
 .slide-left-leave-active {
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: transform 0.4s ease, opacity 0.4s ease;
   opacity: 1;
 }
 
@@ -50,14 +50,16 @@ router.beforeEach((to, from, next) => {
 /* Slide right transition effect */
 .slide-right-enter-active,
 .slide-right-leave-active {
-  transition: transform 0.2s ease;
+  transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
 .slide-right-enter-from {
-  transform: 0;
+  transform: translateX(-100%);
+  opacity: 0;
 }
 
 .slide-right-leave-to {
-  transform: 0;
+  transform: translateX(100%);
+  opacity: 0;
 }
 </style>

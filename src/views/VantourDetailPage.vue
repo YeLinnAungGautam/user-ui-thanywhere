@@ -24,324 +24,483 @@
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
       />
 
-      <div class="px-4">
-        <div
-          class="bg-white mt-4 mb-4 p-5 rounded-3xl border border-black/10 space-y-4"
-        >
-          <div class="space-y-2 pb-4">
-            <h1 class="text-main font-medium">{{ detail?.name }}</h1>
-            <div class="flex justify-start items-center gap-1">
-              <p class="text-[10px] py-0.5 rounded inline-block text-main">
-                {{ detail?.destinations?.length }} destinations
-              </p>
-            </div>
-            <div class="space-y-3">
-              <div>
-                <ul class="space-y-2 pb-3">
-                  <li
-                    v-for="l in detail?.destinations"
-                    :key="l.id"
-                    class="text-xs font-medium flex justify-start items-center gap-2"
+      <div class="bg-black/5">
+        <div class="">
+          <div class="mt-4 mb-3 space-y-4">
+            <div class="">
+              <div class="bg-white px-5 py-2">
+                <h1 class="text-main font-semibold">{{ detail?.name }}</h1>
+                <div class="flex justify-start items-center gap-1">
+                  <p
+                    class="text-[10px] py-0.5 rounded inline-block text-main font-medium"
                   >
-                    <div class="w-2 h-2 rounded-full bg-main"></div>
-                    <p>{{ l.name }}</p>
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="flex flex-1 justify-start space-x-3 mt-6 pb-4 items-center overflow-x-scroll scroll-container border-b border-black/10"
-                v-if="detail?.destinations.length > 0"
-              >
-                <div
-                  v-for="i in detail?.destinations"
-                  :key="i"
-                  @click="goDetialDesPage(i.id)"
-                >
-                  <div class="w-[200px] h-[150px] overflow-hidden rounded-2xl">
-                    <img
-                      :src="i?.feature_img"
-                      alt=""
-                      v-if="i?.feature_img"
-                      class="w-full h-full object-cover"
-                    />
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-                      alt=""
-                      v-if="!i?.feature_img"
-                      class="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p class="text-xs pt-2 font-medium pl-2 whitespace-nowrap">
-                    {{ i?.name }}
+                    {{ detail?.destinations?.length }} destinations
                   </p>
                 </div>
-              </div>
-            </div>
 
-            <div>
-              <p class="text-sm font-semibold text-main pb-2">summary</p>
-              <p
-                class="text-[13.5px] text-black/80 leading-6"
-                :class="!seeMoreShow ? 'h-[147px] overflow-hidden' : 'h-auto'"
-                v-html="
-                  language == 'english'
-                    ? detail?.full_description_en
-                    : detail?.long_description
-                "
-              ></p>
-              <p
-                class="text-[10px] text-main"
-                v-if="!seeMoreShow"
-                @click="seeMoreShow = true"
-              >
-                see more
-              </p>
-              <p
-                class="text-[10px] text-main"
-                v-if="seeMoreShow"
-                @click="seeMoreShow = false"
-              >
-                see less
-              </p>
-            </div>
-            <div
-              v-for="d in detail?.destinations"
-              :key="d"
-              class="space-y-2 pb-2"
-            >
-              <p class="text-sm font-semibold text-main">{{ d.name }}</p>
-              <p class="text-[13.5px]">{{ d.summary }}</p>
-            </div>
-            <div class="space-y-3">
-              <h1 class="font-medium pt-3">select cars</h1>
-              <div
-                class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
-              >
                 <div
-                  v-for="i in detail?.cars"
-                  :key="i"
-                  class="border border-black/10 min-w-[200px] rounded-2xl shadow-sm bg-white"
+                  class="flex flex-1 justify-start space-x-3 mt-4 items-center overflow-x-scroll scroll-container"
+                  v-if="detail?.destinations.length > 0"
                 >
                   <div
-                    class="w-full col-span-5 h-[150px] overflow-hidden rounded-t-2xl"
+                    v-for="i in detail?.destinations"
+                    :key="i"
+                    @click="goDetialDesPage(i.id)"
                   >
-                    <img
-                      :src="getCarTypeImage(i?.name)"
-                      class="w-full h-full object-cover"
-                      alt=""
-                    />
-                  </div>
-                  <div class="py-3 px-2">
-                    <p class="text-sm font-semibold line-clamp-1">
+                    <div
+                      class="w-[200px] h-[120px] overflow-hidden rounded-2xl"
+                    >
+                      <img
+                        :src="i?.feature_img"
+                        alt=""
+                        v-if="i?.feature_img"
+                        class="w-full h-full object-cover"
+                      />
+                      <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
+                        alt=""
+                        v-if="!i?.feature_img"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <p
+                      class="text-xs pt-2 font-semibold pl-2 whitespace-nowrap"
+                    >
                       {{ i?.name }}
                     </p>
-
-                    <div class="text-[10px] gap-0.5 pt-1 space-y-2">
-                      <div class="flex justify-between items-center">
-                        <p class="text-green text-xs font-medium">
-                          max persons
-                        </p>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-white px-5 mt-3 pb-2 pt-5">
+                <div class="space-y-3">
+                  <h1 class="font-semibold border-l-4 border-main pl-3">
+                    Select Options
+                  </h1>
+                  <div
+                    class="flex flex-1 justify-start space-x-3 pt-2 pb-2 items-center overflow-x-scroll scroll-container"
+                  >
+                    <div
+                      v-for="i in detail?.cars"
+                      :key="i"
+                      class="border border-black/10 min-w-[200px] rounded-2xl shadow-sm"
+                      :class="
+                        chooseData.name == i.name ? 'bg-main' : 'bg-white'
+                      "
+                      @click="chooseData = i"
+                    >
+                      <div
+                        class="col-span-5 w-[150px] mx-auto h-[120px] overflow-hidden rounded-t-2xl"
+                      >
+                        <img
+                          :src="getCarTypeImage(i?.name)"
+                          class="w-full h-full object-cover"
+                          alt=""
+                        />
+                      </div>
+                      <div
+                        class="px-2 pb-3"
+                        :class="
+                          chooseData.name == i.name
+                            ? 'text-white'
+                            : 'text-black'
+                        "
+                      >
                         <p
-                          class="text-main bg-green/10 px-4 py-0.5 rounded-lg text-xs font-medium"
+                          class="text-sm font-semibold text-center line-clamp-1"
                         >
-                          {{ i?.max_person }}
+                          {{ i?.name }}({{ i?.max_person }} pax)
+                        </p>
+
+                        <div class="text-center">
+                          <p class="inline-block px-4 text-xl font-semibold">
+                            {{ i.price }} THB
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <div
+                    class="flex flex-1 justify-start space-x-3 mt-2 pb-2 items-center overflow-x-scroll scroll-container"
+                  >
+                    <div
+                      class="border border-main rounded-lg space-y-1 w-[400px] p-3"
+                    >
+                      <p
+                        class="text-xs font-medium text-main whitespace-nowrap"
+                      >
+                        Private Tour (Without Tickets)
+                      </p>
+                      <p class="text-xs font-medium text-main">
+                        + 0 thb per pax
+                      </p>
+                    </div>
+                    <div
+                      class="border border-black/50 rounded-lg space-y-1 w-[400px] p-3"
+                    >
+                      <p
+                        class="text-xs font-medium text-black/80 whitespace-nowrap"
+                      >
+                        Private Tour (With Tickets)
+                      </p>
+                      <p class="text-xs font-medium text-black/80">
+                        + 800 thb per pax
+                      </p>
+                    </div>
+                  </div>
+                  <div class="space-y-2 pb-2">
+                    <p class="text-base font-semibold">What's Included</p>
+                    <div class="flex justify-start items-center gap-2">
+                      <img :src="TrueIcon" class="w-4 h-4" alt="" />
+                      <p class="text-sm font-medium">
+                        Professional driver for 12 hours
+                      </p>
+                    </div>
+                    <div class="flex justify-start items-center gap-2">
+                      <img :src="TrueIcon" class="w-4 h-4" alt="" />
+                      <p class="text-sm font-medium">Toll Fees</p>
+                    </div>
+                    <div class="flex justify-start items-center gap-2">
+                      <img :src="TrueIcon" class="w-4 h-4" alt="" />
+                      <p class="text-sm font-medium">Fuel Fees</p>
+                    </div>
+                    <div class="flex justify-start items-center gap-2">
+                      <img :src="TrueIcon" class="w-4 h-4" alt="" />
+                      <p class="text-sm font-medium">Liability Insurance</p>
+                    </div>
+                    <div class="flex justify-start items-center gap-2">
+                      <img :src="TrueIcon" class="w-4 h-4" alt="" />
+                      <p class="text-sm font-medium">
+                        Private car for up to
+                        {{ chooseData ? chooseData.max_person : 3 }} people
+                      </p>
+                    </div>
+                    <div class="flex justify-start items-center gap-2">
+                      <img :src="CrossIcon" class="w-4 h-4" alt="" />
+                      <p class="text-sm font-medium">
+                        Admission to Attractions
+                      </p>
+                    </div>
+                    <div class="flex justify-start items-center gap-2">
+                      <img :src="CrossIcon" class="w-4 h-4" alt="" />
+                      <p class="text-sm font-medium">Meals and Beverages</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="space-y-3">
+                <div>
+                  <ul class="space-y-2 pb-3">
+                    <li
+                      v-for="l in detail?.destinations"
+                      :key="l.id"
+                      class="text-xs font-medium flex justify-start items-center gap-2"
+                    >
+                      <div class="w-2 h-2 rounded-full bg-main"></div>
+                      <p>{{ l.name }}</p>
+                    </li>
+                  </ul>
+                </div>
+              </div> -->
+
+              <div class="bg-white px-5 py-4 mt-3">
+                <div class="pb-2">
+                  <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
+                    Package Summary
+                  </h1>
+                  <p
+                    class="text-[13.5px] text-black/80 leading-6 pb-2"
+                    :class="
+                      !seeMoreShow
+                        ? 'h-[146px] overflow-hidden line-clamp-6'
+                        : 'h-auto'
+                    "
+                    v-html="
+                      language == 'english'
+                        ? detail?.full_description_en
+                        : detail?.long_description
+                    "
+                  ></p>
+                  <div v-if="seeMoreShow">
+                    <div
+                      v-for="d in detail?.destinations"
+                      :key="d"
+                      class="space-y-2 pb-2"
+                    >
+                      <p class="text-sm font-semibold">
+                        {{ d.name }}
+                      </p>
+                      <p class="text-[13.5px]">
+                        {{ language == "english" ? d.place_id : d.summary }}
+                      </p>
+                    </div>
+                  </div>
+                  <p
+                    class="text-[10px] text-main"
+                    v-if="!seeMoreShow"
+                    @click="seeMoreShow = true"
+                  >
+                    see more
+                  </p>
+
+                  <p
+                    class="text-[10px] text-main"
+                    v-if="seeMoreShow"
+                    @click="seeMoreShow = false"
+                  >
+                    see less
+                  </p>
+
+                  <div class="pt-5">
+                    <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
+                      FAQs
+                    </h1>
+                    <div
+                      class="divide-y divide-black/40 border-b border-black/40 border-t mt-3"
+                    >
+                      <div class="flex justify-between items-center">
+                        <p class="py-3 font-semibold">
+                          What time can you pick us up?
+                        </p>
+                        <ChevronRightIcon class="w-5 h-5" />
+                      </div>
+                      <div class="flex justify-between items-center">
+                        <p class="py-3 font-semibold">How to book this tour?</p>
+                        <ChevronRightIcon class="w-5 h-5" />
+                      </div>
+                      <div class="flex justify-between items-center">
+                        <p class="py-3 font-semibold">
+                          How do I make a payment?
+                        </p>
+                        <ChevronRightIcon class="w-5 h-5" />
+                      </div>
+                      <div class="flex justify-between items-center">
+                        <p class="py-3 font-semibold">
+                          How do I get conformation letter?
+                        </p>
+                        <ChevronRightIcon class="w-5 h-5" />
+                      </div>
+                    </div>
+                    <div class="mt-6">
+                      <div class="flex justify-between items-end">
+                        <div>
+                          <p class="text-sm font-semibold pb-2">Choose pax</p>
+                          <div class="flex justify-start items-center gap-1">
+                            <p
+                              class="bg-black/10 px-2 rounded-lg text-black/20 text-xl"
+                            >
+                              -
+                            </p>
+                            <p class="px-3 py-1 font-semibold">
+                              {{ chooseData ? chooseData.max_person : 3 }}
+                            </p>
+                            <p
+                              class="bg-black/10 px-2 rounded-lg text-black/20 text-xl"
+                            >
+                              +
+                            </p>
+                          </div>
+                        </div>
+                        <p class="text-2xl font-semibold text-main">
+                          {{
+                            chooseData
+                              ? chooseData.price
+                              : detail?.lowest_car_price
+                          }}
+                          thb
                         </p>
                       </div>
-                      <p class="text-black text-xs font-medium">car price</p>
-                      <p
-                        class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
+                      <div
+                        class="bg-main py-3 mt-4 rounded-3xl text-center text-white text-sm"
+                        @click="modalOpen = true"
                       >
-                        {{ i.price }} THB
-                      </p>
+                        <p>talk to sales</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div
-          class="bg-main py-3 mb-10 rounded-3xl text-center text-white text-sm"
-          @click="modalOpen = true"
-        >
-          <p>talk to sales</p>
-        </div>
-        <div
-          class="bg-white mt-4 mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
-        >
-          <h1 class="font-medium">
-            other packages in {{ detail?.cities[0].name }}
-          </h1>
-          <div
-            class="flex justify-start items-center flex-nowrap overflow-scroll scroll-container pb-2"
-          >
+          <div class="bg-white p-5 border border-black/10 space-y-6">
+            <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
+              other packages in {{ detail?.cities[0].name }}
+            </h1>
             <div
-              class="border border-black/10 min-w-[230px] rounded-2xl shadow-sm bg-white mr-4"
-              v-for="i in relative_place ?? []"
-              :key="i"
-              :class="detail?.name == i?.name ? 'hidden' : ''"
+              class="flex justify-start items-center flex-nowrap overflow-scroll scroll-container pb-2"
             >
-              <!-- @click="goDetialPage(i?.id)" -->
               <div
-                @click="goDetailPage(i?.id)"
-                class="w-full col-span-5 h-[150px] overflow-hidden rounded-t-2xl"
+                class="border border-black/10 min-w-[230px] rounded-2xl shadow-sm bg-white mr-4"
+                v-for="i in relative_place ?? []"
+                :key="i"
+                :class="detail?.name == i?.name ? 'hidden' : ''"
               >
-                <img
-                  :src="i?.cover_image"
-                  class="w-full h-full object-cover"
-                  alt=""
-                  v-if="i?.cover_image != null"
-                />
-                <img
-                  v-if="i?.cover_image == null"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-                  class="w-full h-full object-cover"
-                  alt=""
-                />
-              </div>
-              <div class="py-3 px-2">
-                <p class="text-sm font-semibold line-clamp-1">
-                  {{ i?.name }}
-                </p>
-                <p class="text-[10px] py-0.5 rounded inline-block text-main">
-                  {{ detail?.destinations?.length }} destinations
-                </p>
+                <!-- @click="goDetialPage(i?.id)" -->
+                <div
+                  @click="goDetailPage(i?.id)"
+                  class="w-full col-span-5 h-[150px] overflow-hidden rounded-t-2xl"
+                >
+                  <img
+                    :src="i?.cover_image"
+                    class="w-full h-full object-cover"
+                    alt=""
+                    v-if="i?.cover_image != null"
+                  />
+                  <img
+                    v-if="i?.cover_image == null"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
+                    class="w-full h-full object-cover"
+                    alt=""
+                  />
+                </div>
+                <div class="py-3 px-2">
+                  <p class="text-sm font-semibold line-clamp-1">
+                    {{ i?.name }}
+                  </p>
+                  <p class="text-[10px] py-0.5 rounded inline-block text-main">
+                    {{ detail?.destinations?.length }} destinations
+                  </p>
 
-                <div class="text-[10px] gap-0.5 pt-1 space-y-2">
-                  <p class="text-black text-xs font-medium">
-                    starting car price
-                  </p>
-                  <p
-                    class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
-                  >
-                    {{ i.lowest_car_price }} THB
-                  </p>
+                  <div class="text-[10px] gap-0.5 pt-1 space-y-2">
+                    <p class="text-black text-xs font-medium">
+                      starting car price
+                    </p>
+                    <p
+                      class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
+                    >
+                      {{ i.lowest_car_price }} THB
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <Modal :isOpen="modalOpen" @closeModal="modalOpen = false">
-          <DialogPanel
-            class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
-          >
-            <DialogTitle
-              as="div"
-              class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
+          <Modal :isOpen="modalOpen" @closeModal="modalOpen = false">
+            <DialogPanel
+              class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
             >
-              <p class="opacity-0">...</p>
-              <p class="text-sm font-medium text-main">
-                select on option to book
-              </p>
-              <XMarkIcon class="w-5 h-5 text-main" @click="modalOpen = false" />
-            </DialogTitle>
-            <div class="grid grid-cols-2 gap-5">
-              <a
-                href="https://www.facebook.com/thailandanywherevip"
-                target="_blink"
-                class="outline-none text-center bg-main/20 border border-main flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+              <DialogTitle
+                as="div"
+                class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
               >
-                <img
-                  :src="messengerIcon"
-                  alt=""
-                  class="w-14 h-14 my-3 object-cover mx-auto"
-                />
-                <div class="pt-1">
-                  <p class="text-[10px]">book with</p>
-                  <p class="text-xs font-medium">messenger</p>
-                </div>
-              </a>
-              <div
-                class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
-                @click="viberModalOpenFunction('viber')"
-              >
-                <img
-                  :src="viberIcon"
-                  alt=""
-                  class="w-14 h-14 my-3 object-cover mx-auto"
-                />
-                <div class="pt-1">
-                  <p class="text-[10px]">book with</p>
-                  <p class="text-xs font-medium">viber</p>
-                </div>
-              </div>
-              <div
-                @click="viberModalOpenFunction('whatsapp')"
-                class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
-              >
-                <img
-                  :src="whatsappIcon"
-                  alt=""
-                  class="w-14 h-14 my-3 object-cover mx-auto"
-                />
-                <div class="pt-1">
-                  <p class="text-[10px]">book with</p>
-                  <p class="text-xs font-medium">whats app</p>
-                </div>
-              </div>
-              <div
-                @click="viberModalOpenFunction('phone')"
-                class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
-              >
-                <img
-                  :src="callIcon"
-                  alt=""
-                  class="w-14 h-14 my-3 object-cover mx-auto"
-                />
-                <div class="pt-1">
-                  <p class="text-[10px]">book with</p>
-                  <p class="text-xs font-medium">call center</p>
-                </div>
-              </div>
-            </div>
-          </DialogPanel>
-        </Modal>
-        <Modal :isOpen="viberModalOpen" @closeModal="viberModalCloseFunction">
-          <DialogPanel
-            class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
-          >
-            <DialogTitle
-              as="div"
-              class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
-            >
-              <div class="flex justify-start items-center gap-1">
-                <ChevronLeftIcon
+                <p class="opacity-0">...</p>
+                <p class="text-sm font-medium text-main">
+                  select on option to book
+                </p>
+                <XMarkIcon
                   class="w-5 h-5 text-main"
-                  @click="backLeftFunction"
+                  @click="modalOpen = false"
                 />
-                <img
-                  :src="viberIcon"
-                  class="w-8 h-8"
-                  alt=""
-                  v-if="type == 'viber'"
-                />
-                <img
-                  :src="whatsappIcon"
-                  class="w-8 h-8"
-                  alt=""
-                  v-if="type == 'whatsapp'"
-                />
-                <img
-                  :src="callIcon"
-                  class="w-8 h-8"
-                  alt=""
-                  v-if="type == 'phone'"
-                />
+              </DialogTitle>
+              <div class="grid grid-cols-2 gap-5">
+                <a
+                  href="https://www.facebook.com/thailandanywherevip"
+                  target="_blink"
+                  class="outline-none text-center bg-main/20 border border-main flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+                >
+                  <img
+                    :src="messengerIcon"
+                    alt=""
+                    class="w-14 h-14 my-3 object-cover mx-auto"
+                  />
+                  <div class="pt-1">
+                    <p class="text-[10px]">book with</p>
+                    <p class="text-xs font-medium">messenger</p>
+                  </div>
+                </a>
+                <div
+                  class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+                  @click="viberModalOpenFunction('viber')"
+                >
+                  <img
+                    :src="viberIcon"
+                    alt=""
+                    class="w-14 h-14 my-3 object-cover mx-auto"
+                  />
+                  <div class="pt-1">
+                    <p class="text-[10px]">book with</p>
+                    <p class="text-xs font-medium">viber</p>
+                  </div>
+                </div>
+                <div
+                  @click="viberModalOpenFunction('whatsapp')"
+                  class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+                >
+                  <img
+                    :src="whatsappIcon"
+                    alt=""
+                    class="w-14 h-14 my-3 object-cover mx-auto"
+                  />
+                  <div class="pt-1">
+                    <p class="text-[10px]">book with</p>
+                    <p class="text-xs font-medium">whats app</p>
+                  </div>
+                </div>
+                <div
+                  @click="viberModalOpenFunction('phone')"
+                  class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+                >
+                  <img
+                    :src="callIcon"
+                    alt=""
+                    class="w-14 h-14 my-3 object-cover mx-auto"
+                  />
+                  <div class="pt-1">
+                    <p class="text-[10px]">book with</p>
+                    <p class="text-xs font-medium">call center</p>
+                  </div>
+                </div>
               </div>
-              <p class="text-sm font-medium text-main">
-                select on option to book
-              </p>
-              <XMarkIcon
-                class="w-5 h-5 text-main"
-                @click="viberModalCloseFunction"
-              />
-            </DialogTitle>
-            <div>
-              <SaleModalVue :type="type" />
-            </div>
-          </DialogPanel>
-        </Modal>
+            </DialogPanel>
+          </Modal>
+          <Modal :isOpen="viberModalOpen" @closeModal="viberModalCloseFunction">
+            <DialogPanel
+              class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+            >
+              <DialogTitle
+                as="div"
+                class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
+              >
+                <div class="flex justify-start items-center gap-1">
+                  <ChevronLeftIcon
+                    class="w-5 h-5 text-main"
+                    @click="backLeftFunction"
+                  />
+                  <img
+                    :src="viberIcon"
+                    class="w-8 h-8"
+                    alt=""
+                    v-if="type == 'viber'"
+                  />
+                  <img
+                    :src="whatsappIcon"
+                    class="w-8 h-8"
+                    alt=""
+                    v-if="type == 'whatsapp'"
+                  />
+                  <img
+                    :src="callIcon"
+                    class="w-8 h-8"
+                    alt=""
+                    v-if="type == 'phone'"
+                  />
+                </div>
+                <p class="text-sm font-medium text-main">
+                  select on option to book
+                </p>
+                <XMarkIcon
+                  class="w-5 h-5 text-main"
+                  @click="viberModalCloseFunction"
+                />
+              </DialogTitle>
+              <div>
+                <SaleModalVue :type="type" />
+              </div>
+            </DialogPanel>
+          </Modal>
+        </div>
       </div>
     </div>
   </div>
@@ -351,8 +510,11 @@
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
+import TrueIcon from "../assets/s/circle.png";
+import CrossIcon from "../assets/s/close.png";
 import {
   ChevronLeftIcon,
+  ChevronRightIcon,
   HeartIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
@@ -370,6 +532,9 @@ import { useVantourStore } from "../stores/vantour";
 // import { StarIcon } from "@heroicons/vue/24/solid";
 import { storeToRefs } from "pinia";
 import SaleModalVue from "../components/cart/SaleModalVue.vue";
+import car1 from "../assets/s/17-removebg-preview.png";
+import car2 from "../assets/s/16-removebg-preview.png";
+import car3 from "../assets/s/15-removebg-preview.png";
 
 const route = useRoute();
 const router = useRouter();
@@ -382,6 +547,8 @@ const { language } = storeToRefs(settingStore);
 const seeMoreShow = ref(false);
 const images = ref([]);
 
+const chooseData = ref(null);
+
 const getDetail = async (id) => {
   loading.value = true;
   images.value = [];
@@ -390,6 +557,9 @@ const getDetail = async (id) => {
   console.log(res);
   console.log("====================================");
   detail.value = res.data;
+  if (res.data.cars.length > 0) {
+    chooseData.value = res.data.cars[0];
+  }
   if (res.data.cover_image) {
     images.value.push({ image: res.data.cover_image });
   }
@@ -423,25 +593,25 @@ const getDetail = async (id) => {
 const getCarTypeImage = (cartype) => {
   switch (cartype.toLowerCase()) {
     case "saloon":
-      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+      return car1;
     case "suv":
-      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-67409.jpg?t=st=1723999608~exp=1724003208~hmac=39673ad52ce4b6941be751facd1002140ee220e95ff309dc64e54fb3aeca35a2&w=900";
+      return car2;
     case "vip van":
-      return "https://img.freepik.com/free-photo/3d-car-with-simple-background_23-2150796878.jpg?t=st=1723999724~exp=1724003324~hmac=90bc086f1c3138107e3a513d861ef2bfe8b06a55b92e1e3bb90b5f9079abdff8&w=740";
+      return car3;
     case "vvip van (luxury)":
-      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+      return car3;
     case "bus (30 seaters)":
-      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+      return car3;
     case "bus (20 seaters)":
-      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+      return car3;
     case "50 seaters bus":
-      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+      return car3;
     case "40 seaters bus":
-      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+      return car3;
     case "14 seater":
-      return "https://img.freepik.com/free-vector/white-hatchback-car-isolated-white-vector_53876-64418.jpg?t=st=1723999519~exp=1724003119~hmac=a718a6c123d83226d44ae2f9e9bac7093396b599901c8941edb16f1c81de4586&w=1060";
+      return car3;
     default:
-      return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"; // Default image
+      return car1; // Default image
   }
 };
 
