@@ -1,7 +1,8 @@
 <script setup>
 import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
-import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
+// import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
+import VantourSearchHomeVue from "../components/search-part/VantourSearchHome.vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 // import { ref, watch, onMounted } from 'vue';
@@ -163,7 +164,7 @@ watch(vantours, async (newValue) => {
           </p>
           <p class="text-xs">bangkok, pattaya, phuket, etc...</p>
         </div>
-        <div class="relative" @click="router.push('/home/van-tour-search')">
+        <!-- <div class="relative" @click="router.push('/home/van-tour-search')">
           <input
             type="search"
             name=""
@@ -177,7 +178,8 @@ watch(vantours, async (newValue) => {
             class="w-5 h-5 absolute top-3.5 right-5 text-main"
             alt=""
           />
-        </div>
+        </div> -->
+        <VantourSearchHomeVue />
       </div>
     </HeaderHomeVue>
     <div class="h-auto pb-20 pt-8 space-y-4 relative">

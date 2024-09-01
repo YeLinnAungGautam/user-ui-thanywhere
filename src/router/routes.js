@@ -23,20 +23,25 @@ import HomeDetailVue from "../views/HomeDetailPage.vue";
 import HomeRoomDetailVue from "../views/RoomDetailPage.vue";
 import HomeAttractionDetailVue from "../views/EntranceDetailPage.vue";
 import HomeVantourDetailVue from "../views/VantourDetailPage.vue";
-import OnboardingPage from "../views/OnboardingHomePage.vue";
+// import OnboardingPage from "../views/OnboardingHomePage.vue";
 import WebVersionHomePage from "../views/WebHomePage.vue";
 import LoginVuePage from "../views/LoginPage.vue";
 import ProfileVuePage from "../views/ProfilePage.vue";
 import SignUpVuePage from "../views/SignUpPage.vue";
 import TranslationPage from "../views/TranslationPage.vue";
 import ProfileUpdateVuePage from "../views/UpdateUserInfo.vue";
+import VantourPickupVue from "../views/FAQs/PickupPage.vue";
+import VantourBookTourVue from "../views/FAQs/BookTourPage.vue";
+import VantourMakePaymentVue from "../views/FAQs/MakePayment.vue";
+import VantourConformationVue from "../views/FAQs/ConfimationPage.vue";
+import VantourHomeSearchVue from "../components/search-part/VantourSearchCityHome.vue";
 
 const routes = [
-  {
-    path: "/",
-    name: "Onboarding",
-    component: OnboardingPage,
-  },
+  // {
+  //   path: "/",
+  //   name: "Onboarding",
+  //   component: OnboardingPage,
+  // },
   {
     path: "/web",
     name: "WebVersionHomePage",
@@ -68,10 +73,16 @@ const routes = [
     component: SignUpVuePage,
   },
   {
+    path: "/",
+    name: "HomeDefault",
+    component: Home,
+  },
+  {
     path: "/home",
     name: "Home",
     component: Home,
   },
+
   {
     path: "/home/hotel-bookings",
     name: "HotelBookings",
@@ -191,6 +202,31 @@ const routes = [
     path: "/home/destination-result/:id/:name",
     name: "HomeDestinationResult",
     component: HomeDestinationResultVue,
+  },
+  {
+    path: "/home/van-tour-detail/pages/pickup",
+    name: "VantourPickup",
+    component: VantourPickupVue,
+  },
+  {
+    path: "/home/van-tour-detail/pages/booktour",
+    name: "VantourBookTour",
+    component: VantourBookTourVue,
+  },
+  {
+    path: "/home/van-tour-detail/pages/makepayment",
+    name: "VantourMakePayment",
+    component: VantourMakePaymentVue,
+  },
+  {
+    path: "/home/van-tour-detail/pages/conformation",
+    name: "VantourConformation",
+    component: VantourConformationVue,
+  },
+  {
+    path: "/home/van-tour/home/search",
+    name: "VantourHomeSearch",
+    component: VantourHomeSearchVue,
   },
 ];
 

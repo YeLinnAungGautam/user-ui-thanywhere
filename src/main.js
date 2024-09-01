@@ -4,7 +4,11 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+
 import axios from "axios";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+
 axios.defaults.baseURL =
     import.meta.env.VITE_API_URL;
 import { createPinia } from "pinia";
@@ -29,4 +33,9 @@ const options = {
     timeout: 1500,
 };
 
-createApp(App).use(createPinia()).use(router).use(Toast, options).mount("#app");
+createApp(App)
+    .component("VueDatePicker", VueDatePicker)
+    .use(createPinia())
+    .use(router)
+    .use(Toast, options)
+    .mount("#app");

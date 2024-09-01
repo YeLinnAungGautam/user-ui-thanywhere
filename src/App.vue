@@ -16,14 +16,22 @@ const router = useRouter();
 
 // Listen to route changes to adjust the transition direction
 router.beforeEach((to, from, next) => {
-  const toDepth = to.path.split("/").length;
-  const fromDepth = from.path.split("/").length;
-
-  // Determine the direction based on path depth (can be customized)
-  if (toDepth > fromDepth) {
-    transitionName.value = "slide-left"; // Navigating forward
+  if (to.path === "/") {
+    // Disable transition for the root path
+    transitionName.value = ""; // No animation
+  } else if (to.path.includes("search")) {
+    // Set slide-left transition for any path that includes 'search'
+    transitionName.value = "slide-left";
   } else {
-    transitionName.value = "slide-right"; // Navigating backward
+    const toDepth = to.path.split("/").length;
+    const fromDepth = from.path.split("/").length;
+
+    // Determine the direction based on path depth (can be customized)
+    if (toDepth > fromDepth) {
+      transitionName.value = "slide-left"; // Navigating forward
+    } else {
+      transitionName.value = "slide-right"; // Navigating backward
+    }
   }
   next();
 });
@@ -33,13 +41,22 @@ router.beforeEach((to, from, next) => {
 /* Slide left transition effect */
 .slide-left-enter-active,
 .slide-left-leave-active {
-  transition: transform 0.4s ease, opacity 0.4s ease;
-  opacity: 1;
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .slide-left-enter-from {
   transform: translateX(100%);
   opacity: 0;
+}
+
+.slide-left-enter-to {
+  transform: translateX(0);
+  opacity: 0.5;
+}
+
+.slide-left-leave-from {
+  transform: translateX(0);
+  opacity: 0.5;
 }
 
 .slide-left-leave-to {
@@ -50,12 +67,22 @@ router.beforeEach((to, from, next) => {
 /* Slide right transition effect */
 .slide-right-enter-active,
 .slide-right-leave-active {
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .slide-right-enter-from {
   transform: translateX(-100%);
   opacity: 0;
+}
+
+.slide-right-enter-to {
+  transform: translateX(0);
+  opacity: 0.5;
+}
+
+.slide-right-leave-from {
+  transform: translateX(0);
+  opacity: 0.5;
 }
 
 .slide-right-leave-to {

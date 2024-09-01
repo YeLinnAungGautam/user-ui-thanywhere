@@ -12,25 +12,31 @@ import TopDestinationVue from "../components/home/TopDestinations.vue";
 import BestSellingVanTours from "../components/home/BestSellingVanTours.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
-import { useRouter } from "vue-router";
-import { onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { onMounted, ref } from "vue";
 import WhyChooseUsVue from "../components/home/WhyChooseUs.vue";
-// import InstallAppVue from "../components/home/InstallApp.vue";
-// import ShowOnboardingVue from "../components/home/ShowOnboarding.vue";
-// import { useSettingStore } from "../stores/setting";
-// import { storeToRefs } from "pinia";
+import TranslationPageVue from "../views/TranslationPage.vue";
+import Modal from "../components/layout/Modal.vue";
 
 const router = useRouter();
-// const settingStore = useSettingStore();
-// const { showOnboard } = storeToRefs(settingStore);
+const route = useRoute();
 
-// const onchangeComponent = (data) => {
-//   if (data == "changes") {
-//     settingStore.changeOnboard();
-//   }
-// };
+const showProp = ref(false);
 
-onMounted(() => {});
+const changePageFunction = (data) => {
+  if (data) {
+    showProp.value = false;
+  }
+};
+
+onMounted(() => {
+  console.log("====================================");
+  console.log(route.path); // Log the current route path
+  if (route.path === "/") {
+    showProp.value = true; // Set showProp to true if the current path is "/"
+  }
+  console.log("====================================");
+});
 </script>
 
 <template>
@@ -38,7 +44,7 @@ onMounted(() => {});
     <div>
       <Layout>
         <div class="">
-          <HeaderHomeVue :showTitle="true">
+          <HeaderHomeVue :showTitle="true" :onDBoradingShow="showProp">
             <div class="px-6 space-y-6">
               <div class="text-white">
                 <p class="text-base font-semibold tracking-wider">
@@ -84,6 +90,16 @@ onMounted(() => {});
           <ReadDestinationVue />
         </div>
       </Layout>
+
+      <Modal :isOpen="showProp" @closeModal="showProp = false">
+        <DialogPanel
+          class="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-2 text-left align-middle shadow-xl transition-all"
+        >
+          <div class="w-full h-[80vh] overflow-hidden rounded-lg">
+            <TranslationPageVue @change="changePageFunction" />
+          </div>
+        </DialogPanel>
+      </Modal>
     </div>
   </div>
 </template>

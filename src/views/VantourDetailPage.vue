@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
     <transition name="fade">
       <div v-if="loading" class="animate transition">
         <LoadingPageVue />
@@ -24,11 +24,54 @@
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
       />
 
+      <transition name="fade">
+        <div
+          v-if="showDiv"
+          class="flex sticky top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll scroll-container border-b border-black/30"
+        >
+          <a
+            href="#destinations"
+            :class="tagsNum == 1 ? 'text-black' : 'text-black/50'"
+            @click="tagsNum = 1"
+            class="text-xs font-semibold whitespace-nowrap"
+            >destinations</a
+          >
+          <a
+            href="#options"
+            :class="tagsNum == 2 ? 'text-black' : 'text-black/50'"
+            @click="tagsNum = 2"
+            class="text-xs font-semibold whitespace-nowrap"
+            >select options</a
+          >
+          <a
+            href="#summary"
+            :class="tagsNum == 3 ? 'text-black' : 'text-black/50'"
+            @click="tagsNum = 3"
+            class="text-xs font-semibold whitespace-nowrap"
+            >package summary</a
+          >
+          <a
+            href="#faqs"
+            :class="tagsNum == 4 ? 'text-black' : 'text-black/50'"
+            @click="tagsNum = 4"
+            class="text-xs font-semibold whitespace-nowrap"
+            >faqs</a
+          >
+          <a
+            href="#other"
+            :class="tagsNum == 5 ? 'text-black' : 'text-black/50'"
+            @click="tagsNum = 5"
+            class="text-xs font-semibold whitespace-nowrap"
+            >other packages</a
+          >
+        </div>
+      </transition>
+
       <div class="bg-black/5">
         <div class="">
           <div class="mt-4 mb-3 space-y-4">
             <div class="">
-              <div class="bg-white px-5 py-2">
+              <div class="bg-white px-5 py-2" id="destinations">
                 <h1 class="text-main font-semibold">{{ detail?.name }}</h1>
                 <div class="flex justify-start items-center gap-1">
                   <p
@@ -64,6 +107,7 @@
                       />
                     </div>
                     <p
+                      id="options"
                       class="text-xs pt-2 font-semibold pl-2 whitespace-nowrap"
                     >
                       {{ i?.name }}
@@ -86,7 +130,7 @@
                       :class="
                         chooseData.name == i.name ? 'bg-main' : 'bg-white'
                       "
-                      @click="chooseData = i"
+                      @click="chooseDataFunction(i)"
                     >
                       <div
                         class="col-span-5 w-[150px] mx-auto h-[120px] overflow-hidden rounded-t-2xl"
@@ -125,28 +169,32 @@
                     class="flex flex-1 justify-start space-x-3 mt-2 pb-2 items-center overflow-x-scroll scroll-container"
                   >
                     <div
-                      class="border border-main rounded-lg space-y-1 w-[400px] p-3"
+                      :class="
+                        !choosePax
+                          ? 'border-main text-main'
+                          : 'border-black/50 text-black/80'
+                      "
+                      class="border rounded-lg space-y-1 w-[400px] p-3"
+                      @click="choosePax = false"
                     >
-                      <p
-                        class="text-xs font-medium text-main whitespace-nowrap"
-                      >
+                      <p class="text-xs font-medium whitespace-nowrap">
                         Private Tour (Without Tickets)
                       </p>
-                      <p class="text-xs font-medium text-main">
-                        + 0 thb per pax
-                      </p>
+                      <p class="text-xs font-medium">+ 0 thb per pax</p>
                     </div>
                     <div
-                      class="border border-black/50 rounded-lg space-y-1 w-[400px] p-3"
+                      :class="
+                        choosePax
+                          ? 'border-main text-main'
+                          : 'border-black/50 text-black/80'
+                      "
+                      @click="choosePax = true"
+                      class="border rounded-lg space-y-1 w-[400px] p-3"
                     >
-                      <p
-                        class="text-xs font-medium text-black/80 whitespace-nowrap"
-                      >
+                      <p class="text-xs font-medium whitespace-nowrap">
                         Private Tour (With Tickets)
                       </p>
-                      <p class="text-xs font-medium text-black/80">
-                        + 800 thb per pax
-                      </p>
+                      <p class="text-xs font-medium">+ 800 thb per pax</p>
                     </div>
                   </div>
                   <div class="space-y-2 pb-2">
@@ -182,7 +230,10 @@
                         Admission to Attractions
                       </p>
                     </div>
-                    <div class="flex justify-start items-center gap-2">
+                    <div
+                      class="flex justify-start items-center gap-2"
+                      id="summary"
+                    >
                       <img :src="CrossIcon" class="w-4 h-4" alt="" />
                       <p class="text-sm font-medium">Meals and Beverages</p>
                     </div>
@@ -239,6 +290,7 @@
                   <p
                     class="text-[10px] text-main"
                     v-if="!seeMoreShow"
+                    id="faqs"
                     @click="seeMoreShow = true"
                   >
                     see more
@@ -247,6 +299,7 @@
                   <p
                     class="text-[10px] text-main"
                     v-if="seeMoreShow"
+                    id="faqs"
                     @click="seeMoreShow = false"
                   >
                     see less
@@ -259,63 +312,50 @@
                     <div
                       class="divide-y divide-black/40 border-b border-black/40 border-t mt-3"
                     >
-                      <div class="flex justify-between items-center">
+                      <div
+                        class="flex justify-between items-center"
+                        @click="
+                          router.push('/home/van-tour-detail/pages/pickup')
+                        "
+                      >
                         <p class="py-3 font-semibold">
                           What time can you pick us up?
                         </p>
                         <ChevronRightIcon class="w-5 h-5" />
                       </div>
-                      <div class="flex justify-between items-center">
+                      <div
+                        class="flex justify-between items-center"
+                        @click="
+                          router.push('/home/van-tour-detail/pages/booktour')
+                        "
+                      >
                         <p class="py-3 font-semibold">How to book this tour?</p>
                         <ChevronRightIcon class="w-5 h-5" />
                       </div>
-                      <div class="flex justify-between items-center">
+                      <div
+                        class="flex justify-between items-center"
+                        @click="
+                          router.push('/home/van-tour-detail/pages/makepayment')
+                        "
+                      >
                         <p class="py-3 font-semibold">
                           How do I make a payment?
                         </p>
                         <ChevronRightIcon class="w-5 h-5" />
                       </div>
-                      <div class="flex justify-between items-center">
+                      <div
+                        class="flex justify-between items-center"
+                        id="other"
+                        @click="
+                          router.push(
+                            '/home/van-tour-detail/pages/conformation'
+                          )
+                        "
+                      >
                         <p class="py-3 font-semibold">
                           How do I get conformation letter?
                         </p>
                         <ChevronRightIcon class="w-5 h-5" />
-                      </div>
-                    </div>
-                    <div class="mt-6">
-                      <div class="flex justify-between items-end">
-                        <div>
-                          <p class="text-sm font-semibold pb-2">Choose pax</p>
-                          <div class="flex justify-start items-center gap-1">
-                            <p
-                              class="bg-black/10 px-2 rounded-lg text-black/20 text-xl"
-                            >
-                              -
-                            </p>
-                            <p class="px-3 py-1 font-semibold">
-                              {{ chooseData ? chooseData.max_person : 3 }}
-                            </p>
-                            <p
-                              class="bg-black/10 px-2 rounded-lg text-black/20 text-xl"
-                            >
-                              +
-                            </p>
-                          </div>
-                        </div>
-                        <p class="text-2xl font-semibold text-main">
-                          {{
-                            chooseData
-                              ? chooseData.price
-                              : detail?.lowest_car_price
-                          }}
-                          thb
-                        </p>
-                      </div>
-                      <div
-                        class="bg-main py-3 mt-4 rounded-3xl text-center text-white text-sm"
-                        @click="modalOpen = true"
-                      >
-                        <p>talk to sales</p>
                       </div>
                     </div>
                   </div>
@@ -503,11 +543,77 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="!loading"
+      class="px-5 pb-4 sticky z-10 bg-white pt-3 border-t border-black/30 bottom-0"
+    >
+      <div class="flex justify-between items-end">
+        <div>
+          <p class="text-sm font-semibold pb-2">Choose pax</p>
+          <div class="flex justify-start items-center gap-1" v-if="!choosePax">
+            <p class="bg-black/10 px-2 rounded-lg text-black/20 text-xl">-</p>
+            <p class="px-3 py-1 font-semibold text-black/20">
+              {{ chooseData && choosePax ? chooseData.max_person : 0 }}
+            </p>
+            <p class="bg-black/10 px-2 rounded-lg text-black/20 text-xl">+</p>
+          </div>
+          <div class="flex justify-start items-center gap-1" v-if="choosePax">
+            <p
+              class="bg-main px-2 rounded-lg text-white text-xl"
+              v-if="chooseCount != 1"
+              @click="chooseCountMinus"
+            >
+              -
+            </p>
+            <p
+              class="bg-black/10 px-2 rounded-lg text-black/20 text-xl"
+              v-if="chooseCount == 1"
+            >
+              -
+            </p>
+            <p class="px-3 py-1 font-semibold">
+              {{ chooseCount }}
+            </p>
+            <p
+              class="bg-main px-2 rounded-lg text-white text-xl"
+              @click="chooseCountPlus"
+              v-if="chooseCount != chooseData.max_person"
+            >
+              +
+            </p>
+            <p
+              class="bg-black/10 px-2 rounded-lg text-black/20 text-xl"
+              v-if="chooseCount == chooseData.max_person"
+            >
+              +
+            </p>
+          </div>
+        </div>
+        <p class="text-2xl font-semibold text-main" v-if="!choosePax">
+          {{ chooseData ? chooseData.price : detail?.lowest_car_price }}
+          thb
+        </p>
+        <p class="text-2xl font-semibold text-main" v-if="choosePax">
+          {{
+            chooseData
+              ? chooseData.price * chooseCount
+              : detail?.lowest_car_price
+          }}
+          thb
+        </p>
+      </div>
+      <div
+        class="bg-main py-3 mt-4 rounded-3xl text-center text-white text-sm"
+        @click="modalOpen = true"
+      >
+        <p>talk to sales</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import TrueIcon from "../assets/s/circle.png";
@@ -548,6 +654,9 @@ const seeMoreShow = ref(false);
 const images = ref([]);
 
 const chooseData = ref(null);
+const choosePax = ref(false);
+const chooseCount = ref(1);
+const tagsNum = ref(1);
 
 const getDetail = async (id) => {
   loading.value = true;
@@ -559,6 +668,9 @@ const getDetail = async (id) => {
   detail.value = res.data;
   if (res.data.cars.length > 0) {
     chooseData.value = res.data.cars[0];
+    if (chooseData.value) {
+      chooseCount.value = chooseData.value.max_person;
+    }
   }
   if (res.data.cover_image) {
     images.value.push({ image: res.data.cover_image });
@@ -588,6 +700,18 @@ const getDetail = async (id) => {
 
   await getRelative(res.data?.cities[0]?.id);
   loading.value = false;
+};
+
+const chooseDataFunction = (data) => {
+  chooseData.value = data;
+  chooseCount.value = chooseData.value.max_person;
+};
+
+const chooseCountMinus = () => {
+  chooseCount.value = chooseCount.value - 1;
+};
+const chooseCountPlus = () => {
+  chooseCount.value = chooseCount.value + 1;
 };
 
 const getCarTypeImage = (cartype) => {
@@ -674,6 +798,13 @@ const backLeftFunction = () => {
   modalOpen.value = true;
 };
 
+const showDiv = ref(false);
+const handleScroll = () => {
+  // Set showDiv to true if the scroll position is over 300px, otherwise false
+  showDiv.value = window.scrollY > 427;
+  // console.log(window.scrollY);
+};
+
 watch(
   () => route.params.id,
   (newId) => {
@@ -682,18 +813,40 @@ watch(
 );
 
 onMounted(async () => {
+  window.addEventListener("scroll", handleScroll);
   await settingStore.getLanguage();
   await getDetail(route.params.id);
+
+  if (window.location.hash) {
+    const hash = window.location.hash.substring(1); // Remove the '#' from the hash
+    const element = document.getElementById(hash);
+    if (element) {
+      // Scroll to the element smoothly
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+});
+
+onBeforeUnmount(() => {
+  // Clean up the scroll event listener when the component is destroyed
+  window.removeEventListener("scroll", handleScroll);
 });
 </script>
 
 <style>
+/* Define the fade transition */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.5s ease; /* Adjust duration and easing as needed */
 }
-.fade-enter,
+
+.fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
+  opacity: 0; /* Start or end with opacity 0 */
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1; /* End or start with opacity 1 */
 }
 </style>
