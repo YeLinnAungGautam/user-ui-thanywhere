@@ -36,32 +36,31 @@ import image5 from "../../assets/s/growing with you.svg";
 const data = [
   {
     id: 1,
-    title: "Get best prices",
+    title: "Book with Confidence",
     description:
-      "Get great prices that are cheaper than walk-ins and save more on your next trip.",
-    image: image2,
+      "Our team of trained agents are with you at every step of the way. Making your trip safe and easy.",
+    image: image3,
   },
   {
     id: 2,
+    title: "Travel with Trust",
+    description:
+      "TAT licensed and direct partnership allows us to resolve all matters at hand bringing you peace of mind.",
+    image: image4,
+  },
+  {
+    id: 3,
     title: "Discover Thailand",
     description:
       "Explore from hundreds of tours, attractions, hotels and destinations around Thailand.",
     image: image1,
   },
   {
-    id: 3,
-    title: "Book with Confidence",
-    description:
-      "Our team of trained agents are with you at every step of the way. Making your trip safe and easy.",
-    image: image3,
-  },
-
-  {
     id: 4,
-    title: "Travel with Trust",
+    title: "Get best prices",
     description:
-      "TAT licensed and direct partnership allows us to resolve all matters at hand bringing you peace of mind.",
-    image: image4,
+      "Get great prices that are cheaper than walk-ins and save more on your next trip.",
+    image: image2,
   },
   {
     id: 5,

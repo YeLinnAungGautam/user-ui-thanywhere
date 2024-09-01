@@ -4,8 +4,8 @@
       <input
         type="text"
         name=""
+        @click="openCity"
         v-model="chooseCityName"
-        disabled
         :placeholder="placeholder"
         class="w-full rounded-full bg-white pl-12 py-4 text-xs text-main focus:outline-none"
         id=""
@@ -16,8 +16,8 @@
     <div class="relative" @click="open">
       <input
         type="text"
-        disabled
         name=""
+        @click="open"
         v-model="dateSelected"
         placeholder=" pick a date of travel"
         class="w-full rounded-full relative z-0 bg-white pl-12 py-4 text-xs text-main focus:outline-none"
@@ -29,8 +29,8 @@
     <div class="relative" @click="opentype">
       <input
         type="text"
-        disabled
         name=""
+        @click="opentype"
         v-model="chooseTypeLetter"
         placeholder=" choose activity type"
         class="w-full rounded-full relative z-0 bg-white pl-12 py-4 text-xs text-main focus:outline-none"
