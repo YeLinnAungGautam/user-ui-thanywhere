@@ -41,7 +41,7 @@
         <!-- <button class="px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-main">
           {{ i?.lowest_car_price }}THB / <span class="text-[10px]">car</span>
         </button> -->
-        <button class="text-main py-1 rounded-base text-xl font-semibold">
+        <button class="text-main py-1 rounded-base text-lg font-semibold">
           {{ i?.lowest_car_price }} thb
           <span class="text-[11px] text-black/70"> / car</span>
         </button>

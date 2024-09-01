@@ -15,7 +15,9 @@
         <div class="w-[200px] space-y-2 py-3 px-2">
           <img :src="i.image" class="w-[80px] mx-auto h-auto" alt="" />
           <p class="text-sm font-semibold">{{ i.title }}</p>
-          <p class="text-xs font-medium h-[85px] text-black/80 text-left">
+          <p
+            class="text-[10px] font-medium h-auto line-clamp-3 text-black/80 text-left"
+          >
             {{ i.description }}
           </p>
         </div>
@@ -65,7 +67,7 @@ const data = [
     id: 5,
     title: "Growing with You",
     description:
-      "Our global team of agents, operators, partners and many more are working around the clock to improve your travel experience.",
+      "Our global team and many more are working around the clock to improve travel experience.",
     image: image5,
   },
 ];

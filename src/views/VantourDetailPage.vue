@@ -27,7 +27,7 @@
       <transition name="fade">
         <div
           v-if="showDiv"
-          class="flex sticky top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll scroll-container border-b border-black/30"
+          class="flex sticky shadow-custom top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll scroll-container border-b border-black/10"
         >
           <a
             href="#destinations"
@@ -69,7 +69,7 @@
 
       <div class="bg-black/5">
         <div class="">
-          <div class="mt-4 mb-3 space-y-4">
+          <div class="mb-3 space-y-4">
             <div class="">
               <div class="bg-white px-5 py-2" id="destinations">
                 <h1 class="text-main font-semibold">{{ detail?.name }}</h1>
@@ -172,7 +172,7 @@
                       :class="
                         !choosePax
                           ? 'border-main text-main'
-                          : 'border-black/50 text-black/80'
+                          : 'border-black/10 text-black/80'
                       "
                       class="border rounded-lg space-y-1 w-[400px] p-3"
                       @click="choosePax = false"
@@ -186,7 +186,7 @@
                       :class="
                         choosePax
                           ? 'border-main text-main'
-                          : 'border-black/50 text-black/80'
+                          : 'border-black/10 text-black/80'
                       "
                       @click="choosePax = true"
                       class="border rounded-lg space-y-1 w-[400px] p-3"
@@ -225,7 +225,18 @@
                       </p>
                     </div>
                     <div class="flex justify-start items-center gap-2">
-                      <img :src="CrossIcon" class="w-4 h-4" alt="" />
+                      <img
+                        :src="CrossIcon"
+                        class="w-4 h-4"
+                        alt=""
+                        v-if="!choosePax"
+                      />
+                      <img
+                        :src="TrueIcon"
+                        class="w-4 h-4"
+                        alt=""
+                        v-if="choosePax"
+                      />
                       <p class="text-sm font-medium">
                         Admission to Attractions
                       </p>
@@ -310,7 +321,7 @@
                       FAQs
                     </h1>
                     <div
-                      class="divide-y divide-black/40 border-b border-black/40 border-t mt-3"
+                      class="divide-y divide-black/10 border-b border-black/10 border-t mt-3"
                     >
                       <div
                         class="flex justify-between items-center"
@@ -318,7 +329,7 @@
                           router.push('/home/van-tour-detail/pages/pickup')
                         "
                       >
-                        <p class="py-3 font-semibold">
+                        <p class="py-3 font-semibold text-sm text-black/80">
                           What time can you pick us up?
                         </p>
                         <ChevronRightIcon class="w-5 h-5" />
@@ -329,7 +340,9 @@
                           router.push('/home/van-tour-detail/pages/booktour')
                         "
                       >
-                        <p class="py-3 font-semibold">How to book this tour?</p>
+                        <p class="py-3 font-semibold text-sm text-black/80">
+                          How to book this tour?
+                        </p>
                         <ChevronRightIcon class="w-5 h-5" />
                       </div>
                       <div
@@ -338,7 +351,7 @@
                           router.push('/home/van-tour-detail/pages/makepayment')
                         "
                       >
-                        <p class="py-3 font-semibold">
+                        <p class="py-3 font-semibold text-sm text-black/80">
                           How do I make a payment?
                         </p>
                         <ChevronRightIcon class="w-5 h-5" />
@@ -352,7 +365,7 @@
                           )
                         "
                       >
-                        <p class="py-3 font-semibold">
+                        <p class="py-3 font-semibold text-sm text-black/80">
                           How do I get conformation letter?
                         </p>
                         <ChevronRightIcon class="w-5 h-5" />
@@ -545,11 +558,10 @@
     </div>
     <div
       v-if="!loading"
-      class="px-5 pb-4 sticky z-10 bg-white pt-3 border-t border-black/30 bottom-0"
+      class="px-5 pb-3 sticky z-10 bg-white shadow-custom pt-2 border-t border-black/10 bottom-0"
     >
       <div class="flex justify-between items-end">
         <div>
-          <p class="text-sm font-semibold pb-2">Choose pax</p>
           <div class="flex justify-start items-center gap-1" v-if="!choosePax">
             <p class="bg-black/10 px-2 rounded-lg text-black/20 text-xl">-</p>
             <p class="px-3 py-1 font-semibold text-black/20">
@@ -557,7 +569,7 @@
             </p>
             <p class="bg-black/10 px-2 rounded-lg text-black/20 text-xl">+</p>
           </div>
-          <div class="flex justify-start items-center gap-1" v-if="choosePax">
+          <div class="flex justify-start items-center gap-x-2" v-if="choosePax">
             <p
               class="bg-main px-2 rounded-lg text-white text-xl"
               v-if="chooseCount != 1"
@@ -587,23 +599,24 @@
             >
               +
             </p>
+            <p class="text-xs font-semibold">Choose pax</p>
           </div>
         </div>
-        <p class="text-2xl font-semibold text-main" v-if="!choosePax">
+        <p class="text-lg font-semibold text-main" v-if="!choosePax">
           {{ chooseData ? chooseData.price : detail?.lowest_car_price }}
           thb
         </p>
-        <p class="text-2xl font-semibold text-main" v-if="choosePax">
+        <p class="text-lg font-semibold text-main" v-if="choosePax">
           {{
             chooseData
-              ? chooseData.price * chooseCount
+              ? chooseData.price * 1 + 800 * chooseCount
               : detail?.lowest_car_price
           }}
           thb
         </p>
       </div>
       <div
-        class="bg-main py-3 mt-4 rounded-3xl text-center text-white text-sm"
+        class="bg-main py-2 mt-2 rounded-full text-center text-white text-sm"
         @click="modalOpen = true"
       >
         <p>talk to sales</p>

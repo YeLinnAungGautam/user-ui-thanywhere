@@ -51,12 +51,12 @@ router.beforeEach((to, from, next) => {
 
 .slide-left-enter-to {
   transform: translateX(0);
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .slide-left-leave-from {
   transform: translateX(0);
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .slide-left-leave-to {
@@ -77,12 +77,12 @@ router.beforeEach((to, from, next) => {
 
 .slide-right-enter-to {
   transform: translateX(0);
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .slide-right-leave-from {
   transform: translateX(0);
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .slide-right-leave-to {

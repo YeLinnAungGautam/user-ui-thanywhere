@@ -302,7 +302,7 @@ watch(hotels, async (newValue) => {
         </div>
       </div>
     </HeaderHomeVue>
-    <div class="h-auto pb-20 pt-8 space-y-10 relative">
+    <div class="h-auto pb-20 z-20 relative">
       <HotelsGradesVue @Range="getRange" />
       <div class="space-y-4 relative">
         <div

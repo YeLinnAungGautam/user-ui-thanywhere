@@ -195,8 +195,8 @@ watch(
 <template>
   <Layout>
     <div>
-      <HeaderHome :showTitle="false" class="px-6">
-        <div class="flex justify-between items-center py-4">
+      <HeaderHome :showTitle="false" class="">
+        <div class="flex justify-between items-center py-4 px-6">
           <ChevronLeftIcon
             class="w-6 h-6 text-white"
             @click="router.push('/home/van-tour')"
@@ -204,7 +204,7 @@ watch(
           <p class="text-white font-semibold">over {{ count }} vantours</p>
           <p class="opacity-0">..</p>
         </div>
-        <div class="relative w-full">
+        <div class="relative w-full px-6">
           <input
             type="text"
             v-model="search"
@@ -216,12 +216,12 @@ watch(
 
           <img
             :src="searchIcon"
-            class="w-5 h-5 absolute top-3.5 right-5 text-main"
+            class="w-5 h-5 absolute top-3.5 right-9 text-main"
             alt=""
           />
         </div>
       </HeaderHome>
-      <div class="space-y-4 relative pt-6 pb-20">
+      <div class="space-y-4 relative pb-20">
         <div
           :class="isStickey ? 'shadow-custom' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"

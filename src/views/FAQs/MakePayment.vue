@@ -2,7 +2,7 @@
   <div>
     <div
       class="px-4 py-2 bg-main flex justify-start items-center gap-3"
-      @click="router.back()"
+      @click="routerGoBack"
     >
       <ChevronLeftIcon class="w-6 h-6 text-main bg-white rounded-full" />
       <span class="text-xs font-medium text-white"
@@ -58,4 +58,19 @@ import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+
+const routerGoBack = () => {
+  router.back();
+
+  // Add a delay to ensure navigation happens before modifying the URL
+  setTimeout(() => {
+    const currentPath = window.location.pathname; // Get current path after back
+    const updatedPath = `${currentPath}#faqs`; // Append #faqs to the path
+
+    // Check if the hash is already added to prevent duplication
+    if (!window.location.hash.includes("#faqs")) {
+      window.location.replace(updatedPath); // Update the URL with the hash
+    }
+  }, 100); // Delay for navigation to complete
+};
 </script>

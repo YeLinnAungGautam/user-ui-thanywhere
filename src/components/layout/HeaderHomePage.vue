@@ -35,9 +35,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="w-full bg-gradient-to-b to-main from-main/60 border-b border-background"
-  >
+  <div class="w-full bg-gradient-to-b to-main from-main/60 rounded-b-[30px]">
     <div class="w-full pt-4 pb-6 relative z-10">
       <div
         class="flex justify-between items-center text-white px-6 pb-4"
@@ -65,12 +63,7 @@ onMounted(() => {
           <p class="text-xs pr-2">{{ language == "english" ? "en" : "mm" }}</p>
         </div>
       </div>
-      <div class="pb-3">
-        <slot />
-      </div>
-      <div
-        class="absolute -bottom-5 bg-background h-[40px] rounded-full w-full"
-      ></div>
+      <slot />
     </div>
     <Modal :isOpen="onBoradingShow" @closeModal="onBoradingShow = false">
       <DialogPanel

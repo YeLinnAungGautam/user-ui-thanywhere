@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="relative overflow-hidden">
     <div class="relative">
       <carousel v-bind="settings">
         <slide v-for="(slide, index) in showImage" :key="index">
-          <div>
+          <div class="w-full h-full">
             <!-- <div class="w-full h-[420px] overflow-hidden">
               <img
                 :src="slide.image"
@@ -20,6 +20,9 @@
         </template>
       </carousel>
     </div>
+    <div
+      class="bg-white absolute -bottom-6 rounded-full h-[50px] w-full z-30"
+    ></div>
   </div>
 </template>
 
@@ -68,5 +71,13 @@ onMounted(() => {
   position: absolute;
   bottom: 10px;
   width: 100%;
+}
+.carousel__pagination-button {
+  display: block;
+  border: 0;
+  margin: 0px 0px 20px 0px !important;
+  cursor: pointer;
+  padding: var(--vc-pgn-margin);
+  background: transparent;
 }
 </style>

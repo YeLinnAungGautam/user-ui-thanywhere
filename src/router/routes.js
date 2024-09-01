@@ -34,7 +34,7 @@ import VantourPickupVue from "../views/FAQs/PickupPage.vue";
 import VantourBookTourVue from "../views/FAQs/BookTourPage.vue";
 import VantourMakePaymentVue from "../views/FAQs/MakePayment.vue";
 import VantourConformationVue from "../views/FAQs/ConfimationPage.vue";
-import VantourHomeSearchVue from "../components/search-part/VantourSearchCityHome.vue";
+// import VantourHomeSearchVue from "../components/search-part/VantourSearchCityHome.vue";
 
 const routes = [
   // {
@@ -222,11 +222,6 @@ const routes = [
     path: "/home/van-tour-detail/pages/conformation",
     name: "VantourConformation",
     component: VantourConformationVue,
-  },
-  {
-    path: "/home/van-tour/home/search",
-    name: "VantourHomeSearch",
-    component: VantourHomeSearchVue,
   },
 ];
 

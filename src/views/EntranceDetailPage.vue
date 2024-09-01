@@ -26,7 +26,7 @@
 
       <div class="px-4">
         <div
-          class="bg-white mt-4 mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
+          class="bg-white mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
         >
           <div class="space-y-2">
             <h1 class="text-main font-medium">{{ detail?.name }}</h1>

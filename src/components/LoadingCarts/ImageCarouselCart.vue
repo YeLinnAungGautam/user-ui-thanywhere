@@ -1,19 +1,15 @@
 <template>
   <div>
-    <div v-show="imageLoaded" class="w-full h-[420px] overflow-hidden">
+    <div v-show="imageLoaded" class="w-full h-[420px] overflow-hidden relative">
       <img
         :src="i"
         alt=""
         @load="onImageLoad"
-        class="w-full h-full object-cover rounded-b-[60px]"
+        class="w-full h-full object-cover"
       />
     </div>
     <div v-show="!imageLoaded" class="w-full h-[420px] overflow-hidden">
-      <img
-        :src="LoadingImageCover"
-        alt=""
-        class="w-full h-full object-cover rounded-b-[60px]"
-      />
+      <img :src="LoadingImageCover" alt="" class="w-full h-full object-cover" />
     </div>
   </div>
 </template>

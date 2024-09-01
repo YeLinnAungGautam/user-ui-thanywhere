@@ -175,7 +175,7 @@ watch(entrances, async (newValue) => {
         </div>
       </div>
     </HeaderHomeVue>
-    <div class="h-auto pb-20 pt-8 space-y-4 relative">
+    <div class="h-auto pb-20 z-20 space-y-4 relative">
       <div
         :class="isStickey ? 'shadow-custom' : ''"
         class="flex justify-between items-center sticky top-0 py-2 px-6 z-10 bg-background w-full"

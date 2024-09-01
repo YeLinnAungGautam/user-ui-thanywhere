@@ -1,11 +1,13 @@
 <template>
   <div class="space-y-3">
-    <div class="relative" @click="router.push('/home/van-tour/home/search')">
+    <div class="relative" @click="openCity">
       <input
         type="text"
         name=""
-        placeholder=" choose your destination"
-        class="w-full rounded-full pl-12 py-4 text-xs text-main focus:outline-none"
+        v-model="chooseCityName"
+        disabled
+        :placeholder="placeholder"
+        class="w-full rounded-full bg-white pl-12 py-4 text-xs text-main focus:outline-none"
         id=""
       />
       <MapPinIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" />
@@ -14,10 +16,11 @@
     <div class="relative" @click="open">
       <input
         type="text"
+        disabled
         name=""
         v-model="dateSelected"
         placeholder=" pick a date of travel"
-        class="w-full rounded-full pl-12 py-4 text-xs text-main focus:outline-none"
+        class="w-full rounded-full relative z-0 bg-white pl-12 py-4 text-xs text-main focus:outline-none"
         id=""
       />
       <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" />
@@ -26,16 +29,28 @@
     <div class="relative" @click="opentype">
       <input
         type="text"
+        disabled
         name=""
         v-model="chooseTypeLetter"
         placeholder=" choose activity type"
-        class="w-full rounded-full pl-12 py-4 text-xs text-main focus:outline-none"
+        class="w-full rounded-full relative z-0 bg-white pl-12 py-4 text-xs text-main focus:outline-none"
         id=""
       />
       <SparklesIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" />
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
-    <div class="w-full rounded-full py-3 text-sm border border-white">
+    <div
+      v-if="chooseCityId"
+      @click="filteredHotel"
+      class="w-full rounded-full relative z-0 py-3 text-sm border border-white"
+    >
+      <p class="text-white text-center">explore</p>
+    </div>
+    <div
+      v-if="!chooseCityId"
+      @click="filteredError"
+      class="w-full rounded-full relative z-0 py-3 text-sm border border-white"
+    >
       <p class="text-white text-center">explore</p>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
@@ -47,17 +62,18 @@
         </div>
         <div class="overflow-hidden ml-4 mr-2 rounded-xl">
           <div class="h-auto font-poppins">
-            <VueDatePicker
+            <!-- <VueDatePicker
               v-model="date"
               inline
               auto-apply
               :format="format"
               :enable-time="false"
               :type="date"
-            ></VueDatePicker>
+            ></VueDatePicker> -->
+            <AboutPageVue @change="changesFromCalendar" />
           </div>
 
-          <div
+          <!-- <div
             class="flex justify-between gap-4 px-4 items-center py-4 border-t border-black/10"
           >
             <p class="text-main font-semibold text-base">{{ dateSelected }}</p>
@@ -67,7 +83,7 @@
             >
               choose
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </vue-bottom-sheet>
@@ -80,26 +96,22 @@
         </div>
         <div class="ml-4 mr-2 rounded-xl">
           <div class="h-[400px]">
-            <div class="grid grid-cols-4 gap-2">
+            <div class="flex justify-start items-center gap-3 flex-wrap">
               <div
-                class="px-2 py-2 space-y-1 w-full mx-auto"
+                class="space-y-1"
                 v-for="(i, index) in activitydb"
                 :key="index"
                 @click="handleActivitySelect(i.name)"
               >
                 <div
-                  class="p-1 w-full"
+                  class="px-4 py-1.5 text-[10px] rounded-full"
                   :class="
-                    isActive(i.name) ? 'border border-main rounded-lg' : ''
+                    isActive(i.name)
+                      ? 'bg-main border font-semibold border-white  text-white'
+                      : ' bg-white text-black/80 border font-semibold  border-black/10'
                   "
                 >
-                  <div class="flex justify-center items-center gap-1">
-                    <!-- <StarIcon class="w-10 h-10 text-main" /> -->
-                    <img :src="i.image" class="w-10 h-10" alt="" />
-                  </div>
-                  <p class="text-[8px] text-black/70 text-center">
-                    {{ i.name }}
-                  </p>
+                  {{ i.name }}
                 </div>
               </div>
             </div>
@@ -120,6 +132,23 @@
         </div>
       </div>
     </vue-bottom-sheet>
+    <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
+      <div class="font-poppins">
+        <div class="flex justify-between items-center px-6 pb-4">
+          <XMarkIcon class="w-5 h-5" @click="closeCity" />
+          <p class="text-black font-semibold text-base">Select a destination</p>
+          <p class="opacity-0">......</p>
+        </div>
+        <div class="ml-4 mr-2 rounded-xl">
+          <div class="h-[80vh]">
+            <ChooseCityVue
+              @changeCity="chooseCityChange"
+              @clearChange="closeCityClean"
+            />
+          </div>
+        </div>
+      </div>
+    </vue-bottom-sheet>
   </div>
 </template>
 
@@ -131,13 +160,17 @@ import {
   SparklesIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/solid";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
-import VueDatePicker from "@vuepic/vue-datepicker";
+// import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import activitydb from "../../assets/activitydb";
+import AboutPageVue from "../../views/AboutPage.vue";
+import ChooseCityVue from "./VantourSearchCityHome.vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 const myBottomSheet = ref(null);
 const open = () => {
@@ -159,45 +192,58 @@ const closetypeClean = () => {
   myBottomSheetType.value.close();
 };
 
-const router = useRouter();
-
-const date = ref("");
-
-const format = (date) => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-
-  return `Selected date is ${day}/${month}/${year}`;
+const myBottomSheetCity = ref(null);
+const openCity = () => {
+  myBottomSheetCity.value.open();
+};
+const closeCity = () => {
+  myBottomSheetCity.value.close();
+};
+const chooseCityName = ref("");
+const chooseCityId = ref("");
+const closeCityClean = () => {
+  chooseCityName.value = "";
+  chooseCityId.value = "";
+  myBottomSheetCity.value.close();
+};
+const chooseCityChange = (data) => {
+  console.log("====================================");
+  console.log(data, "this is change");
+  console.log("====================================");
+  chooseCityName.value = data.name;
+  chooseCityId.value = data.id;
+  myBottomSheetCity.value.close();
 };
 
-const dateSelected = computed(() => {
-  if (date.value) {
-    const day = date.value.getDate();
-    const year = date.value.getFullYear();
+// const router = useRouter();
 
-    // Convert the month number to a short name
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sept",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = monthNames[date.value.getMonth()];
+// const format = (date) => {
+//   const day = date.getDate();
+//   const month = date.getMonth() + 1;
+//   const year = date.getFullYear();
 
-    return `${day} ${month} ${year}`;
-  } else {
-    return "";
-  }
-});
+//   return `Selected date is ${day}/${month}/${year}`;
+// };
+
+const filteredHotel = async () => {
+  router.push({
+    name: "HomeVantourResult",
+    params: {
+      id: chooseCityId.value ? chooseCityId.value : null,
+      name: chooseCityName.value ? chooseCityName.value : null,
+    },
+  });
+};
+
+const placeholder = ref("choose your destination");
+const filteredError = () => {
+  console.log("====================================");
+  console.log("hello");
+  placeholder.value = "need to choose a destination";
+  console.log("====================================");
+};
+
+const dateSelected = ref("");
 
 const chooseType = ref([]);
 
@@ -219,6 +265,14 @@ const chooseTypeLetter = computed(() => {
     return "";
   }
 });
+
+const changesFromCalendar = (data) => {
+  console.log("====================================");
+  console.log(data);
+  dateSelected.value = data;
+  close();
+  console.log("====================================");
+};
 
 const isActive = (activity) => {
   return chooseType.value.includes(activity);

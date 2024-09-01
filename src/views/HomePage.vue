@@ -1,6 +1,6 @@
 <script setup>
 import Layout from "../components/layout/LayoutHome.vue";
-import HeaderHomeVue from "../components/layout/HeaderHome.vue";
+import HeaderHomeVue from "../components/layout/HeaderHomePage.vue";
 import AllProductPartVue from "../components/home/AllProductPart.vue";
 import BestSellingAttractions from "../components/home/BestSellingAttraction.vue";
 import ReadDestinationVue from "../components/home/ReadDestinations.vue";
@@ -79,10 +79,11 @@ onMounted(() => {
           <AllProductPartVue />
 
           <ThingToDoVue />
+          <WhyChooseUsVue />
           <StayinBangkokVue />
           <!-- <ExporeAboutCityVue /> -->
           <!-- <UniqueHotelVue /> -->
-          <WhyChooseUsVue />
+
           <BestSellingVanTours />
           <BestSellingAttractions />
           <TopDestinationVue />
