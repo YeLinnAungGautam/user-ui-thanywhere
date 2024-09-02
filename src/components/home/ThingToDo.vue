@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!loading">
+  <div>
     <div class="flex justify-between items-center">
       <h1 class="text-main font-semibold px-6">top things to do in bangkok</h1>
       <div
@@ -121,11 +121,12 @@ import { storeToRefs } from "pinia";
 import ThingToDoLoadingCartVue from "../LoadingCarts/ThingToDoLoadingCart.vue";
 import { useRouter } from "vue-router";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
+// import { ref } from "@vue/reactivity";
 
 const entranceStore = useEntranceStore();
 const router = useRouter();
 
-const { entrances, loading } = storeToRefs(entranceStore);
+const { entrances } = storeToRefs(entranceStore);
 
 onMounted(async () => {
   await entranceStore.getListAction({ city_id: 2 });

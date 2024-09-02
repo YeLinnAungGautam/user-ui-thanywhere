@@ -264,8 +264,8 @@ watch(vantours, async (newValue) => {
             <p class="text-main text-base">filter</p>
             <XMarkIcon class="w-5 h-5" @click="close" />
           </div>
-          <div class="border border-black/10 p-4 ml-4 mr-2 rounded-xl">
-            <div class="space-y-3 pb-10">
+          <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
+            <div class="space-y-3">
               <div class="flex justify-between items-center">
                 <p class="text-sm font-semibold">choose city</p>
                 <p
@@ -280,8 +280,12 @@ watch(vantours, async (newValue) => {
                   <div v-for="(c, index) in cities?.data" :key="c.id">
                     <p
                       v-if="index < 8 || all"
-                      class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
-                      :class="filterId == c.id ? 'bg-main text-white' : ''"
+                      class="px-4 py-1.5 text-[10px] rounded-full"
+                      :class="
+                        filterId == c.id
+                          ? 'bg-main border font-semibold border-white  text-white'
+                          : 'bg-white text-black/80 border font-semibold  border-black/10'
+                      "
                       @click="searchFunction(c)"
                     >
                       {{ c?.name }}

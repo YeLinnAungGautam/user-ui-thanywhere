@@ -93,7 +93,7 @@
         </div>
         <section class="mt-12 md:mt-0 md:pl-14">
           <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-gray-900">
+            <h2 class="font-semibold text-main">
               <time :dateTime="format(selectedDay, 'yyyy-MM-dd')">
                 {{ format(selectedDay, "MMM dd, yyyy") }}
               </time>

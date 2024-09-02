@@ -30,10 +30,10 @@ import ProfileVuePage from "../views/ProfilePage.vue";
 import SignUpVuePage from "../views/SignUpPage.vue";
 import TranslationPage from "../views/TranslationPage.vue";
 import ProfileUpdateVuePage from "../views/UpdateUserInfo.vue";
-import VantourPickupVue from "../views/FAQs/PickupPage.vue";
-import VantourBookTourVue from "../views/FAQs/BookTourPage.vue";
-import VantourMakePaymentVue from "../views/FAQs/MakePayment.vue";
-import VantourConformationVue from "../views/FAQs/ConfimationPage.vue";
+// import VantourPickupVue from "../views/FAQs/PickupPage.vue";
+// import VantourBookTourVue from "../views/FAQs/BookTourPage.vue";
+// import VantourMakePaymentVue from "../views/FAQs/MakePayment.vue";
+// import VantourConformationVue from "../views/FAQs/ConfimationPage.vue";
 // import VantourHomeSearchVue from "../components/search-part/VantourSearchCityHome.vue";
 
 const routes = [
@@ -203,26 +203,26 @@ const routes = [
     name: "HomeDestinationResult",
     component: HomeDestinationResultVue,
   },
-  {
-    path: "/home/van-tour-detail/pages/pickup",
-    name: "VantourPickup",
-    component: VantourPickupVue,
-  },
-  {
-    path: "/home/van-tour-detail/pages/booktour",
-    name: "VantourBookTour",
-    component: VantourBookTourVue,
-  },
-  {
-    path: "/home/van-tour-detail/pages/makepayment",
-    name: "VantourMakePayment",
-    component: VantourMakePaymentVue,
-  },
-  {
-    path: "/home/van-tour-detail/pages/conformation",
-    name: "VantourConformation",
-    component: VantourConformationVue,
-  },
+  // {
+  //   path: "/home/van-tour-detail/pages/pickup",
+  //   name: "VantourPickup",
+  //   component: VantourPickupVue,
+  // },
+  // {
+  //   path: "/home/van-tour-detail/pages/booktour",
+  //   name: "VantourBookTour",
+  //   component: VantourBookTourVue,
+  // },
+  // {
+  //   path: "/home/van-tour-detail/pages/makepayment",
+  //   name: "VantourMakePayment",
+  //   component: VantourMakePaymentVue,
+  // },
+  // {
+  //   path: "/home/van-tour-detail/pages/conformation",
+  //   name: "VantourConformation",
+  //   component: VantourConformationVue,
+  // },
 ];
 
 export default routes;

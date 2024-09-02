@@ -138,7 +138,7 @@
               <a
                 href="https://www.facebook.com/thailandanywherevip"
                 target="_blink"
-                class="outline-none text-center bg-main/20 border border-main flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+                class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
               >
                 <img
                   :src="messengerIcon"

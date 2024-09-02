@@ -1,41 +1,29 @@
 <template>
   <div class="space-y-3">
     <div class="relative" @click="openCity">
-      <input
-        type="text"
-        name=""
-        @click="openCity"
-        v-model="chooseCityName"
-        :placeholder="placeholder"
+      <p
         class="w-full rounded-full bg-white pl-12 py-4 text-xs text-main focus:outline-none"
-        id=""
-      />
+      >
+        {{ chooseCityName ? chooseCityName : placeholder }}
+      </p>
       <MapPinIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" />
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
     <div class="relative" @click="open">
-      <input
-        type="text"
-        name=""
-        @click="open"
-        v-model="dateSelected"
-        placeholder=" pick a date of travel"
-        class="w-full rounded-full relative z-0 bg-white pl-12 py-4 text-xs text-main focus:outline-none"
-        id=""
-      />
+      <p
+        class="w-full rounded-full bg-white pl-12 py-4 text-xs text-main focus:outline-none"
+      >
+        {{ dateSelected ? dateSelected : "pick a date of travel *" }}
+      </p>
       <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" />
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
     <div class="relative" @click="opentype">
-      <input
-        type="text"
-        name=""
-        @click="opentype"
-        v-model="chooseTypeLetter"
-        placeholder=" choose activity type"
-        class="w-full rounded-full relative z-0 bg-white pl-12 py-4 text-xs text-main focus:outline-none"
-        id=""
-      />
+      <div
+        class="w-full rounded-full bg-white flex flex-wrap justify-start items-center pl-12 py-4 text-xs text-main focus:outline-none"
+      >
+        {{ chooseTypeLetter ? chooseTypeLetter : "pick a date of travel" }}
+      </div>
       <SparklesIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" />
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
@@ -60,30 +48,10 @@
           <p class="text-black font-semibold text-base">Pick a Date</p>
           <p class="opacity-0">......</p>
         </div>
-        <div class="overflow-hidden ml-4 mr-2 rounded-xl">
+        <div class="overflow-hidden ml-4 mr-4 rounded-xl">
           <div class="h-auto font-poppins">
-            <!-- <VueDatePicker
-              v-model="date"
-              inline
-              auto-apply
-              :format="format"
-              :enable-time="false"
-              :type="date"
-            ></VueDatePicker> -->
             <AboutPageVue @change="changesFromCalendar" />
           </div>
-
-          <!-- <div
-            class="flex justify-between gap-4 px-4 items-center py-4 border-t border-black/10"
-          >
-            <p class="text-main font-semibold text-base">{{ dateSelected }}</p>
-            <button
-              @click="close"
-              class="text-center border bg-main border-black/10 rounded-full py-2 w-[40%] text-sm text-white font-semibold"
-            >
-              choose
-            </button>
-          </div> -->
         </div>
       </div>
     </vue-bottom-sheet>
@@ -94,7 +62,7 @@
           <p class="text-black font-semibold text-base">Select activity type</p>
           <p class="opacity-0">......</p>
         </div>
-        <div class="ml-4 mr-2 rounded-xl">
+        <div class="ml-4 mr-4 rounded-xl">
           <div class="h-[400px]">
             <div class="flex justify-start items-center gap-3 flex-wrap">
               <div
@@ -133,14 +101,17 @@
       </div>
     </vue-bottom-sheet>
     <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
-      <div class="font-poppins">
-        <div class="flex justify-between items-center px-6 pb-4">
-          <XMarkIcon class="w-5 h-5" @click="closeCity" />
-          <p class="text-black font-semibold text-base">Select a destination</p>
+      <div class="font-poppins relative">
+        <div class="bg-main absolute top-0 right-0 w-full h-full"></div>
+        <div
+          class="flex justify-between items-center px-6 pt-2 pb-4 relative z-10"
+        >
+          <XMarkIcon class="w-5 h-5 text-white" @click="closeCity" />
+          <p class="text-white font-semibold text-base">Select a destination</p>
           <p class="opacity-0">......</p>
         </div>
-        <div class="ml-4 mr-2 rounded-xl">
-          <div class="h-[80vh]">
+        <div class="rounded-xl">
+          <div class="h-[90vh]">
             <ChooseCityVue
               @changeCity="chooseCityChange"
               @clearChange="closeCityClean"
@@ -235,11 +206,11 @@ const filteredHotel = async () => {
   });
 };
 
-const placeholder = ref("choose your destination");
+const placeholder = ref("choose your destination *");
 const filteredError = () => {
   console.log("====================================");
   console.log("hello");
-  placeholder.value = "need to choose a destination";
+  placeholder.value = "choose a destination *";
   console.log("====================================");
 };
 

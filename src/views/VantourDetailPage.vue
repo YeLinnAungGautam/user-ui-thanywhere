@@ -31,35 +31,35 @@
         >
           <a
             href="#destinations"
-            :class="tagsNum == 1 ? 'text-black' : 'text-black/50'"
+            :class="tagsNum == 1 ? 'text-main' : 'text-black/50'"
             @click="tagsNum = 1"
             class="text-xs font-semibold whitespace-nowrap"
             >destinations</a
           >
           <a
             href="#options"
-            :class="tagsNum == 2 ? 'text-black' : 'text-black/50'"
+            :class="tagsNum == 2 ? 'text-main' : 'text-black/50'"
             @click="tagsNum = 2"
             class="text-xs font-semibold whitespace-nowrap"
             >select options</a
           >
           <a
             href="#summary"
-            :class="tagsNum == 3 ? 'text-black' : 'text-black/50'"
+            :class="tagsNum == 3 ? 'text-main' : 'text-black/50'"
             @click="tagsNum = 3"
             class="text-xs font-semibold whitespace-nowrap"
             >package summary</a
           >
           <a
             href="#faqs"
-            :class="tagsNum == 4 ? 'text-black' : 'text-black/50'"
+            :class="tagsNum == 4 ? 'text-main' : 'text-black/50'"
             @click="tagsNum = 4"
             class="text-xs font-semibold whitespace-nowrap"
             >faqs</a
           >
           <a
             href="#other"
-            :class="tagsNum == 5 ? 'text-black' : 'text-black/50'"
+            :class="tagsNum == 5 ? 'text-main' : 'text-black/50'"
             @click="tagsNum = 5"
             class="text-xs font-semibold whitespace-nowrap"
             >other packages</a
@@ -325,9 +325,7 @@
                     >
                       <div
                         class="flex justify-between items-center"
-                        @click="
-                          router.push('/home/van-tour-detail/pages/pickup')
-                        "
+                        @click="open('pickup')"
                       >
                         <p class="py-3 font-semibold text-sm text-black/80">
                           What time can you pick us up?
@@ -336,9 +334,7 @@
                       </div>
                       <div
                         class="flex justify-between items-center"
-                        @click="
-                          router.push('/home/van-tour-detail/pages/booktour')
-                        "
+                        @click="open('book')"
                       >
                         <p class="py-3 font-semibold text-sm text-black/80">
                           How to book this tour?
@@ -347,26 +343,10 @@
                       </div>
                       <div
                         class="flex justify-between items-center"
-                        @click="
-                          router.push('/home/van-tour-detail/pages/makepayment')
-                        "
+                        @click="open('payment')"
                       >
                         <p class="py-3 font-semibold text-sm text-black/80">
                           How do I make a payment?
-                        </p>
-                        <ChevronRightIcon class="w-5 h-5" />
-                      </div>
-                      <div
-                        class="flex justify-between items-center"
-                        id="other"
-                        @click="
-                          router.push(
-                            '/home/van-tour-detail/pages/conformation'
-                          )
-                        "
-                      >
-                        <p class="py-3 font-semibold text-sm text-black/80">
-                          How do I get conformation letter?
                         </p>
                         <ChevronRightIcon class="w-5 h-5" />
                       </div>
@@ -451,7 +431,7 @@
                 <a
                   href="https://www.facebook.com/thailandanywherevip"
                   target="_blink"
-                  class="outline-none text-center bg-main/20 border border-main flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
+                  class="outline-none text-center border border-black/20 flex flex-col justify-center items-center p-3 rounded-2xl space-y-1"
                 >
                   <img
                     :src="messengerIcon"
@@ -583,8 +563,10 @@
             >
               -
             </p>
-            <p class="px-3 py-1 font-semibold">
-              {{ chooseCount }}
+            <p
+              class="px-3 py-1 font-semibold flex justify-start items-center flex-nowrap gap-x-2"
+            >
+              {{ chooseCount }}<span class="text-xs font-normal">/pax</span>
             </p>
             <p
               class="bg-main px-2 rounded-lg text-white text-xl"
@@ -599,7 +581,7 @@
             >
               +
             </p>
-            <p class="text-xs font-semibold">Choose pax</p>
+            <!-- <p class="text-xs font-semibold">Choose pax</p> -->
           </div>
         </div>
         <p class="text-lg font-semibold text-main" v-if="!choosePax">
@@ -622,6 +604,44 @@
         <p>talk to sales</p>
       </div>
     </div>
+    <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
+      <div class="font-poppins">
+        <div class="h-[100vh]">
+          <div class="flex justify-between items-center px-6 pb-4">
+            <p class="opacity-0">........</p>
+            <p
+              class="text-black text-sm font-medium"
+              v-if="openPart == 'pickup'"
+            >
+              What time can you pick us up?
+            </p>
+            <p class="text-black text-sm font-medium" v-if="openPart == 'book'">
+              How to book this tour?
+            </p>
+            <p
+              class="text-black text-sm font-medium"
+              v-if="openPart == 'payment'"
+            >
+              How do I make a payment?
+            </p>
+            <XMarkIcon class="w-5 h-5" @click="close" />
+          </div>
+          <div
+            class="border border-black/10 p-4 ml-4 mr-4 rounded-xl h-[90vh] overflow-scroll"
+          >
+            <div v-if="openPart == 'pickup'">
+              <PickupPage />
+            </div>
+            <div v-if="openPart == 'book'">
+              <BookingTourPage />
+            </div>
+            <div v-if="openPart == 'payment'">
+              <MakePaymentPage />
+            </div>
+          </div>
+        </div>
+      </div>
+    </vue-bottom-sheet>
   </div>
 </template>
 
@@ -637,6 +657,8 @@ import {
   HeartIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
+import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
+import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 // import logo from "../assets/logo.png";
 import ShareIcon from "../assets/web/send.png";
 import LoadingPageVue from "../components/layout/LoadingPage.vue";
@@ -654,10 +676,29 @@ import SaleModalVue from "../components/cart/SaleModalVue.vue";
 import car1 from "../assets/s/17-removebg-preview.png";
 import car2 from "../assets/s/16-removebg-preview.png";
 import car3 from "../assets/s/15-removebg-preview.png";
+import PickupPage from "./FAQs/PickupPage.vue";
+import MakePaymentPage from "./FAQs/MakePayment.vue";
+import BookingTourPage from "./FAQs/BookTourPage.vue";
 
 const route = useRoute();
 const router = useRouter();
 const vantourStore = useVantourStore();
+
+const myBottomSheet = ref(null);
+const openPart = ref("");
+const open = (data) => {
+  openPart.value = data;
+  myBottomSheet.value.open();
+};
+
+// const openBottomSheet = async () => {
+//   open();
+// };
+
+const close = () => {
+  openPart.value = "";
+  myBottomSheet.value.close();
+};
 
 const detail = ref(null);
 const loading = ref(false);
@@ -688,20 +729,9 @@ const getDetail = async (id) => {
   if (res.data.cover_image) {
     images.value.push({ image: res.data.cover_image });
   }
-  // if (res.data.images.length > 0) {
-  //   for (let i = 0; i < res.data.images.length; i++) {
-  //     images.value.push({ image: res.data.images[i].image });
-  //   }
-  // }
+
   if (res.data.destinations.length > 0) {
     for (let i = 0; i < res.data.destinations.length; i++) {
-      // if (res.data.destinations[i].images.length > 0) {
-      //   for (let j = 0; j < res.data.destinations[i].images.length; j++) {
-      //     images.value.push({
-      //       image: res.data.destinations[i].images[j].image,
-      //     });
-      //   }
-      // }
       images.value.push({
         image: res.data.destinations[i].feature_img,
       });
@@ -829,15 +859,6 @@ onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
   await settingStore.getLanguage();
   await getDetail(route.params.id);
-
-  if (window.location.hash) {
-    const hash = window.location.hash.substring(1); // Remove the '#' from the hash
-    const element = document.getElementById(hash);
-    if (element) {
-      // Scroll to the element smoothly
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  }
 });
 
 onBeforeUnmount(() => {

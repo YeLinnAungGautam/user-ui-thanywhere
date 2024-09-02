@@ -327,7 +327,7 @@ watch(
           <p class="text-main text-base">filter</p>
           <XMarkIcon class="w-5 h-5" @click="close" />
         </div>
-        <div class="border border-black/10 p-4 ml-4 mr-2 rounded-xl">
+        <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
           <div class="space-y-3 pb-10">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">choose city</p>

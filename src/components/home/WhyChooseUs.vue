@@ -13,8 +13,13 @@
         :key="i"
       >
         <div class="w-[200px] space-y-2 py-3 px-2">
-          <img :src="i.image" class="w-[80px] mx-auto h-auto" alt="" />
-          <p class="text-sm font-semibold">{{ i.title }}</p>
+          <img
+            :src="i.image"
+            class="h-auto"
+            alt=""
+            :class="i.id == 2 || i.id == 4 ? 'w-[70px] mt-2.5' : 'w-[80px]'"
+          />
+          <p class="text-[12px] font-semibold">{{ i.title }}</p>
           <p
             class="text-[10px] font-medium h-auto line-clamp-3 text-black/80 text-left"
           >

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="imageLoaded" class="w-full h-[420px] overflow-hidden relative">
+    <div v-show="imageLoaded" class="w-full h-[400px] overflow-hidden relative">
       <img
         :src="i"
         alt=""
@@ -8,7 +8,7 @@
         class="w-full h-full object-cover"
       />
     </div>
-    <div v-show="!imageLoaded" class="w-full h-[420px] overflow-hidden">
+    <div v-show="!imageLoaded" class="w-full h-[400px] overflow-hidden">
       <img :src="LoadingImageCover" alt="" class="w-full h-full object-cover" />
     </div>
   </div>
