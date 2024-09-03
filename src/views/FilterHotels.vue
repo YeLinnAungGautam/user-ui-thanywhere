@@ -552,7 +552,7 @@ watch(
       </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
-      <div class="font-poppins">
+      <div class="font-poppins relative">
         <div class="flex justify-between items-center px-6 pb-4">
           <p class="opacity-0">........</p>
           <p class="text-main text-base">filter</p>
@@ -750,7 +750,7 @@ watch(
             </div>
           </div>
 
-          <div class="flex justify-between gap-4 items-center pt-4">
+          <!-- <div class="flex justify-between gap-4 items-center pt-4">
             <button
               @click="close"
               class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
@@ -763,7 +763,23 @@ watch(
             >
               see {{ count_filter }} hotels
             </button>
-          </div>
+          </div> -->
+        </div>
+        <div
+          class="flex justify-between sticky bg-white px-4 bottom-0 gap-4 items-center py-4 border border-black/10"
+        >
+          <button
+            @click="close"
+            class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
+          >
+            clear
+          </button>
+          <button
+            @click="filteredHotel"
+            class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
+          >
+            see {{ count_filter }} hotels
+          </button>
         </div>
       </div>
     </vue-bottom-sheet>

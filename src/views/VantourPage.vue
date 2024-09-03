@@ -15,12 +15,7 @@ import { storeToRefs } from "pinia";
 import VantourCart from "../components/LoadingCarts/VantourCart.vue";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
 // import { useSettingStore } from "../stores/setting";
-import {
-  ChevronDownIcon,
-  XMarkIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-} from "@heroicons/vue/24/outline";
+import { ChevronDownIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 // const carStore = useCarStore();
@@ -54,6 +49,16 @@ const filteredHotel = async () => {
   router.push({
     name: "HomeVantourResult",
     params: { id: filterId.value, name: city_name.value },
+    query: {
+      category_ids:
+        chooseType.value.length > 0
+          ? chooseType.value.map((item) => item.id).join(",")
+          : "null",
+      price_range:
+        minPrice.value && maxPrice.value
+          ? `${minPrice.value}-${maxPrice.value}`
+          : "null",
+    },
   });
   close();
 };
@@ -85,18 +90,29 @@ const handleScroll = () => {
 
 const chooseType = ref([]);
 const handleActivitySelect = (activity) => {
-  if (chooseType.value.includes(activity)) {
-    // If it exists, remove it from the array
-    chooseType.value = chooseType.value.filter((item) => item !== activity);
+  // Check if the activity with the given id already exists in the array
+  const index = chooseType.value.findIndex((item) => item.id === activity.id);
+
+  if (index !== -1) {
+    // If it exists (index is not -1), remove it from the array
+    chooseType.value.splice(index, 1);
   } else {
     // If it doesn't exist, add it to the array
     chooseType.value.push(activity);
   }
+
   console.log(chooseType.value);
 };
 
 const isActive = (activity) => {
-  return chooseType.value.includes(activity);
+  // Loop through each item in the chooseType.value array
+  for (let index = 0; index < chooseType.value.length; index++) {
+    // Check if the current item's id matches the activity's id
+    if (chooseType.value[index].id === activity.id) {
+      return true; // Return true if a match is found
+    }
+  }
+  return false; // Return false if no matches are found
 };
 
 watch(bottomOfWindow, (newVal) => {
@@ -143,8 +159,8 @@ const goDetialPage = (id) => {
   router.push({ name: "HomeVantourDetail", params: { id: id } });
 };
 
-const minPrice = "";
-const maxPrice = "";
+const minPrice = ref("");
+const maxPrice = ref("");
 
 // const getRange = (data) => {
 //   // console.log(data);
@@ -322,12 +338,12 @@ watch(vantours, async (newValue) => {
                   class="space-y-1"
                   v-for="(i, index) in activitydb"
                   :key="index"
-                  @click="handleActivitySelect(i.name)"
+                  @click="handleActivitySelect(i)"
                 >
                   <div
                     class="px-4 py-1.5 text-[10px] rounded-full"
                     :class="
-                      isActive(i.name)
+                      isActive(i)
                         ? 'bg-main border font-semibold border-white  text-white'
                         : ' bg-white text-black/80 border font-semibold  border-black/10'
                     "

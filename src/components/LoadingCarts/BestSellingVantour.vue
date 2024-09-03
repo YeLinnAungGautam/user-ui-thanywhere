@@ -22,13 +22,16 @@
         </p> -->
         <div class="flex justify-between items-center gap-1">
           <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
-            <MapPinIcon class="w-3 h-3 text-main" />
+            <!-- <MapPinIcon class="w-3 h-3 text-main" /> -->
+            <img :src="MapImage" class="w-3 h-3" alt="" />
             <p class="pt-0.5 text-main">{{ i?.cities[0]?.name }}</p>
           </div>
           <p
             class="text-[10px] text-black font-medium flex justify-start items-center gap-0.5"
           >
-            5 <StarIcon class="w-4 h-4 text-main" />
+            <!-- <StarIcon class="w-4 h-4 text-main" /> -->
+            {{ i?.destinations.length }}
+            <img :src="AttractionImage" class="w-3 h-3 ml-1" alt="" />
           </p>
         </div>
         <p
@@ -94,8 +97,10 @@ import { ref, defineProps, onMounted } from "vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
+import AttractionImage from "../../assets/s/attractions.png";
 // import StarPartVue from "../home/StarPart.vue";
-import { StarIcon, MapPinIcon } from "@heroicons/vue/24/solid";
+// import { StarIcon, MapPinIcon } from "@heroicons/vue/24/solid";
+import MapImage from "../../assets/s/pin 1 (1).png";
 
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);

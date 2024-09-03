@@ -15,6 +15,7 @@
     "@vuepic/vue-datepicker": "^9.0.2",
     "@webzlodimir/vue-bottom-sheet": "^3.0.5",
     "axios": "^1.7.2",
+    "copy-to-clipboard": "^3.3.3",
     "date-fns": "^3.6.0",
     "lodash.debounce": "^4.0.8",
     "pinia": "^2.1.7",

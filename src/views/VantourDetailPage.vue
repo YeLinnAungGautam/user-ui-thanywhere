@@ -411,6 +411,59 @@
               </div>
             </div>
           </div>
+          <Modal
+            :isOpen="modalDetailOpen"
+            @closeModal="modalDetailOpen = false"
+          >
+            <DialogPanel
+              class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+            >
+              <DialogTitle
+                as="div"
+                class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
+              >
+                <p class="opacity-0">...</p>
+                <p class="text-sm font-medium text-main">check your detail</p>
+                <XMarkIcon
+                  class="w-5 h-5 text-main"
+                  @click="modalDetailOpen = false"
+                />
+              </DialogTitle>
+              <div class="grid grid-cols-3 gap-2 text-xs">
+                <p class="">package name :</p>
+                <p class="col-span-2">{{ detail?.name }}</p>
+                <p class="">car type :</p>
+                <p class="col-span-2">{{ chooseData.name }}</p>
+                <p class="">pickup date :</p>
+                <p class="col-span-2">{{ pickup_date }}</p>
+                <p class="">ticket :</p>
+                <p class="col-span-2">{{ choosePax ? "YES" : "No" }}</p>
+                <p class="">ticket qty :</p>
+                <p class="col-span-2">
+                  {{ choosePax ? chooseCount : "-" }} pax
+                </p>
+                <p class="">total amount :</p>
+                <p class="col-span-2">
+                  {{
+                    chooseData && choosePax
+                      ? chooseData.price * 1 + 800 * chooseCount
+                      : chooseData.price
+                  }}
+                  thb
+                </p>
+                <p class="">link :</p>
+                <p class="col-span-2">{{ currentURL }}</p>
+              </div>
+              <div class="pt-6">
+                <button
+                  class="w-full text-sm rounded-full text-white bg-main py-2 px-4 font-medium"
+                  @click="confirmDetailAction"
+                >
+                  confirm & copy detail
+                </button>
+              </div>
+            </DialogPanel>
+          </Modal>
           <Modal :isOpen="modalOpen" @closeModal="modalOpen = false">
             <DialogPanel
               class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
@@ -567,7 +620,7 @@
             <p
               class="px-3 py-1 font-semibold flex justify-start items-center flex-nowrap gap-x-2"
             >
-              {{ chooseCount }}<span class="text-xs font-normal">/pax</span>
+              {{ chooseCount }}<span class="text-xs font-normal">pax</span>
             </p>
             <p
               class="bg-main px-2 rounded-lg text-white text-xl"
@@ -593,14 +646,14 @@
           {{
             chooseData
               ? chooseData.price * 1 + 800 * chooseCount
-              : detail?.lowest_car_price
+              : chooseData.price
           }}
           thb
         </p>
       </div>
       <div
         class="bg-main py-2 mt-2 rounded-full text-center text-white text-sm"
-        @click="modalOpen = true"
+        @click="openDetailModal"
       >
         <p>talk to sales</p>
       </div>
@@ -681,10 +734,15 @@ import PickupPage from "./FAQs/PickupPage.vue";
 import MakePaymentPage from "./FAQs/MakePayment.vue";
 import BookingTourPage from "./FAQs/BookTourPage.vue";
 import MapImage from "../assets/s/pin 1 (1).png";
+import { useOrderVantourStore } from "../stores/orderVantour";
+import copy from "copy-to-clipboard";
 
 const route = useRoute();
 const router = useRouter();
 const vantourStore = useVantourStore();
+const orderVantourStore = useOrderVantourStore();
+
+const { pickup_date } = storeToRefs(orderVantourStore);
 
 const myBottomSheet = ref(null);
 const openPart = ref("");
@@ -713,6 +771,14 @@ const chooseData = ref(null);
 const choosePax = ref(false);
 const chooseCount = ref(1);
 const tagsNum = ref(1);
+const modalDetailOpen = ref(false);
+
+const openDetailModal = () => {
+  console.log("====================================");
+  console.log(pickup_date.value);
+  console.log("====================================");
+  modalDetailOpen.value = true;
+};
 
 const getDetail = async (id) => {
   loading.value = true;
@@ -857,7 +923,38 @@ watch(
   }
 );
 
+const copyDetail = async () => {
+  let formattedOutput;
+  formattedOutput = `
+package name : ${detail?.value.name}
+car type : ${chooseData?.value.name}
+pickup date : ${pickup_date?.value}
+ticket : ${choosePax.value ? "YES" : "No"}
+ticket qty : ${choosePax.value ? chooseCount.value : "-"} pax
+total amount : ${
+    chooseData.value && choosePax.value
+      ? chooseData.value.price * 1 + 800 * chooseCount.value
+      : chooseData.value.price
+  } thb
+link : ${currentURL.value}
+      `;
+
+  copy(formattedOutput);
+};
+
+const confirmDetailAction = () => {
+  copyDetail();
+  console.log("====================================");
+  console.log("copy");
+  console.log("====================================");
+  modalDetailOpen.value = false;
+  modalOpen.value = true;
+};
+
+const currentURL = ref("");
 onMounted(async () => {
+  currentURL.value = window.location.href;
+  await orderVantourStore.getVantourData();
   window.addEventListener("scroll", handleScroll);
   await settingStore.getLanguage();
   await getDetail(route.params.id);

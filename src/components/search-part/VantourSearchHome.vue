@@ -34,7 +34,9 @@
       <div
         class="w-full rounded-full bg-white flex flex-wrap justify-start items-center pl-12 py-4 text-xs text-main focus:outline-none"
       >
-        {{ chooseTypeLetter ? chooseTypeLetter : "choose acitivity type" }}
+        <!-- {{ choose ? choose : "choose acitivity type" }} -->
+        <p class=" " v-for="i in chooseType" :key="i.id">{{ i.name }} ,</p>
+        <p v-if="chooseType.length == 0">choose acitivity type</p>
       </div>
       <!-- <SparklesIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
       <img
@@ -42,21 +44,32 @@
         class="w-4 h-4 absolute top-3.5 left-5 text-main"
         alt=""
       />
-      <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
+      <ChevronRightIcon
+        v-if="chooseType.length == 0"
+        class="w-5 h-5 absolute top-3.5 right-5 text-main"
+      />
     </div>
-    <div
-      v-if="chooseCityId"
-      @click="filteredHotel"
-      class="w-full rounded-full relative z-0 py-3 text-sm border border-white"
-    >
-      <p class="text-white text-center">explore</p>
-    </div>
-    <div
-      v-if="!chooseCityId"
-      @click="filteredError"
-      class="w-full rounded-full relative z-0 py-3 text-sm border border-white"
-    >
-      <p class="text-white text-center">explore</p>
+    <div class="grid grid-cols-3 gap-3">
+      <div
+        @click="clearFilterAction"
+        class="w-full rounded-full relative bg-white/30 z-0 py-3 text-sm border border-white"
+      >
+        <p class="text-white text-center">clear</p>
+      </div>
+      <div
+        v-if="chooseCityId && dateSelected"
+        @click="filteredHotel"
+        class="w-full rounded-full relative col-span-2 z-0 py-3 text-sm border border-white"
+      >
+        <p class="text-white text-center">explore</p>
+      </div>
+      <div
+        v-if="!chooseCityId || !dateSelected"
+        @click="filteredError"
+        class="w-full rounded-full relative col-span-2 z-0 py-3 text-sm border border-white"
+      >
+        <p class="text-white text-center">explore</p>
+      </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
       <div class="font-poppins">
@@ -86,12 +99,12 @@
                 class="space-y-1"
                 v-for="(i, index) in activitydb"
                 :key="index"
-                @click="handleActivitySelect(i.name)"
+                @click="handleActivitySelect(i)"
               >
                 <div
                   class="px-4 py-1.5 text-[10px] rounded-full"
                   :class="
-                    isActive(i.name)
+                    isActive(i)
                       ? 'bg-main border font-semibold border-white  text-white'
                       : ' bg-white text-black/80 border font-semibold  border-black/10'
                   "
@@ -146,7 +159,7 @@
 import { ChevronRightIcon } from "@heroicons/vue/24/outline";
 import { XMarkIcon } from "@heroicons/vue/24/solid";
 // import { useRouter } from "vue-router";
-import { ref, computed } from "vue";
+import { ref, onMounted } from "vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 // import VueDatePicker from "@vuepic/vue-datepicker";
@@ -158,7 +171,12 @@ import { useRouter } from "vue-router";
 import MapImage from "../../assets/s/pin 1 (1).png";
 import CalendarImage from "../../assets/s/calendar_833593 1.png";
 import AttractionImage from "../../assets/s/attractions.png";
-const router = useRouter();
+import { useOrderVantourStore } from "../../stores/orderVantour";
+import { storeToRefs } from "pinia";
+
+// const router = useRouter();
+const orderVantourStore = useOrderVantourStore();
+const { pickup_date } = storeToRefs(orderVantourStore);
 
 const myBottomSheet = ref(null);
 const open = () => {
@@ -203,7 +221,7 @@ const chooseCityChange = (data) => {
   myBottomSheetCity.value.close();
 };
 
-// const router = useRouter();
+const router = useRouter();
 
 // const format = (date) => {
 //   const day = date.getDate();
@@ -214,13 +232,26 @@ const chooseCityChange = (data) => {
 // };
 
 const filteredHotel = async () => {
-  router.push({
-    name: "HomeVantourResult",
-    params: {
-      id: chooseCityId.value ? chooseCityId.value : null,
-      name: chooseCityName.value ? chooseCityName.value : null,
-    },
+  const res = await orderVantourStore.changeStoreData({
+    pickup_date: dateSelected.value,
   });
+  console.log(res);
+
+  if (res == "success") {
+    router.push({
+      name: "HomeVantourResult",
+      params: {
+        id: chooseCityId.value ? chooseCityId.value : null,
+        name: chooseCityName.value ? chooseCityName.value : null,
+      },
+      query: {
+        category_ids:
+          chooseType.value.length > 0
+            ? chooseType.value.map((item) => item.id).join(",")
+            : "null",
+      },
+    });
+  }
 };
 
 const placeholder = ref("choose your destination * ");
@@ -247,23 +278,27 @@ const dateSelected = ref("");
 const chooseType = ref([]);
 
 const handleActivitySelect = (activity) => {
-  if (chooseType.value.includes(activity)) {
-    // If it exists, remove it from the array
-    chooseType.value = chooseType.value.filter((item) => item !== activity);
+  // Check if the activity with the given id already exists in the array
+  const index = chooseType.value.findIndex((item) => item.id === activity.id);
+
+  if (index !== -1) {
+    // If it exists (index is not -1), remove it from the array
+    chooseType.value.splice(index, 1);
   } else {
     // If it doesn't exist, add it to the array
     chooseType.value.push(activity);
   }
+
   console.log(chooseType.value);
 };
 
-const chooseTypeLetter = computed(() => {
-  if (chooseType.value.length > 0) {
-    return chooseType.value.join(", ");
-  } else {
-    return "";
-  }
-});
+// const chooseTypeLetter = computed(() => {
+//   if (chooseType.value.length > 0) {
+//     return chooseType.value.join(", ");
+//   } else {
+//     return "";
+//   }
+// });
 
 const changesFromCalendar = (data) => {
   console.log("====================================");
@@ -274,8 +309,28 @@ const changesFromCalendar = (data) => {
 };
 
 const isActive = (activity) => {
-  return chooseType.value.includes(activity);
+  // Loop through each item in the chooseType.value array
+  for (let index = 0; index < chooseType.value.length; index++) {
+    // Check if the current item's id matches the activity's id
+    if (chooseType.value[index].id === activity.id) {
+      return true; // Return true if a match is found
+    }
+  }
+  return false; // Return false if no matches are found
 };
+
+const clearFilterAction = async () => {
+  await orderVantourStore.removeVantourData();
+  chooseType.value = [];
+  chooseCityName.value = "";
+  chooseCityId.value = "";
+  dateSelected.value = "";
+};
+
+onMounted(async () => {
+  await orderVantourStore.getVantourData();
+  dateSelected.value = pickup_date.value;
+});
 </script>
 
 <style>

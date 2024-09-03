@@ -16,15 +16,26 @@
       <div class="col-span-6 relative">
         <div class="overflow-hidden space-y-1">
           <p class="text-xs font-semibold text-main">{{ i.name }}</p>
-          <div class="flex justify-start gap-1 flex-wrap items-center">
+          <div class="flex justify-between items-center">
+            <div class="flex justify-start gap-1 flex-wrap items-center">
+              <div
+                v-for="c in i?.cities"
+                :key="c"
+                class="bg-black/5 px-1 text-[8px] py-0.5 rounded-md flex justify-start items-center gap-1"
+              >
+                <img :src="MapImage" class="w-3 h-3" alt="" />
+                {{ c.name }}
+              </div>
+            </div>
             <p
-              v-for="c in i?.cities"
-              :key="c"
-              class="bg-black/10 px-1 text-[8px] py-0.5 rounded-md"
+              class="text-[10px] text-black font-medium flex justify-start items-center gap-0.5"
             >
-              {{ c.name }}
+              <!-- <StarIcon class="w-4 h-4 text-main" /> -->
+              {{ i?.destinations.length }}
+              <img :src="AttractionImage" class="w-3 h-3 ml-1" alt="" />
             </p>
           </div>
+
           <p
             class="text-[8px] h-[73px] line-clamp-6 overflow-hidden"
             v-html="
@@ -121,6 +132,8 @@ import { ref, defineProps, onMounted } from "vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
+import MapImage from "../../assets/s/pin 1 (1).png";
+import AttractionImage from "../../assets/s/attractions.png";
 
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);

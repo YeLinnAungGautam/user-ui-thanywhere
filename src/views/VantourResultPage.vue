@@ -4,8 +4,6 @@ import {
   ChevronLeftIcon,
   ChevronDownIcon,
   XMarkIcon,
-  CheckCircleIcon,
-  XCircleIcon,
 } from "@heroicons/vue/24/outline";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
@@ -22,6 +20,7 @@ import { useVantourStore } from "../stores/vantour";
 import debounce from "lodash.debounce";
 import VantourCart from "../components/LoadingCarts/VantourCart.vue";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
+import activitydb from "../assets/activitydb";
 
 // const carStore = useCarStore();
 const cityStore = useCityStore();
@@ -51,6 +50,16 @@ const filteredHotel = async () => {
     params: {
       id: filterId.value,
       name: city_name.value,
+    },
+    query: {
+      category_ids:
+        chooseType.value.length > 0
+          ? chooseType.value.map((item) => item.id).join(",")
+          : "null",
+      price_range:
+        minPrice.value && maxPrice.value
+          ? `${minPrice.value}-${maxPrice.value}`
+          : "null",
     },
   });
   close();
@@ -111,6 +120,34 @@ watch(bottomOfWindow, (newVal) => {
   }
 });
 
+const chooseType = ref([]);
+const minPrice = ref("");
+const maxPrice = ref("");
+const handleActivitySelect = (activity) => {
+  // Check if the activity with the given id already exists in the array
+  const index = chooseType.value.findIndex((item) => item.id === activity.id);
+
+  if (index !== -1) {
+    // If it exists (index is not -1), remove it from the array
+    chooseType.value.splice(index, 1);
+  } else {
+    // If it doesn't exist, add it to the array
+    chooseType.value.push(activity);
+  }
+
+  console.log(chooseType.value);
+};
+const isActive = (activity) => {
+  // Loop through each item in the chooseType.value array
+  for (let index = 0; index < chooseType.value.length; index++) {
+    // Check if the current item's id matches the activity's id
+    if (chooseType.value[index].id === activity.id) {
+      return true; // Return true if a match is found
+    }
+  }
+  return false; // Return false if no matches are found
+};
+
 const showSearch = ref(false);
 
 const vantoursList = ref([]);
@@ -127,6 +164,10 @@ const searchFunction = (data) => {
   filterId.value = data.id;
 };
 
+const result_category = ref("");
+const result_category_array = ref("");
+const result_price_range = ref("");
+
 onMounted(async () => {
   if (route.query.search) {
     search.value = route.query.search ? route.query.search : "";
@@ -135,12 +176,30 @@ onMounted(async () => {
     filterId.value = route.params.id;
     // car_id.value = route.params.car;
     city_name.value = route.params.name;
-    let res = await vantourStore.getListAction({
+    result_price_range.value = route.query.price_range
+      ? route.query.price_range
+      : "";
+    result_category.value = route.query.category_ids
+      ? route.query.category_ids
+      : "";
+    result_category_array.value =
+      route.query.category_ids != "null"
+        ? route.query.category_ids?.split(",")
+        : [];
+    let data = {
       city_id: filterId.value,
-    });
+    };
+    if (result_category.value != "" && result_category.value != "null") {
+      data.category_ids = result_category.value;
+    }
+    if (result_price_range.value != "" && result_price_range.value != "null") {
+      data.price_range = result_price_range.value;
+    }
+    let res = await vantourStore.getListAction(data);
     count.value = res.meta.total;
     vantoursList.value = res.data;
   }
+
   await cityStore.getSimpleListAction();
   // await carStore.getSimpleListAction();
   window.addEventListener("scroll", handleScroll);
@@ -261,6 +320,28 @@ watch(
           >
             {{ searchCityName }}
           </p>
+          <p
+            class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
+            v-if="result_price_range != 'null' && result_price_range != ''"
+          >
+            {{ result_price_range }}
+          </p>
+          <div
+            v-if="result_category.length > 0"
+            class="flex justify-start flex-wrap items-center gap-1"
+          >
+            <p
+              class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
+              v-for="f in result_category_array"
+              :key="f"
+            >
+              <span v-for="s in activitydb" :key="s">
+                <span v-if="s.id == f" class="whitespace-nowrap">{{
+                  s.name
+                }}</span>
+              </span>
+            </p>
+          </div>
         </div>
         <div
           class="border border-black/10 rounded-2xl mx-6 shadow-sm bg-white p-2.5"
@@ -362,37 +443,54 @@ watch(
             </div>
           </div>
 
-          <div class="space-y-3 pb-8 pt-4">
-            <div class="border border-green rounded-2xl p-3">
+          <div class="space-y-3 pb-8 pt-4 h-[400px]">
+            <p class="text-sm font-semibold">choose activities</p>
+            <div class="flex justify-start items-center gap-3 flex-wrap">
               <div
-                class="text-green text-sm font-medium pb-2 flex justify-start items-center gap-2"
+                class="space-y-1"
+                v-for="(i, index) in activitydb"
+                :key="index"
+                @click="handleActivitySelect(i)"
               >
-                <CheckCircleIcon class="w-4 h-4 text-green" />
-                <p class="text-sm">what's include</p>
-              </div>
-              <div
-                class="flex justify-start items-center gap-2 flex-wrap text-xs text-green"
-              >
-                <p>12 hours of travel</p>
-                <p>hotel transfer</p>
-                <p>online assistant</p>
-                <p>tour expenses</p>
-                <p>fuel expenses</p>
-                <p>experienced driver</p>
+                <div
+                  class="px-4 py-1.5 text-[10px] rounded-full"
+                  :class="
+                    isActive(i)
+                      ? 'bg-main border font-semibold border-white  text-white'
+                      : ' bg-white text-black/80 border font-semibold  border-black/10'
+                  "
+                >
+                  {{ i.name }}
+                </div>
               </div>
             </div>
-            <div class="border border-red rounded-2xl p-3">
-              <div
-                class="text-red text-sm font-medium pb-2 flex justify-start items-center gap-2"
-              >
-                <XCircleIcon class="w-4 h-4 text-red" />
-                <p class="text-sm">what's not include</p>
-              </div>
-              <div
-                class="flex justify-start items-center gap-2 flex-wrap text-xs text-red"
-              >
-                <p>personal expenses</p>
-                <p>entrance tickets</p>
+            <div class="pt-4">
+              <p class="text-sm font-semibold mb-3">choose price range</p>
+              <div class="flex justify-between items-center gap-2">
+                <!-- <p class="text-xs text-black text-center">
+                  {{ minPrice }} THB - {{ maxPrice }} THB
+                </p> -->
+                <div class="border border-black/50 w-[45%] rounded-lg p-2">
+                  <p class="text-[10px]">minimum</p>
+                  <input
+                    type="number"
+                    name=""
+                    v-model="minPrice"
+                    class="outline-none focus:outline-none ring-0 w-full"
+                    id=""
+                  />
+                </div>
+                <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
+                <div class="border border-black/50 w-[45%] rounded-lg p-2">
+                  <p class="text-[10px]">maximum</p>
+                  <input
+                    type="number"
+                    name=""
+                    v-model="maxPrice"
+                    class="outline-none focus:outline-none ring-0 w-full"
+                    id=""
+                  />
+                </div>
               </div>
             </div>
           </div>

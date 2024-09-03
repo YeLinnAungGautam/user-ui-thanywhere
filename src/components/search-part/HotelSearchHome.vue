@@ -29,7 +29,7 @@
           class="w-4 h-4 absolute top-3.5 left-5 text-main"
           alt=""
         />
-        <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
+        <!-- <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" /> -->
       </div>
       <div class="relative" @click="openOut">
         <p
@@ -44,7 +44,7 @@
           class="w-4 h-4 absolute top-3.5 left-5 text-main"
           alt=""
         />
-        <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
+        <!-- <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" /> -->
       </div>
     </div>
     <div class="relative">
@@ -67,19 +67,27 @@
         class="w-8 h-8 absolute top-2 bg-main/10 rounded-xl font-semibold right-[56px] text-main"
       />
     </div>
-    <div
-      v-if="chooseCityId"
-      @click="filteredHotel"
-      class="w-full rounded-full relative z-0 py-3 text-sm border border-white"
-    >
-      <p class="text-white text-center">explore</p>
-    </div>
-    <div
-      v-if="!chooseCityId"
-      @click="filteredError"
-      class="w-full rounded-full relative z-0 py-3 text-sm border border-white"
-    >
-      <p class="text-white text-center">explore</p>
+    <div class="grid grid-cols-3 gap-3">
+      <div
+        @click="clearFilterAction"
+        class="w-full rounded-full relative bg-white/30 z-0 py-3 text-sm border border-white"
+      >
+        <p class="text-white text-center">clear</p>
+      </div>
+      <div
+        v-if="chooseCityId && dateSelected && dateOutSelected"
+        @click="filteredHotel"
+        class="w-full rounded-full relative col-span-2 z-0 py-3 text-sm border border-white"
+      >
+        <p class="text-white text-center">explore</p>
+      </div>
+      <div
+        v-if="!chooseCityId || !dateSelected || !dateOutSelected"
+        @click="filteredError"
+        class="w-full rounded-full relative col-span-2 z-0 py-3 text-sm border border-white"
+      >
+        <p class="text-white text-center">explore</p>
+      </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
       <div class="font-poppins">
@@ -141,7 +149,7 @@
 import { ChevronRightIcon } from "@heroicons/vue/24/outline";
 import { XMarkIcon, PlusIcon, MinusIcon } from "@heroicons/vue/24/solid";
 // import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 // import VueDatePicker from "@vuepic/vue-datepicker";
@@ -152,7 +160,13 @@ import { useRouter } from "vue-router";
 import MapImage from "../../assets/s/pin 1 (1).png";
 import CalendarImage from "../../assets/s/calendar_833593 1.png";
 import AttractionImage from "../../assets/s/Group 533.png";
+import { useOrderVantourStore } from "../../stores/orderVantour";
+import { storeToRefs } from "pinia";
+
 const router = useRouter();
+const orderVantourStore = useOrderVantourStore();
+const { checkin_date, checkout_date, room_qty } =
+  storeToRefs(orderVantourStore);
 
 const myBottomSheet = ref(null);
 const open = () => {
@@ -169,18 +183,6 @@ const openOut = () => {
 const closeOut = () => {
   myBottomSheetOut.value.close();
 };
-
-// const myBottomSheetType = ref(null);
-// const opentype = () => {
-//   myBottomSheetType.value.open();
-// };
-// const closetype = () => {
-//   myBottomSheetType.value.close();
-// };
-// const closetypeClean = () => {
-//   chooseType.value = [];
-//   myBottomSheetType.value.close();
-// };
 
 const totalRoom = ref(1);
 const plusAction = () => {
@@ -226,18 +228,32 @@ const chooseCityChange = (data) => {
 // };
 
 const filteredHotel = async () => {
-  router.push({
-    name: "HomeVantourResult",
-    params: {
-      id: chooseCityId.value ? chooseCityId.value : null,
-      name: chooseCityName.value ? chooseCityName.value : null,
-    },
-  });
+  let data = {
+    checkin_date: dateSelected.value,
+    checkout_date: dateOutSelected.value,
+    room_qty: totalRoom.value,
+  };
+  const res = await orderVantourStore.changeHotelStoreData(data);
+  if (res == "success") {
+    router.push({
+      name: "FilteredHotelBookings",
+      params: {
+        id: chooseCityId.value ? chooseCityId.value : "null",
+        name: chooseCityName.value ? chooseCityName.value : "null",
+      },
+      query: {
+        price: "null",
+        rating: "null",
+        place: "null",
+        facilities: "null",
+      },
+    });
+  }
 };
 
 const placeholder = ref("choose your destination * ");
-const placeholderPlaceholder = ref("checkin date * ");
-const placeholderPlaceOutholder = ref("checkout date * ");
+const placeholderPlaceholder = ref("checkin date");
+const placeholderPlaceOutholder = ref("checkout date");
 const placefaltcondition = ref(false);
 const pickupfaltcondition = ref(false);
 const pickupfaltOutcondition = ref(false);
@@ -261,6 +277,13 @@ const filteredError = () => {
   console.log("====================================");
 };
 
+const clearFilterAction = async () => {
+  await orderVantourStore.removeHotelData();
+  dateSelected.value = "";
+  dateOutSelected.value = "";
+  totalRoom.value = 1;
+};
+
 const dateSelected = ref("");
 const dateOutSelected = ref("");
 
@@ -279,6 +302,13 @@ const chooseOutCalendar = (data) => {
   closeOut();
   console.log("====================================");
 };
+
+onMounted(async () => {
+  await orderVantourStore.getHotelData();
+  dateSelected.value = checkin_date.value;
+  dateOutSelected.value = checkout_date.value;
+  totalRoom.value = room_qty.value ? room_qty.value : 1;
+});
 </script>
 
 <style>
