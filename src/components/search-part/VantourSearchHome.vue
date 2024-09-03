@@ -6,7 +6,12 @@
       >
         {{ chooseCityName ? chooseCityName : placeholder }}
       </p>
-      <MapPinIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" />
+      <!-- <MapPinIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
+      <img
+        :src="MapImage"
+        class="w-5 h-5 absolute top-3.5 left-5 text-main"
+        alt=""
+      />
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
     <div class="relative" @click="open">
@@ -15,7 +20,12 @@
       >
         {{ dateSelected ? dateSelected : "pick a date of travel *" }}
       </p>
-      <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" />
+      <!-- <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
+      <img
+        :src="CalendarImage"
+        class="w-4 h-4 absolute top-3.5 left-5 text-main"
+        alt=""
+      />
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
     <div class="relative" @click="opentype">
@@ -24,7 +34,12 @@
       >
         {{ chooseTypeLetter ? chooseTypeLetter : "pick a date of travel" }}
       </div>
-      <SparklesIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" />
+      <!-- <SparklesIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
+      <img
+        :src="AttractionImage"
+        class="w-4 h-4 absolute top-3.5 left-5 text-main"
+        alt=""
+      />
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
     <div
@@ -102,7 +117,9 @@
     </vue-bottom-sheet>
     <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
       <div class="font-poppins relative">
-        <div class="bg-main absolute top-0 right-0 w-full h-full"></div>
+        <div
+          class="bg-gradient-to-b to-main from-main/60 absolute top-0 right-0 w-full h-[300px] sm:h-[250px]"
+        ></div>
         <div
           class="flex justify-between items-center px-6 pt-2 pb-4 relative z-10"
         >
@@ -141,6 +158,9 @@ import activitydb from "../../assets/activitydb";
 import AboutPageVue from "../../views/AboutPage.vue";
 import ChooseCityVue from "./VantourSearchCityHome.vue";
 import { useRouter } from "vue-router";
+import MapImage from "../../assets/s/pin 1 (1).png";
+import CalendarImage from "../../assets/s/calendar_833593 1.png";
+import AttractionImage from "../../assets/s/attractions.png";
 const router = useRouter();
 
 const myBottomSheet = ref(null);

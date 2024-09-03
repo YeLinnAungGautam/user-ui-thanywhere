@@ -74,11 +74,12 @@
               <div class="bg-white px-5 py-2" id="destinations">
                 <h1 class="text-main font-semibold">{{ detail?.name }}</h1>
                 <div class="flex justify-start items-center gap-1">
-                  <p
-                    class="text-[10px] py-0.5 rounded inline-block text-main font-medium"
+                  <div
+                    class="text-[10px] flex justify-start gap-2 items-center py-0.5 rounded text-main font-medium"
                   >
+                    <img :src="MapImage" class="w-3 h-3 text-main" alt="" />
                     {{ detail?.destinations?.length }} destinations
-                  </p>
+                  </div>
                 </div>
 
                 <div
@@ -679,6 +680,7 @@ import car3 from "../assets/s/15-removebg-preview.png";
 import PickupPage from "./FAQs/PickupPage.vue";
 import MakePaymentPage from "./FAQs/MakePayment.vue";
 import BookingTourPage from "./FAQs/BookTourPage.vue";
+import MapImage from "../assets/s/pin 1 (1).png";
 
 const route = useRoute();
 const router = useRouter();

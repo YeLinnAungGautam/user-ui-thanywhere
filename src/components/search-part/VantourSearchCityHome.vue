@@ -1,11 +1,12 @@
 <script setup>
-import { onMounted, ref, watch, defineEmits } from "vue";
+import { onMounted, ref, watch, defineEmits, computed } from "vue";
 import { useCityStore } from "../../stores/city";
 import { storeToRefs } from "pinia";
 // import vantourdb from "../assets/vantourdb";
 import debounce from "lodash.debounce";
 import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
-import { MapPinIcon } from "@heroicons/vue/24/solid";
+// import { MapPinIcon } from "@heroicons/vue/24/solid";
+import MapImage from "../../assets/s/pin 1 (1).png";
 
 const cityStore = useCityStore();
 
@@ -38,6 +39,10 @@ const clearCity = () => {
   search.value = "";
   searchId.value = null;
   emit("clearChange", "clear");
+};
+
+const lowercaseCity = (name) => {
+  return name.toLowerCase();
 };
 
 onMounted(async () => {
@@ -120,10 +125,11 @@ watch(
           searchId == c.id ? ' border-b font-semibold border-main pb-2' : ''
         "
       >
-        <MapPinIcon class="w-9 h-9 text-main ml-2" />
+        <!-- <MapPinIcon class="w-9 h-9 text-main ml-2" /> -->
+        <img :src="MapImage" class="w-6 h-6 text-main ml-2" alt="" />
         <div>
-          <p class="text-base text-main font-semibold mt-2">
-            {{ c.name }}
+          <p class="text-lg text-main font-semibold mt-2">
+            {{ lowercaseCity(c.name) }}
           </p>
           <p class="text-xs text-main font-normal">
             thailand <span class="">.</span> 20 van tours

@@ -7,7 +7,7 @@
       class="flex flex-1 justify-start space-x-3 mt-6 items-center overflow-x-scroll scroll-container"
     >
       <div
-        class="bg-white shadow rounded-3xl mb-3 px-2 pt-2"
+        class="bg-white rounded-3xl mb-3 px-2 pt-2"
         :class="index == 0 ? 'ml-6' : 'ml-0'"
         v-for="(i, index) in data"
         :key="i"
