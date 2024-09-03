@@ -2,7 +2,7 @@
 import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import HotelsGradesVue from "../components/hotelbookings/HotelsGrades.vue";
+// import HotelsGradesVue from "../components/hotelbookings/HotelsGrades.vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { useFacilityStore } from "../stores/facility";
@@ -25,6 +25,7 @@ import { useHotelStore } from "../stores/hotel";
 import { storeToRefs } from "pinia";
 import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
+import HotelSearchHomeVue from "../components/search-part/HotelSearchHome.vue";
 
 // const settingStore = useSettingStore();
 const hotelStore = useHotelStore();
@@ -222,20 +223,20 @@ const goDetialPage = (id) => {
   router.push({ name: "HomeDetail", params: { id: id } });
 };
 
-const getRange = (data) => {
-  // console.log(data);
-  router.push({
-    name: "FilteredHotelBookings",
-    params: {
-      id: "null",
-      name: "null",
-    },
-    query: {
-      price: data,
-      facilities: "null",
-    },
-  });
-};
+// const getRange = (data) => {
+//   // console.log(data);
+//   router.push({
+//     name: "FilteredHotelBookings",
+//     params: {
+//       id: "null",
+//       name: "null",
+//     },
+//     query: {
+//       price: data,
+//       facilities: "null",
+//     },
+//   });
+// };
 
 const placeArray = ref([]);
 // const loadingPlace = ref(false);
@@ -282,9 +283,9 @@ watch(hotels, async (newValue) => {
       <div class="px-6 space-y-6">
         <div class="text-white">
           <p class="text-base font-semibold tracking-wider">hotel bookings</p>
-          <p class="text-xs">find best prices to hotels in thailand</p>
+          <p class="text-xs">bangkok, pattaya, phuket, etc ...</p>
         </div>
-        <div class="relative">
+        <!-- <div class="relative">
           <input
             type="search"
             @focus="router.push('/home/hotel-search')"
@@ -299,11 +300,12 @@ watch(hotels, async (newValue) => {
             class="w-5 h-5 absolute top-3.5 right-5 text-main"
             alt=""
           />
-        </div>
+        </div> -->
+        <HotelSearchHomeVue />
       </div>
     </HeaderHomeVue>
     <div class="h-auto pb-20 z-20 relative">
-      <HotelsGradesVue @Range="getRange" />
+      <!-- <HotelsGradesVue @Range="getRange" /> -->
       <div class="space-y-4 relative">
         <div
           :class="isStickey ? 'shadow-custom' : ''"

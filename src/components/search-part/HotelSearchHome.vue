@@ -15,34 +15,57 @@
       />
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
-    <div class="relative" @click="open">
-      <p
-        class="w-full rounded-full bg-white pl-12 py-4 text-xs focus:outline-none"
-        :class="pickupfaltcondition ? 'text-red' : 'text-main'"
-      >
-        {{ dateSelected ? dateSelected : placeholderPlaceholder }}
-      </p>
-      <!-- <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
-      <img
-        :src="CalendarImage"
-        class="w-4 h-4 absolute top-3.5 left-5 text-main"
-        alt=""
-      />
-      <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
+    <div class="grid grid-cols-2 gap-3">
+      <div class="relative" @click="open">
+        <p
+          class="w-full rounded-full bg-white pl-12 py-4 text-xs focus:outline-none"
+          :class="pickupfaltcondition ? 'text-red' : 'text-main'"
+        >
+          {{ dateSelected ? dateSelected : placeholderPlaceholder }}
+        </p>
+        <!-- <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
+        <img
+          :src="CalendarImage"
+          class="w-4 h-4 absolute top-3.5 left-5 text-main"
+          alt=""
+        />
+        <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
+      </div>
+      <div class="relative" @click="openOut">
+        <p
+          class="w-full rounded-full bg-white pl-12 py-4 text-xs focus:outline-none"
+          :class="pickupfaltOutcondition ? 'text-red' : 'text-main'"
+        >
+          {{ dateOutSelected ? dateOutSelected : placeholderPlaceOutholder }}
+        </p>
+        <!-- <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
+        <img
+          :src="CalendarImage"
+          class="w-4 h-4 absolute top-3.5 left-5 text-main"
+          alt=""
+        />
+        <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
+      </div>
     </div>
-    <div class="relative" @click="opentype">
+    <div class="relative">
       <div
         class="w-full rounded-full bg-white flex flex-wrap justify-start items-center pl-12 py-4 text-xs text-main focus:outline-none"
       >
-        {{ chooseTypeLetter ? chooseTypeLetter : "choose acitivity type" }}
+        {{ totalRoom }} room
       </div>
-      <!-- <SparklesIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
       <img
         :src="AttractionImage"
         class="w-4 h-4 absolute top-3.5 left-5 text-main"
         alt=""
       />
-      <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
+      <PlusIcon
+        @click="plusAction"
+        class="w-8 h-8 absolute top-2 right-3 bg-main/10 rounded-xl font-semibold p-1 text-main"
+      />
+      <MinusIcon
+        @click="minusAction"
+        class="w-8 h-8 absolute top-2 bg-main/10 rounded-xl font-semibold right-[56px] text-main"
+      />
     </div>
     <div
       v-if="chooseCityId"
@@ -62,7 +85,7 @@
       <div class="font-poppins">
         <div class="flex justify-between items-center px-6 pb-4">
           <XMarkIcon class="w-5 h-5" @click="close" />
-          <p class="text-black font-semibold text-base">Pick a Date</p>
+          <p class="text-black font-semibold text-base">Pick a Check in Date</p>
           <p class="opacity-0">......</p>
         </div>
         <div class="overflow-hidden ml-4 mr-4 rounded-xl">
@@ -72,51 +95,23 @@
         </div>
       </div>
     </vue-bottom-sheet>
-    <vue-bottom-sheet ref="myBottomSheetType" :max-height="1500">
+    <vue-bottom-sheet ref="myBottomSheetOut" :max-height="1500">
       <div class="font-poppins">
         <div class="flex justify-between items-center px-6 pb-4">
-          <XMarkIcon class="w-5 h-5" @click="closetype" />
-          <p class="text-black font-semibold text-base">Select activity type</p>
+          <XMarkIcon class="w-5 h-5" @click="closeOut" />
+          <p class="text-black font-semibold text-base">
+            Pick a Check out Date
+          </p>
           <p class="opacity-0">......</p>
         </div>
-        <div class="ml-4 mr-4 rounded-xl">
-          <div class="h-[400px]">
-            <div class="flex justify-start items-center gap-3 flex-wrap">
-              <div
-                class="space-y-1"
-                v-for="(i, index) in activitydb"
-                :key="index"
-                @click="handleActivitySelect(i.name)"
-              >
-                <div
-                  class="px-4 py-1.5 text-[10px] rounded-full"
-                  :class="
-                    isActive(i.name)
-                      ? 'bg-main border font-semibold border-white  text-white'
-                      : ' bg-white text-black/80 border font-semibold  border-black/10'
-                  "
-                >
-                  {{ i.name }}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="flex justify-between gap-4 px-4 items-center py-4 border-t border-black/10"
-          >
-            <p class="text-main text-sm underline" @click="closetypeClean">
-              Clear
-            </p>
-            <button
-              @click="closetype"
-              class="text-center border bg-main border-black/10 rounded-full py-2 w-[40%] text-sm text-white font-semibold"
-            >
-              choose
-            </button>
+        <div class="overflow-hidden ml-4 mr-4 rounded-xl">
+          <div class="h-auto font-poppins">
+            <AboutPageVue @change="chooseOutCalendar" />
           </div>
         </div>
       </div>
     </vue-bottom-sheet>
+
     <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
       <div class="font-poppins relative">
         <div
@@ -144,20 +139,19 @@
 
 <script setup>
 import { ChevronRightIcon } from "@heroicons/vue/24/outline";
-import { XMarkIcon } from "@heroicons/vue/24/solid";
+import { XMarkIcon, PlusIcon, MinusIcon } from "@heroicons/vue/24/solid";
 // import { useRouter } from "vue-router";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 // import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import activitydb from "../../assets/activitydb";
 import AboutPageVue from "../../views/AboutPage.vue";
 import ChooseCityVue from "./VantourSearchCityHome.vue";
 import { useRouter } from "vue-router";
 import MapImage from "../../assets/s/pin 1 (1).png";
 import CalendarImage from "../../assets/s/calendar_833593 1.png";
-import AttractionImage from "../../assets/s/attractions.png";
+import AttractionImage from "../../assets/s/Group 533.png";
 const router = useRouter();
 
 const myBottomSheet = ref(null);
@@ -168,16 +162,34 @@ const close = () => {
   myBottomSheet.value.close();
 };
 
-const myBottomSheetType = ref(null);
-const opentype = () => {
-  myBottomSheetType.value.open();
+const myBottomSheetOut = ref(null);
+const openOut = () => {
+  myBottomSheetOut.value.open();
 };
-const closetype = () => {
-  myBottomSheetType.value.close();
+const closeOut = () => {
+  myBottomSheetOut.value.close();
 };
-const closetypeClean = () => {
-  chooseType.value = [];
-  myBottomSheetType.value.close();
+
+// const myBottomSheetType = ref(null);
+// const opentype = () => {
+//   myBottomSheetType.value.open();
+// };
+// const closetype = () => {
+//   myBottomSheetType.value.close();
+// };
+// const closetypeClean = () => {
+//   chooseType.value = [];
+//   myBottomSheetType.value.close();
+// };
+
+const totalRoom = ref(1);
+const plusAction = () => {
+  totalRoom.value++;
+};
+const minusAction = () => {
+  if (totalRoom.value > 1) {
+    totalRoom.value--;
+  }
 };
 
 const myBottomSheetCity = ref(null);
@@ -224,46 +236,33 @@ const filteredHotel = async () => {
 };
 
 const placeholder = ref("choose your destination * ");
-const placeholderPlaceholder = ref("pick a date of travel * ");
+const placeholderPlaceholder = ref("checkin date * ");
+const placeholderPlaceOutholder = ref("checkout date * ");
 const placefaltcondition = ref(false);
 const pickupfaltcondition = ref(false);
+const pickupfaltOutcondition = ref(false);
 const filteredError = () => {
   console.log("====================================");
   console.log("hello");
   placeholder.value = "choose your destination * (required)";
-  placeholderPlaceholder.value = "pick a date of travel * (required)";
+  placeholderPlaceholder.value = "checkin date";
+  placeholderPlaceOutholder.value = "checkin date";
+
   if (!chooseCityName.value) {
     placefaltcondition.value = true;
   }
   if (!dateSelected.value) {
     pickupfaltcondition.value = true;
   }
+  if (!dateOutSelected.value) {
+    pickupfaltOutcondition.value = true;
+  }
 
   console.log("====================================");
 };
 
 const dateSelected = ref("");
-
-const chooseType = ref([]);
-
-const handleActivitySelect = (activity) => {
-  if (chooseType.value.includes(activity)) {
-    // If it exists, remove it from the array
-    chooseType.value = chooseType.value.filter((item) => item !== activity);
-  } else {
-    // If it doesn't exist, add it to the array
-    chooseType.value.push(activity);
-  }
-  console.log(chooseType.value);
-};
-
-const chooseTypeLetter = computed(() => {
-  if (chooseType.value.length > 0) {
-    return chooseType.value.join(", ");
-  } else {
-    return "";
-  }
-});
+const dateOutSelected = ref("");
 
 const changesFromCalendar = (data) => {
   console.log("====================================");
@@ -273,8 +272,12 @@ const changesFromCalendar = (data) => {
   console.log("====================================");
 };
 
-const isActive = (activity) => {
-  return chooseType.value.includes(activity);
+const chooseOutCalendar = (data) => {
+  console.log("====================================");
+  console.log(data);
+  dateOutSelected.value = data;
+  closeOut();
+  console.log("====================================");
 };
 </script>
 

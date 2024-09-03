@@ -81,7 +81,7 @@ watch(
             v-model="search_by_name"
             @keyup.enter="goResultPage"
             placeholder=" search"
-            class="w-full rounded-full border border-main pr-6 pl-12 py-4 text-xs text-main focus:outline-none"
+            class="w-full rounded-full pr-6 pl-12 py-4 text-xs text-main focus:outline-none"
             id=""
           />
         </div>
@@ -104,7 +104,7 @@ watch(
               :class="
                 searchId == c.id
                   ? 'bg-main border  border-white  text-white'
-                  : 'bg-white text-main border   border-black/10'
+                  : 'bg-white text-main '
               "
             >
               {{ c?.name }}

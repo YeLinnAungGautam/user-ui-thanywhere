@@ -9,6 +9,7 @@ import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { useRouter } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import { useVantourStore } from "../stores/vantour";
+import activitydb from "../assets/activitydb";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import VantourCart from "../components/LoadingCarts/VantourCart.vue";
@@ -82,6 +83,22 @@ const handleScroll = () => {
   }
 };
 
+const chooseType = ref([]);
+const handleActivitySelect = (activity) => {
+  if (chooseType.value.includes(activity)) {
+    // If it exists, remove it from the array
+    chooseType.value = chooseType.value.filter((item) => item !== activity);
+  } else {
+    // If it doesn't exist, add it to the array
+    chooseType.value.push(activity);
+  }
+  console.log(chooseType.value);
+};
+
+const isActive = (activity) => {
+  return chooseType.value.includes(activity);
+};
+
 watch(bottomOfWindow, (newVal) => {
   if (bottomOfWindow.value == true) {
     let changePageCalled = false;
@@ -125,6 +142,9 @@ const destsList = ref([]);
 const goDetialPage = (id) => {
   router.push({ name: "HomeVantourDetail", params: { id: id } });
 };
+
+const minPrice = "";
+const maxPrice = "";
 
 // const getRange = (data) => {
 //   // console.log(data);
@@ -258,7 +278,7 @@ watch(vantours, async (newValue) => {
         </div>
       </div>
       <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
-        <div class="font-poppins">
+        <div class="font-poppins relative">
           <div class="flex justify-between items-center px-6 pb-4">
             <p class="opacity-0">........</p>
             <p class="text-main text-base">filter</p>
@@ -295,42 +315,62 @@ watch(vantours, async (newValue) => {
               </div>
             </div>
 
-            <div class="space-y-3 pb-8 pt-4">
-              <div class="border border-green rounded-2xl p-3">
+            <div class="space-y-3 pb-8 pt-4 h-[400px]">
+              <p class="text-sm font-semibold">choose activities</p>
+              <div class="flex justify-start items-center gap-3 flex-wrap">
                 <div
-                  class="text-green text-sm font-medium pb-2 flex justify-start items-center gap-2"
+                  class="space-y-1"
+                  v-for="(i, index) in activitydb"
+                  :key="index"
+                  @click="handleActivitySelect(i.name)"
                 >
-                  <CheckCircleIcon class="w-4 h-4 text-green" />
-                  <p class="text-sm">what's include</p>
-                </div>
-                <div
-                  class="flex justify-start items-center gap-2 flex-wrap text-xs text-green"
-                >
-                  <p>12 hours of travel</p>
-                  <p>hotel transfer</p>
-                  <p>online assistant</p>
-                  <p>tour expenses</p>
-                  <p>fuel expenses</p>
-                  <p>experienced driver</p>
+                  <div
+                    class="px-4 py-1.5 text-[10px] rounded-full"
+                    :class="
+                      isActive(i.name)
+                        ? 'bg-main border font-semibold border-white  text-white'
+                        : ' bg-white text-black/80 border font-semibold  border-black/10'
+                    "
+                  >
+                    {{ i.name }}
+                  </div>
                 </div>
               </div>
-              <div class="border border-red rounded-2xl p-3">
-                <div
-                  class="text-red text-sm font-medium pb-2 flex justify-start items-center gap-2"
-                >
-                  <XCircleIcon class="w-4 h-4 text-red" />
-                  <p class="text-sm">what's not include</p>
-                </div>
-                <div
-                  class="flex justify-start items-center gap-2 flex-wrap text-xs text-red"
-                >
-                  <p>personal expenses</p>
-                  <p>entrance tickets</p>
+              <div class="pt-4">
+                <p class="text-sm font-semibold mb-3">choose price range</p>
+                <div class="flex justify-between items-center gap-2">
+                  <!-- <p class="text-xs text-black text-center">
+                    {{ minPrice }} THB - {{ maxPrice }} THB
+                  </p> -->
+                  <div class="border border-black/50 w-[45%] rounded-lg p-2">
+                    <p class="text-[10px]">minimum</p>
+                    <input
+                      type="number"
+                      name=""
+                      v-model="minPrice"
+                      class="outline-none focus:outline-none ring-0 w-full"
+                      id=""
+                    />
+                  </div>
+                  <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
+                  <div class="border border-black/50 w-[45%] rounded-lg p-2">
+                    <p class="text-[10px]">maximum</p>
+                    <input
+                      type="number"
+                      name=""
+                      v-model="maxPrice"
+                      class="outline-none focus:outline-none ring-0 w-full"
+                      id=""
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div class="flex justify-between gap-4 items-center pt-4">
+          </div>
+          <div
+            class="flex sticky bottom-0 w-full z-20 bg-white justify-between gap-4 px-4 items-center py-4"
+          >
+            <div class="flex justify-between w-full gap-4 items-center pt-4">
               <button
                 @click="close"
                 class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
