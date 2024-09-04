@@ -3,6 +3,8 @@ import Chaw from "../../assets/s/Chaw_Kalayar-removebg-preview.png";
 import TinZar from "../../assets/s/Thinzar_wai-removebg-preview.png";
 import Nyein from "../../assets/s/NyeinNyein-removebg-preview.png";
 import Khaing from "../../assets/s/Khaing_Hnin_Kyi-removebg-preview.png";
+import Naymyo from "../../assets/s/naymyo-removebg-preview.png";
+import SunShine from "../../assets/s/photo_2024-09-04_15-41-54-removebg-preview.png";
 
 const saleTeam = [
   {
@@ -16,6 +18,24 @@ const saleTeam = [
   },
   {
     id: 2,
+    name: "Mr. Albert Naymyo",
+    role: "Senior Sale Manager",
+    image: Naymyo,
+    phone: "+959254252685",
+    viber: "+959254252685",
+    whatsApp: "+959254252685",
+  },
+  {
+    id: 3,
+    name: "Ms. Sunshine",
+    role: "Senior Sale Manager",
+    image: SunShine,
+    phone: "+66950423254",
+    viber: "+959751117778",
+    whatsApp: "+959751117778",
+  },
+  {
+    id: 4,
     name: "Ms. Chaw Kalayar Khaing",
     role: "Sales Executive",
     image: Chaw,
@@ -24,7 +44,7 @@ const saleTeam = [
     whatsApp: "+959420001037",
   },
   {
-    id: 3,
+    id: 5,
     name: "Ms. Tinzar Thet Wai",
     role: "Sales Executive",
     image: TinZar,
@@ -34,7 +54,7 @@ const saleTeam = [
     line: "+959979515669",
   },
   {
-    id: 4,
+    id: 6,
     name: "Ms. Nyein Nyein",
     role: "Sales Executive",
     image: Nyein,
@@ -44,7 +64,7 @@ const saleTeam = [
     line: "+959979515669",
   },
   {
-    id: 5,
+    id: 7,
     name: "Ms. Khaing Hnin Kyi",
     role: "Sales Executive",
     image: Khaing,
