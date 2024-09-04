@@ -195,7 +195,11 @@
                       <p class="text-xs font-medium whitespace-nowrap">
                         Private Tour (With Tickets)
                       </p>
-                      <p class="text-xs font-medium">+ 800 thb per pax</p>
+                      <p class="text-xs font-medium">
+                        +
+                        {{ detail?.ticket_price ? detail?.ticket_price : "-" }}
+                        thb per pax
+                      </p>
                     </div>
                   </div>
                   <div class="space-y-2 pb-2">
@@ -446,7 +450,8 @@
                 <p class="col-span-2">
                   {{
                     chooseData && choosePax
-                      ? chooseData.price * 1 + 800 * chooseCount
+                      ? chooseData.price * 1 +
+                        detail?.ticket_price * chooseCount
                       : chooseData.price
                   }}
                   thb
@@ -645,7 +650,7 @@
         <p class="text-lg font-semibold text-main" v-if="choosePax">
           {{
             chooseData
-              ? chooseData.price * 1 + 800 * chooseCount
+              ? chooseData.price * 1 + detail?.ticket_price * chooseCount
               : chooseData.price
           }}
           thb
@@ -933,7 +938,8 @@ ticket : ${choosePax.value ? "YES" : "No"}
 ticket qty : ${choosePax.value ? chooseCount.value : "-"} pax
 total amount : ${
     chooseData.value && choosePax.value
-      ? chooseData.value.price * 1 + 800 * chooseCount.value
+      ? chooseData.value.price * 1 +
+        detail?.value.ticket_price * chooseCount.value
       : chooseData.value.price
   } thb
 link : ${currentURL.value}
@@ -952,6 +958,7 @@ const confirmDetailAction = () => {
 };
 
 const currentURL = ref("");
+
 onMounted(async () => {
   currentURL.value = window.location.href;
   await orderVantourStore.getVantourData();
