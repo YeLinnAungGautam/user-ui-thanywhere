@@ -49,16 +49,65 @@ const clickFunction = (item) => {
   console.log("====================================");
   if (props.type === "viber" && item.viber) {
     // Encode the phone number to ensure it's URL-safe
-    const phoneNumber = encodeURIComponent(item.viber);
-    const viberUrl = `viber://chat?number=${phoneNumber}`;
+    // const phoneNumber = encodeURIComponent(item.viber);
+    // const viberUrl = `viber://chat?number=${phoneNumber}`;
 
-    // Try opening the Viber chat
+    // // Try opening the Viber chat
+    // const newWindow = window.open(viberUrl, "_blank");
+
+    // if (
+    //   !newWindow ||
+    //   newWindow.closed ||
+    //   typeof newWindow.closed == "undefined"
+    // ) {
+    //   alert(
+    //     "Unable to open Viber. Please ensure the Viber app is installed and try again."
+    //   );
+    // }
+
+    // const myHeaders = new Headers();
+    // myHeaders.append(
+    //   "Authorization",
+    //   "App 4eef2d3514a785edd29ce2dd2a51fb25-c95144c7-a6f0-48f2-8fb9-edcc676a6e17"
+    // );
+    // myHeaders.append("Content-Type", "application/json");
+    // myHeaders.append("Accept", "application/json");
+
+    // const raw = JSON.stringify({
+    //   messages: [
+    //     {
+    //       sender: "DemoCompany",
+    //       destinations: [{ to: "66994533971" }],
+    //       content: {
+    //         text: "Hello , this is testing order message",
+    //         type: "TEXT",
+    //       },
+    //     },
+    //   ],
+    // });
+
+    // const requestOptions = {
+    //   method: "POST",
+    //   headers: myHeaders,
+    //   body: raw,
+    //   redirect: "follow",
+    // };
+
+    // fetch("https://g96z6e.api.infobip.com/viber/2/messages", requestOptions)
+    //   .then((response) => response.text())
+    //   .then((result) => console.log(result))
+    //   .catch((error) => console.error(error));
+
+    const chatURI = encodeURIComponent("g96z6e.api.infobip.com");
+    const messageText = encodeURIComponent("Your message text");
+    const viberUrl = `viber://pa?chatURI=${chatURI}&text=${messageText}`;
+
     const newWindow = window.open(viberUrl, "_blank");
 
     if (
       !newWindow ||
       newWindow.closed ||
-      typeof newWindow.closed == "undefined"
+      typeof newWindow.closed === "undefined"
     ) {
       alert(
         "Unable to open Viber. Please ensure the Viber app is installed and try again."
