@@ -98,7 +98,7 @@ const clickFunction = (item) => {
     //   .then((result) => console.log(result))
     //   .catch((error) => console.error(error));
 
-    const chatURI = encodeURIComponent("g96z6e.api.infobip.com");
+    const chatURI = encodeURIComponent("https://g96z6e.api.infobip.com");
     const messageText = encodeURIComponent("Your message text");
     const viberUrl = `viber://pa?chatURI=${chatURI}&text=${messageText}`;
 
