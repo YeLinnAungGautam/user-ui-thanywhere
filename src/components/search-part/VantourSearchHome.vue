@@ -133,7 +133,7 @@
     <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
       <div class="font-poppins relative">
         <div
-          class="bg-gradient-to-b to-main from-main/60 absolute top-0 right-0 w-full h-[300px] sm:h-[250px]"
+          class="bg-gradient-to-b to-main from-main/60 absolute top-0 right-0 w-full h-[600px]"
         ></div>
         <div
           class="flex justify-between items-center px-6 pt-2 pb-4 relative z-10"
