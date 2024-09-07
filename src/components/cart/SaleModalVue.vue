@@ -64,6 +64,49 @@ const clickFunction = (item) => {
         "Unable to open Viber. Please ensure the Viber app is installed and try again."
       );
     }
+
+    alert("Message copied to clipboard. Paste it into Viber manually.");
+
+    // const myHeaders = new Headers();
+    // myHeaders.append(
+    //   "Authorization",
+    //   "App 4eef2d3514a785edd29ce2dd2a51fb25-c95144c7-a6f0-48f2-8fb9-edcc676a6e17"
+    // );
+    // myHeaders.append("Content-Type", "application/json");
+    // myHeaders.append("Accept", "application/json");
+
+    // const raw = JSON.stringify({
+    //   messages: [
+    //     {
+    //       sender: "DemoCompany",
+    //       destinations: [{ to: "66994533971" }], // Phone number of the recipient
+    //       content: {
+    //         text: "Hello, this is testing order message", // Viber message
+    //         type: "TEXT",
+    //       },
+    //       smsFailover: {
+    //         sender: "09664023249", // Sender of the SMS failover
+    //         text: "Failover message text", // SMS message content
+    //         validityPeriod: {
+    //           amount: 2, // Time period for SMS to be valid
+    //           timeUnit: "HOURS", // Unit of time for the validity period
+    //         },
+    //       },
+    //     },
+    //   ],
+    // });
+
+    // const requestOptions = {
+    //   method: "POST",
+    //   headers: myHeaders,
+    //   body: raw,
+    //   redirect: "follow",
+    // };
+
+    // fetch("https://g96z6e.api.infobip.com/viber/2/messages", requestOptions)
+    //   .then((response) => response.text())
+    //   .then((result) => console.log(result))
+    //   .catch((error) => console.error(error));
   } else if (props.type === "whatsapp" && item.whatsApp) {
     // Encode the phone number to ensure it's URL-safe
     const phoneNumber = encodeURIComponent(item.whatsApp);
