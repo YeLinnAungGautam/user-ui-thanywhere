@@ -28,7 +28,7 @@
         </slide>
 
         <template #addons>
-          <pagination />
+          <!-- <pagination /> -->
         </template>
       </carousel>
     </div>
@@ -38,13 +38,13 @@
 <script setup>
 // import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination } from "vue3-carousel";
+import { Carousel, Slide } from "vue3-carousel";
 import { onMounted, ref } from "vue";
 import citydb from "../../assets/citydb";
 import ReadDestinationCart from "../../components/LoadingCarts/ReadDestinationCart.vue";
 import { useRouter } from "vue-router";
-const router = useRouter();
 
+const router = useRouter();
 const goResultPage = (id, name) => {
   router.push(`/home/destination-result/${id}/${name}`);
 };

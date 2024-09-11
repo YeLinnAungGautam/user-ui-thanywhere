@@ -20,17 +20,17 @@ import activitydb from "../assets/activitydb";
 import { useEntranceStore } from "../stores/entrance";
 import AttractionCart from "../components/LoadingCarts/AttractionCart.vue";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
-// import { useSettingStore } from "../stores/setting";
+import { useSettingStore } from "../stores/setting";
 
 const cityStore = useCityStore();
-// const settingStore = useSettingStore();
+const settingStore = useSettingStore();
 const entranceStore = useEntranceStore();
 const router = useRouter();
 const route = useRoute();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { entrances, loading } = storeToRefs(entranceStore);
-// const { language } = storeToRefs(settingStore);
+const { language } = storeToRefs(settingStore);
 
 const open = () => {
   myBottomSheet.value.open();
@@ -131,7 +131,11 @@ const searchFunction = (data) => {
 const entrancesList = ref([]);
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeAttractionDetail", params: { id: id } });
+  router.push({
+    name: "HomeAttractionDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 const count = ref(0);

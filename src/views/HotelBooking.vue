@@ -1,7 +1,8 @@
 <script setup>
 import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
-import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
+// import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
+import { useSettingStore } from "../stores/setting";
 // import HotelsGradesVue from "../components/hotelbookings/HotelsGrades.vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
@@ -30,6 +31,8 @@ import HotelSearchHomeVue from "../components/search-part/HotelSearchHome.vue";
 // const settingStore = useSettingStore();
 const hotelStore = useHotelStore();
 const cityStore = useCityStore();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 const facilityStore = useFacilityStore();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
@@ -220,7 +223,11 @@ const searchFunction = (data) => {
 const hotelList = ref([]);
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeDetail", params: { id: id } });
+  router.push({
+    name: "HomeDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 // const getRange = (data) => {
@@ -255,6 +262,7 @@ const placeArray = ref([]);
 // };
 
 onMounted(async () => {
+  await settingStore.getLanguage();
   window.addEventListener("scroll", handleScroll);
   // await settingStore.getLanguage();
   let res = await hotelStore.getListAction();

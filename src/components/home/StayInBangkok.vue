@@ -112,18 +112,26 @@ import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 // import StarPartVue from "./StarPart.vue";
 // import stayinbangkok from "../../assets/db";
+import { useSettingStore } from "../../stores/setting";
 import { useRouter } from "vue-router";
 import { useHotelStore } from "../../stores/hotel";
 
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import StayInBangkokCart from "../../components/LoadingCarts/StayInBangkokCart.vue";
+import { storeToRefs } from "pinia";
 
 // const data = ref(null);
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 const router = useRouter();
 const hotelStore = useHotelStore();
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeDetail", params: { id: id } });
+  router.push({
+    name: "HomeDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 const lists = ref([]);

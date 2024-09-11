@@ -14,19 +14,19 @@ import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import VantourCart from "../components/LoadingCarts/VantourCart.vue";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
-// import { useSettingStore } from "../stores/setting";
+import { useSettingStore } from "../stores/setting";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 // const carStore = useCarStore();
-// const settingStore = useSettingStore();
+const settingStore = useSettingStore();
 const vantourStore = useVantourStore();
 const cityStore = useCityStore();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { vantours, loading } = storeToRefs(vantourStore);
 // const { cars } = storeToRefs(carStore);
-// const { language } = storeToRefs(settingStore);
+const { language } = storeToRefs(settingStore);
 
 const all = ref(false);
 
@@ -156,7 +156,11 @@ const searchFunction = (data) => {
 const destsList = ref([]);
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeVantourDetail", params: { id: id } });
+  router.push({
+    name: "HomeVantourDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 const minPrice = ref("");
@@ -175,6 +179,7 @@ onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
   let res = await vantourStore.getListAction();
   await cityStore.getSimpleListAction();
+  await settingStore.getLanguage();
   destsList.value = res.data;
   console.log(destsList.value, "this is entrance list add");
   // await carStore.getSimpleListAction();

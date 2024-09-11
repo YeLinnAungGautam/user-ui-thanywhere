@@ -69,9 +69,11 @@
                     !isEqual(day, selectedDay) && 'hover:bg-gray-200',
                     (isEqual(day, selectedDay) || isToday(day)) &&
                       'font-semibold',
-                    'mx-auto flex h-8 w-8 items-center justify-center rounded-full'
+                    'mx-auto flex h-8 w-8 items-center justify-center rounded-full',
+                    isPastOrToday(day) && 'opacity-20'
                   )
                 "
+                :disabled="isPastOrToday(day)"
               >
                 <time :dateTime="format(day, 'yyyy-MM-dd')">
                   {{ format(day, "d") }}
@@ -137,6 +139,7 @@ import {
   isToday,
   parse,
   parseISO,
+  isBefore,
   startOfToday,
 } from "date-fns";
 
@@ -202,6 +205,11 @@ const days = computed(() =>
     end: endOfMonth(firstDayCurrentMonth.value),
   })
 );
+
+// Helper function to determine if a date is past or today
+function isPastOrToday(day) {
+  return isBefore(day, today);
+}
 
 function previousMonth() {
   const firstDayNextMonth = add(firstDayCurrentMonth.value, { months: -1 });

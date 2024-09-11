@@ -31,7 +31,7 @@
 }
 
 .carousel__pagination-button--active::after {
-  background-color: rgb(255, 81, 0) !important;
+  background-color: rgb(65, 21, 0) !important;
   width: 20px !important;
 }
 

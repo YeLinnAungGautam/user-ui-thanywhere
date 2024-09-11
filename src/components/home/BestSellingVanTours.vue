@@ -105,26 +105,32 @@ import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 // import StarPartVue from "./StarPart.vue";
 // import { storeToRefs } from "pinia";
-// import { useSettingStore } from "../../stores/setting";
+import { useSettingStore } from "../../stores/setting";
 import { useRouter } from "vue-router";
 import { useVantourStore } from "../../stores/vantour";
 import BestSellingVantourVue from "../../components/LoadingCarts/BestSellingVantour.vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
+import { storeToRefs } from "pinia";
 
 // const seeMore = ref(true);
-// const settingStore = useSettingStore();
-// const { language } = storeToRefs(settingStore);
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 const vantourStore = useVantourStore();
 
 const router = useRouter();
 const data = ref([]);
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeVantourDetail", params: { id: id } });
+  router.push({
+    name: "HomeVantourDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 onMounted(async () => {
   data.value = [];
+  await settingStore.getLanguage();
   const res = await vantourStore.getListAction({ limit: 8 });
   data.value = res.data;
 });

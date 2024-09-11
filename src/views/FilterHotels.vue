@@ -22,10 +22,10 @@ import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 import { useHotelStore } from "../stores/hotel";
 import { useFacilityStore } from "../stores/facility";
-// import { useSettingStore } from "../stores/setting";
+import { useSettingStore } from "../stores/setting";
 
 const hotelStore = useHotelStore();
-// const settingStore = useSettingStore();
+const settingStore = useSettingStore();
 const cityStore = useCityStore();
 const facilityStore = useFacilityStore();
 const router = useRouter();
@@ -33,7 +33,7 @@ const route = useRoute();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { facilities } = storeToRefs(facilityStore);
-// const { language } = storeToRefs(settingStore);
+const { language } = storeToRefs(settingStore);
 
 const open = () => {
   myBottomSheet.value.open();
@@ -222,7 +222,11 @@ const city_name = ref("");
 const searchCityName = ref("");
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeDetail", params: { id: id } });
+  router.push({
+    name: "HomeDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 const searchFunction = (data) => {

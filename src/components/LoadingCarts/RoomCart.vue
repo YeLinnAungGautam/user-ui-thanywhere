@@ -125,7 +125,7 @@ const percent = computed(() => {
 });
 
 onMounted(() => {
-  console.log(props.i, "this is i");
+  // console.log(props.i, "this is i");
   settingStore.getLanguage();
 });
 </script>

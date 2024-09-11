@@ -77,23 +77,27 @@
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 // import StarPartVue from "./StarPart.vue";
-// import { storeToRefs } from "pinia";
-// import { useSettingStore } from "../../stores/setting";
+import { storeToRefs } from "pinia";
+import { useSettingStore } from "../../stores/setting";
 import { useRouter } from "vue-router";
 import { useDestinationStore } from "../../stores/destination";
 import TopDestinationCartVue from "../../components/LoadingCarts/TopDestinationCart.vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 
 // const seeMore = ref(true);
-// const settingStore = useSettingStore();
-// const { language } = storeToRefs(settingStore);
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 const destinationStore = useDestinationStore();
 
 const router = useRouter();
 const data = ref([]);
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeDestinationDetail", params: { id: id } });
+  router.push({
+    name: "HomeDestinationDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 onMounted(async () => {

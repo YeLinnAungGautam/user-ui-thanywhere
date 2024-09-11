@@ -887,6 +887,7 @@ const goDetailPage = (id) => {
   router.push({
     name: "HomeVantourDetail",
     params: { id: id },
+    query: { language: language.value },
   });
 };
 
@@ -960,10 +961,16 @@ const confirmDetailAction = () => {
 const currentURL = ref("");
 
 onMounted(async () => {
+  if (route.query.language) {
+    await settingStore.changeLanguage(route.query.language);
+    await settingStore.getLanguage();
+  } else {
+    await settingStore.getLanguage();
+  }
   currentURL.value = window.location.href;
   await orderVantourStore.getVantourData();
   window.addEventListener("scroll", handleScroll);
-  await settingStore.getLanguage();
+
   await getDetail(route.params.id);
 });
 

@@ -79,7 +79,11 @@
         class="bg-white shadow rounded-3xl mb-3 px-2 pt-2"
         :class="index == 0 ? 'ml-6' : 'ml-0'"
         v-for="(i, index) in entrances?.data"
-        @click="router.push('/home/attraction-detail/' + i.id)"
+        @click="
+          router.push(
+            '/home/attraction-detail/' + i.id + `?language=${language}`
+          )
+        "
         :key="i"
       >
         <!-- <div>
@@ -120,16 +124,20 @@ import { useEntranceStore } from "../../stores/entrance";
 import { storeToRefs } from "pinia";
 import ThingToDoLoadingCartVue from "../LoadingCarts/ThingToDoLoadingCart.vue";
 import { useRouter } from "vue-router";
+import { useSettingStore } from "../../stores/setting";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 // import { ref } from "@vue/reactivity";
 
 const entranceStore = useEntranceStore();
 const router = useRouter();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 
 const { entrances } = storeToRefs(entranceStore);
 
 onMounted(async () => {
   await entranceStore.getListAction({ city_id: 2 });
+  await settingStore.getLanguage();
   console.log("====================================");
   console.log(entrances.value);
   console.log("====================================");

@@ -16,7 +16,7 @@ import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 // import { useCarStore } from "../stores/car";
-// import { useSettingStore } from "../stores/setting";
+import { useSettingStore } from "../stores/setting";
 import { useDestinationStore } from "../stores/destination";
 import debounce from "lodash.debounce";
 import DestinationCart from "../components/LoadingCarts/DestinationCart.vue";
@@ -27,11 +27,11 @@ const cityStore = useCityStore();
 const router = useRouter();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
-// const settingStore = useSettingStore();
+const settingStore = useSettingStore();
 const destinationStore = useDestinationStore();
 const { dests, loading } = storeToRefs(destinationStore);
 // const { cars } = storeToRefs(carStore);
-// const { language } = storeToRefs(settingStore);
+const { language } = storeToRefs(settingStore);
 const route = useRoute();
 
 const open = () => {
@@ -115,7 +115,11 @@ const count_filter = ref("");
 const city_name = ref("");
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeDestinationDetail", params: { id: id } });
+  router.push({
+    name: "HomeDestinationDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 const searchFunction = (data) => {

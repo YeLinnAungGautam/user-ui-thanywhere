@@ -15,7 +15,7 @@ import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 // import { useCarStore } from "../stores/car";
-// import { useSettingStore } from "../stores/setting";
+import { useSettingStore } from "../stores/setting";
 import { useVantourStore } from "../stores/vantour";
 import debounce from "lodash.debounce";
 import VantourCart from "../components/LoadingCarts/VantourCart.vue";
@@ -27,11 +27,11 @@ const cityStore = useCityStore();
 const router = useRouter();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
-// const settingStore = useSettingStore();
+const settingStore = useSettingStore();
 const vantourStore = useVantourStore();
 const { vantours, loading } = storeToRefs(vantourStore);
 // const { cars } = storeToRefs(carStore);
-// const { language } = storeToRefs(settingStore);
+const { language } = storeToRefs(settingStore);
 const route = useRoute();
 
 const open = () => {
@@ -156,7 +156,11 @@ const count_filter = ref("");
 const city_name = ref("");
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeVantourDetail", params: { id: id } });
+  router.push({
+    name: "HomeVantourDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 const searchFunction = (data) => {

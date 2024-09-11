@@ -10,11 +10,14 @@ import { storeToRefs } from "pinia";
 import debounce from "lodash.debounce";
 import { useEntranceStore } from "../stores/entrance";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
+import { useSettingStore } from "../stores/setting";
 import SearchCart from "../components/LoadingCarts/SearchCart.vue";
 // import vantourdb from "../assets/vantourdb";
 
 const cityStore = useCityStore();
 const attractionStore = useEntranceStore();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 
 const search = ref("Bangkok");
 const searchId = ref(2);
@@ -60,7 +63,7 @@ const getHotelData = async () => {
 };
 
 const goDetail = (id) => {
-  router.push(`/home/attraction-detail/${id}`);
+  router.push(`/home/attraction-detail/${id}?language=${language.value}`);
 };
 
 onMounted(async () => {

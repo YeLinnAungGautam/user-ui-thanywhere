@@ -6,6 +6,7 @@ import { useRouter } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import { useCityStore } from "../stores/city";
+import { useSettingStore } from "../stores/setting";
 import { storeToRefs } from "pinia";
 // import vantourdb from "../assets/vantourdb";
 import debounce from "lodash.debounce";
@@ -17,6 +18,8 @@ const cityStore = useCityStore();
 
 const { cities } = storeToRefs(cityStore);
 const destinationStore = useDestinationStore();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 const { dests, loading } = storeToRefs(destinationStore);
 
 const search = ref("Bangkok");
@@ -60,7 +63,7 @@ const getHotelData = async () => {
 };
 
 const goDetail = (id) => {
-  router.push(`/home/destination-detail/${id}`);
+  router.push(`/home/destination-detail/${id}?language=${language.value}`);
 };
 
 onMounted(async () => {

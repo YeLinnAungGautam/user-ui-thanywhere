@@ -10,11 +10,15 @@ import { useVantourStore } from "../stores/vantour";
 import { useEntranceStore } from "../stores/entrance";
 import SearchCart from "../components/LoadingCarts/SearchCart.vue";
 import debounce from "lodash.debounce";
+import { useSettingStore } from "../stores/setting";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
+import { storeToRefs } from "pinia";
 
 const hotelStore = useHotelStore();
 const entranceStore = useEntranceStore();
 const vantourStore = useVantourStore();
+const settingStore = useSettingStore();
+const { language } = storeToRefs(settingStore);
 
 const router = useRouter();
 const route = useRoute();
@@ -149,6 +153,7 @@ const goSearchResultPage = () => {
 };
 
 onMounted(async () => {
+  await settingStore.getLanguage();
   search.value = route.query.search ? route.query.search : "";
   type.value = route.query.type ? route.query.type : "hotel";
   await getHotelList();
@@ -362,7 +367,9 @@ onMounted(async () => {
             class="rounded-2xl bg-white shadow gap-3"
             v-for="i in searchLists"
             :key="i"
-            @click="router.push(`/home/detail/` + i.id)"
+            @click="
+              router.push(`/home/detail/` + i.id + `?language=${language}`)
+            "
           >
             <SearchCart
               :image="i?.images[0]?.image"
@@ -380,7 +387,11 @@ onMounted(async () => {
             class="rounded-2xl bg-white shadow gap-3"
             v-for="i in searchLists"
             :key="i"
-            @click="router.push(`/home/attraction-detail/` + i.id)"
+            @click="
+              router.push(
+                `/home/attraction-detail/` + i.id + `?language=${language}`
+              )
+            "
           >
             <SearchCart
               :image="i?.cover_image"
@@ -398,7 +409,11 @@ onMounted(async () => {
             class="rounded-2xl bg-white shadow gap-3"
             v-for="i in searchLists"
             :key="i"
-            @click="router.push(`/home/van-tour-detail/` + i.id)"
+            @click="
+              router.push(
+                `/home/van-tour-detail/` + i.id + `?language=${language}`
+              )
+            "
           >
             <SearchCart
               :image="i?.cover_image"
@@ -419,7 +434,9 @@ onMounted(async () => {
             class="rounded-2xl bg-white shadow gap-3"
             v-for="i in searchLists"
             :key="i"
-            @click="router.push(`/home/detail/` + i.id)"
+            @click="
+              router.push(`/home/detail/` + i.id + `?language=${language}`)
+            "
           >
             <SearchCart
               :image="i?.images[0]?.image"
@@ -440,7 +457,11 @@ onMounted(async () => {
             class="rounded-2xl bg-white shadow gap-3"
             v-for="i in searchLists"
             :key="i"
-            @click="router.push(`/home/attraction-detail/` + i.id)"
+            @click="
+              router.push(
+                `/home/attraction-detail/` + i.id + `?language=${language}`
+              )
+            "
           >
             <SearchCart
               :image="i?.cover_image"
@@ -461,7 +482,11 @@ onMounted(async () => {
             class="rounded-2xl bg-white shadow gap-3"
             v-for="i in searchLists"
             :key="i"
-            @click="router.push(`/home/van-tour-detail/` + i.id)"
+            @click="
+              router.push(
+                `/home/van-tour-detail/` + i.id + `?language=${language}`
+              )
+            "
           >
             <SearchCart
               :image="i?.cover_image"

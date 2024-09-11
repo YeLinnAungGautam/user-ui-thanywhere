@@ -104,11 +104,11 @@ const imageLoaded = ref(false);
 
 const onImageLoad = () => {
   imageLoaded.value = true;
-  console.log("Image loaded");
+  // console.log("Image loaded");
 };
 
 onMounted(() => {
-  console.log(props.i, "this is i");
+  // console.log(props.i, "this is i");
   settingStore.getLanguage();
 });
 </script>

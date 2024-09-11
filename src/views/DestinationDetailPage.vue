@@ -341,6 +341,7 @@ const goDetailPage = (id) => {
   router.push({
     name: "HomeVantourDetail",
     params: { id: id },
+    query: { language: language.value },
   });
 };
 
@@ -352,7 +353,12 @@ watch(
 );
 
 onMounted(async () => {
-  await settingStore.getLanguage();
+  if (route.query.language) {
+    await settingStore.changeLanguage(route.query.language);
+    await settingStore.getLanguage();
+  } else {
+    await settingStore.getLanguage();
+  }
   await getDetail(route.params.id);
 });
 </script>

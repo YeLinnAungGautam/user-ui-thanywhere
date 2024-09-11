@@ -3,7 +3,7 @@ import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import { useRouter } from "vue-router";
-// import { useSettingStore } from "../stores/setting";
+import { useSettingStore } from "../stores/setting";
 import { useCityStore } from "../stores/city";
 import { ref, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
@@ -18,7 +18,7 @@ import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
 
 const router = useRouter();
 // const destinationStore = useDestinationStore();
-// const settingStore = useSettingStore();
+const settingStore = useSettingStore();
 const cityStore = useCityStore();
 const myBottomSheet = ref(null);
 // const { dests } = storeToRefs(destinationStore);
@@ -26,7 +26,7 @@ const destinationStore = useDestinationStore();
 const { cities } = storeToRefs(cityStore);
 const { dests, loading } = storeToRefs(destinationStore);
 // const { cars } = storeToRefs(carStore);
-// const { language } = storeToRefs(settingStore);
+const { language } = storeToRefs(settingStore);
 
 const all = ref(false);
 
@@ -116,7 +116,11 @@ const searchFunction = (data) => {
 const destsList = ref([]);
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeDestinationDetail", params: { id: id } });
+  router.push({
+    name: "HomeDestinationDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 // const getRange = (data) => {
@@ -132,7 +136,7 @@ onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
   let res = await destinationStore.getListAction();
   await cityStore.getSimpleListAction();
-  // await settingStore.getLanguage();
+  await settingStore.getLanguage();
   destsList.value = res.data;
   console.log(destsList.value, "this is entrance list add");
   // await carStore.getSimpleListAction();

@@ -3,7 +3,7 @@
     <div v-show="imageLoaded" class="">
       <div class="relative">
         <div class="w-[200px] h-[100px] overflow-hidden">
-          <img
+          <!-- <img
             :src="
               i?.cover_image
                 ? i?.cover_image
@@ -12,7 +12,8 @@
             @load="onImageLoad"
             class="w-full h-full object-cover rounded-2xl"
             alt=""
-          />
+          /> -->
+          <ImageCarouselForCart :data="images" />
         </div>
         <p
           v-if="percent != 0 && percent != NaN"
@@ -77,17 +78,18 @@
 import { ref, defineProps, onMounted, computed } from "vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { MapPinIcon } from "@heroicons/vue/24/solid";
+import ImageCarouselForCart from "./ImageCarouselForCart.vue";
 
 const props = defineProps({
   i: Object,
 });
 
-const imageLoaded = ref(false);
+const imageLoaded = ref(true);
 
-const onImageLoad = () => {
-  imageLoaded.value = true;
-  console.log("Image loaded");
-};
+// const onImageLoad = () => {
+//   imageLoaded.value = true;
+//   console.log("Image loaded");
+// };
 
 const percent = computed(() => {
   if (
@@ -107,7 +109,22 @@ const percent = computed(() => {
   }
 });
 
+const images = ref([]);
+const getImages = () => {
+  images.value.push(props.i?.cover_image);
+  if (props.i?.images) {
+    for (let a = 0; a < props.i?.images.length; a++) {
+      images.value.push(props.i?.images[a].image);
+    }
+  }
+};
+
 onMounted(() => {
-  console.log(props.i, "this is i");
+  // console.log(props.i, "this is i");
+  images.value = [];
+  if (props.i) {
+    getImages();
+  }
+  console.log(images.value, "this is images");
 });
 </script>

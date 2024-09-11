@@ -13,17 +13,17 @@ import { storeToRefs } from "pinia";
 import activitydb from "../assets/activitydb";
 import AttractionCart from "../components/LoadingCarts/AttractionCart.vue";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
-// import { useSettingStore } from "../stores/setting";
+import { useSettingStore } from "../stores/setting";
 
 // const data = vantourdb;
 
 const router = useRouter();
-// const settingStore = useSettingStore();
+const settingStore = useSettingStore();
 const entranceStore = useEntranceStore();
 const cityStore = useCityStore();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
-// const { language } = storeToRefs(settingStore);
+const { language } = storeToRefs(settingStore);
 
 const all = ref(false);
 
@@ -118,7 +118,11 @@ const searchFunction = (data) => {
 const entrancesList = ref([]);
 
 const goDetialPage = (id) => {
-  router.push({ name: "HomeAttractionDetail", params: { id: id } });
+  router.push({
+    name: "HomeAttractionDetail",
+    params: { id: id },
+    query: { language: language.value },
+  });
 };
 
 // const getRange = (data) => {
@@ -131,7 +135,7 @@ const goDetialPage = (id) => {
 //  activitydb = activitydb;
 
 onMounted(async () => {
-  // await settingStore.getLanguage();
+  await settingStore.getLanguage();
   window.addEventListener("scroll", handleScroll);
   let res = await entranceStore.getListAction();
   await cityStore.getSimpleListAction();
