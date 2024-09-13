@@ -2,7 +2,7 @@
   <div>
     <div
       v-show="imageLoaded"
-      class="overflow-hidden relative"
+      class="overflow-hidden relative rounded-xl"
       :class="style ? style : 'w-full h-[100px]'"
     >
       <img
