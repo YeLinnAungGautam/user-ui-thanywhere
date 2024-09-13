@@ -932,18 +932,18 @@ watch(
 const copyDetail = async () => {
   let formattedOutput;
   formattedOutput = `
-package name : ${detail?.value.name}
-car type : ${chooseData?.value.name}
-pickup date : ${pickup_date?.value}
-ticket : ${choosePax.value ? "YES" : "No"}
-ticket qty : ${choosePax.value ? chooseCount.value : "-"} pax
-total amount : ${
+🌇 Package Name: ${detail?.value.name}
+🚐 Car type: ${chooseData?.value.name}
+📆 Pickup Date: ${pickup_date?.value != null ? pickup_date.value : "-"}
+🔖 Ticket Included: ${choosePax.value ? "YES" : "No"}
+👩‍🦰 Ticket Qty: ${choosePax.value ? chooseCount.value : "-"} pax
+💰Total Amount: ${
     chooseData.value && choosePax.value
       ? chooseData.value.price * 1 +
         detail?.value.ticket_price * chooseCount.value
       : chooseData.value.price
   } thb
-link : ${currentURL.value}
+🌐 Web link : ${currentURL.value}
       `;
 
   copy(formattedOutput);
