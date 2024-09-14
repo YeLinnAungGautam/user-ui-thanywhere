@@ -26,7 +26,7 @@
 // import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
-import { onMounted, defineProps, ref } from "vue";
+import { onMounted, defineProps, ref, watch } from "vue";
 // import homeGradesdb from "../../assets/homeGrades";
 
 const settings = {
@@ -59,6 +59,13 @@ onMounted(() => {
     showImage.value = props.data;
   }
 });
+
+watch(
+  () => props.data,
+  () => {
+    showImage.value = props.data;
+  }
+);
 </script>
 
 <style>
