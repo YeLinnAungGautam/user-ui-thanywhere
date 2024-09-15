@@ -23,17 +23,20 @@ import { storeToRefs } from "pinia";
 import { useHotelStore } from "../stores/hotel";
 import { useFacilityStore } from "../stores/facility";
 import { useSettingStore } from "../stores/setting";
+import { useOrderVantourStore } from "@/stores/orderVantour";
 
 const hotelStore = useHotelStore();
 const settingStore = useSettingStore();
 const cityStore = useCityStore();
 const facilityStore = useFacilityStore();
+const orderVantourStore = useOrderVantourStore();
 const router = useRouter();
 const route = useRoute();
 const myBottomSheet = ref(null);
 const { cities } = storeToRefs(cityStore);
 const { facilities } = storeToRefs(facilityStore);
 const { language } = storeToRefs(settingStore);
+const { checkin_date, checkout_date } = storeToRefs(orderVantourStore);
 
 const open = () => {
   myBottomSheet.value.open();
@@ -281,6 +284,7 @@ onMounted(async () => {
     hotelList.value = res.data;
   }
   // await settingStore.getLanguage();
+  await orderVantourStore.getHotelData();
 
   await cityStore.getListHotelCityAction();
   choosePlaceArray(city_id.value);
@@ -449,6 +453,18 @@ watch(
           >
             {{ searchCityName }}
           </p>
+          <p
+            class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
+            v-if="
+              checkin_date != 'null' &&
+              checkin_date != '' &&
+              checkout_date != 'null' &&
+              checkout_date != ''
+            "
+          >
+            {{ checkin_date }} - {{ checkout_date }}
+          </p>
+
           <p
             class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
             v-if="place != 'null' && place != ''"

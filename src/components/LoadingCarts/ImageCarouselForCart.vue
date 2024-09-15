@@ -4,14 +4,7 @@
       <carousel v-bind="settings">
         <slide v-for="(slide, index) in showImage" :key="index">
           <div class="w-full h-full">
-            <!-- <div class="w-full h-[420px] overflow-hidden">
-              <img
-                :src="slide.image"
-                class="w-full h-full object-cover rounded-b-[60px]"
-                alt=""
-              />
-            </div> -->
-            <ImageCarouselCart :i="slide" :style="'h-[100px] w-full'" />
+            <ImageCarouselCart :i="slide" :style="`w-full ${style}`" />
           </div>
         </slide>
 
@@ -38,6 +31,7 @@ const settings = {
 
 const props = defineProps({
   data: Array,
+  style: String,
 });
 
 const showImage = ref(null);

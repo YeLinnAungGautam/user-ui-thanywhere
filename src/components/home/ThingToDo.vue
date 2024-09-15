@@ -11,12 +11,36 @@
       </div>
     </div>
     <div
+      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-3 px-6 scroll-container"
+    >
+      <p
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border border-black/10 rounded-full"
+      >
+        amusement park
+      </p>
+      <p
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border border-black/10 rounded-full"
+      >
+        dinner cruises
+      </p>
+      <p
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border border-black/10 rounded-full"
+      >
+        water parks
+      </p>
+      <p
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border border-black/10 rounded-full"
+      >
+        safari
+      </p>
+    </div>
+    <div
       v-if="!entrances?.data"
-      class="flex flex-1 justify-start space-x-3 mt-6 items-center overflow-x-scroll scroll-container"
+      class="flex flex-1 justify-start space-x-3 items-center overflow-x-scroll scroll-container"
     >
       <!-- <ThingToDoLoadingCartVue /> -->
       <div
-        class="bg-white shadow rounded-3xl mb-3 px-2 pt-2"
+        class="bg-white shadow rounded-3xl mt-3 mb-3 px-2 pt-2"
         :class="index == 0 ? 'ml-6' : 'ml-0'"
         v-for="(i, index) in 8"
         :key="i"
@@ -72,7 +96,7 @@
     </div>
     <div
       v-if="entrances?.data"
-      class="flex flex-1 justify-start space-x-3 mt-6 items-center overflow-x-scroll scroll-container"
+      class="flex flex-1 justify-start space-x-3 mt-3 items-center overflow-x-scroll scroll-container"
     >
       <!-- <ThingToDoLoadingCartVue /> -->
       <div

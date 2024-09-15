@@ -9,7 +9,11 @@
                 :src="slide.image"
                 class="w-full h-full object-cover rounded-2xl"
                 alt=""
+                @load="onImageLoad"
               />
+            </div>
+            <div class="w-full h-[300px] overflow-hidden" v-if="!imageLoaded">
+              <p>loading ...</p>
             </div>
           </div>
         </slide>
@@ -47,6 +51,12 @@ const simple = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s",
   },
 ];
+
+const imageLoaded = ref(false);
+const onImageLoad = () => {
+  imageLoaded.value = true;
+  console.log("Image loaded");
+};
 
 onMounted(() => {
   console.log("====================================");

@@ -104,5 +104,6 @@ onMounted(async () => {
   data.value = [];
   const res = await destinationStore.getListAction({ limit: 8 });
   data.value = res.data;
+  console.log(data.value);
 });
 </script>

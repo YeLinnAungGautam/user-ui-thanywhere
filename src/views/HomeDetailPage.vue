@@ -492,7 +492,7 @@
     </div>
     <div
       v-if="!loading"
-      class="px-5 pb-3 sticky z-10 bg-white shadow-custom pt-2 border-t border-black/10 bottom-0"
+      class="px-5 pb-3 sticky z-30 bg-white shadow-custom pt-2 border-t border-black/10 bottom-0"
     >
       <div class="flex justify-between items-end">
         <div>

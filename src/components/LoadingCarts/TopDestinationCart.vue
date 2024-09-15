@@ -2,7 +2,7 @@
   <div>
     <div v-show="imageLoaded">
       <div class="w-full h-[140px] p-1.5 overflow-hidden">
-        <img
+        <!-- <img
           :src="
             i?.feature_img
               ? i?.feature_img
@@ -11,7 +11,8 @@
           @load="onImageLoad"
           class="w-full h-full object-cover rounded-xl"
           alt=""
-        />
+        /> -->
+        <ImageCarouselForCart :data="images" :style="'h-[130px]'" />
       </div>
       <div class="px-3 py-0">
         <!-- <StarPartVue :count="5" /> -->
@@ -92,6 +93,7 @@ import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
 // import StarPartVue from "../home/StarPart.vue";
 import { StarIcon, MapPinIcon } from "@heroicons/vue/24/solid";
+import ImageCarouselForCart from "./ImageCarouselForCart.vue";
 
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
@@ -100,15 +102,31 @@ const props = defineProps({
   i: Object,
 });
 
-const imageLoaded = ref(false);
+const imageLoaded = ref(true);
 
-const onImageLoad = () => {
-  imageLoaded.value = true;
-  // console.log("Image loaded");
+// const onImageLoad = () => {
+//   imageLoaded.value = true;
+//   // console.log("Image loaded");
+// };
+
+const images = ref([]);
+const getImages = () => {
+  if (props.i?.feature_img) {
+    images.value.push(props.i?.feature_img);
+  }
+  if (props.i?.images) {
+    for (let a = 0; a < props.i?.images.length; a++) {
+      images.value.push(props.i?.images[a].image);
+    }
+  }
 };
 
 onMounted(() => {
   // console.log(props.i, "this is i");
+  images.value = [];
+  if (props.i) {
+    getImages();
+  }
   settingStore.getLanguage();
 });
 </script>

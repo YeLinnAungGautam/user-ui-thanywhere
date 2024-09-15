@@ -12,7 +12,11 @@
         class="w-full h-full object-cover"
       />
     </div>
-    <div v-show="!imageLoaded" class="w-full h-[100px] overflow-hidden">
+    <div
+      v-show="!imageLoaded"
+      class="rounded-xl overflow-hidden"
+      :class="style ? style : 'w-full h-[100px]'"
+    >
       <img :src="LoadingImageCover" alt="" class="w-full h-full object-cover" />
     </div>
   </div>

@@ -1,17 +1,8 @@
 <template>
   <div>
-    <div v-show="imageLoaded" class="relative">
+    <div class="relative">
       <div class="w-full h-[140px] p-1.5 overflow-hidden">
-        <img
-          :src="
-            i.images[0]?.image
-              ? i.images[0]?.image
-              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s'
-          "
-          @load="onImageLoad"
-          class="w-full h-full object-cover rounded-xl"
-          alt=""
-        />
+        <ImageCarouselForCart :data="images" :style="'h-[130px]'" />
       </div>
       <p
         v-if="percent != 0 && percent != NaN"
@@ -113,6 +104,7 @@ import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
 import { StarIcon, MapPinIcon } from "@heroicons/vue/24/solid";
+import ImageCarouselForCart from "./ImageCarouselForCart.vue";
 
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
@@ -120,6 +112,8 @@ const { language } = storeToRefs(settingStore);
 const props = defineProps({
   i: Object,
 });
+
+const imageLoaded = ref(true);
 
 const percent = computed(() => {
   if (
@@ -138,15 +132,22 @@ const percent = computed(() => {
   }
 });
 
-const imageLoaded = ref(false);
-
-const onImageLoad = () => {
-  imageLoaded.value = true;
-  // console.log("Image loaded");
+const images = ref([]);
+const getImages = () => {
+  if (props.i?.images) {
+    for (let a = 0; a < props.i?.images.length; a++) {
+      images.value.push(props.i?.images[a].image);
+    }
+  }
 };
 
 onMounted(() => {
   // console.log(props.i, "this is i");
+  images.value = [];
+  if (props.i) {
+    getImages();
+  }
+  // console.log(images.value, "this is images");
   settingStore.getLanguage();
 });
 </script>

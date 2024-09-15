@@ -3,17 +3,7 @@
     <div v-show="imageLoaded" class="">
       <div class="relative">
         <div class="w-[200px] h-[100px] overflow-hidden">
-          <!-- <img
-            :src="
-              i?.cover_image
-                ? i?.cover_image
-                : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s'
-            "
-            @load="onImageLoad"
-            class="w-full h-full object-cover rounded-2xl"
-            alt=""
-          /> -->
-          <ImageCarouselForCart :data="images" />
+          <ImageCarouselForCart :data="images" :style="'h-[100px]'" />
         </div>
         <p
           v-if="percent != 0 && percent != NaN"
@@ -125,6 +115,6 @@ onMounted(() => {
   if (props.i) {
     getImages();
   }
-  console.log(images.value, "this is images");
+  // console.log(images.value, "this is images");
 });
 </script>

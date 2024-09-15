@@ -53,7 +53,7 @@
                 <p>{{ i.place }}</p>
               </div>
             </div>
-            <p class="text-xs font-medium pb-1">start price</p>
+            <p class="text-xs font-medium pb-1">start price per night</p>
             <!-- <p
               class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
             >

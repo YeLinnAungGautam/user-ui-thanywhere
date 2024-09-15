@@ -98,7 +98,7 @@
 
     <vue-bottom-sheet ref="myBottomSheetRoom" :max-height="1500">
       <div class="font-poppins">
-        <div class="h-[100vh]">
+        <div class="h-[90vh]">
           <div class="flex justify-between items-center px-6 pb-4">
             <p class="text-base font-medium">{{ detail?.name }}</p>
             <XMarkIcon class="w-5 h-5" @click="closeRoom" />

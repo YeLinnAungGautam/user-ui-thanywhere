@@ -13,6 +13,44 @@
       </div>
     </div>
     <div
+      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-3 px-6 scroll-container"
+    >
+      <p
+        @click="getList('0-1200')"
+        :class="type == '0-1200' ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+      >
+        budget ( &lt; 1200)
+      </p>
+      <p
+        @click="getList('1200-1800')"
+        :class="
+          type == '1200-1800' ? 'border-main text-main' : 'border-black/10'
+        "
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+      >
+        standard (1200 - 1800)
+      </p>
+      <p
+        @click="getList('1800-3000')"
+        :class="
+          type == '1800-3000' ? 'border-main text-main' : 'border-black/10'
+        "
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+      >
+        premium (1800 - 3000)
+      </p>
+      <p
+        @click="getList('3000-100000')"
+        :class="
+          type == '3000-100000' ? 'border-main text-main' : 'border-black/10'
+        "
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+      >
+        luxury (3000+)
+      </p>
+    </div>
+    <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
       v-if="lists.length == 0"
     >
@@ -142,6 +180,21 @@ const goMore = () => {
   router.push(
     `/home/hotel-filter/4/Pattaya/?price=null&rating=null&place=null&facilities=null&search=`
   );
+};
+
+const type = ref("");
+
+const getList = async (a) => {
+  console.log(a, "this is type");
+  lists.value = [];
+  type.value = a;
+  const res = await hotelStore.getListAction({
+    city_id: 4,
+    price_range: a,
+    limit: 8,
+  });
+  lists.value = res.data;
+  console.log(lists.value, "this is stay in bangkkok");
 };
 
 onMounted(async () => {

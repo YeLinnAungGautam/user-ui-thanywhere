@@ -13,6 +13,44 @@
       </div>
     </div>
     <div
+      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-3 px-6 scroll-container"
+    >
+      <p
+        @click="getList('0-1200')"
+        :class="type == '0-1200' ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+      >
+        budget ( &lt; 1200)
+      </p>
+      <p
+        @click="getList('1200-1800')"
+        :class="
+          type == '1200-1800' ? 'border-main text-main' : 'border-black/10'
+        "
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+      >
+        standard (1200 - 1800)
+      </p>
+      <p
+        @click="getList('1800-3000')"
+        :class="
+          type == '1800-3000' ? 'border-main text-main' : 'border-black/10'
+        "
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+      >
+        premium (1800 - 3000)
+      </p>
+      <p
+        @click="getList('3000-100000')"
+        :class="
+          type == '3000-100000' ? 'border-main text-main' : 'border-black/10'
+        "
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+      >
+        luxury (3000+)
+      </p>
+    </div>
+    <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
       v-if="lists.length == 0"
     >
@@ -65,42 +103,6 @@
         :key="index"
         @click="goDetialPage(i?.id)"
       >
-        <!-- <div>
-          <div class="w-full h-[140px] p-1.5 overflow-hidden">
-            <img
-              :src="i.images[0]?.image"
-              class="w-full h-full object-cover rounded-xl"
-              alt=""
-            />
-          </div>
-          <div class="px-3 py-0">
-            <p class="text-[10px] text-black font-medium">
-              {{ i.rating }}-star rating
-            </p>
-            <p class="font-semibold text-sm pt-1">{{ i.name }}</p>
-            <p
-              class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block"
-            >
-              {{ i.place }}
-            </p>
-            <p
-              class="text-[9px] pt-1 max-h-[44px] overflow-hidden"
-              v-html="
-                language == 'english'
-                  ? i?.full_description_en
-                  : i?.full_description
-              "
-            ></p>
-            <div class="">
-              <p class="text-xs font-medium mt-2">starting price</p>
-              <button
-                class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
-              >
-                {{ i.lowest_room_price }} THB
-              </button>
-            </div>
-          </div>
-        </div> -->
         <StayInBangkokCart :i="i" />
       </div>
     </div>
@@ -140,19 +142,21 @@ const goMore = () => {
   router.push(
     `/home/hotel-filter/2/Bangkok/?price=null&rating=null&place=null&facilities=null&search=`
   );
-  // router.push({
-  //   name: "FilteredHotelBookings",
-  //   params: {
-  //     id: 2,
-  //     name: "Bangkok",
-  //   },
-  //   query: {
-  //     price: "null",
-  //     rating: "null",
-  //     place: "null",
-  //     facilities: "null",
-  //   },
-  // });
+};
+
+const type = ref("");
+
+const getList = async (a) => {
+  console.log(a, "this is type");
+  lists.value = [];
+  type.value = a;
+  const res = await hotelStore.getListAction({
+    city_id: 2,
+    price_range: a,
+    limit: 8,
+  });
+  lists.value = res.data;
+  console.log(lists.value, "this is stay in bangkkok");
 };
 
 onMounted(async () => {
@@ -160,5 +164,6 @@ onMounted(async () => {
   // data.value = stayinbangkok;
   const res = await hotelStore.getListAction({ city_id: 2, limit: 8 });
   lists.value = res.data;
+  // console.log(lists.value, "this is stay in bangkkok");
 });
 </script>
