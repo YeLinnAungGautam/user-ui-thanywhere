@@ -13,12 +13,12 @@
       </div>
     </div>
     <div
-      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-3 px-6 scroll-container"
+      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-1 px-6 scroll-container"
     >
       <p
         @click="getList('0-1200')"
         :class="type == '0-1200' ? 'border-main text-main' : 'border-black/10'"
-        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border rounded-full"
       >
         budget <span class="text-[8px]">( &lt; 1200)</span>
       </p>
@@ -27,7 +27,7 @@
         :class="
           type == '1200-1800' ? 'border-main text-main' : 'border-black/10'
         "
-        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border rounded-full"
       >
         standard <span class="text-[8px]">(1200 - 1800)</span>
       </p>
@@ -36,7 +36,7 @@
         :class="
           type == '1800-3000' ? 'border-main text-main' : 'border-black/10'
         "
-        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border rounded-full"
       >
         premium <span class="text-[8px]">(1800 - 3000)</span>
       </p>
@@ -45,7 +45,7 @@
         :class="
           type == '3000-100000' ? 'border-main text-main' : 'border-black/10'
         "
-        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border rounded-full"
       >
         luxury <span class="text-[8px]">(3000+)</span>
       </p>

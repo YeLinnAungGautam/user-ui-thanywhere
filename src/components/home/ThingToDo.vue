@@ -11,25 +11,25 @@
       </div>
     </div>
     <div
-      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-3 px-6 scroll-container"
+      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-2 px-6 scroll-container"
     >
       <p
-        class="whitespace-nowrap px-3 py-0.5 text-[10px] border border-black/10 rounded-full"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
       >
         amusement park
       </p>
       <p
-        class="whitespace-nowrap px-3 py-0.5 text-[10px] border border-black/10 rounded-full"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
       >
         dinner cruises
       </p>
       <p
-        class="whitespace-nowrap px-3 py-0.5 text-[10px] border border-black/10 rounded-full"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
       >
         water parks
       </p>
       <p
-        class="whitespace-nowrap px-3 py-0.5 text-[10px] border border-black/10 rounded-full"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
       >
         safari
       </p>

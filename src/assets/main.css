@@ -30,16 +30,16 @@
   /* Set the color of the scrollbar track */
 }
 
-.carousel__pagination-button--active::after {
-  background-color: rgb(65, 21, 0) !important;
-  width: 20px !important;
+.carousel__pagination-button--active {
+  background-color: #fe5000 !important;
+  border-radius: var(--vc-pgn-border-radius);
 }
 
 .carousel__pagination-button::after {
   display: block;
   content: "";
-  width: var(--vc-pgn-width);
-  height: var(--vc-pgn-height);
+  width: 6px !important;
+  height: 6px !important;
   border-radius: var(--vc-pgn-border-radius);
   background-color: #fd854d !important;
 }

@@ -13,14 +13,14 @@
       </div>
     </div>
     <div
-      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-3 px-6 scroll-container"
+      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-1 px-6 scroll-container"
     >
       <p
         v-for="i in filterCityList"
         :key="i.id"
         @click="city_id = i.id"
         :class="i.id == city_id ? 'border-main text-main' : 'border-black/10'"
-        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border rounded-full"
       >
         {{ i.name }}
       </p>
