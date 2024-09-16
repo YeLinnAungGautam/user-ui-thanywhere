@@ -144,7 +144,7 @@ const goMore = () => {
   );
 };
 
-const type = ref("");
+const type = ref("0-1200");
 
 const getList = async (a) => {
   console.log(a, "this is type");
@@ -162,7 +162,11 @@ const getList = async (a) => {
 onMounted(async () => {
   lists.value = [];
   // data.value = stayinbangkok;
-  const res = await hotelStore.getListAction({ city_id: 2, limit: 8 });
+  const res = await hotelStore.getListAction({
+    city_id: 2,
+    limit: 8,
+    price_range: type.value,
+  });
   lists.value = res.data;
   // console.log(lists.value, "this is stay in bangkkok");
 });

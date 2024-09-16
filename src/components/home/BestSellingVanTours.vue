@@ -156,7 +156,7 @@ const filterCityList = ref([
   },
 ]);
 
-const city_id = ref("");
+const city_id = ref("8");
 
 watch(city_id, async (newValue) => {
   if (newValue) {
@@ -180,7 +180,10 @@ const goDetialPage = (id) => {
 onMounted(async () => {
   data.value = [];
   await settingStore.getLanguage();
-  const res = await vantourStore.getListAction({ limit: 8 });
+  const res = await vantourStore.getListAction({
+    limit: 8,
+    city_id: city_id.value,
+  });
   data.value = res.data;
 });
 </script>
