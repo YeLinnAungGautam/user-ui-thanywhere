@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div
-      class="flex justify-between items-center sticky top-0 py-2 bg-background"
+      class="flex justify-between items-center sticky top-0 z-30 py-2 bg-background"
     >
       <h1 class="text-main font-semibold px-6">best selling van tours</h1>
       <div
@@ -11,6 +11,19 @@
         <p>see more</p>
         <ChevronDownIcon class="w-3 h-3" />
       </div>
+    </div>
+    <div
+      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-3 px-6 scroll-container"
+    >
+      <p
+        v-for="i in filterCityList"
+        :key="i.id"
+        @click="city_id = i.id"
+        :class="i.id == city_id ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
+      >
+        {{ i.name }}
+      </p>
     </div>
     <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
@@ -102,7 +115,7 @@
 
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 // import StarPartVue from "./StarPart.vue";
 // import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
@@ -119,6 +132,42 @@ const vantourStore = useVantourStore();
 
 const router = useRouter();
 const data = ref([]);
+
+const filterCityList = ref([
+  {
+    id: 2,
+    name: "Bangkok",
+  },
+  {
+    id: 4,
+    name: "Pattaya",
+  },
+  {
+    id: 8,
+    name: "Kanchanburi",
+  },
+  {
+    id: 9,
+    name: "Phuket",
+  },
+  {
+    id: 10,
+    name: "Chiang Mai",
+  },
+]);
+
+const city_id = ref("");
+
+watch(city_id, async (newValue) => {
+  if (newValue) {
+    data.value = [];
+    const res = await vantourStore.getListAction({
+      limit: 8,
+      city_id: city_id.value,
+    });
+    data.value = res.data;
+  }
+});
 
 const goDetialPage = (id) => {
   router.push({

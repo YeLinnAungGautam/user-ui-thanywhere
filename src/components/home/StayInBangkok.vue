@@ -20,7 +20,7 @@
         :class="type == '0-1200' ? 'border-main text-main' : 'border-black/10'"
         class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
       >
-        budget ( &lt; 1200)
+        budget <span class="text-[8px]">( &lt; 1200)</span>
       </p>
       <p
         @click="getList('1200-1800')"
@@ -29,7 +29,7 @@
         "
         class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
       >
-        standard (1200 - 1800)
+        standard <span class="text-[8px]">(1200 - 1800)</span>
       </p>
       <p
         @click="getList('1800-3000')"
@@ -38,7 +38,7 @@
         "
         class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
       >
-        premium (1800 - 3000)
+        premium <span class="text-[8px]">(1800 - 3000)</span>
       </p>
       <p
         @click="getList('3000-100000')"
@@ -47,7 +47,7 @@
         "
         class="whitespace-nowrap px-3 py-0.5 text-[10px] border rounded-full"
       >
-        luxury (3000+)
+        luxury <span class="text-[8px]">(3000+)</span>
       </p>
     </div>
     <div
