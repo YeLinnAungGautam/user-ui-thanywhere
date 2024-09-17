@@ -14,28 +14,36 @@
       class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-2 px-6 scroll-container"
     >
       <p
+        @click="category_id = 32"
+        :class="category_id == 32 ? 'border-main text-main' : 'border-black/10'"
         class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
       >
         amusement park
       </p>
       <p
+        @click="category_id = 40"
+        :class="category_id == 40 ? 'border-main text-main' : 'border-black/10'"
         class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
       >
         dinner cruises
       </p>
       <p
+        @click="category_id = 31"
+        :class="category_id == 31 ? 'border-main text-main' : 'border-black/10'"
         class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
       >
         water parks
       </p>
       <p
+        @click="category_id = 17"
+        :class="category_id == 17 ? 'border-main text-main' : 'border-black/10'"
         class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
       >
         safari
       </p>
     </div>
     <div
-      v-if="!entrances?.data"
+      v-if="list.length == 0"
       class="flex flex-1 justify-start space-x-3 items-center overflow-x-scroll scroll-container"
     >
       <!-- <ThingToDoLoadingCartVue /> -->
@@ -45,31 +53,6 @@
         v-for="(i, index) in 8"
         :key="i"
       >
-        <!-- <div>
-          <div class="w-[200px] h-[100px] overflow-hidden">
-            <img
-              :src="i?.cover_image"
-              v-if="i?.cover_image"
-              class="w-full h-full object-cover rounded-2xl"
-              alt=""
-            />
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-              v-if="!i?.cover_image"
-              class="w-full h-full object-cover rounded-2xl"
-              alt=""
-            />
-          </div>
-          <div class="px-3 py-2">
-            <p class="text-main text-[10px]">bangkok</p>
-            <p class="font-semibold text-sm line-clamp-1">{{ i?.name }}</p>
-            <button
-              class="bg-main px-3 mt-2 mb-2 py-1 rounded-lg text-xs font-semibold text-white"
-            >
-              {{ i?.lowest_variation_price }} thb
-            </button>
-          </div>
-        </div> -->
         <div>
           <div class="w-[200px] h-[100px] overflow-hidden animate-pulse">
             <img
@@ -95,14 +78,14 @@
       </div>
     </div>
     <div
-      v-if="entrances?.data"
+      v-if="list.length > 0"
       class="flex flex-1 justify-start space-x-3 mt-3 items-center overflow-x-scroll scroll-container"
     >
       <!-- <ThingToDoLoadingCartVue /> -->
       <div
         class="bg-white shadow rounded-3xl mb-3 px-2 pt-2"
         :class="index == 0 ? 'ml-6' : 'ml-0'"
-        v-for="(i, index) in entrances?.data"
+        v-for="(i, index) in list"
         @click="
           router.push(
             '/home/attraction-detail/' + i.id + `?language=${language}`
@@ -110,31 +93,6 @@
         "
         :key="i"
       >
-        <!-- <div>
-          <div class="w-[200px] h-[100px] overflow-hidden">
-            <img
-              :src="i?.cover_image"
-              v-if="i?.cover_image"
-              class="w-full h-full object-cover rounded-2xl"
-              alt=""
-            />
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
-              v-if="!i?.cover_image"
-              class="w-full h-full object-cover rounded-2xl"
-              alt=""
-            />
-          </div>
-          <div class="px-3 py-2">
-            <p class="text-main text-[10px]">bangkok</p>
-            <p class="font-semibold text-sm line-clamp-1">{{ i?.name }}</p>
-            <button
-              class="bg-main px-3 mt-2 mb-2 py-1 rounded-lg text-xs font-semibold text-white"
-            >
-              {{ i?.lowest_variation_price }} thb
-            </button>
-          </div>
-        </div> -->
         <ThingToDoLoadingCartVue :i="i" />
       </div>
     </div>
@@ -143,7 +101,7 @@
 
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useEntranceStore } from "../../stores/entrance";
 import { storeToRefs } from "pinia";
 import ThingToDoLoadingCartVue from "../LoadingCarts/ThingToDoLoadingCart.vue";
@@ -157,13 +115,28 @@ const router = useRouter();
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
 
-const { entrances } = storeToRefs(entranceStore);
+const category_id = ref(40);
+const list = ref([]);
+
+watch(category_id, async (newValue) => {
+  if (newValue) {
+    const res = await entranceStore.getListAction({
+      city_id: 2,
+      category_id: category_id.value,
+    });
+    list.value = res.data;
+  }
+});
 
 onMounted(async () => {
-  await entranceStore.getListAction({ city_id: 2 });
+  const res = await entranceStore.getListAction({
+    city_id: 2,
+    category_id: category_id.value,
+  });
   await settingStore.getLanguage();
   console.log("====================================");
-  console.log(entrances.value);
+  // console.log(entrances.value);
+  list.value = res.data;
   console.log("====================================");
 });
 </script>
