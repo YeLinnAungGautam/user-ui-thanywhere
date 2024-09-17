@@ -6,28 +6,30 @@
       </div>
     </transition>
     <div class="relative" v-if="!loading">
-      <ImageCarousel :data="images" />
-      <ChevronLeftIcon
-        @click="router.push('/home/van-tour')"
-        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
-      />
-      <!-- <ArrowUpTrayIcon
-        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
-      /> -->
-      <div
-        @click="shareContent"
-        class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
-      >
-        <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
+      <div class=" " :style="imageStyles">
+        <ImageCarousel :data="images" />
+        <ChevronLeftIcon
+          @click="router.push('/home/van-tour')"
+          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
+        />
+        <!-- <ArrowUpTrayIcon
+          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+        /> -->
+        <div
+          @click="shareContent"
+          class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+        >
+          <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
+        </div>
+        <HeartIcon
+          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
+        />
       </div>
-      <HeartIcon
-        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
-      />
 
       <transition name="fade">
         <div
           v-if="showDiv"
-          class="flex sticky shadow-custom top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll scroll-container border-b border-black/10"
+          class="flex sticky shadow-custom top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll z-20 scroll-container border-b border-black/10"
         >
           <a
             href="#destinations"
@@ -68,7 +70,10 @@
       </transition>
 
       <div class="bg-black/5">
-        <div class="">
+        <div class="relative">
+          <div
+            class="bg-black/70 w-[40px] rounded-lg h-[6px] mx-auto absolute -top-2 z-30 left-[45%]"
+          ></div>
           <div class="mb-3 space-y-4">
             <div class="">
               <div class="bg-white px-5 py-2" id="destinations">
@@ -705,7 +710,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, onBeforeUnmount } from "vue";
+import { onMounted, ref, watch, onBeforeUnmount, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import TrueIcon from "../assets/s/circle.png";
@@ -916,11 +921,24 @@ const backLeftFunction = () => {
 };
 
 const showDiv = ref(false);
+// const handleScroll = () => {
+//   // Set showDiv to true if the scroll position is over 300px, otherwise false
+//   showDiv.value = window.scrollY > 427;
+//   // console.log(window.scrollY);
+// };
+const scrollY = ref(0);
 const handleScroll = () => {
-  // Set showDiv to true if the scroll position is over 300px, otherwise false
+  scrollY.value = window.scrollY;
   showDiv.value = window.scrollY > 427;
   // console.log(window.scrollY);
 };
+
+const imageStyles = computed(() => {
+  const opacity = Math.max(1 - scrollY.value / 300, 0); // Reduce opacity as user scrolls
+  return {
+    opacity: opacity,
+  };
+});
 
 watch(
   () => route.params.id,

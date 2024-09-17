@@ -264,7 +264,7 @@ onMounted(async () => {
         </div>
       </div>
     </HeaderHome>
-    <div class="h-auto pb-20 pt-8 space-y-6">
+    <div class="h-auto pb-20 pt-2 relative z-10 space-y-6">
       <div
         class="flex flex-1 justify-start space-x-4 pr-4 items-center overflow-x-scroll scroll-container"
       >
