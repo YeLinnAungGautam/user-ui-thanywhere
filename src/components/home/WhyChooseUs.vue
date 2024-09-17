@@ -21,13 +21,37 @@
           />
           <p class="text-[12px] font-semibold">{{ i.title }}</p>
           <p
-            class="text-[10px] font-medium h-auto line-clamp-3 text-black/80 text-left"
+            class="text-[10px] font-medium h-auto line-clamp-3 pb-1 text-black/80 text-left"
           >
             {{ i.description }}
+          </p>
+          <p
+            @click="open"
+            class="text-xs bg-main inline-block text-white rounded-full px-3 py-1 font-medium"
+          >
+            learn more
           </p>
         </div>
       </div>
     </div>
+    <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
+      <div class="font-poppins">
+        <div class="h-[80vh]">
+          <div class="flex justify-between items-center px-6 pb-4">
+            <p class="opacity-0">........</p>
+            <p class="text-black text-sm font-medium">Why choose Thanywhere</p>
+            <XMarkIcon class="w-5 h-5" @click="close" />
+          </div>
+          <div
+            class="border border-black/10 p-4 ml-4 mr-4 rounded-xl h-[90vh] overflow-scroll"
+          >
+            <div>
+              <MakePaymentPage />
+            </div>
+          </div>
+        </div>
+      </div>
+    </vue-bottom-sheet>
   </div>
 </template>
 
@@ -37,6 +61,21 @@ import image2 from "../../assets/s/get best prices.svg";
 import image3 from "../../assets/s/book with confidence.png";
 import image4 from "../../assets/s/travel with trust.svg";
 import image5 from "../../assets/s/growing with you.svg";
+import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
+import "@webzlodimir/vue-bottom-sheet/dist/style.css";
+import MakePaymentPage from "../../views/FAQs/MakePayment.vue";
+import { ref } from "vue";
+
+const myBottomSheet = ref(null);
+const openPart = ref("");
+const open = () => {
+  myBottomSheet.value.open();
+};
+
+const close = () => {
+  openPart.value = "";
+  myBottomSheet.value.close();
+};
 
 const data = [
   {

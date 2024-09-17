@@ -10,7 +10,7 @@ import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { ref, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import activitydb from "../assets/activitydb";
+// import activitydb from "../assets/activitydb";
 import AttractionCart from "../components/LoadingCarts/AttractionCart.vue";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
 import { useSettingStore } from "../stores/setting";
@@ -46,6 +46,9 @@ const filteredHotel = async () => {
   router.push({
     name: "HomeAttractionResult",
     params: { id: filterId.value, name: city_name.value },
+    query: {
+      category_id: category_id.value,
+    },
   });
   close();
 };
@@ -101,6 +104,7 @@ const count_filter = ref(0);
 watch([filterId], async ([newValue]) => {
   let data = {
     city_id: newValue,
+    category_id: category_id.value,
   };
 
   const res = await entranceStore.getFilterAction(data);
@@ -368,7 +372,7 @@ watch(entrances, async (newValue) => {
             <XMarkIcon class="w-5 h-5" @click="close" />
           </div>
           <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
-            <div class="space-y-3 pb-10">
+            <div class="space-y-3 pb-10 h-[50vh]">
               <div class="flex justify-between items-center">
                 <p class="text-sm font-semibold">choose city</p>
                 <p
@@ -391,7 +395,7 @@ watch(entrances, async (newValue) => {
                 </div>
               </div>
             </div>
-            <div class="pb-10 space-y-4">
+            <!-- <div class="pb-10 space-y-4">
               <p class="text-sm font-semibold">select activities type</p>
               <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
                 <div
@@ -400,7 +404,6 @@ watch(entrances, async (newValue) => {
                   :key="index"
                 >
                   <div class="flex justify-center items-center gap-1">
-                    <!-- <StarIcon class="w-10 h-10 text-main" /> -->
                     <img :src="i.image" class="w-10 h-10" alt="" />
                   </div>
                   <p class="text-[8px] text-black/70 text-center">
@@ -408,7 +411,7 @@ watch(entrances, async (newValue) => {
                   </p>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="flex justify-between gap-4 items-center pt-4">
               <button

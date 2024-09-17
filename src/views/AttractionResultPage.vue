@@ -44,12 +44,16 @@ const close = () => {
 const all = ref(false);
 
 const filterId = ref("");
+const category_id = ref("");
 const city_name = ref("");
 
 const filteredHotel = async () => {
   router.push({
     name: "HomeAttractionResult",
     params: { id: filterId.value, name: city_name.value },
+    query: {
+      category_id: category_id.value,
+    },
   });
   close();
   setTimeout(() => {
@@ -65,7 +69,7 @@ const changePage = async (url) => {
     if (search.value != "" && search.value != "null") {
       data = { search: search.value };
     } else {
-      data = { city_id: filterId.value };
+      data = { city_id: filterId.value, category_id: category_id.value };
     }
     await entranceStore.getChangePage(url, data);
   }
@@ -111,9 +115,10 @@ watch(bottomOfWindow, (newVal) => {
 const count_filter = ref(0);
 // const price_range = ref("");
 
-watch([filterId], async ([newValue]) => {
+watch([filterId, category_id], async ([newValue, newSecValue]) => {
   let data = {
     city_id: newValue,
+    category_id: newSecValue,
   };
 
   const res = await entranceStore.getFilterAction(data);
@@ -158,6 +163,7 @@ watch(
       searchCityName.value = route.params.name;
       let res = await entranceStore.getListAction({
         city_id: filterId.value,
+        category_id: category_id.value,
       });
       count.value = res.meta.total;
       entrancesList.value = res.data;
@@ -172,12 +178,14 @@ onMounted(async () => {
     console.log(route.query.search);
   } else {
     filterId.value = route.params.id;
+    category_id.value = route.query.category_id;
     city_name.value = route.params.name;
     searchCityName.value = route.params.name;
     window.addEventListener("scroll", handleScroll);
     let res = await entranceStore.getListAction({
       city_id: filterId.value,
       search: search.value,
+      category_id: category_id.value,
     });
     count.value = res.meta.total;
     entrancesList.value = res.data;
@@ -186,6 +194,17 @@ onMounted(async () => {
   await cityStore.getSimpleListAction();
 
   console.log(entrancesList.value, "this is entrance list add");
+});
+
+watch(category_id, async (newValue) => {
+  if (newValue) {
+    entrancesList.value = [];
+    const res = await entranceStore.getListAction({
+      city_id: filterId.value,
+      category_id: category_id.value,
+    });
+    entrancesList.value = res.data;
+  }
 });
 
 watch(entrances, async (newValue) => {
@@ -229,34 +248,152 @@ watch(entrances, async (newValue) => {
       <div class="space-y-4 relative pb-20">
         <div
           :class="isStickey ? 'shadow-custom' : ''"
-          class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
+          class="mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
         >
-          <h1
-            class="text-main font-semibold"
-            v-if="searchCityName != 'null' && !search"
-          >
-            attractions in {{ searchCityName }}
-          </h1>
-          <h1
-            class="text-main font-semibold"
-            v-if="searchCityName == 'null' && !search"
-          >
-            attractions
-          </h1>
-          <h1
-            class="text-main font-semibold"
-            v-if="searchCityName == 'null' && search"
-          >
-            '{{ search }}' search
-          </h1>
-          <div
-            class="flex justify-end items-center gap-2 cursor-pointer"
-            @click="open"
-          >
-            <p class="text-[10px] text-main font-semibold whitespace-nowrap">
-              filter by
-            </p>
-            <ChevronDownIcon class="w-3 h-3 text-main" />
+          <div class="flex justify-between items-center">
+            <h1
+              class="text-main font-semibold"
+              v-if="searchCityName != 'null' && !search"
+            >
+              attractions in {{ searchCityName }}
+            </h1>
+            <h1
+              class="text-main font-semibold"
+              v-if="searchCityName == 'null' && !search"
+            >
+              attractions
+            </h1>
+            <h1
+              class="text-main font-semibold"
+              v-if="searchCityName == 'null' && search"
+            >
+              '{{ search }}' search
+            </h1>
+            <div
+              class="flex justify-end items-center gap-2 cursor-pointer"
+              @click="open"
+            >
+              <p class="text-[10px] text-main font-semibold whitespace-nowrap">
+                filter by
+              </p>
+              <ChevronDownIcon class="w-3 h-3 text-main" />
+            </div>
+          </div>
+          <div class="w-full">
+            <div
+              class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-2 scroll-container"
+            >
+              <p
+                @click="category_id = 32"
+                :class="
+                  category_id == 32
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                amusement park
+              </p>
+              <p
+                @click="category_id = 40"
+                :class="
+                  category_id == 40
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                dinner cruises
+              </p>
+              <p
+                @click="category_id = 31"
+                :class="
+                  category_id == 31
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                water parks
+              </p>
+              <p
+                @click="category_id = 17"
+                :class="
+                  category_id == 17
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                safari
+              </p>
+              <p
+                @click="category_id = 16"
+                :class="
+                  category_id == 16
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                museums
+              </p>
+              <p
+                @click="category_id = 29"
+                :class="
+                  category_id == 29
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                theme parks
+              </p>
+              <p
+                @click="category_id = 54"
+                :class="
+                  category_id == 54
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                buffet
+              </p>
+              <p
+                @click="category_id = 42"
+                :class="
+                  category_id == 42
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                island tours
+              </p>
+              <p
+                @click="category_id = 39"
+                :class="
+                  category_id == 39
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                shows
+              </p>
+              <p
+                @click="category_id = 22"
+                :class="
+                  category_id == 22
+                    ? 'border-main text-main'
+                    : 'border-black/10'
+                "
+                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              >
+                skywalks
+              </p>
+            </div>
           </div>
         </div>
         <div class="flex justify-start items-center flex-wrap gap-2 px-6">
