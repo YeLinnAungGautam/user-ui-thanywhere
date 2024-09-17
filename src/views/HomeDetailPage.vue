@@ -37,35 +37,23 @@
                   <StarIcon class="w-3 h-3 text-main" />
                 </div>
               </div>
-              <div class="space-y-6 pt-6">
-                <h1 class="font-semibold border-l-4 border-main pl-3">
-                  Nearby Places
-                </h1>
-                <div class="space-y-2 pb-3">
-                  <div
-                    class="flex justify-between items-center gap-2"
-                    v-for="i in detail?.nearby_places"
-                    :key="i"
-                  >
-                    <div class="flex justify-start items-center gap-2">
-                      <img
-                        :src="i?.image"
-                        class="w-7 h-7 rounded-lg"
-                        alt=""
-                        v-if="i.image != 'undefined'"
-                      />
-                      <img
-                        :src="locationMap"
-                        class="w-5 h-5 rounded-lg"
-                        alt=""
-                        v-if="i.image == 'undefined'"
-                      />
 
-                      <p class="text-sm">{{ i?.name }}</p>
-                    </div>
-                    <p class="text-xs">{{ i?.distance }}</p>
-                  </div>
-                </div>
+              <div class="space-y-4 pt-6" v-if="detail?.location_map != 'null'">
+                <h1 class="font-semibold border-l-4 border-main pl-3">
+                  Location
+                </h1>
+                <iframe
+                  :src="detail?.location_map"
+                  class="w-[100%] h-[200px] rounded-xl overflow-hidden"
+                  style="border: 0"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+                <p class="text-xs leading-5">
+                  {{ detail?.location_map_title }}
+                </p>
+                <!-- <p class="text-xs text-main pb-6">view in map</p> -->
               </div>
             </div>
             <div class="bg-white px-5 py-3 space-y-4">
@@ -161,22 +149,35 @@
               >
                 see less
               </p>
-              <div class="space-y-4" v-if="detail?.location_map != 'null'">
+              <div class="space-y-6">
                 <h1 class="font-semibold border-l-4 border-main pl-3">
-                  Location
+                  Nearby Places
                 </h1>
-                <iframe
-                  :src="detail?.location_map"
-                  class="w-[100%] h-[200px] rounded-xl overflow-hidden"
-                  style="border: 0"
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-                <p class="text-xs leading-5">
-                  {{ detail?.location_map_title }}
-                </p>
-                <!-- <p class="text-xs text-main pb-6">view in map</p> -->
+                <div class="space-y-2 pb-3">
+                  <div
+                    class="flex justify-between items-center gap-2"
+                    v-for="i in detail?.nearby_places"
+                    :key="i"
+                  >
+                    <div class="flex justify-start items-center gap-2">
+                      <img
+                        :src="i?.image"
+                        class="w-7 h-7 rounded-lg"
+                        alt=""
+                        v-if="i.image != 'undefined'"
+                      />
+                      <img
+                        :src="locationMap"
+                        class="w-5 h-5 rounded-lg"
+                        alt=""
+                        v-if="i.image == 'undefined'"
+                      />
+
+                      <p class="text-sm">{{ i?.name }}</p>
+                    </div>
+                    <p class="text-xs">{{ i?.distance }}</p>
+                  </div>
+                </div>
               </div>
               <div class="pt-5">
                 <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
