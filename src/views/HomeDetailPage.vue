@@ -67,7 +67,7 @@
       </transition>
       <div class="relative" id="location">
         <div
-          class="bg-black/70 w-[40px] rounded-lg h-[6px] z-30 mx-auto absolute -top-2 left-[45%]"
+          class="bg-black w-[45px] rounded-lg h-[6px] z-30 mx-auto absolute -top-2 left-[45%]"
         ></div>
         <div class="bg-black/5 mb-4 space-y-6">
           <div class="space-y-4">
@@ -80,9 +80,19 @@
                   {{ getRoomTypeCount }} type rooms
                 </p> -->
               </div>
-              <div class="flex justify-start items-center gap-x-0.5 pt-1">
-                <div v-for="i in detail?.rating" :key="i" class="">
-                  <StarIcon class="w-3 h-3 text-main" />
+              <div class="flex justify-between items-center pt-1">
+                <div class="flex justify-start items-center gap-x-0.5">
+                  <div v-for="i in detail?.rating" :key="i" class="">
+                    <StarIcon class="w-3 h-3 text-main" />
+                  </div>
+                </div>
+                <div
+                  class="flex justify-end items-center gap-x-1 bg-black/5 px-2 py-1 rounded-2xl"
+                >
+                  <img :src="Pin" class="w-4 h-4" alt="" />
+                  <p class="text-xs">
+                    {{ detail?.city?.name }} , {{ detail?.place }}
+                  </p>
                 </div>
               </div>
 
@@ -217,7 +227,7 @@
                         v-if="i.image != 'undefined'"
                       />
                       <img
-                        :src="locationMap"
+                        :src="Pin"
                         class="w-5 h-5 rounded-lg"
                         alt=""
                         v-if="i.image == 'undefined'"
@@ -619,8 +629,9 @@ import {
   ChevronRightIcon,
 } from "@heroicons/vue/24/outline";
 import { StarIcon } from "@heroicons/vue/24/solid";
-import locationMap from "../assets/web/pin.svg";
+// import locationMap from "../assets/web/pin.svg";
 import ShareIcon from "../assets/web/send.png";
+import Pin from "@/assets/s/pin 1 (1).png";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import messengerIcon from "../assets/Booking icons/messenger.png";

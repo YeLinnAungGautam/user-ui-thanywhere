@@ -72,7 +72,7 @@
       <div class="bg-black/5">
         <div class="relative">
           <div
-            class="bg-black/70 w-[40px] rounded-lg h-[6px] mx-auto absolute -top-2 z-30 left-[45%]"
+            class="bg-black w-[45px] rounded-lg h-[6px] mx-auto absolute -top-2 z-30 left-[45%]"
           ></div>
           <div class="mb-3 space-y-4">
             <div class="">
