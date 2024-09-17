@@ -64,6 +64,20 @@
       >
         buffet
       </p>
+      <p
+        @click="category_id = 42"
+        :class="category_id == 42 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        island tours
+      </p>
+      <p
+        @click="category_id = 39"
+        :class="category_id == 39 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        shows
+      </p>
     </div>
     <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
@@ -187,7 +201,6 @@ watch(category_id, async (newValue) => {
   if (newValue) {
     data.value = [];
     const res = await entranceStore.getListAction({
-      city_id: 2,
       category_id: category_id.value,
     });
     data.value = res.data;

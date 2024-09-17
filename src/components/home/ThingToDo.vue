@@ -62,6 +62,20 @@
       >
         buffet
       </p>
+      <!-- <p
+        @click="category_id = 42"
+        :class="category_id == 42 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        island tours
+      </p>
+      <p
+        @click="category_id = 39"
+        :class="category_id == 39 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        shows
+      </p> -->
     </div>
     <div
       v-if="list.length == 0"
