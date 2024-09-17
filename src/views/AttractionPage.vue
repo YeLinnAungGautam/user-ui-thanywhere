@@ -125,19 +125,25 @@ const goDetialPage = (id) => {
   });
 };
 
-// const getRange = (data) => {
-//   // console.log(data);
-//   router.push({
-//     name: "HomeAttractionResult",
-//     params: { id: 2, name: "Bangkok" },
-//   });
-// };
-//  activitydb = activitydb;
+const category_id = ref(32);
+// const list = ref([]);
+
+watch(category_id, async (newValue) => {
+  if (newValue) {
+    entrancesList.value = [];
+    const res = await entranceStore.getListAction({
+      category_id: category_id.value,
+    });
+    entrancesList.value = res.data;
+  }
+});
 
 onMounted(async () => {
   await settingStore.getLanguage();
   window.addEventListener("scroll", handleScroll);
-  let res = await entranceStore.getListAction();
+  let res = await entranceStore.getListAction({
+    category_id: category_id.value,
+  });
   await cityStore.getSimpleListAction();
   entrancesList.value = res.data;
   console.log(entrancesList.value, "this is entrance list add");
@@ -182,16 +188,87 @@ watch(entrances, async (newValue) => {
     <div class="h-auto pb-20 z-20 space-y-4 relative">
       <div
         :class="isStickey ? 'shadow-custom' : ''"
-        class="flex justify-between items-center sticky top-0 py-2 px-6 z-10 bg-background w-full"
+        class="sticky top-0 py-2 px-6 z-10 bg-background w-full"
       >
-        <h1 class="text-main font-semibold">attractions</h1>
-        <div class="flex justify-end items-center gap-4">
+        <div class="flex justify-between items-center">
+          <h1 class="text-main font-semibold">attractions</h1>
+          <div class="flex justify-end items-center gap-4">
+            <div
+              class="flex justify-end items-center gap-2 cursor-pointer"
+              @click="openBottomSheet"
+            >
+              <p class="text-[10px] text-main font-semibold">filter by</p>
+              <ChevronDownIcon class="w-3 h-3 text-main" />
+            </div>
+          </div>
+        </div>
+        <div class="w-full">
           <div
-            class="flex justify-end items-center gap-2 cursor-pointer"
-            @click="openBottomSheet"
+            class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-2 scroll-container"
           >
-            <p class="text-[10px] text-main font-semibold">filter by</p>
-            <ChevronDownIcon class="w-3 h-3 text-main" />
+            <p
+              @click="category_id = 32"
+              :class="
+                category_id == 32 ? 'border-main text-main' : 'border-black/10'
+              "
+              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+            >
+              amusement park
+            </p>
+            <p
+              @click="category_id = 40"
+              :class="
+                category_id == 40 ? 'border-main text-main' : 'border-black/10'
+              "
+              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+            >
+              dinner cruises
+            </p>
+            <p
+              @click="category_id = 31"
+              :class="
+                category_id == 31 ? 'border-main text-main' : 'border-black/10'
+              "
+              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+            >
+              water parks
+            </p>
+            <p
+              @click="category_id = 17"
+              :class="
+                category_id == 17 ? 'border-main text-main' : 'border-black/10'
+              "
+              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+            >
+              safari
+            </p>
+            <p
+              @click="category_id = 16"
+              :class="
+                category_id == 16 ? 'border-main text-main' : 'border-black/10'
+              "
+              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+            >
+              museums
+            </p>
+            <p
+              @click="category_id = 29"
+              :class="
+                category_id == 29 ? 'border-main text-main' : 'border-black/10'
+              "
+              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+            >
+              theme parks
+            </p>
+            <p
+              @click="category_id = 54"
+              :class="
+                category_id == 54 ? 'border-main text-main' : 'border-black/10'
+              "
+              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+            >
+              buffet
+            </p>
           </div>
         </div>
       </div>

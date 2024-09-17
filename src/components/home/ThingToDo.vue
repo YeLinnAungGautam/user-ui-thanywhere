@@ -41,6 +41,27 @@
       >
         safari
       </p>
+      <p
+        @click="category_id = 16"
+        :class="category_id == 16 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        museums
+      </p>
+      <p
+        @click="category_id = 29"
+        :class="category_id == 29 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        theme parks
+      </p>
+      <p
+        @click="category_id = 54"
+        :class="category_id == 54 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        buffet
+      </p>
     </div>
     <div
       v-if="list.length == 0"
@@ -120,6 +141,7 @@ const list = ref([]);
 
 watch(category_id, async (newValue) => {
   if (newValue) {
+    list.value = [];
     const res = await entranceStore.getListAction({
       city_id: 2,
       category_id: category_id.value,

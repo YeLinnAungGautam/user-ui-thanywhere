@@ -13,6 +13,59 @@
       </div>
     </div>
     <div
+      class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-1 px-6 scroll-container"
+    >
+      <p
+        @click="category_id = 32"
+        :class="category_id == 32 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        amusement park
+      </p>
+      <p
+        @click="category_id = 40"
+        :class="category_id == 40 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        dinner cruises
+      </p>
+      <p
+        @click="category_id = 31"
+        :class="category_id == 31 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        water parks
+      </p>
+      <p
+        @click="category_id = 17"
+        :class="category_id == 17 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        safari
+      </p>
+      <p
+        @click="category_id = 16"
+        :class="category_id == 16 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        museums
+      </p>
+      <p
+        @click="category_id = 29"
+        :class="category_id == 29 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        theme parks
+      </p>
+      <p
+        @click="category_id = 54"
+        :class="category_id == 54 ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        buffet
+      </p>
+    </div>
+    <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
       v-if="data.length == 0"
     >
@@ -102,7 +155,7 @@
 
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 // import StarPartVue from "./StarPart.vue";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
@@ -126,6 +179,20 @@ const goDetialPage = (id) => {
     query: { language: language.value },
   });
 };
+
+const category_id = ref(40);
+// const list = ref([]);
+
+watch(category_id, async (newValue) => {
+  if (newValue) {
+    data.value = [];
+    const res = await entranceStore.getListAction({
+      city_id: 2,
+      category_id: category_id.value,
+    });
+    data.value = res.data;
+  }
+});
 
 onMounted(async () => {
   await settingStore.getLanguage();
