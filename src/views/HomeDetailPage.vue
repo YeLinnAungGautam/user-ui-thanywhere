@@ -148,7 +148,15 @@
                     <p class="text-xs font-medium whitespace-nowrap">
                       Extra Bed
                     </p>
-                    <p class="text-xs font-medium">+ 0 thb per pax</p>
+                    <p class="text-xs font-medium" v-if="hasExtraRoom">
+                      + 0 thb per pax
+                    </p>
+                    <p
+                      class="text-xs font-medium text-red"
+                      v-if="!hasExtraRoom"
+                    >
+                      not avalible !
+                    </p>
                   </div>
                   <div
                     class="border rounded-lg space-y-1 w-[400px] p-3"
@@ -162,7 +170,15 @@
                     <p class="text-xs font-medium whitespace-nowrap">
                       Breakfast : Adult
                     </p>
-                    <p class="text-xs font-medium">+ 800 thb per pax</p>
+                    <p class="text-xs font-medium" v-if="haveBreakfast">
+                      + 800 thb per pax
+                    </p>
+                    <p
+                      class="text-xs font-medium text-red"
+                      v-if="!haveBreakfast"
+                    >
+                      not avalible !
+                    </p>
                   </div>
                 </div>
                 <div class="space-y-2 pb-2">
@@ -597,10 +613,24 @@
           {{ chooseData ? chooseData.room_price : detail?.lowest_room_price }}
           thb
         </p>
-        <p class="text-lg font-semibold text-main" v-if="choosePax">
+        <p
+          class="text-lg font-semibold text-main"
+          v-if="choosePax && haveBreakfast"
+        >
           {{
             chooseData
               ? chooseData.room_price * 1 + 800 * chooseCount
+              : chooseData.room_price
+          }}
+          thb
+        </p>
+        <p
+          class="text-lg font-semibold text-main"
+          v-if="choosePax && !haveBreakfast"
+        >
+          {{
+            chooseData
+              ? chooseData.room_price * chooseCount
               : chooseData.room_price
           }}
           thb
@@ -714,12 +744,14 @@ const chooseData = ref(null);
 const choosePax = ref(false);
 const chooseCount = ref(0);
 
+const haveBreakfast = ref(false);
 const chooseDataFunction = (data) => {
   chooseData.value = data;
   console.log("====================================");
   console.log(chooseData.value);
   console.log("====================================");
   chooseCount.value = 0;
+  haveBreakfast.value = chooseData.value.has_breakfast == 1 ? true : false;
 };
 
 const chooseCountMinus = () => {
@@ -738,6 +770,7 @@ const getRoomType = (rooms) => {
   }
 };
 
+const hasExtraRoom = ref(false);
 const getDetail = async (id) => {
   loading.value = true;
   const res = await hotelStore.getDetailAction(id);
@@ -746,10 +779,15 @@ const getDetail = async (id) => {
   console.log("====================================");
   if (res.data?.rooms.length > 0) {
     chooseData.value = res.data.rooms[0];
+    haveBreakfast.value = chooseData.value.has_breakfast == 1 ? true : false;
     if (chooseData.value) {
       chooseCount.value = 0;
     }
   }
+
+  hasExtraRoom.value = res.data?.rooms?.some((room) => room.is_extra === 1);
+  console.log("Has extra room:", hasExtraRoom.value);
+
   getRoomType(res?.data?.rooms);
   detail.value = res.data;
   const response = await hotelStore.getSimpleListAction({

@@ -26,6 +26,7 @@ const showProp = ref(false);
 const changePageFunction = (data) => {
   if (data) {
     showProp.value = false;
+    localStorage.setItem("showProps", "false");
   }
 };
 
@@ -33,7 +34,12 @@ onMounted(() => {
   console.log("====================================");
   console.log(route.path); // Log the current route path
   if (route.path === "/") {
-    showProp.value = true; // Set showProp to true if the current path is "/"
+    if (localStorage.getItem("showProps") == "false") {
+      showProp.value = false;
+    } else {
+      showProp.value = true;
+    }
+    // Set showProp to true if the current path is "/"
   }
   console.log("====================================");
 });
