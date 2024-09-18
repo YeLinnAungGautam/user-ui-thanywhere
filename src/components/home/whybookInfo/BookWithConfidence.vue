@@ -35,6 +35,9 @@
         <p class="font-semibold text-sm text-main">
           Learn More About Our Team :
         </p>
+        <div>
+          <SaleTeamVue />
+        </div>
       </div>
     </div>
   </div>
