@@ -1,12 +1,14 @@
 <template>
   <div>
     <div class="flex justify-between items-center">
-      <h1 class="text-main font-semibold px-6">top things to do in bangkok</h1>
+      <h1 class="text-main font-semibold px-6">
+        top things to do in {{ chooseCity.name }}
+      </h1>
       <div
-        @click="router.push(`/home/attraction-result/2/Bangkok`)"
+        @click="showModal = !showModal"
         class="text-[10px] font-semibold text-main flex justify-end items-center gap-1 mr-6"
       >
-        <p class="whitespace-nowrap">see more</p>
+        <p class="whitespace-nowrap">filter city</p>
         <ChevronDownIcon class="w-3 h-3" />
       </div>
     </div>
@@ -138,42 +140,131 @@
         <ThingToDoLoadingCartVue :i="i" />
       </div>
     </div>
+    <div
+      @click="router.push(`/home/attraction-result/2/Bangkok`)"
+      class="text-[10px] font-semibold text-main flex justify-center mt-2 items-center gap-1 border border-black/10 mx-6 py-2 rounded-xl"
+    >
+      <p class="whitespace-nowrap">see more</p>
+      <ChevronDownIcon class="w-3 h-3" />
+    </div>
+    <Modal v-model="showModal">
+      <h2 class="text-sm text-main font-medium">Choose City</h2>
+      <input
+        type="search"
+        v-model="searchTerm"
+        name=""
+        class="w-full border border-main px-4 mt-3 py-1.5 text-sm rounded-2xl text-main focus:outline-none bg-transparent"
+        id=""
+      />
+      <div class="space-y-1 h-[200px] overflow-y-scroll pt-3">
+        <div
+          class="flex justify-between items-center space-y-2 pr-4"
+          v-for="c in filteredCities ?? []"
+          :key="c"
+          @click="chooseCityAction(c)"
+        >
+          <p class="text-sm">{{ c.name }}</p>
+          <input
+            type="checkbox"
+            name=""
+            :checked="c.id == chooseCity.id"
+            id=""
+          />
+        </div>
+      </div>
+      <div class="space-x-2 flex justify-end items-center pt-3">
+        <button
+          class="px-3 py-1 text-xs text-white bg-main rounded-2xl border border-main"
+          @click="chooseAction"
+        >
+          Choose
+        </button>
+        <button
+          class="px-3 py-1 text-xs text-main bg-transparent border border-main rounded-2xl"
+          @click="showModal = !showModal"
+        >
+          Close
+        </button>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useEntranceStore } from "../../stores/entrance";
 import { storeToRefs } from "pinia";
 import ThingToDoLoadingCartVue from "../LoadingCarts/ThingToDoLoadingCart.vue";
 import { useRouter } from "vue-router";
 import { useSettingStore } from "../../stores/setting";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
+import Modal from "./ShowModal.vue";
+import { useCityStore } from "@/stores/city";
 // import { ref } from "@vue/reactivity";
 
 const entranceStore = useEntranceStore();
 const router = useRouter();
 const settingStore = useSettingStore();
+const cityStore = useCityStore();
+const { cities } = storeToRefs(cityStore);
 const { language } = storeToRefs(settingStore);
 
 const category_id = ref(40);
 const list = ref([]);
+const showModal = ref(false);
+
+const chooseCity = ref({
+  id: "2",
+  name: "bangkok",
+});
+const chooseCityAction = (c) => {
+  chooseCity.value = {
+    id: c.id,
+    name: c.name,
+  };
+};
+
+const chooseAction = async () => {
+  list.value = [];
+  const res = await entranceStore.getListAction({
+    city_id: chooseCity.value.id,
+    category_id: category_id.value,
+  });
+  list.value = res.data;
+  showModal.value = false;
+};
+
+const searchTerm = ref("");
+// Computed property to filter the city list based on the search term
+const filteredCities = computed(() => {
+  return cities.value.data.filter((city) =>
+    city.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+  );
+});
 
 watch(category_id, async (newValue) => {
   if (newValue) {
     list.value = [];
     const res = await entranceStore.getListAction({
-      city_id: 2,
+      city_id: chooseCity.value.id,
       category_id: category_id.value,
     });
     list.value = res.data;
   }
 });
 
+watch(showModal, async (newValue) => {
+  if (newValue == true) {
+    if (cities.value == null) {
+      await cityStore.getSimpleListAction();
+    }
+  }
+});
+
 onMounted(async () => {
   const res = await entranceStore.getListAction({
-    city_id: 2,
+    city_id: chooseCity.value.id,
     category_id: category_id.value,
   });
   await settingStore.getLanguage();

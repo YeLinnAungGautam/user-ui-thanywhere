@@ -3,12 +3,19 @@
     <div
       class="flex justify-between items-center sticky top-0 z-10 py-2 bg-background"
     >
-      <h1 class="text-main font-semibold px-6">stays in pattaya</h1>
+      <h1 class="text-main font-semibold px-6">
+        stays in pattaya
+        <span
+          v-if="choosePlace"
+          class="px-2 py-0.5 ml-2 text-[10px] bg-black/10 text-black/80 font-medium rounded-xl"
+          >{{ choosePlace }}</span
+        >
+      </h1>
       <div
-        @click="goMore()"
+        @click="showModal = !showModal"
         class="text-[10px] font-semibold text-main cursor-pointer flex justify-end items-center gap-1 mr-6"
       >
-        <p>see more</p>
+        <p>filter place</p>
         <ChevronDownIcon class="w-3 h-3" />
       </div>
     </div>
@@ -83,9 +90,7 @@
             <p
               class="text-main text-[10px] bg-black/20 w-full h-2 mt-1 animate-pulse"
             ></p>
-            <p
-              class="text-main text-[10px] bg-black/20 w-10 h-3 mt-4 animate-pulse"
-            ></p>
+
             <button
               class="bg-main animate-pulse px-3 mt-2 mb-2 py-1 rounded-xl text-xs font-semibold text-white"
             >
@@ -105,66 +110,79 @@
         :key="index"
         @click="goDetialPage(i?.id)"
       >
-        <!-- <div>
-          <div class="w-full h-[140px] p-1.5 overflow-hidden">
-            <img
-              :src="i.images[0]?.image"
-              class="w-full h-full object-cover rounded-xl"
-              alt=""
-            />
-          </div>
-          <div class="px-3 py-0">
-            <p class="text-[10px] text-black font-medium">
-              {{ i.rating }}-star rating
-            </p>
-            <p class="font-semibold text-sm pt-1">{{ i.name }}</p>
-            <p
-              class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block"
-            >
-              {{ i.place }}
-            </p>
-            <p
-              class="text-[9px] pt-1 max-h-[44px] overflow-hidden"
-              v-html="
-                language == 'english'
-                  ? i?.full_description_en
-                  : i?.full_description
-              "
-            ></p>
-            <div class="">
-              <p class="text-xs font-medium mt-2">starting price</p>
-              <button
-                class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
-              >
-                {{ i.lowest_room_price }} THB
-              </button>
-            </div>
-          </div>
-        </div> -->
         <StayInBangkokCart :i="i" />
       </div>
     </div>
+    <div
+      @click="goMore()"
+      class="text-[10px] font-semibold text-main flex justify-center mt-2 items-center gap-1 border border-black/10 mx-6 py-2 rounded-xl"
+    >
+      <p class="whitespace-nowrap">see more</p>
+      <ChevronDownIcon class="w-3 h-3" />
+    </div>
+    <Modal v-model="showModal">
+      <h2 class="text-sm text-main font-medium">Choose Place</h2>
+      <input
+        type="search"
+        v-model="searchTerm"
+        name=""
+        class="w-full border border-main px-4 mt-3 py-1.5 text-sm rounded-2xl text-main focus:outline-none bg-transparent"
+        id=""
+      />
+      <div class="space-y-1 h-[200px] overflow-y-scroll pt-3">
+        <div
+          class="flex justify-between items-center space-y-2 pr-4"
+          @click="choosePlace = ''"
+        >
+          <p class="text-sm w-[150px] line-clamp-1">All places</p>
+          <input type="checkbox" name="" :checked="choosePlace == ''" id="" />
+        </div>
+        <div
+          class="flex justify-between items-center space-y-2 pr-4"
+          v-for="c in filteredCities ?? []"
+          :key="c"
+          @click="choosePlace = c"
+        >
+          <p class="text-sm w-[150px] line-clamp-1">{{ c }}</p>
+          <input type="checkbox" name="" :checked="c == choosePlace" id="" />
+        </div>
+      </div>
+      <div class="space-x-2 flex justify-end items-center pt-3">
+        <button
+          class="px-3 py-1 text-xs text-white bg-main rounded-2xl border border-main"
+          @click="chooseAction"
+        >
+          Choose
+        </button>
+        <button
+          class="px-3 py-1 text-xs text-main bg-transparent border border-main rounded-2xl"
+          @click="showModal = !showModal"
+        >
+          Close
+        </button>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 // import StarPartVue from "./StarPart.vue";
 // import stayinbangkok from "../../assets/db";
 import { useSettingStore } from "../../stores/setting";
 import { useRouter } from "vue-router";
 import { useHotelStore } from "../../stores/hotel";
-
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import StayInBangkokCart from "../../components/LoadingCarts/StayInBangkokCart.vue";
 import { storeToRefs } from "pinia";
+import Modal from "./ShowModal.vue";
 
 // const data = ref(null);
-const router = useRouter();
-const hotelStore = useHotelStore();
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
+const router = useRouter();
+const hotelStore = useHotelStore();
 
 const goDetialPage = (id) => {
   router.push({
@@ -178,33 +196,84 @@ const lists = ref([]);
 
 const goMore = () => {
   router.push(
-    `/home/hotel-filter/4/Pattaya/?price=null&rating=null&place=null&facilities=null&search=`
+    `/home/hotel-filter/2/Bangkok/?price=null&rating=null&place=null&facilities=null&search=`
   );
 };
 
-const type = ref("0-1200");
+const type = ref("1200-1800");
 
 const getList = async (a) => {
   console.log(a, "this is type");
   lists.value = [];
   type.value = a;
-  const res = await hotelStore.getListAction({
+  let data = {
     city_id: 4,
     price_range: a,
     limit: 8,
-  });
+  };
+  if (choosePlace.value != "") {
+    data.place = choosePlace.value;
+  }
+  const res = await hotelStore.getListAction(data);
   lists.value = res.data;
   console.log(lists.value, "this is stay in bangkkok");
+};
+
+const placeList = ref([
+  "Pattaya",
+  "Near Pattaya Avenue",
+  "Chon Buri",
+  "Near Pattaya Beach",
+]);
+const showModal = ref(false);
+const searchTerm = ref("");
+const choosePlace = ref("");
+
+const filteredCities = computed(() => {
+  if (placeList?.value.length != 0) {
+    return placeList?.value.filter((place) =>
+      place.toLowerCase().includes(searchTerm.value.toLowerCase())
+    );
+  } else {
+    return [];
+  }
+});
+
+const chooseAction = async () => {
+  if (choosePlace.value != "") {
+    lists.value = [];
+    const res = await hotelStore.getListAction({
+      limit: 8,
+      place: choosePlace.value,
+      price_range: type.value,
+    });
+    lists.value = res.data;
+    showModal.value = false;
+  } else {
+    lists.value = [];
+    const res = await hotelStore.getListAction({
+      limit: 8,
+      city_id: 4,
+      price_range: type.value,
+    });
+    lists.value = res.data;
+    showModal.value = false;
+  }
 };
 
 onMounted(async () => {
   lists.value = [];
   // data.value = stayinbangkok;
-  const res = await hotelStore.getListAction({
+  let data = {
     city_id: 4,
     limit: 8,
     price_range: type.value,
-  });
+  };
+  if (choosePlace.value != "") {
+    data.place = choosePlace.value;
+  }
+  const res = await hotelStore.getListAction(data);
+
   lists.value = res.data;
 });
 </script>

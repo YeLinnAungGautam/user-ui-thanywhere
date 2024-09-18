@@ -16,11 +16,18 @@
             :src="d.image"
             :alt="d.name"
             class="h-auto absolute -bottom-[36px] z-10 object-cover rounded-lg"
-            :class="d.id == 1 ? 'w-full' : 'w-[80px] left-4'"
+            :class="{
+              'w-[100px]': d.id == 1,
+              '-left-1 w-[80px]': d.id == 1,
+              'w-[68px] left-4': d.id == 2,
+              'left-6': d.id == 4,
+              'left-2': d.id == 7,
+              'w-[80px]': d.id !== 1 && d.id !== 2,
+            }"
           />
           <img
             :src="background"
-            :class="d.id == 7 || d.id == 4 || d.id == 2 ? 'left-4' : ''"
+            :class="d.id == 4 || d.id == 2 ? 'left-4' : ''"
             class="absolute w-[89px] z-0 -bottom-[49px]"
             alt=""
           />

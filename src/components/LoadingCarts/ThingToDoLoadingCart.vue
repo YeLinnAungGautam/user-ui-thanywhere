@@ -14,10 +14,12 @@
       </div>
 
       <div class="px-1 pb-2 pt-4">
-        <p class="font-semibold text-sm line-clamp-1">{{ i?.name }}</p>
+        <p class="font-semibold text-sm line-clamp-1 max-w-[180px]">
+          {{ i?.name }}
+        </p>
         <div class="text-[10px] flex justify-start items-center gap-0.5 py-1">
           <MapPinIcon class="w-3 h-3 text-main" />
-          <p class="pt-0.5 text-main">Bangkok</p>
+          <p class="pt-0.5 text-main">{{ i?.cities[0]?.name }}</p>
         </div>
         <p class="text-xs font-medium pt-1">starting price</p>
         <div class="flex justify-between items-center">

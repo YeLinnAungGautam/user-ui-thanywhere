@@ -17,7 +17,7 @@
             :src="i.image"
             class="h-auto"
             alt=""
-            :class="i.id == 2 || i.id == 4 ? 'w-[70px] mt-2.5' : 'w-[80px]'"
+            :class="i.id == 3 || i.id == 5 ? 'w-[70px] mt-2.5' : 'w-[80px]'"
           />
           <p class="text-[12px] font-semibold">{{ i.title }}</p>
           <p
@@ -26,7 +26,7 @@
             {{ i.description }}
           </p>
           <p
-            @click="open"
+            @click="open(i.id)"
             class="text-xs bg-main inline-block text-white rounded-full px-3 py-1 font-medium"
           >
             learn more
@@ -39,14 +39,22 @@
         <div class="h-[80vh]">
           <div class="flex justify-between items-center px-6 pb-4">
             <p class="opacity-0">........</p>
-            <p class="text-black text-sm font-medium">Why choose Thanywhere</p>
+            <p class="text-black text-sm font-medium" v-if="openPart == 1">
+              Book With Confidence
+            </p>
+            <p class="text-black text-sm font-medium" v-if="openPart == 2">
+              Visit Our Offices
+            </p>
             <XMarkIcon class="w-5 h-5" @click="close" />
           </div>
           <div
             class="border border-black/10 p-4 ml-4 mr-4 rounded-xl h-[90vh] overflow-scroll"
           >
-            <div>
-              <MakePaymentPage />
+            <div v-if="openPart == 1">
+              <BookWithConfidence />
+            </div>
+            <div v-if="openPart == 2">
+              <VisitOurOffice />
             </div>
           </div>
         </div>
@@ -61,14 +69,19 @@ import image2 from "../../assets/s/get best prices.svg";
 import image3 from "../../assets/s/book with confidence.png";
 import image4 from "../../assets/s/travel with trust.svg";
 import image5 from "../../assets/s/growing with you.svg";
+import image6 from "../../assets/Trust_378x348.png";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
-import MakePaymentPage from "../../views/FAQs/MakePayment.vue";
+import BookWithConfidence from "./whybookInfo/BookWithConfidence.vue";
 import { ref } from "vue";
+import { XMarkIcon } from "@heroicons/vue/24/outline";
+import VisitOurOffice from "./whybookInfo/VisitOurOffice.vue";
 
 const myBottomSheet = ref(null);
 const openPart = ref("");
-const open = () => {
+
+const open = (id) => {
+  openPart.value = id;
   myBottomSheet.value.open();
 };
 
@@ -87,27 +100,34 @@ const data = [
   },
   {
     id: 2,
+    title: "Visit our Offices",
+    description:
+      "Our global team and many more are working around the clock to improve travel experience.",
+    image: image6,
+  },
+  {
+    id: 3,
     title: "Travel with Trust",
     description:
       "TAT licensed and direct partnership allows us to resolve all matters at hand bringing you peace of mind.",
     image: image4,
   },
   {
-    id: 3,
+    id: 4,
     title: "Discover Thailand",
     description:
       "Explore from hundreds of tours, attractions, hotels and destinations around Thailand.",
     image: image1,
   },
   {
-    id: 4,
+    id: 5,
     title: "Get best prices",
     description:
       "Get great prices that are cheaper than walk-ins and save more on your next trip.",
     image: image2,
   },
   {
-    id: 5,
+    id: 6,
     title: "Growing with You",
     description:
       "Our global team and many more are working around the clock to improve travel experience.",

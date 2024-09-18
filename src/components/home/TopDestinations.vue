@@ -4,13 +4,13 @@
       class="flex justify-between items-center sticky top-0 py-2 z-30 bg-background"
     >
       <h1 class="text-main font-semibold px-6">top destinations to read</h1>
-      <div
+      <!-- <div
         @click="router.push('/home/destination')"
         class="text-[10px] font-semibold text-main flex justify-end items-center gap-1 mr-6"
       >
         <p>see more</p>
         <ChevronDownIcon class="w-3 h-3" />
-      </div>
+      </div> -->
     </div>
     <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
@@ -69,6 +69,13 @@
       >
         <TopDestinationCartVue :i="i" />
       </div>
+    </div>
+    <div
+      @click="router.push('/home/destination')"
+      class="text-[10px] font-semibold text-main flex justify-center mt-2 items-center gap-1 border border-black/10 mx-6 py-2 rounded-xl"
+    >
+      <p class="whitespace-nowrap">see more</p>
+      <ChevronDownIcon class="w-3 h-3" />
     </div>
   </div>
 </template>

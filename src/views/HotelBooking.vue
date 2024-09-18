@@ -214,6 +214,7 @@ const searchFunctionArray = async () => {
 const showSearch = ref(false);
 
 const searchFunction = (data) => {
+  // console.log(data);
   city_name.value = data.name;
   filterId.value = data.id;
   placeArray.value = data.places;

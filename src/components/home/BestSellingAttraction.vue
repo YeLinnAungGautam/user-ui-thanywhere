@@ -5,10 +5,10 @@
     >
       <h1 class="text-main font-semibold px-6">best selling attractions</h1>
       <div
-        @click="router.push('/home/attraction')"
+        @click="showModal = !showModal"
         class="text-[10px] font-semibold text-main flex justify-end items-center gap-1 mr-6"
       >
-        <p>see more</p>
+        <p class="whitespace-nowrap">filter city</p>
         <ChevronDownIcon class="w-3 h-3" />
       </div>
     </div>
@@ -141,42 +141,69 @@
         :key="index"
         @click="goDetialPage(i.id)"
       >
-        <!-- <div class="w-full h-[140px] p-1.5 overflow-hidden">
-          <img
-            :src="i.cover_image"
-            class="w-full h-full object-cover rounded-xl"
-            alt=""
-          />
-        </div>
-        <div class="px-3 py-0">
-          <StarPartVue :count="3" />
-          <p class="font-semibold text-sm pt-1">{{ i.name }}</p>
-          <p class="text-[8px] bg-black/10 rounded-md py-0.5 px-1 inline-block">
-            {{ i?.cities[0]?.name }}
-          </p>
-          <p class="text-[9px] pt-1 max-h-[44px] overflow-hidden">
-            {{
-              language == "english"
-                ? i?.full_description_en
-                : i?.long_description
-            }}
-          </p>
-          <p class="text-xs mt-2 font-medium">starting car price</p>
-          <button
-            class="bg-main px-4 mt-2 mb-3 py-0.5 rounded-2xl text-sm text-white"
-          >
-            {{ i?.lowest_car_price }}THB
-          </button>
-        </div> -->
         <BestSellingAttractionVue :i="i" />
       </div>
     </div>
+    <div
+      @click="router.push(`/home/attraction-result/2/Bangkok`)"
+      class="text-[10px] font-semibold text-main flex justify-center mt-2 items-center gap-1 border border-black/10 mx-6 py-2 rounded-xl"
+    >
+      <p class="whitespace-nowrap">see more</p>
+      <ChevronDownIcon class="w-3 h-3" />
+    </div>
+    <Modal v-model="showModal">
+      <h2 class="text-sm text-main font-medium">Choose City</h2>
+      <input
+        type="search"
+        v-model="searchTerm"
+        name=""
+        class="w-full border border-main px-4 mt-3 py-1.5 text-sm rounded-2xl text-main focus:outline-none bg-transparent"
+        id=""
+      />
+      <div class="space-y-1 h-[200px] overflow-y-scroll pt-3">
+        <div
+          class="flex justify-between items-center space-y-2 pr-4"
+          @click="chooseCityAction('')"
+        >
+          <p class="text-sm">All</p>
+          <input type="checkbox" name="" :checked="chooseCity.id == ''" id="" />
+        </div>
+        <div
+          class="flex justify-between items-center space-y-2 pr-4"
+          v-for="c in filteredCities ?? []"
+          :key="c"
+          @click="chooseCityAction(c)"
+        >
+          <p class="text-sm">{{ c.name }}</p>
+          <input
+            type="checkbox"
+            name=""
+            :checked="c.id == chooseCity.id"
+            id=""
+          />
+        </div>
+      </div>
+      <div class="space-x-2 flex justify-end items-center pt-3">
+        <button
+          class="px-3 py-1 text-xs text-white bg-main rounded-2xl border border-main"
+          @click="chooseAction"
+        >
+          Choose
+        </button>
+        <button
+          class="px-3 py-1 text-xs text-main bg-transparent border border-main rounded-2xl"
+          @click="showModal = !showModal"
+        >
+          Close
+        </button>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 // import StarPartVue from "./StarPart.vue";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
@@ -184,11 +211,15 @@ import { useRouter } from "vue-router";
 import { useEntranceStore } from "../../stores/entrance";
 import BestSellingAttractionVue from "../../components/LoadingCarts/BestSellingAttraction.vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
+import Modal from "./ShowModal.vue";
+import { useCityStore } from "@/stores/city";
 
 // const seeMore = ref(true);
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
 const entranceStore = useEntranceStore();
+const cityStore = useCityStore();
+const { cities } = storeToRefs(cityStore);
 
 const router = useRouter();
 const data = ref([]);
@@ -201,16 +232,69 @@ const goDetialPage = (id) => {
   });
 };
 
+const chooseAction = async () => {
+  data.value = [];
+  const res = await entranceStore.getListAction({
+    city_id: chooseCity.value.id,
+    category_id: category_id.value,
+  });
+  data.value = res.data;
+  showModal.value = false;
+};
+
+const searchTerm = ref("");
+// Computed property to filter the city list based on the search term
+const filteredCities = computed(() => {
+  if (cities?.value != null) {
+    return cities.value.data.filter((city) =>
+      city.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+    );
+  } else {
+    return [];
+  }
+});
+
 const category_id = ref(40);
+const chooseCity = ref({
+  id: "",
+  name: "",
+});
+const chooseCityAction = (c) => {
+  if (c != "") {
+    chooseCity.value = {
+      id: c.id,
+      name: c.name,
+    };
+  } else {
+    chooseCity.value = {
+      id: "",
+      name: "",
+    };
+  }
+};
+const showModal = ref(false);
 // const list = ref([]);
 
 watch(category_id, async (newValue) => {
   if (newValue) {
     data.value = [];
-    const res = await entranceStore.getListAction({
+    let setdata = {
       category_id: category_id.value,
-    });
+      limit: 8,
+    };
+    if (chooseCity.value.id != "") {
+      setdata.city_id = chooseCity.value.id;
+    }
+    const res = await entranceStore.getListAction(setdata);
     data.value = res.data;
+  }
+});
+
+watch(showModal, async (newValue) => {
+  if (newValue == true) {
+    if (cities.value == null) {
+      await cityStore.getSimpleListAction();
+    }
   }
 });
 
