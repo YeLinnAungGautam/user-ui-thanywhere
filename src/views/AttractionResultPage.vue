@@ -474,7 +474,7 @@ watch(entrances, async (newValue) => {
           <XMarkIcon class="w-5 h-5" @click="close" />
         </div>
         <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
-          <div class="space-y-3 pb-8">
+          <div class="space-y-3 pb-6">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">choose city</p>
               <p
@@ -488,8 +488,12 @@ watch(entrances, async (newValue) => {
               <div v-for="(c, index) in cities?.data" :key="c.id">
                 <p
                   v-if="index < 8 || all"
-                  class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
-                  :class="filterId == c.id ? 'bg-main text-white' : ''"
+                  class="px-4 py-1.5 text-[10px] rounded-full"
+                  :class="
+                    filterId == c.id
+                      ? 'bg-main border font-semibold border-white  text-white'
+                      : 'bg-white text-black/80 border font-semibold  border-black/10'
+                  "
                   @click="searchFunction(c)"
                 >
                   {{ c?.name }}
@@ -497,19 +501,123 @@ watch(entrances, async (newValue) => {
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
-            <div
-              class="px-2 py-2 space-y-1 w-[70px] mx-auto"
-              v-for="(i, index) in activitydb"
-              :key="index"
-            >
-              <div class="flex justify-center items-center gap-1">
-                <!-- <StarIcon class="w-10 h-10 text-main" /> -->
-                <img :src="i.image" class="w-10 h-10" alt="" />
+          <div class="space-y-3 pb-6 h-[200px]">
+            <p class="text-sm font-semibold">choose activities</p>
+            <div class="w-full">
+              <div
+                class="flex justify-start items-center space-x-2 flex-wrap space-y-2"
+              >
+                <p
+                  @click="category_id = 32"
+                  :class="
+                    category_id == 32
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  amusement park
+                </p>
+                <p
+                  @click="category_id = 40"
+                  :class="
+                    category_id == 40
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  dinner cruises
+                </p>
+                <p
+                  @click="category_id = 31"
+                  :class="
+                    category_id == 31
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  water parks
+                </p>
+                <p
+                  @click="category_id = 17"
+                  :class="
+                    category_id == 17
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  safari
+                </p>
+                <p
+                  @click="category_id = 16"
+                  :class="
+                    category_id == 16
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  museums
+                </p>
+                <p
+                  @click="category_id = 29"
+                  :class="
+                    category_id == 29
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  theme parks
+                </p>
+                <p
+                  @click="category_id = 54"
+                  :class="
+                    category_id == 54
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  buffet
+                </p>
+                <p
+                  @click="category_id = 42"
+                  :class="
+                    category_id == 42
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  island tours
+                </p>
+                <p
+                  @click="category_id = 39"
+                  :class="
+                    category_id == 39
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  shows
+                </p>
+                <p
+                  @click="category_id = 22"
+                  :class="
+                    category_id == 22
+                      ? 'border-main bg-main text-white'
+                      : 'border-black/10'
+                  "
+                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                >
+                  skywalks
+                </p>
               </div>
-              <p class="text-[8px] text-black/70 text-center">
-                {{ i.name }}
-              </p>
             </div>
           </div>
 
@@ -524,7 +632,7 @@ watch(entrances, async (newValue) => {
               @click="filteredHotel"
               class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
             >
-              see {{ count_filter }} attractions
+              see {{ count_filter }} entrances
             </button>
           </div>
         </div>

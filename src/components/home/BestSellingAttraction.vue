@@ -153,28 +153,32 @@
     </div>
     <Modal v-model="showModal">
       <h2 class="text-sm text-main font-medium">Choose City</h2>
-      <input
+      <!-- <input
         type="search"
         v-model="searchTerm"
         name=""
         class="w-full border border-main px-4 mt-3 py-1.5 text-sm rounded-2xl text-main focus:outline-none bg-transparent"
         id=""
-      />
+      /> -->
       <div class="space-y-1 h-[200px] overflow-y-scroll pt-3">
         <div
-          class="flex justify-between items-center space-y-2 pr-4"
+          class="flex justify-between items-center space-y-1 pr-4"
           @click="chooseCityAction('')"
         >
-          <p class="text-sm">All</p>
+          <p class="text-xs" :class="chooseCity.id == '' ? 'text-main' : ''">
+            All
+          </p>
           <input type="checkbox" name="" :checked="chooseCity.id == ''" id="" />
         </div>
         <div
-          class="flex justify-between items-center space-y-2 pr-4"
+          class="flex justify-between items-center space-y-1 pr-4"
           v-for="c in filteredCities ?? []"
           :key="c"
           @click="chooseCityAction(c)"
         >
-          <p class="text-sm">{{ c.name }}</p>
+          <p class="text-xs" :class="c.id == chooseCity.id ? 'text-main' : ''">
+            {{ c.name }}
+          </p>
           <input
             type="checkbox"
             name=""
@@ -183,7 +187,7 @@
           />
         </div>
       </div>
-      <div class="space-x-2 flex justify-end items-center pt-3">
+      <div class="space-x-2 flex justify-between items-center pt-3">
         <button
           class="px-3 py-1 text-xs text-white bg-main rounded-2xl border border-main"
           @click="chooseAction"

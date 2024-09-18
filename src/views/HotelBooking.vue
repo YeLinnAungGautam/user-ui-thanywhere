@@ -423,7 +423,7 @@ watch(hotels, async (newValue) => {
                 <div v-for="(c, index) in cities?.data" :key="c.id">
                   <p
                     v-if="index < 8 || all"
-                    class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                    class="border border-black/10 text-[10px] rounded-xl px-4 py-1"
                     :class="filterId == c.id ? 'bg-main text-white' : ''"
                     @click="searchFunction(c)"
                   >
@@ -432,7 +432,7 @@ watch(hotels, async (newValue) => {
                 </div>
                 <p
                   @click="all = !all"
-                  class="border border-black/60 bg-black/10 text-[10px] rounded-lg px-4 py-1"
+                  class="border border-black/10 text-[10px] bg-black/10 rounded-xl px-4 py-1"
                 >
                   {{ all ? "see less" : "see more" }}
                 </p>
@@ -464,7 +464,7 @@ watch(hotels, async (newValue) => {
                   <div v-for="(c, index) in placeArray" :key="c">
                     <p
                       v-if="index < 8 || placeall"
-                      class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                      class="border border-black/10 text-[10px] rounded-xl px-4 py-1"
                       :class="place == c ? 'bg-main text-white' : ''"
                       @click="place = c"
                     >
@@ -475,7 +475,7 @@ watch(hotels, async (newValue) => {
                 <p
                   v-show="placeArray.length != 0 && placeArray"
                   @click="placeall = !placeall"
-                  class="border border-black/60 bg-black/10 text-[10px] rounded-lg px-4 py-1"
+                  class="border border-black/10 bg-black/10 text-[10px] rounded-xl px-4 py-1"
                 >
                   {{ placeall ? "see less" : "see more" }}
                 </p>
@@ -488,9 +488,11 @@ watch(hotels, async (newValue) => {
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2 mr-5">
                 <div
-                  class="border rounded-lg px-2 py-2"
+                  class="border rounded-2xl px-2 py-2"
                   :class="
-                    rating == index + 1 ? 'border-main ' : 'border-black/60'
+                    rating == index + 1
+                      ? 'border-main bg-main text-white '
+                      : 'border-black/10 text-black/70'
                   "
                   v-for="(i, index) in 5"
                   :key="index"
@@ -498,7 +500,7 @@ watch(hotels, async (newValue) => {
                 >
                   <div class="flex justify-center items-center gap-1">
                     <p class="text-sm">{{ index + 1 }}</p>
-                    <StarIcon class="w-5 h-5 text-main" />
+                    <StarIcon class="w-5 h-5" />
                   </div>
                   <!-- <p class="text-[8px] text-black/70">6+hotels</p> -->
                 </div>
@@ -593,7 +595,7 @@ watch(hotels, async (newValue) => {
                 <!-- <p class="text-xs text-black text-center">
                   {{ minPrice }} THB - {{ maxPrice }} THB
                 </p> -->
-                <div class="border border-black/50 w-[45%] rounded-lg p-2">
+                <div class="border border-black/10 w-[45%] rounded-2xl p-2">
                   <p class="text-[10px]">minimum</p>
                   <input
                     type="number"
@@ -604,7 +606,7 @@ watch(hotels, async (newValue) => {
                   />
                 </div>
                 <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
-                <div class="border border-black/50 w-[45%] rounded-lg p-2">
+                <div class="border border-black/10 w-[45%] rounded-2xl p-2">
                   <p class="text-[10px]">maximum</p>
                   <input
                     type="number"

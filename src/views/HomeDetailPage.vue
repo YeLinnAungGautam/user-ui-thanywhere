@@ -142,7 +142,7 @@
                         ? 'border-main text-main'
                         : 'border-black/10 text-black/80'
                     "
-                    class="border rounded-lg space-y-1 w-[400px] p-3"
+                    class="border rounded-lg space-y-1 min-w-[180px] max-w-[300px] p-3"
                     @click="choosePax = false"
                   >
                     <p class="text-xs font-medium whitespace-nowrap">
@@ -159,6 +159,7 @@
                     </p>
                   </div>
                   <div
+                    v-if="haveBreakfast"
                     class="border rounded-lg space-y-1 w-[400px] p-3"
                     :class="
                       choosePax
@@ -172,12 +173,6 @@
                     </p>
                     <p class="text-xs font-medium" v-if="haveBreakfast">
                       + 800 thb per pax
-                    </p>
-                    <p
-                      class="text-xs font-medium text-red"
-                      v-if="!haveBreakfast"
-                    >
-                      not avalible !
                     </p>
                   </div>
                 </div>

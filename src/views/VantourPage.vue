@@ -363,7 +363,7 @@ watch(vantours, async (newValue) => {
                   <!-- <p class="text-xs text-black text-center">
                     {{ minPrice }} THB - {{ maxPrice }} THB
                   </p> -->
-                  <div class="border border-black/50 w-[45%] rounded-lg p-2">
+                  <div class="border border-black/10 w-[45%] rounded-2xl p-2">
                     <p class="text-[10px]">minimum</p>
                     <input
                       type="number"
@@ -374,7 +374,7 @@ watch(vantours, async (newValue) => {
                     />
                   </div>
                   <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
-                  <div class="border border-black/50 w-[45%] rounded-lg p-2">
+                  <div class="border border-black/10 w-[45%] rounded-2xl p-2">
                     <p class="text-[10px]">maximum</p>
                     <input
                       type="number"
