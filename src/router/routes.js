@@ -46,6 +46,9 @@ const routes = [
     path: "/web",
     name: "WebVersionHomePage",
     component: WebVersionHomePage,
+    meta: {
+      guest: true,
+    },
   },
   {
     path: "/translationPage",

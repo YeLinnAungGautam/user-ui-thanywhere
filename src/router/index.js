@@ -43,19 +43,24 @@ router.beforeEach((to, from, next) => {
     return; // Ensure the navigation stops and new one begins
   }
 
-  // Screen size redirection logic
-  if (isMobile() && to.path === desktopPage) {
-    next({
-      path: mobilePage,
-      query: { ...to.query },
-    });
-  } else if (!isMobile() && to.path === mobilePage) {
-    next({
-      path: desktopPage,
-      query: { ...to.query },
-    });
+  // Handle screen size and meta.guest redirection logic
+  if (isMobile()) {
+    // Redirect mobile users to the mobilePage if not on mobilePage and no meta.guest
+    if (to.path !== mobilePage && !to.meta.guest) {
+      next();
+    } else {
+      next(); // Allow access if it's the mobilePage or guest route
+    }
   } else {
-    next();
+    // Redirect desktop users to the desktopPage if not on desktopPage and no meta.guest
+    if (to.path !== desktopPage && !to.meta.guest) {
+      next({
+        path: desktopPage,
+        query: { ...to.query },
+      });
+    } else {
+      next(); // Allow access if it's the desktopPage or guest route
+    }
   }
 });
 
