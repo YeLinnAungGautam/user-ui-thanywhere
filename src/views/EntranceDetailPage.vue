@@ -7,16 +7,15 @@
     </transition>
     <div class="relative h-[100vh] w-[100vw] overflow-hidden" v-if="!loading">
       <!-- Image Div -->
-      <div class="absolute w-full h-[40vh] top-0 z-0">
+      <div class="absolute w-full h-[30vh] bg-blue-400">
         <ImageCarousel :data="detail?.images" />
-
         <ChevronLeftIcon
           @click="router.push('/home/attraction')"
           class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
         />
         <!-- <ArrowUpTrayIcon
-          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
-        /> -->
+        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+      /> -->
         <div
           @click="shareContent"
           class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
@@ -28,21 +27,17 @@
         />
       </div>
 
-      <!-- Content Div (Hold and Place for both Web & Mobile) -->
+      <!-- Content Div -->
       <div
-        class="absolute left-0 right-0 bg-white z-50 shadow-lg h-full pt-4 rounded-md transition-all duration-500"
-        :style="{ top: contentTop + 'px' }"
-        :class="heightValue ? '' : 'rounded-t-3xl'"
+        class="absolute left-0 right-0 z-30 bg-white shadow-lg pt-4 rounded-md transition-all duration-500"
+        :class="contentPosition"
       >
         <div
-          class="w-[60px] mx-auto h-2 rounded-3xl bg-black"
-          @mousedown="startHold"
-          @touchstart="startHold"
+          class="mx-auto h-2 rounded-2xl bg-black w-[50px] mb-4"
+          @click="togglePosition"
+          @touchstart="togglePosition"
         ></div>
-        <div
-          class="overflow-y-scroll"
-          :class="heightValue ? 'h-[95vh]' : 'h-[55vh]'"
-        >
+        <div class="overflow-y-scroll" :class="contentdivPosition">
           <div class="px-4 bg-white">
             <div
               class="bg-white mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
@@ -253,7 +248,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import {
@@ -344,92 +339,36 @@ onMounted(async () => {
   await getDetail(route.params.id);
 });
 
-// Track the current position of the content div
-const contentTop = ref(374);
+// State to track the position of the content div
+const isAtTop = ref(false);
 
-// Track whether the user is holding the div
-const isHolding = ref(false);
+// Compute the class based on the position
+const contentPosition = computed(() => {
+  return isAtTop.value ? "top-0 " : "top-[375px] rounded-t-3xl";
+});
+const contentdivPosition = computed(() => {
+  return isAtTop.value ? "h-[100vh]" : "h-[56vh]";
+});
 
-// Track the initial touch/mouse position for correct calculations
-let startY = 0;
-let startTop = 0;
-
-// Start holding (mouse down or touch start)
-const startHold = (event) => {
-  isHolding.value = true;
-
-  // Get the Y position based on the event type (mouse or touch)
-  if (event.type === "mousedown") {
-    startY = event.clientY;
-  } else if (event.type === "touchstart") {
-    startY = event.touches[0].clientY;
-  }
-
-  // Capture the current top position of the content div
-  startTop = contentTop.value;
-
-  // Add listeners for movement and stopping
-  window.addEventListener("mousemove", handleMove);
-  window.addEventListener("touchmove", handleMove);
-  window.addEventListener("mouseup", stopHold);
-  window.addEventListener("touchend", stopHold);
-};
-
-// Handle movement during hold (mouse move or touch move)
-const heightValue = ref(false);
-const handleMove = (event) => {
-  if (isHolding.value) {
-    let currentY = 0;
-
-    // Get the current Y position based on the event type
-    if (event.type === "mousemove") {
-      // currentY = event.clientY;
-      if (event.clientY > 200) {
-        currentY = 374;
-        contentTop.value = currentY;
-        heightValue.value = false;
-      } else if (event.clientY < 200) {
-        currentY = 0;
-        contentTop.value = currentY;
-        heightValue.value = true;
-      } else {
-        currentY = event.clientY;
-      }
-    } else if (event.type === "touchmove") {
-      // currentY = event.touches[0].clientY;
-      if (event.touches[0].clientY > 200) {
-        currentY = 374;
-        contentTop.value = currentY;
-        heightValue.value = false;
-      } else if (event.touches[0].clientY < 200) {
-        currentY = 0;
-        contentTop.value = currentY;
-        heightValue.value = true;
-      } else {
-        currentY = event.touches[0].clientY;
-      }
-      // console.log("this is current Y position", currentY);
-    }
-  }
-};
-
-// Stop holding (mouse up or touch end)
-const stopHold = () => {
-  isHolding.value = false;
-
-  // Remove listeners after the action is complete
-  window.removeEventListener("mousemove", handleMove);
-  window.removeEventListener("touchmove", handleMove);
-  window.removeEventListener("mouseup", stopHold);
-  window.removeEventListener("touchend", stopHold);
+// Function to toggle the position of the content div
+const togglePosition = () => {
+  isAtTop.value = !isAtTop.value;
 };
 </script>
 
 <style scoped>
-/* Optional styling */
+/* Optional additional styling */
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
