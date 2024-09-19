@@ -9,17 +9,20 @@
       />
     </div>
 
-    <!-- Content Div (Hold to move) -->
+    <!-- Content Div (Hold and Place for both Web & Mobile) -->
     <div
       class="absolute left-0 right-0 bg-white h-full z-50 shadow-lg p-6 rounded-md transition-all duration-500"
       :style="{ top: contentTop + 'px' }"
     >
       <div
+        class="w-[300px] h-4 bg-black"
         @mousedown="startHold"
-        class="w-[200px] h-4 bg-black rounded-3xl mx-auto"
+        @touchstart="startHold"
       ></div>
-      <h1 class="text-2xl pt-10 font-bold">Content</h1>
-      <p>Hold and drag to move the content div up and down.</p>
+      <h1 class="text-2xl font-bold">Content</h1>
+      <p>
+        Hold and drag to move the content div up and down (supports mobile).
+      </p>
     </div>
   </div>
 </template>
@@ -28,44 +31,62 @@
 import { ref } from "vue";
 
 // Track the current position of the content div
-const contentTop = ref(348);
+const contentTop = ref(500);
 
-// Flag to track if the user is holding the content div
+// Track whether the user is holding the div
 const isHolding = ref(false);
 
-// Start holding (click and hold the div)
-const startHold = () => {
+// Track the initial touch/mouse position for correct calculations
+let startY = 0;
+let startTop = 0;
+
+// Start holding (mouse down or touch start)
+const startHold = (event) => {
   isHolding.value = true;
 
-  // Start tracking mouse movements
-  window.addEventListener("mousemove", handleMove);
+  // Get the Y position based on the event type (mouse or touch)
+  if (event.type === "mousedown") {
+    startY = event.clientY;
+  } else if (event.type === "touchstart") {
+    startY = event.touches[0].clientY;
+  }
 
-  // Stop holding when mouse button is released
+  // Capture the current top position of the content div
+  startTop = contentTop.value;
+
+  // Add listeners for movement and stopping
+  window.addEventListener("mousemove", handleMove);
+  window.addEventListener("touchmove", handleMove);
   window.addEventListener("mouseup", stopHold);
+  window.addEventListener("touchend", stopHold);
 };
 
-// Handle moving the content div as the mouse moves
+// Handle movement during hold (mouse move or touch move)
 const handleMove = (event) => {
   if (isHolding.value) {
-    // Update content position based on the mouse's Y position
-    if (event.clientY > 348) {
-      contentTop.value = 348;
-    } else if (event.clientY < 300) {
-      contentTop.value = 0;
-    } else {
-      contentTop.value = 348;
+    let currentY = 0;
+
+    // Get the current Y position based on the event type
+    if (event.type === "mousemove") {
+      currentY = event.clientY;
+    } else if (event.type === "touchmove") {
+      currentY = event.touches[0].clientY;
     }
-    // contentTop.value = event.clientY;
+
+    // Calculate the new top position by adjusting the difference
+    contentTop.value = startTop + (currentY - startY);
   }
 };
 
-// Stop holding the div (when mouse button is released)
+// Stop holding (mouse up or touch end)
 const stopHold = () => {
   isHolding.value = false;
 
-  // Remove event listeners when the user releases the mouse
+  // Remove listeners after the action is complete
   window.removeEventListener("mousemove", handleMove);
+  window.removeEventListener("touchmove", handleMove);
   window.removeEventListener("mouseup", stopHold);
+  window.removeEventListener("touchend", stopHold);
 };
 </script>
 
