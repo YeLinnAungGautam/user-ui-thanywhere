@@ -50,7 +50,9 @@
         >
           {{ i?.lowest_variation_price }}THB
         </button> -->
-        <button class="text-main py-1 rounded-base text-lg font-semibold">
+        <button
+          class="text-main py-1 rounded-base text-lg font-semibold line-clamp-1"
+        >
           {{ i?.lowest_variation_price }} thb
           <span
             class="text-[11px] line-through text-black/70"

@@ -24,13 +24,13 @@
       <div class="col-span-6 relative">
         <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" />
         <div class="mr-6 overflow-hidden">
-          <p class="text-xs font-semibold text-main line-clamp-2">
+          <p class="text-xs font-semibold text-main line-clamp-1">
             {{ i.name }}
           </p>
           <div class="flex justify-between items-center">
             <!-- <StarPartVue :count="i.rating" /> -->
             <p class="text-[10px] text-black font-medium">
-              {{ i.rating }}-star rating
+              {{ i.rating }}-star
             </p>
             <div class="text-[10px] flex justify-end items-center gap-0.5 py-1">
               <MapPinIcon class="w-3 h-3 text-black/50" />
@@ -53,14 +53,18 @@
                 <p>{{ i.place }}</p>
               </div>
             </div>
-            <p class="text-xs font-medium pb-1">start price per night</p>
+            <p class="text-xs font-medium pb-1 line-clamp-1">
+              start price <span class="text-[8px]">/night</span>
+            </p>
             <!-- <p
               class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
             >
               {{ i.lowest_room_price }} THB
             </p> -->
-            <button class="text-main rounded-base text-xl font-semibold">
-              {{ i?.lowest_room_price }} thb
+            <button
+              class="text-main rounded-base text-lg line-clamp-1 font-semibold"
+            >
+              {{ i?.lowest_room_price }}thb
               <span
                 class="text-[11px] line-through text-black/70"
                 v-if="

@@ -70,7 +70,9 @@
               {{ i?.lowest_variation_price }}THB
             </p> -->
             <div class="flex justify-between items-center">
-              <button class="text-main rounded-base text-xl font-semibold">
+              <button
+                class="text-main rounded-base text-xl font-semibold line-clamp-1"
+              >
                 {{ i?.lowest_variation_price }} thb
                 <span
                   class="text-[11px] line-through text-black/70"
