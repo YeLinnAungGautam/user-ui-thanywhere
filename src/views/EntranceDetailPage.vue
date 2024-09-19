@@ -24,7 +24,7 @@
         class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
       />
 
-      <div class="px-4">
+      <div class="px-4 bg-white">
         <div
           class="bg-white mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
         >

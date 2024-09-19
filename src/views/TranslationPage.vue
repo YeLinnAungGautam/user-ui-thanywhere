@@ -4,15 +4,21 @@
       <div class="w-full h-full overflow-hidden relative z-20">
         <img
           :src="LanguageImage"
-          class="w-full h-full object-cover -z-1 absolute bottom-[-80px]"
-          alt=""
-        />
-        <img
-          :src="LanguageImage"
+          @load="onImageLoad"
+          v-show="loadimage"
           class="w-full h-full object-cover -z-1 absolute top-0"
           alt=""
         />
-        <div class="absolute top-5 z-50 w-full text-center pt-10">
+        <div
+          class="w-[100vw] h-[100vh] bg-gradient-to-t to-[#ff6300] from-[#e61c1c] absolute flex justify-center items-center top-0 left-0 -z-1"
+          v-if="!loadimage"
+        >
+          <img :src="logo" class="mr-10" alt="" />
+        </div>
+        <div
+          class="absolute top-5 z-50 w-full text-center pt-10"
+          v-if="loadimage"
+        >
           <p class="text-main text-2xl font-bold">choose your language</p>
           <div>
             <p class="text-sm font-medium text-main px-8 pt-3 tracking-wide">
@@ -90,6 +96,7 @@
 import LanguageImage from "../assets/onboarding screns/Language screen.jpg";
 import English from "../assets/onboarding screns/english.png";
 import Myanmar from "../assets/onboarding screns/myanmar.png";
+import logo from "@/assets/logo.png";
 import { ref, onMounted, defineEmits } from "vue";
 import { useSettingStore } from "../stores/setting";
 import { storeToRefs } from "pinia";
@@ -110,6 +117,12 @@ const choose = () => {
   settingStore.changeLanguage(chooseLanguage.value);
   emit("change", "changes");
   // router.back();
+};
+
+const loadimage = ref(false);
+
+const onImageLoad = () => {
+  loadimage.value = true;
 };
 
 onMounted(async () => {

@@ -15,16 +15,17 @@
         </p>
       </div>
       <div class="space-y-5 pt-10">
-        <p
-          class="text-white font-semibold tracking-normal text-4xl flex justify-start items-center gap-x-2"
-        >
+        <p class="text-white font-semibold tracking-normal text-4xl">
           Only available on Mobile
-          <ArrowRightCircleIcon class="w-10 text-white" />
         </p>
-        <p class="text-white text-3xl font-medium">Travel App for Thailand</p>
-        <p class="text-white text-3xl font-medium">200+ packages</p>
+        <p class="text-white text-2xl font-medium">Travel App for Thailand</p>
+        <p
+          class="text-white text-2xl font-medium flex justify-start items-center gap-x-2"
+        >
+          200+ packages <ArrowRightCircleIcon class="w-10 text-white" />
+        </p>
       </div>
-      <div class="absolute bottom-20 space-y-3">
+      <div class="absolute bottom-10 space-y-3">
         <img :src="icon" alt="" class="w-40" />
         <p class="text-[#ffbd38] font-medium tracking-normal text-2xl">
           Coming soon on
@@ -32,12 +33,12 @@
         <p class="text-white text-2xl font-medium">Andriod and App stores</p>
       </div>
     </div>
-    <div class="relative">
+    <div class="pr-6">
       <!-- show mobile version with iframe -->
-      <div class="flex justify-center items-center w-full h-full relative">
+      <div class="flex justify-end items-center w-full h-full relative">
         <iframe
           src="https://thanywhere.com"
-          class="w-[452px] h-[920px] rounded-[55px] border-4 border-black/5 shadow-3xl absolute right-[10%]"
+          class="w-[452px] h-full bg-white rounded-[55px] drop-shadow-lg"
           style="transform: scale(0.8); transform-origin: center"
           allowfullscreen
           sandbox="allow-same-origin allow-scripts"

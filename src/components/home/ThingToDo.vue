@@ -159,7 +159,7 @@
       <div class="space-y-1 h-[200px] overflow-y-scroll pt-3">
         <div
           class="flex justify-between items-center space-y-1 pr-4"
-          v-for="c in filteredCities ?? []"
+          v-for="c in cities?.data ?? []"
           :key="c"
           @click="chooseCityAction(c)"
         >
@@ -237,13 +237,7 @@ const chooseAction = async () => {
   showModal.value = false;
 };
 
-const searchTerm = ref("");
 // Computed property to filter the city list based on the search term
-const filteredCities = computed(() => {
-  return cities?.value.data?.filter((city) =>
-    city.name.toLowerCase().includes(searchTerm.value.toLowerCase())
-  );
-});
 
 watch(category_id, async (newValue) => {
   if (newValue) {
