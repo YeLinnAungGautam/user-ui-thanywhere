@@ -44,7 +44,12 @@ onMounted(() => {
         v-if="props.showTitle"
       >
         <img :src="logoIcon" class="w-10 h-10" alt="" @click="goHomePage" />
-        <p class="font-semibold tracking-wide text-lg">THAILAND ANYWHERE</p>
+        <p class="font-semibold tracking-wide hidden sm:block text-lg">
+          THAILAND ANYWHERE
+        </p>
+        <p class="font-semibold tracking-wide sm:hidden block text-lg">
+          THANYWHERE
+        </p>
         <!-- <UserCircleIcon class="w-6 h-6 text-white" /> -->
         <div
           @click="onBoradingShow = true"
