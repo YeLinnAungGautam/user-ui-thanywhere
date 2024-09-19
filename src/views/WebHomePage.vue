@@ -7,14 +7,14 @@
       class="w-full h-full absolute top-0 left-0 opacity-10"
       alt=""
     /> -->
-    <div class="py-14 px-14 space-y-20 relative">
+    <div class="py-14 px-16 space-y-20 relative">
       <div class="flex justify-start items-center">
         <img :src="logo" class="w-14" alt="" />
         <p class="text-white font-medium tracking-normal text-3xl">
           THAILAND ANYWHERE
         </p>
       </div>
-      <div class="space-y-5 pt-10">
+      <div class="space-y-5">
         <p class="text-white font-semibold tracking-normal text-4xl">
           Only available on Mobile
         </p>
@@ -33,13 +33,13 @@
         <p class="text-white text-2xl font-medium">Andriod and App stores</p>
       </div>
     </div>
-    <div class="pr-6">
+    <div class="pr-14 xl:pr-16">
       <!-- show mobile version with iframe -->
-      <div class="flex justify-end items-center w-full h-full relative">
+      <div class="flex justify-end w-full h-full relative">
         <iframe
-          src="https://thanywhere.com"
-          class="w-[452px] h-full bg-white rounded-[55px] drop-shadow-lg"
-          style="transform: scale(0.8); transform-origin: center"
+          :src="iframeSrc"
+          class="bg-white rounded-[55px] drop-shadow-lg"
+          :style="iframeStyle"
           allowfullscreen
           sandbox="allow-same-origin allow-scripts"
         ></iframe>
@@ -54,4 +54,37 @@ import icon from "@/assets/icon_download.png";
 // import iphone from "@/assets/iphone.png";
 // import line from "@/assets/line.png";
 import { ArrowRightCircleIcon } from "@heroicons/vue/24/outline";
+import { ref, computed, onMounted, onUnmounted } from "vue";
+
+const windowHeight = ref(window.innerHeight);
+const iframeSrc = "https://thanywhere.com";
+
+// Define the iPhone 16 Pro aspect ratio
+const baseWidth = 452;
+const baseHeight = 920;
+const aspectRatio = baseWidth / baseHeight;
+
+// Calculate new width and height based on window height
+const iframeStyle = computed(() => {
+  if (windowHeight.value < baseHeight) {
+    const newHeight = windowHeight.value;
+    const newWidth = newHeight * aspectRatio;
+    return `width: ${newWidth}px; height: ${newHeight}px; transform: scale(0.9); transform-origin: center;`;
+  } else {
+    return `width: ${baseWidth}px; height: ${baseHeight}px; transform: scale(0.9); transform-origin: center;`;
+  }
+});
+
+// Update windowHeight on resize
+const handleResize = () => {
+  windowHeight.value = window.innerHeight;
+};
+
+onMounted(() => {
+  window.addEventListener("resize", handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
+});
 </script>
