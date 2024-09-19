@@ -5,5 +5,5 @@
 </template>
 
 <script setup>
-import background from "@/assets/web_background.jpg";
+import background from "@/assets/backgound_web.jpg";
 </script>
