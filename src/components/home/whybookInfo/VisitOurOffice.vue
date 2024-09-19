@@ -13,6 +13,7 @@
 <script setup>
 import image1 from "@/assets/icons/Website Related Photos/Trust (2).png";
 import image2 from "@/assets/icons/Website Related Photos/Trust.png";
+import image3 from "@/assets/icons/Website Related Photos/Background item.png";
 
 const data = [
   {
@@ -38,7 +39,7 @@ const data = [
   },
   {
     id: 3,
-    image: image2,
+    image: image3,
     title: "Mandalay Office",
     location: ` No. 74, 84th
   Street, Between 28th and 29th Street, Chan Aye Thar Zan Township,

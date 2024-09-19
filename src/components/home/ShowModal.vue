@@ -77,7 +77,7 @@ const leave = (el, done) => {
 .modal-content {
   background-color: rgba(255, 250, 248, 0.951);
   padding: 16px;
-  border-radius: 14px;
+  border-radius: 14px 0px 0px 14px;
   width: 180px;
 }
 
