@@ -15,7 +15,11 @@ import { storeToRefs } from "pinia";
 import VantourCart from "../components/LoadingCarts/VantourCart.vue";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
 import { useSettingStore } from "../stores/setting";
-import { ChevronDownIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 // const carStore = useCarStore();
@@ -309,12 +313,12 @@ watch(vantours, async (newValue) => {
             <div class="space-y-3">
               <div class="flex justify-between items-center">
                 <p class="text-sm font-semibold">choose city</p>
-                <p
+                <!-- <p
                   class="text-black text-[10px] cursor-pointer"
                   @click="all = !all"
                 >
                   {{ all ? "show less" : "show more" }}
-                </p>
+                </p> -->
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2">
                 <div class="flex flex-wrap justify-start items-center gap-2">
@@ -334,6 +338,14 @@ watch(vantours, async (newValue) => {
                   </div>
                 </div>
               </div>
+              <p
+                class="text-black text-[10px] w-full border border-black/10 bg-black/10 py-1.5 rounded-full text-center cursor-pointer flex justify-center items-center gap-x-1"
+                @click="all = !all"
+              >
+                {{ all ? "show less" : "show more" }}
+                <ChevronDownIcon class="w-4 h-4" v-if="!all" />
+                <ChevronUpIcon class="w-4 h-4" v-if="all" />
+              </p>
             </div>
 
             <div class="space-y-3 pb-8 pt-4 h-[400px]">

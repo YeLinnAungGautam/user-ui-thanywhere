@@ -16,6 +16,13 @@
       class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-1 px-6 scroll-container"
     >
       <p
+        @click="category_id = ''"
+        :class="category_id == '' ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        all
+      </p>
+      <p
         @click="category_id = 32"
         :class="category_id == 32 ? 'border-main text-main' : 'border-black/10'"
         class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
@@ -87,8 +94,15 @@
       </p>
     </div>
     <div
+      v-if="data.length == 0 && !loading"
+      class="flex flex-1 justify-center space-x-3 mt-3 items-center overflow-x-scroll scroll-container"
+    >
+      <img :src="issue" class="w-10 h-10" alt="" />
+      <p class="py-24 text-main text-xs">data empty !</p>
+    </div>
+    <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
-      v-if="data.length == 0"
+      v-if="data.length == 0 && loading"
     >
       <div v-for="a in 8" :key="a">
         <!-- v-if="data.length == 0" -->
@@ -133,7 +147,7 @@
     </div>
     <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
-      v-if="data.length > 0"
+      v-if="data.length > 0 && !loading"
     >
       <div
         class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10"
@@ -217,6 +231,7 @@ import BestSellingAttractionVue from "../../components/LoadingCarts/BestSellingA
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import Modal from "./ShowModal.vue";
 import { useCityStore } from "@/stores/city";
+import issue from "@/assets/no-connection.png";
 
 // const seeMore = ref(true);
 const settingStore = useSettingStore();
@@ -227,6 +242,7 @@ const { cities } = storeToRefs(cityStore);
 
 const router = useRouter();
 const data = ref([]);
+const loading = ref(false);
 
 const goDetialPage = (id) => {
   router.push({
@@ -238,11 +254,14 @@ const goDetialPage = (id) => {
 
 const chooseAction = async () => {
   data.value = [];
+  loading.value = true;
+  category_id.value = "";
   const res = await entranceStore.getListAction({
     city_id: chooseCity.value.id,
     category_id: category_id.value,
   });
   data.value = res.data;
+  loading.value = false;
   showModal.value = false;
 };
 
@@ -258,7 +277,7 @@ const filteredCities = computed(() => {
   }
 });
 
-const category_id = ref(40);
+const category_id = ref("");
 const chooseCity = ref({
   id: "",
   name: "",
@@ -279,19 +298,19 @@ const chooseCityAction = (c) => {
 const showModal = ref(false);
 // const list = ref([]);
 
-watch(category_id, async (newValue) => {
-  if (newValue) {
-    data.value = [];
-    let setdata = {
-      category_id: category_id.value,
-      limit: 8,
-    };
-    if (chooseCity.value.id != "") {
-      setdata.city_id = chooseCity.value.id;
-    }
-    const res = await entranceStore.getListAction(setdata);
-    data.value = res.data;
+watch(category_id, async () => {
+  loading.value = true;
+  data.value = [];
+  let setdata = {
+    category_id: category_id.value,
+    limit: 8,
+  };
+  if (chooseCity.value.id != "") {
+    setdata.city_id = chooseCity.value.id;
   }
+  const res = await entranceStore.getListAction(setdata);
+  data.value = res.data;
+  loading.value = false;
 });
 
 watch(showModal, async (newValue) => {
@@ -303,6 +322,7 @@ watch(showModal, async (newValue) => {
 });
 
 onMounted(async () => {
+  loading.value = true;
   await settingStore.getLanguage();
   data.value = [];
   const res = await entranceStore.getListAction({ limit: 8 });
@@ -310,5 +330,6 @@ onMounted(async () => {
   console.log("====================================");
   console.log(data.value, "this is data");
   console.log("====================================");
+  loading.value = false;
 });
 </script>

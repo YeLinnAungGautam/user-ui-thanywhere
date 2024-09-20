@@ -3,7 +3,12 @@ import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 import { useRouter } from "vue-router";
-import { ChevronDownIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 import { useEntranceStore } from "../stores/entrance";
 import { useCityStore } from "../stores/city";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
@@ -129,17 +134,15 @@ const goDetialPage = (id) => {
   });
 };
 
-const category_id = ref(32);
+const category_id = ref("");
 // const list = ref([]);
 
-watch(category_id, async (newValue) => {
-  if (newValue) {
-    entrancesList.value = [];
-    const res = await entranceStore.getListAction({
-      category_id: category_id.value,
-    });
-    entrancesList.value = res.data;
-  }
+watch(category_id, async () => {
+  entrancesList.value = [];
+  const res = await entranceStore.getListAction({
+    category_id: category_id.value,
+  });
+  entrancesList.value = res.data;
 });
 
 onMounted(async () => {
@@ -210,6 +213,15 @@ watch(entrances, async (newValue) => {
           <div
             class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-2 scroll-container"
           >
+            <p
+              @click="category_id = ''"
+              :class="
+                category_id == '' ? 'border-main text-main' : 'border-black/10'
+              "
+              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+            >
+              all
+            </p>
             <p
               @click="category_id = 32"
               :class="
@@ -375,12 +387,6 @@ watch(entrances, async (newValue) => {
             <div class="space-y-3 pb-6">
               <div class="flex justify-between items-center">
                 <p class="text-sm font-semibold">choose city</p>
-                <p
-                  class="text-black text-[10px] cursor-pointer"
-                  @click="all = !all"
-                >
-                  {{ all ? "show less" : "show more" }}
-                </p>
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2">
                 <div v-for="(c, index) in cities?.data" :key="c.id">
@@ -398,6 +404,14 @@ watch(entrances, async (newValue) => {
                   </p>
                 </div>
               </div>
+              <p
+                class="text-black text-[10px] w-full border border-black/10 bg-black/10 py-1.5 rounded-full text-center cursor-pointer flex justify-center items-center gap-x-1"
+                @click="all = !all"
+              >
+                {{ all ? "show less" : "show more" }}
+                <ChevronDownIcon class="w-4 h-4" v-if="!all" />
+                <ChevronUpIcon class="w-4 h-4" v-if="all" />
+              </p>
             </div>
             <div class="space-y-3 pb-6 h-[200px]">
               <p class="text-sm font-semibold">choose activities</p>
@@ -405,6 +419,17 @@ watch(entrances, async (newValue) => {
                 <div
                   class="flex justify-start items-center space-x-2 flex-wrap space-y-2"
                 >
+                  <p
+                    @click="category_id = ''"
+                    :class="
+                      category_id == ''
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  >
+                    all
+                  </p>
                   <p
                     @click="category_id = 32"
                     :class="

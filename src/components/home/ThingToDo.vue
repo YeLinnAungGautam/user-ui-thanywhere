@@ -16,6 +16,13 @@
       class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-3 px-6 scroll-container"
     >
       <p
+        @click="category_id = ''"
+        :class="category_id == '' ? 'border-main text-main' : 'border-black/10'"
+        class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+      >
+        all
+      </p>
+      <p
         @click="category_id = 32"
         :class="category_id == 32 ? 'border-main text-main' : 'border-black/10'"
         class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
@@ -87,7 +94,7 @@
       </p>
     </div>
     <div
-      v-if="list.length == 0"
+      v-if="loading"
       class="flex flex-1 justify-start space-x-3 items-center overflow-x-scroll scroll-container"
     >
       <!-- <ThingToDoLoadingCartVue /> -->
@@ -122,7 +129,14 @@
       </div>
     </div>
     <div
-      v-if="list.length > 0"
+      v-if="list.length == 0 && !loading"
+      class="flex flex-1 justify-center space-x-3 mt-3 items-center overflow-x-scroll scroll-container"
+    >
+      <img :src="issue" class="w-10 h-10" alt="" />
+      <p class="py-24 text-main text-xs">data empty !</p>
+    </div>
+    <div
+      v-if="list.length > 0 && !loading"
       class="flex flex-1 justify-start space-x-3 mt-3 items-center overflow-x-scroll scroll-container"
     >
       <!-- <ThingToDoLoadingCartVue /> -->
@@ -194,7 +208,7 @@
 
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useEntranceStore } from "../../stores/entrance";
 import { storeToRefs } from "pinia";
 import ThingToDoLoadingCartVue from "../LoadingCarts/ThingToDoLoadingCart.vue";
@@ -202,6 +216,7 @@ import { useRouter } from "vue-router";
 import { useSettingStore } from "../../stores/setting";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import Modal from "./ShowModal.vue";
+import issue from "@/assets/no-connection.png";
 import { useCityStore } from "@/stores/city";
 // import { ref } from "@vue/reactivity";
 
@@ -211,8 +226,9 @@ const settingStore = useSettingStore();
 const cityStore = useCityStore();
 const { cities } = storeToRefs(cityStore);
 const { language } = storeToRefs(settingStore);
+const loading = ref(false);
 
-const category_id = ref(40);
+const category_id = ref("");
 const list = ref([]);
 const showModal = ref(false);
 
@@ -229,11 +245,14 @@ const chooseCityAction = (c) => {
 
 const chooseAction = async () => {
   list.value = [];
+  loading.value = true;
+  category_id.value = "";
   const res = await entranceStore.getListAction({
     city_id: chooseCity.value.id,
-    category_id: category_id.value,
+    category_id: "",
   });
   list.value = res.data;
+  loading.value = false;
   showModal.value = false;
 };
 
@@ -242,11 +261,23 @@ const chooseAction = async () => {
 watch(category_id, async (newValue) => {
   if (newValue) {
     list.value = [];
+    loading.value = true;
     const res = await entranceStore.getListAction({
       city_id: chooseCity.value.id,
       category_id: category_id.value,
     });
     list.value = res.data;
+    loading.value = false;
+  }
+  if (newValue == "") {
+    list.value = [];
+    loading.value = true;
+    const res = await entranceStore.getListAction({
+      city_id: chooseCity.value.id,
+      category_id: category_id.value,
+    });
+    list.value = res.data;
+    loading.value = false;
   }
 });
 
@@ -259,6 +290,7 @@ watch(showModal, async (newValue) => {
 });
 
 onMounted(async () => {
+  loading.value = true;
   const res = await entranceStore.getListAction({
     city_id: chooseCity.value.id,
     category_id: category_id.value,
@@ -267,6 +299,7 @@ onMounted(async () => {
   console.log("====================================");
   // console.log(entrances.value);
   list.value = res.data;
+  loading.value = false;
   console.log("====================================");
 });
 </script>
