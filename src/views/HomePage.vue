@@ -129,7 +129,7 @@ onMounted(() => {
           </p>
           <img
             :src="facebook"
-            class="text-white w-12 h-12 border border-main bg-white rounded-full shadow-lg"
+            class="text-white w-12 h-12 bg-white rounded-full shadow-lg"
             alt="Facebook"
           />
         </div>
@@ -146,7 +146,7 @@ onMounted(() => {
           </p>
           <img
             :src="viber"
-            class="text-white w-12 h-12 border border-main bg-white rounded-full shadow-lg"
+            class="text-white w-12 h-12 bg-white rounded-full shadow-lg"
             alt="Viber"
           />
         </div>
@@ -163,7 +163,7 @@ onMounted(() => {
           </p>
           <img
             :src="phone"
-            class="text-white w-12 h-12 border border-main bg-white rounded-full shadow-lg"
+            class="text-white w-12 h-12 bg-white rounded-full shadow-lg"
             alt="WhatsApp"
           />
         </div>
@@ -171,7 +171,7 @@ onMounted(() => {
 
       <!-- Floating "+" button -->
       <div
-        class="bg-gradient-to-t to-[#ffd500] from-main text-white w-14 h-14 rounded-full shadow-lg flex justify-center items-center cursor-pointer border border-main"
+        class="bg-gradient-to-t to-[#ffd500] from-main text-white w-14 h-14 rounded-full shadow-lg flex justify-center items-center cursor-pointer"
         @click="toggleButtons"
       >
         <!-- Rotate the "+" when showButtons is true -->
