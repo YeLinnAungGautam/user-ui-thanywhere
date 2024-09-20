@@ -130,10 +130,9 @@
     </div>
     <div
       v-if="list.length == 0 && !loading"
-      class="flex flex-1 justify-center space-x-3 mt-3 items-center overflow-x-scroll scroll-container"
+      class="flex flex-1 justify-center space-x-3 mt-3 py-20 items-center overflow-x-scroll scroll-container"
     >
       <img :src="issue" class="w-10 h-10" alt="" />
-      <p class="py-24 text-main text-xs">data empty !</p>
     </div>
     <div
       v-if="list.length > 0 && !loading"
