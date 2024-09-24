@@ -8,9 +8,9 @@
     </div>
     <div class="w-[90vw] left-[5%] absolute top-[60px] space-y-5 z-10">
       <p
-        class="text-white bg-white/20 rounded-full p-4 py-2 text-center w-[80%] mx-auto"
+        class="text-white bg-white/20 rounded-full p-4 py-2 text-center w-[70%] mx-auto"
       >
-        Booking expiry : 23:55:42
+        <Countdown :time="10" />
       </p>
       <p class="text-center text-white text-5xl font-semibold pt-2">
         ฿ 3560.00
@@ -64,7 +64,7 @@ import QrPayment from "@/assets/pay.png";
 import Visa from "@/assets/symbols.png";
 import Cash from "@/assets/cash.png";
 import talk from "@/assets/headphone.png";
-
+import Countdown from "@/components/cart/CountdownPage.vue";
 const router = useRouter();
 
 const payment = ref([
