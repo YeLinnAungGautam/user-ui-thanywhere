@@ -17,22 +17,24 @@
       </p>
       <p class="text-center text-white">View booking detail</p>
       <div
-        class="pt-3 pb-3 divide-y divide-black/10 rounded-xl w-full shadow-custom bg-white"
+        class="pt-3 pb-3 divide-y h-auto overflow-y-scroll divide-black/10 rounded-xl w-full shadow-custom bg-white"
       >
         <div
           class="flex justify-between items-center px-6 py-3"
-          v-for="m in 5"
-          :key="m"
+          v-for="p in payment"
+          :key="p.id"
         >
           <div class="flex justify-start items-center space-x-5">
             <!-- <img src="" alt=""> -->
-            <p>&&</p>
+            <img :src="p.img" class="w-6 h-6" alt="" />
             <div>
-              <p class="text-sm font-normal text-black/70">Mobile Banking</p>
-              <p class="text-main text-[10px]">coming soon</p>
+              <p class="text-sm font-normal text-black/70">{{ p.name }}</p>
+              <p class="text-main text-[10px]" v-if="p.isComingSoon">
+                coming soon
+              </p>
             </div>
           </div>
-          <div class="my-auto">
+          <div class="my-auto" v-if="!p.isComingSoon">
             <input type="checkbox" name="" :checked="false" id="" />
           </div>
         </div>
@@ -56,6 +58,50 @@
 <script setup>
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
+import MobileBanking from "@/assets/mobile-banking.png";
+import QrPayment from "@/assets/pay.png";
+import Visa from "@/assets/symbols.png";
+import Cash from "@/assets/cash.png";
+import talk from "@/assets/headphone.png";
 
 const router = useRouter();
+
+const payment = ref([
+  {
+    id: 1,
+    name: "Mobile Payment",
+    isComingSoon: true,
+    img: MobileBanking,
+    isSelected: false,
+  },
+  {
+    id: 2,
+    name: "Qr Payment",
+    isComingSoon: true,
+    img: QrPayment,
+    isSelected: false,
+  },
+  {
+    id: 3,
+    name: "Add or Mangar Cards",
+    isComingSoon: true,
+    img: Visa,
+    isSelected: false,
+  },
+  {
+    id: 4,
+    name: "Cash at Office",
+    isComingSoon: false,
+    img: Cash,
+    isSelected: false,
+  },
+  {
+    id: 5,
+    name: "Talk to Sales",
+    isComingSoon: false,
+    img: talk,
+    isSelected: false,
+  },
+]);
 </script>
