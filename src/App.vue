@@ -4,10 +4,10 @@
       <router-view />
     </transition>
 
-    <div v-if="showUpdateNotification" class="update-notification">
+    <!-- <div v-if="showUpdateNotification" class="update-notification">
       A new version is available. Please
       <button @click="refreshApp">reload</button> the page.
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -54,9 +54,9 @@ const checkForUpdates = () => {
   }
 };
 
-const refreshApp = () => {
-  window.location.reload();
-};
+// const refreshApp = () => {
+//   window.location.reload();
+// };
 
 onMounted(() => {
   checkForUpdates();

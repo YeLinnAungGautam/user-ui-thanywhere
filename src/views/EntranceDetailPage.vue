@@ -49,6 +49,13 @@
             class="text-xs font-semibold whitespace-nowrap"
             >package summary</a
           >
+          <a
+            href="#other"
+            :class="tagsNum == 4 ? 'text-main' : 'text-black/50'"
+            @click="tagsNum = 4"
+            class="text-xs font-semibold whitespace-nowrap"
+            >other attractions</a
+          >
         </div>
       </transition>
 
@@ -69,7 +76,7 @@
                 <img :src="MapImage" class="w-3 h-3" alt="" />{{ c?.name }}
               </p>
             </div>
-            <div class="pt-2" id="options">
+            <div class="pt-2">
               <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
                 Highlights
               </h1>
@@ -80,7 +87,7 @@
               </div>
             </div>
           </div>
-          <div class="space-y-3 bg-white px-6 py-4">
+          <div class="space-y-3 bg-white px-6 py-4" id="options">
             <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
               Select Options
             </h1>
@@ -96,9 +103,7 @@
                 Ticket Off-Peak Dates
               </p>
             </div>
-            <div
-              class="space-y-3 pt-3 pb-2 max-h-[500px] rounded-3xl shadow-inner px-3 overflow-x-scroll"
-            >
+            <div class="space-y-3 pt-3 pb-2">
               <div
                 v-for="i in detail?.variations"
                 :key="i"
@@ -108,7 +113,7 @@
                 <EntranceVariationCartVue :data="i" />
               </div>
             </div>
-            <p class="text-center text-xs pt-3">scroll for view more ..</p>
+            <p class="text-center text-xs pt-3">view more tickets</p>
             <!-- <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
               Select Add On Options
             </h1>
@@ -123,7 +128,7 @@
               </div>
             </div> -->
           </div>
-          <div class="bg-white px-5 pt-4 pb-20" id="summary">
+          <div class="bg-white px-5 pt-4 pb-4" id="summary">
             <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
               Package Summary
             </h1>
@@ -151,6 +156,65 @@
               see less
             </p>
           </div>
+          <div class="bg-white mt-4 mb-4 px-6 pt-5 pb-20 space-y-6" id="other">
+            <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
+              other attractions in {{ detail?.cities[0]?.name }}
+            </h1>
+            <div
+              class="flex justify-start items-center flex-nowrap overflow-scroll scroll-container pb-2"
+            >
+              <div
+                class="border border-black/10 min-w-[230px] rounded-2xl shadow-sm bg-white mr-4"
+                v-for="i in attractionList ?? []"
+                :key="i"
+                :class="detail?.name == i?.name ? 'hidden' : ''"
+                @click="viewDetailFunction(i.id)"
+              >
+                <div
+                  class="w-full col-span-5 h-[150px] overflow-hidden rounded-t-2xl"
+                >
+                  <img
+                    :src="i?.cover_image"
+                    class="w-full h-full object-cover"
+                    alt=""
+                    v-if="i?.cover_image"
+                  />
+                  <img
+                    v-if="!i?.cover_image"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLEoaTsWQuPn6bW-_n6hqZvmy5Lh64qwETLg&s"
+                    class="w-full h-full object-cover"
+                    alt=""
+                  />
+                </div>
+                <div class="py-3 px-2">
+                  <p class="text-sm font-semibold line-clamp-1">
+                    {{ i?.name }}
+                  </p>
+
+                  <div
+                    class="text-[10px] flex justify-start items-center gap-0.5 py-1"
+                  >
+                    <MapPinIcon class="w-3 h-3 text-black/80" />
+                    <p class="text-black text-xs font-medium">
+                      {{ i?.cities[0]?.name }}
+                    </p>
+                  </div>
+                  <div class="text-[10px] gap-0.5 pt-2 space-y-2">
+                    <p class="text-black text-xs font-medium">starting price</p>
+                    <p
+                      class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
+                    >
+                      ฿{{ i.lowest_variation_price }}
+                      <span
+                        class="text-[10px] line-through text-white/80 pl-3 font-normal"
+                        >฿{{ i?.lowest_walk_in_price }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div
           class="bg-white py-3 fixed bottom-0 text-center border-t shadow-custom border-black/10 w-full right-0 text-sm"
@@ -162,13 +226,13 @@
                 ฿ {{ detail?.lowest_variation_price }}
               </p>
             </div>
-            <div
-              @click="open"
+            <a
+              href="#options"
               class="bg-main rounded-full px-6 flex justify-center items-center gap-x-2 py-2.5 text-center text-white"
             >
               <ChevronDoubleUpIcon class="w-5 h-5" />
               Select Options
-            </div>
+            </a>
           </div>
         </div>
         <Modal :isOpen="modalOpen" @closeModal="modalOpen = false">
@@ -393,7 +457,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, onBeforeUnmount } from "vue";
+import { onMounted, ref, computed, onBeforeUnmount, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
@@ -420,13 +484,13 @@ import { useSettingStore } from "../stores/setting";
 import { storeToRefs } from "pinia";
 import SaleModalVue from "../components/cart/SaleModalVue.vue";
 import MapImage from "../assets/s/pin 1 (1).png";
+import { MapPinIcon } from "@heroicons/vue/24/solid";
 
 const route = useRoute();
 const router = useRouter();
 const entranceStore = useEntranceStore();
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
-
 const detail = ref(null);
 const loading = ref(false);
 const seeMoreShow = ref(false);
@@ -438,6 +502,13 @@ const getDetail = async (id) => {
   console.log(res);
   console.log("====================================");
   detail.value = res.data;
+  const response = await entranceStore.getListAction({
+    city_id: detail.value?.cities[0]?.id,
+  });
+  attractionList.value = response.data;
+  console.log("====================================");
+  console.log(attractionList.value, "this is attraction list");
+  console.log("====================================");
   loading.value = false;
 };
 
@@ -478,31 +549,7 @@ const backLeftFunction = () => {
   modalOpen.value = true;
 };
 
-// const percent = computed(() => {
-//   if (detail.value != null) {
-//     if (
-//       detail.value.lowest_walk_in_price &&
-//       detail.value.lowest_variation_price &&
-//       detail.value.lowest_walk_in_price != "null"
-//     ) {
-//       const calculatedPercent = (
-//         ((detail.value.lowest_walk_in_price * 1 -
-//           detail.value.lowest_variation_price * 1) /
-//           detail.value.lowest_walk_in_price) *
-//         100
-//       ).toFixed(0); // Round to 2 decimal places if necessary
-//       return `${calculatedPercent}`;
-//     } else {
-//       return `0`;
-//     }
-//   } else {
-//     return 0;
-//   }
-// });
-
-// const goRoomDetail = (id) => {
-//   router.push({ name: "HomeRoomDetail", params: { id: id } });
-// };
+const attractionList = ref([]);
 
 const scrollY = ref(0);
 const tagsNum = ref(1);
@@ -545,6 +592,10 @@ const chooseDataFunction = (data) => {
   open();
 };
 
+const viewDetailFunction = (id) => {
+  router.push(`/home/attraction-detail/${id}`);
+};
+
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
   if (route.query.language) {
@@ -553,8 +604,15 @@ onMounted(async () => {
   } else {
     await settingStore.getLanguage();
   }
+  console.log("route.params.id", route.params.id);
   await getDetail(route.params.id);
 });
+watch(
+  () => route.params.id,
+  (newId) => {
+    getDetail(newId); // Re-fetch data when the ID changes
+  }
+);
 
 onBeforeUnmount(() => {
   // Clean up the scroll event listener when the component is destroyed

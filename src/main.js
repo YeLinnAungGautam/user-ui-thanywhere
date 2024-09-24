@@ -45,11 +45,11 @@ if ("serviceWorker" in navigator) {
 function showUpdateNotification() {
     const toast = useToast();
     const message = "A new version is available. Click here to update.";
-    toast.info(message, {
-        timeout: 1500,
+    toast.warning(message, {
+        timeout: false,
         closeOnClick: false,
         draggable: false,
-        closeButton: false,
+        closeButton: true,
         onClick: () => {
             window.location.reload();
         },
