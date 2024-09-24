@@ -512,7 +512,7 @@
       </vue-bottom-sheet>
       <vue-bottom-sheet ref="myBottomSheetOptions" :max-height="1500">
         <div class="font-poppins">
-          <div class="h-[85vh] w-[100vw] overflow-hidden">
+          <div class="h-[85vh] w-[100%] overflow-hidden">
             <div class="flex justify-between items-center px-6 pb-4">
               <p class="opacity-0">........</p>
               <p class="text-black text-base font-medium">select options</p>

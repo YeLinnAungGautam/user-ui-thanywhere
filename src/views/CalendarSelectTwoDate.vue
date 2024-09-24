@@ -213,7 +213,7 @@
             </div>
           </div>
         </div>
-        <section class="mt-12 md:mt-0 bottom-0 fixed w-[100vw] left-0 bg-white">
+        <section class="mt-12 md:mt-0 bottom-0 fixed w-[100%] left-0 bg-white">
           <div class="px-4 pt-2">
             <button
               @click="goToMainPage"
