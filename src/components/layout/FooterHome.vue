@@ -48,9 +48,9 @@
         </router-link>
         <router-link to="/home/booking/order/cart" class="space-y-1 relative">
           <p
-            class="absolute -top-1 border border-white -right-3 bg-red text-[10px] w-4 h-4 flex justify-center items-center rounded-full text-white"
+            class="absolute -top-1 border border-white -right-3 bg-red/60 text-[10px] w-4 h-4 flex justify-center items-center rounded-full text-white"
           >
-            5
+            0
           </p>
           <img
             :src="cartImage"

@@ -56,11 +56,11 @@ onMounted(() => {
             @click="router.push('/home/booking/order/cart')"
           >
             <p
-              class="absolute -top-1 border border-white -right-2 bg-red text-[10px] w-4 h-4 flex justify-center items-center rounded-full text-white"
+              class="absolute -top-1 border border-white -right-2 bg-red/60 text-[10px] w-4 h-4 flex justify-center items-center rounded-full text-white"
             >
-              5
+              0
             </p>
-            <img :src="cartImage" class="w-7 h-7" alt="" />
+            <img :src="cartImage" class="w-6 h-6" alt="" />
           </div>
           <div
             @click="onBoradingShow = true"

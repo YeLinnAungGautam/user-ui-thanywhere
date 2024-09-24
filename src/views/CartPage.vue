@@ -1,5 +1,12 @@
 <template>
   <div class="relative h-screen">
+    <div class="absolute top-0 left-0 w-full h-full bg-black/80 z-50">
+      <div
+        class="flex justify-center items-center text-white text-2xl font-medium h-full"
+      >
+        still developing ...
+      </div>
+    </div>
     <div
       class="flex justify-between sticky top-0 items-center bg-gradient-to-b to-main from-main/80 px-6 py-5 shadow-custom"
     >
