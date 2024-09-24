@@ -66,12 +66,14 @@ onMounted(() => {
 <style>
 /* Update notification style */
 .update-notification {
-  background: #ffcc00;
+  background: #ff6500;
   padding: 10px;
   text-align: center;
   position: fixed;
   bottom: 20px;
+  color: white;
   left: 50%;
+  width: 90%;
   transform: translateX(-50%);
   border-radius: 5px;
   z-index: 1000;
