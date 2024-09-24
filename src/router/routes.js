@@ -30,6 +30,9 @@ import ProfileVuePage from "../views/ProfilePage.vue";
 import SignUpVuePage from "../views/SignUpPage.vue";
 import TranslationPage from "../views/TranslationPage.vue";
 import ProfileUpdateVuePage from "../views/UpdateUserInfo.vue";
+import HomeCartPageVue from "../views/CartPage.vue";
+import HomeCompletePageVue from "../views/CompleteBooking.vue";
+import HomePaymentBookingPageVue from "../views/PaymentBooking.vue";
 // import VantourPickupVue from "../views/FAQs/PickupPage.vue";
 // import VantourBookTourVue from "../views/FAQs/BookTourPage.vue";
 // import VantourMakePaymentVue from "../views/FAQs/MakePayment.vue";
@@ -205,6 +208,21 @@ const routes = [
     path: "/home/destination-result/:id/:name",
     name: "HomeDestinationResult",
     component: HomeDestinationResultVue,
+  },
+  {
+    path: "/home/booking/order/cart",
+    name: "HomeCartPage",
+    component: HomeCartPageVue,
+  },
+  {
+    path: "/home/booking/order/cart/complete",
+    name: "HomeCompletePage",
+    component: HomeCompletePageVue,
+  },
+  {
+    path: "/home/booking/order/cart/complete/payment",
+    name: "HomePaymentBookingPage",
+    component: HomePaymentBookingPageVue,
   },
   // {
   //   path: "/home/van-tour-detail/pages/pickup",

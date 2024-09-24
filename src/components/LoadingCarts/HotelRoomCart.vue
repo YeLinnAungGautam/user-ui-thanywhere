@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="text-xl text-main whitespace-nowrap font-semibold text-end">
-          $ {{ data.room_price }}
+          ฿ {{ data.room_price }}
           <p
             @click="openRoom(data.id)"
             class="text-[10px] underline text-black font-normal whitespace-nowrap"

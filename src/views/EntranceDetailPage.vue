@@ -164,7 +164,7 @@
             </div>
             <div
               @click="open"
-              class="bg-main rounded-2xl px-6 flex justify-center items-center gap-x-2 py-2 text-center text-white"
+              class="bg-main rounded-full px-6 flex justify-center items-center gap-x-2 py-2.5 text-center text-white"
             >
               <ChevronDoubleUpIcon class="w-5 h-5" />
               Select Options

@@ -512,7 +512,7 @@
       </vue-bottom-sheet>
       <vue-bottom-sheet ref="myBottomSheetOptions" :max-height="1500">
         <div class="font-poppins">
-          <div class="h-[85vh]">
+          <div class="h-[85vh] w-[100vw] overflow-hidden">
             <div class="flex justify-between items-center px-6 pb-4">
               <p class="opacity-0">........</p>
               <p class="text-black text-base font-medium">select options</p>
@@ -520,7 +520,7 @@
               <XMarkIcon class="w-5 h-5" @click="closeOption" />
             </div>
             <div
-              class="border-t border-black/10 space-y-2 p-4 ml-4 mr-4 h-[90vh] overflow-scroll"
+              class="border-t border-black/10 space-y-2 px-4 pt-4 ml-4 mr-4 h-[90vh] pb-10 overflow-scroll"
             >
               <p>Rooms Options</p>
               <div class="flex justify-between items-center text-xs">
@@ -542,7 +542,7 @@
       </vue-bottom-sheet>
       <vue-bottom-sheet ref="myBottomSheetCalendar" :max-height="1500">
         <div class="font-poppins">
-          <div class="h-[70vh]">
+          <div class="h-[100vh]">
             <div class="flex justify-between items-center px-6 pb-4">
               <p class="opacity-0">........</p>
               <p class="text-black text-base font-medium">edit dates</p>
@@ -648,9 +648,12 @@
         </div> -->
         <div>
           <p class="text-xs font-medium">starting from</p>
-          <p class="text-2xl font-semibold text-main pb-1" v-if="!choosePax">
+          <p
+            class="text-xl font-semibold text-main pt-1 pb-1"
+            v-if="!choosePax"
+          >
+            ฿
             {{ chooseData ? chooseData.room_price : detail?.lowest_room_price }}
-            thb
           </p>
           <!-- <p
             class="text-lg font-semibold text-main"
@@ -677,11 +680,11 @@
         </div>
         <!-- @click="openDetailModal" this is for talk to sale -->
         <div
-          class="bg-main py-2 w-[200px] flex justify-center items-center gap-x-4 rounded-2xl text-center text-white text-sm"
+          class="bg-main py-2.5 w-[180px] flex justify-center items-center gap-x-4 rounded-full text-center text-white text-sm shadow-custom"
           @click="openOption"
         >
           <ChevronDoubleUpIcon class="w-5 h-5" />
-          <p>Select Options</p>
+          <p class="font-medium">Select Options</p>
         </div>
       </div>
     </div>

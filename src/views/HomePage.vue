@@ -17,9 +17,9 @@ import { onMounted, ref } from "vue";
 import WhyChooseUsVue from "../components/home/WhyChooseUs.vue";
 import TranslationPageVue from "../views/TranslationPage.vue";
 import Modal from "../components/layout/Modal.vue";
-import facebook from "@/assets/icons/facebook.png";
-import viber from "@/assets/icons/chat-bubble_7044894.png";
-import phone from "@/assets/icons/phone_6932413.png";
+import facebook from "@/assets/icons8-facebook.svg";
+import viber from "@/assets/icons8-viber.svg";
+import phone from "@/assets/icons8-phone-1.svg";
 import chat from "@/assets/icons/chat_7324289.png";
 import { useSettingStore } from "@/stores/setting";
 import { storeToRefs } from "pinia";
@@ -112,7 +112,7 @@ onMounted(() => {
 <template>
   <div class="relative">
     <div
-      class="fixed flex flex-col space-y-1 justify-center items-end bottom-20 pr-4 right-0 z-40"
+      class="fixed flex flex-col space-y-2 justify-center items-end bottom-20 pr-4 right-0 z-40"
     >
       <!-- Social buttons -->
       <transition-group name="fade" tag="div" class="space-y-1 pr-1">
@@ -127,11 +127,13 @@ onMounted(() => {
           >
             facebook
           </p>
-          <img
-            :src="facebook"
-            class="text-white w-12 h-12 bg-white rounded-full shadow-lg"
-            alt="Facebook"
-          />
+          <div class="w-12 bg-white rounded-xl">
+            <img
+              :src="facebook"
+              class="w-14 h-auto object-cover"
+              alt="Facebook"
+            />
+          </div>
         </div>
         <div
           v-if="showButtons"
@@ -144,11 +146,9 @@ onMounted(() => {
           >
             viber
           </p>
-          <img
-            :src="viber"
-            class="text-white w-12 h-12 bg-white rounded-full shadow-lg"
-            alt="Viber"
-          />
+          <div class="w-12 bg-white rounded-xl">
+            <img :src="viber" class="w-full h-auto object-cover" alt="viber" />
+          </div>
         </div>
         <div
           v-if="showButtons"
@@ -161,11 +161,9 @@ onMounted(() => {
           >
             phone
           </p>
-          <img
-            :src="phone"
-            class="text-white w-12 h-12 bg-white rounded-full shadow-lg"
-            alt="WhatsApp"
-          />
+          <div class="w-12 bg-white rounded-xl">
+            <img :src="phone" class="w-full h-auto object-cover" alt="phone" />
+          </div>
         </div>
       </transition-group>
 

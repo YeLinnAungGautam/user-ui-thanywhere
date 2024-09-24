@@ -649,26 +649,25 @@
           </div>
         </div>
         <p class="text-lg font-semibold text-main" v-if="!choosePax">
-          {{ chooseData ? chooseData.price : detail?.lowest_car_price }}
-          thb
+          ฿ {{ chooseData ? chooseData.price : detail?.lowest_car_price }}
         </p>
         <p class="text-lg font-semibold text-main" v-if="choosePax">
+          ฿
           {{
             chooseData
               ? chooseData.price * 1 + detail?.ticket_price * chooseCount
               : chooseData.price
           }}
-          thb
         </p>
       </div>
       <div class="flex justify-between items-center gap-x-3">
         <div
-          class="bg-yellow py-2 mt-2 w-full rounded-2xl text-center text-white text-sm"
+          class="bg-yellow py-2.5 mt-2 w-full rounded-full text-center text-white text-sm"
         >
           <p>Add to Cart</p>
         </div>
         <div
-          class="bg-main py-2 mt-2 w-full rounded-2xl text-center text-white text-sm"
+          class="bg-main py-2.5 mt-2 w-full rounded-full text-center text-white text-sm"
           @click="openDetailModal"
         >
           <p>Book now</p>

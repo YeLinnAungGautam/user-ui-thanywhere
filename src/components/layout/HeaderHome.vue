@@ -53,7 +53,10 @@ onMounted(() => {
         </p>
         <!-- <UserCircleIcon class="w-6 h-6 text-white" /> -->
         <div class="flex justify-end items-center gap-3">
-          <div class="relative">
+          <div
+            class="relative"
+            @click="router.push('/home/booking/order/cart')"
+          >
             <p
               class="absolute -top-1 border border-white -right-2 bg-red text-[10px] w-4 h-4 flex justify-center items-center rounded-full text-white"
             >
