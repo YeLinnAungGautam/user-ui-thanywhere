@@ -6,43 +6,129 @@
       </div>
     </transition>
     <div class="relative" v-if="!loading">
-      <ImageCarousel :data="detail?.images" />
-      <ChevronLeftIcon
-        @click="router.push('/home/attraction')"
-        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
-      />
-      <!-- <ArrowUpTrayIcon
-        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
-      /> -->
-      <div
-        @click="shareContent"
-        class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
-      >
-        <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
-      </div>
-      <HeartIcon
-        class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
-      />
-
-      <div class="px-4 bg-white">
+      <div :style="imageStyles">
+        <ImageCarousel :data="detail?.images" />
+        <ChevronLeftIcon
+          @click="router.push('/home/attraction')"
+          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
+        />
         <div
-          class="bg-white mb-4 p-5 rounded-3xl border border-black/10 space-y-6"
+          @click="shareContent"
+          class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
         >
-          <div class="space-y-2">
+          <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
+        </div>
+        <HeartIcon
+          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
+        />
+      </div>
+
+      <transition name="fade">
+        <div
+          v-if="showDiv"
+          class="flex fixed shadow-custom top-0 py-3 bg-white w-full flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll z-20 scroll-container border-b border-black/10"
+        >
+          <a
+            href="#highlight"
+            :class="tagsNum == 1 ? 'text-main' : 'text-black/50'"
+            @click="tagsNum = 1"
+            class="text-xs font-semibold whitespace-nowrap"
+            >highlights</a
+          >
+          <a
+            href="#options"
+            :class="tagsNum == 2 ? 'text-main' : 'text-black/50'"
+            @click="tagsNum = 2"
+            class="text-xs font-semibold whitespace-nowrap"
+            >select options</a
+          >
+          <a
+            href="#summary"
+            :class="tagsNum == 3 ? 'text-main' : 'text-black/50'"
+            @click="tagsNum = 3"
+            class="text-xs font-semibold whitespace-nowrap"
+            >package summary</a
+          >
+        </div>
+      </transition>
+
+      <div class="bg-black/5 relative">
+        <div
+          class="bg-black w-[45px] rounded-lg h-[6px] mx-auto absolute -top-4 z-30 left-[45%]"
+        ></div>
+        <div class="mb-4 space-y-3" id="highlight">
+          <div class="space-y-2 bg-white px-6 mt-2 pb-6">
             <h1 class="text-main font-medium">{{ detail?.name }}</h1>
 
             <div class="flex justify-start flex-wrap items-center gap-1">
               <p
                 v-for="c in detail?.cities"
                 :key="c"
-                class="text-[10px] px-2 whitespace-nowrap py-0.5 bg-black/10 rounded inline-block text-black/70"
+                class="text-[10px] px-2 flex justify-start items-center whitespace-nowrap py-1 bg-black/10 rounded-full text-black/70 gap-x-2"
               >
-                {{ c?.name }}
+                <img :src="MapImage" class="w-3 h-3" alt="" />{{ c?.name }}
               </p>
             </div>
+            <div class="pt-2" id="options">
+              <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
+                Highlights
+              </h1>
+              <div class="grid grid-cols-2 gap-1.5">
+                <p v-for="i in 6" :key="i" class="text-xs text-black/20">
+                  comming soon !
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-3 bg-white px-6 py-4">
+            <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
+              Select Options
+            </h1>
+            <div class="flex justify-start flex-nowarp items-center gap-2">
+              <p
+                class="text-xs px-3 py-1.5 border border-black/10 bg-black/5 rounded-full"
+              >
+                Ticket Peak Dates
+              </p>
+              <p
+                class="text-xs px-3 py-1.5 border border-black/10 bg-black/5 rounded-full"
+              >
+                Ticket Off-Peak Dates
+              </p>
+            </div>
+            <div
+              class="space-y-3 pt-3 pb-2 max-h-[500px] rounded-3xl shadow-inner px-3 overflow-x-scroll"
+            >
+              <div
+                v-for="i in detail?.variations"
+                :key="i"
+                @click="chooseDataFunction(i)"
+                :class="i?.is_add_on != 1 ? '' : 'hidden'"
+              >
+                <EntranceVariationCartVue :data="i" />
+              </div>
+            </div>
+            <p class="text-center text-xs pt-3">scroll for view more ..</p>
+            <!-- <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
+              Select Add On Options
+            </h1>
 
+            <div class="space-y-6 pt-3 pb-2">
+              <div
+                v-for="i in detail?.variations"
+                :key="i"
+                :class="i?.is_add_on != 0 ? '' : 'hidden'"
+              >
+                <EntranceVariationCartVue :data="i" />
+              </div>
+            </div> -->
+          </div>
+          <div class="bg-white px-5 pt-4 pb-20" id="summary">
+            <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
+              Package Summary
+            </h1>
             <p
-              class="text-[13.5px] text-black/80 leading-6"
+              class="text-[13.5px] text-black/80 leading-6 px-2"
               :class="!seeMoreShow ? 'h-[145px] overflow-hidden' : 'h-auto'"
               v-html="
                 language == 'english'
@@ -51,54 +137,39 @@
               "
             ></p>
             <p
-              class="text-[8px] text-main"
+              class="text-[8px] text-main px-2 py-2"
               v-if="!seeMoreShow"
               @click="seeMoreShow = true"
             >
               see more
             </p>
             <p
-              class="text-[8px] text-main"
+              class="text-[8px] text-main px-2 py-2"
               v-if="seeMoreShow"
               @click="seeMoreShow = false"
             >
               see less
             </p>
           </div>
-          <div class="space-y-3">
-            <h1 class="font-medium pt-3">ticket variations</h1>
-            <div
-              class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
-            >
-              <div
-                v-for="i in detail?.variations"
-                :key="i"
-                :class="i?.is_add_on != 1 ? '' : 'hidden'"
-              >
-                <EntranceVariationCartVue :data="i" />
-              </div>
-            </div>
-          </div>
-          <div class="space-y-3">
-            <h1 class="font-medium pt-3">other options</h1>
-            <div
-              class="flex flex-1 justify-start space-x-3 mt-6 pb-2 items-center overflow-x-scroll scroll-container"
-            >
-              <div
-                v-for="i in detail?.variations"
-                :key="i"
-                :class="i?.is_add_on != 0 ? '' : 'hidden'"
-              >
-                <EntranceVariationCartVue :data="i" />
-              </div>
-            </div>
-          </div>
         </div>
         <div
-          class="bg-main py-3 mb-10 rounded-3xl text-center text-white text-sm"
-          @click="modalOpen = true"
+          class="bg-white py-3 fixed bottom-0 text-center border-t shadow-custom border-black/10 w-full right-0 text-sm"
         >
-          <p>talk to sales</p>
+          <div class="flex justify-between items-end px-6">
+            <div class="space-y-2">
+              <p class="text-xs">starting from</p>
+              <p class="text-xl text-start font-semibold text-main">
+                ฿ {{ detail?.lowest_variation_price }}
+              </p>
+            </div>
+            <div
+              @click="open"
+              class="bg-main rounded-2xl px-6 flex justify-center items-center gap-x-2 py-2 text-center text-white"
+            >
+              <ChevronDoubleUpIcon class="w-5 h-5" />
+              Select Options
+            </div>
+          </div>
         </div>
         <Modal :isOpen="modalOpen" @closeModal="modalOpen = false">
           <DialogPanel
@@ -220,16 +291,115 @@
             </div>
           </DialogPanel>
         </Modal>
+        <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
+          <div class="font-poppins">
+            <div class="h-[45vh]">
+              <div class="flex justify-between items-center px-6 pb-4">
+                <p class="opacity-0">........</p>
+                <p>select options</p>
+                <XMarkIcon class="w-5 h-5" @click="close" />
+              </div>
+              <div
+                class="border-t border-black/10 p-4 ml-4 mr-4 overflow-scroll"
+              >
+                <div>
+                  <div class="flex justify-between items-center">
+                    <p class="text-sm pb-2">{{ chooseData?.name }}</p>
+                    <!-- <p class="underline text-main text-xs">view detail</p> -->
+                  </div>
+                  <div
+                    class="border border-black/10 shadow-custom mt-3 p-5 rounded-2xl flex justify-between items-center"
+                  >
+                    <p class="text-sm">Ticket Count</p>
+                    <div class="flex justify-end items-center gap-x-4">
+                      <div class="text-end">
+                        <p class="text-main font-semibold text-lg">
+                          {{ chooseData?.price }} thb
+                        </p>
+                        <p class="text-xs line-through">
+                          {{
+                            chooseData?.owner_price
+                              ? chooseData?.owner_price
+                              : ""
+                          }}
+                          thb
+                        </p>
+                      </div>
+                      <div class="flex justify-end items-center">
+                        <p
+                          class="bg-main px-2 rounded-lg text-white text-xl"
+                          v-if="chooseCount != 1"
+                          @click="chooseCountMinus"
+                        >
+                          -
+                        </p>
+                        <p
+                          class="bg-black/10 px-2 rounded-lg text-black/20 text-xl"
+                          v-if="chooseCount == 1"
+                        >
+                          -
+                        </p>
+                        <p
+                          class="px-3 py-1 font-semibold flex justify-start items-center flex-nowrap gap-x-2"
+                        >
+                          {{ chooseCount
+                          }}<span class="text-xs font-normal">pax</span>
+                        </p>
+                        <p
+                          class="bg-main px-2 rounded-lg text-white text-xl"
+                          @click="chooseCountPlus"
+                        >
+                          +
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="border-t border-black/10 mt-4 w-full fixed bottom-0 shadow-custom"
+              >
+                <div class="flex justify-between items-center px-8 pt-3">
+                  <p class="text-sm">Total Amount</p>
+                  <p class="text-xl font-semibold text-main">
+                    ฿
+                    {{
+                      chooseCount * (chooseData?.price ? chooseData?.price : 0)
+                    }}
+                  </p>
+                </div>
+                <div
+                  class="flex justify-between px-6 items-center gap-x-4 pb-3"
+                >
+                  <div
+                    class="bg-yellow py-2 mt-2 w-[48%] rounded-2xl text-center text-white text-sm"
+                  >
+                    <p>Add to Cart</p>
+                  </div>
+                  <div
+                    class="bg-main py-2 mt-2 w-[48%] rounded-2xl text-center text-white text-sm"
+                    @click="openDetailModal"
+                  >
+                    <p>Book now</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </vue-bottom-sheet>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
+import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
+import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import {
+  ChevronDoubleUpIcon,
   ChevronLeftIcon,
   HeartIcon,
   XMarkIcon,
@@ -244,11 +414,12 @@ import callIcon from "../assets/Booking icons/call.png";
 import Modal from "../components/layout/Modal.vue";
 import { DialogPanel, DialogTitle } from "@headlessui/vue";
 import { useEntranceStore } from "../stores/entrance";
-// import { StarIcon } from "@heroicons/vue/24/solid";
+// import { StarIcon, XMarkIcon } from '@heroicons/vue/24/solid';
 import EntranceVariationCartVue from "../components/cart/EntranceVariationCart.vue";
 import { useSettingStore } from "../stores/setting";
 import { storeToRefs } from "pinia";
 import SaleModalVue from "../components/cart/SaleModalVue.vue";
+import MapImage from "../assets/s/pin 1 (1).png";
 
 const route = useRoute();
 const router = useRouter();
@@ -333,7 +504,49 @@ const backLeftFunction = () => {
 //   router.push({ name: "HomeRoomDetail", params: { id: id } });
 // };
 
+const scrollY = ref(0);
+const tagsNum = ref(1);
+const showDiv = ref(false);
+const handleScroll = () => {
+  scrollY.value = window.scrollY;
+  showDiv.value = window.scrollY > 427;
+  // console.log(window.scrollY);
+};
+
+const imageStyles = computed(() => {
+  const opacity = Math.max(1 - scrollY.value / 300, 0); // Reduce opacity as user scrolls
+  return {
+    opacity: opacity,
+  };
+});
+
+const myBottomSheet = ref(null);
+const open = () => {
+  myBottomSheet.value.open();
+};
+const close = () => {
+  myBottomSheet.value.close();
+};
+
+const chooseCount = ref(1);
+const chooseCountMinus = () => {
+  if (chooseCount.value > 1) {
+    chooseCount.value--;
+  }
+};
+const chooseCountPlus = () => {
+  chooseCount.value++;
+};
+
+const chooseData = ref(null);
+
+const chooseDataFunction = (data) => {
+  chooseData.value = data;
+  open();
+};
+
 onMounted(async () => {
+  window.addEventListener("scroll", handleScroll);
   if (route.query.language) {
     await settingStore.changeLanguage(route.query.language);
     await settingStore.getLanguage();
@@ -342,15 +555,27 @@ onMounted(async () => {
   }
   await getDetail(route.params.id);
 });
+
+onBeforeUnmount(() => {
+  // Clean up the scroll event listener when the component is destroyed
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <style>
+/* Define the fade transition */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.5s ease; /* Adjust duration and easing as needed */
 }
-.fade-enter,
+
+.fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
+  opacity: 0; /* Start or end with opacity 0 */
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1; /* End or start with opacity 1 */
 }
 </style>

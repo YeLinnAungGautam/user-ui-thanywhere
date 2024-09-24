@@ -65,9 +65,6 @@ const totalSlideCount = ref(0);
 const currentSlideIndex = ref(0);
 const prevSlideIndex = ref(1);
 const handleSlideStart = (index) => {
-  console.log(index);
-  console.log("====================================");
-  console.log("====================================");
   currentIndex.value = index.slidingToIndex;
   totalSlideCount.value = index.slidesCount;
   currentSlideIndex.value = index.slidingToIndex + 1;

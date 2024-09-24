@@ -9,6 +9,7 @@ import { useSettingStore } from "../../stores/setting";
 import { storeToRefs } from "pinia";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/vue";
 import Modal from "../layout/Modal.vue";
+import cartImage from "@/assets/shopping-cart.png";
 import TranslationPageVue from "../../views/TranslationPage.vue";
 
 const router = useRouter();
@@ -51,23 +52,34 @@ onMounted(() => {
           THANYWHERE
         </p>
         <!-- <UserCircleIcon class="w-6 h-6 text-white" /> -->
-        <div
-          @click="onBoradingShow = true"
-          class="flex justify-end items-center gap-2 border border-white p-1 rounded-full"
-        >
-          <img
-            :src="English"
-            class="w-6 h-6"
-            alt=""
-            v-if="language == 'english'"
-          />
-          <img
-            :src="Myanmar"
-            class="w-6 h-6"
-            alt=""
-            v-if="language == 'myanmar'"
-          />
-          <p class="text-xs pr-2">{{ language == "english" ? "en" : "mm" }}</p>
+        <div class="flex justify-end items-center gap-3">
+          <div class="relative">
+            <p
+              class="absolute -top-1 border border-white -right-2 bg-red text-[10px] w-4 h-4 flex justify-center items-center rounded-full text-white"
+            >
+              5
+            </p>
+            <img :src="cartImage" class="w-7 h-7" alt="" />
+          </div>
+          <div
+            @click="onBoradingShow = true"
+            class="border border-white rounded-full"
+          >
+            <img
+              :src="English"
+              class="w-7 h-7"
+              alt=""
+              v-if="language == 'english'"
+            />
+            <img
+              :src="Myanmar"
+              class="w-7 h-7"
+              alt=""
+              v-if="language == 'myanmar'"
+            />
+
+            <!-- <p class="text-xs pr-2">{{ language == "english" ? "en" : "mm" }}</p> -->
+          </div>
         </div>
       </div>
       <div class="pb-3">

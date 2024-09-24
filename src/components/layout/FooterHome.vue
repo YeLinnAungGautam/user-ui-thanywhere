@@ -99,6 +99,7 @@ import homeFillImage from "../../assets/icons/Navigation bar icons/filled icons/
 // import tripsFillImage from "../../assets/icons/Navigation bar icons/filled icons/trips icon filled.svg";
 // import wishlistsFillImage from "../../assets/icons/Navigation bar icons/filled icons/wishlists icon filled.svg";
 import profileFillImage from "../../assets/icons/Navigation bar icons/filled icons/profile icon filled.svg";
+import cartImage from "@/assets/shopping-cart.png";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
 import { storeToRefs } from "pinia";

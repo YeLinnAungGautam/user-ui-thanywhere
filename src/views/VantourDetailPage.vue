@@ -29,7 +29,7 @@
       <transition name="fade">
         <div
           v-if="showDiv"
-          class="flex sticky shadow-custom top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll z-20 scroll-container border-b border-black/10"
+          class="flex fixed shadow-custom top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll z-20 scroll-container border-b border-black/10"
         >
           <a
             href="#destinations"
@@ -661,11 +661,18 @@
           thb
         </p>
       </div>
-      <div
-        class="bg-main py-2 mt-2 rounded-full text-center text-white text-sm"
-        @click="openDetailModal"
-      >
-        <p>talk to sales</p>
+      <div class="flex justify-between items-center gap-x-3">
+        <div
+          class="bg-yellow py-2 mt-2 w-full rounded-2xl text-center text-white text-sm"
+        >
+          <p>Add to Cart</p>
+        </div>
+        <div
+          class="bg-main py-2 mt-2 w-full rounded-2xl text-center text-white text-sm"
+          @click="openDetailModal"
+        >
+          <p>Book now</p>
+        </div>
       </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">

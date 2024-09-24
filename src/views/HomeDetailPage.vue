@@ -26,7 +26,7 @@
       <transition name="fade">
         <div
           v-if="showDiv"
-          class="flex sticky shadow-custom z-30 top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll scroll-container border-b border-black/10"
+          class="flex fixed shadow-custom z-30 top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll scroll-container border-b border-black/10"
         >
           <a
             href="#location"
@@ -510,6 +510,49 @@
           </div>
         </div>
       </vue-bottom-sheet>
+      <vue-bottom-sheet ref="myBottomSheetOptions" :max-height="1500">
+        <div class="font-poppins">
+          <div class="h-[85vh]">
+            <div class="flex justify-between items-center px-6 pb-4">
+              <p class="opacity-0">........</p>
+              <p class="text-black text-base font-medium">select options</p>
+
+              <XMarkIcon class="w-5 h-5" @click="closeOption" />
+            </div>
+            <div
+              class="border-t border-black/10 space-y-2 p-4 ml-4 mr-4 h-[90vh] overflow-scroll"
+            >
+              <p>Rooms Options</p>
+              <div class="flex justify-between items-center text-xs">
+                <p class="flex justify-start items-center gap-x-2">
+                  {{ checkin_date }}
+                  <span><ArrowLongRightIcon class="w-4 h-4" /></span>
+                  {{ checkout_date }}
+                </p>
+                <p class="underline cursor-pointer" @click="openCalendar">
+                  change dates
+                </p>
+              </div>
+              <div v-for="i in detail?.rooms" :key="i.id" class="pt-3">
+                <HotelRoomCart :data="i" v-if="i.is_extra != 1" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </vue-bottom-sheet>
+      <vue-bottom-sheet ref="myBottomSheetCalendar" :max-height="1500">
+        <div class="font-poppins">
+          <div class="h-[70vh]">
+            <div class="flex justify-between items-center px-6 pb-4">
+              <p class="opacity-0">........</p>
+              <p class="text-black text-base font-medium">edit dates</p>
+
+              <XMarkIcon class="w-5 h-5" @click="closeCalendar" />
+            </div>
+            <CalendarSelectTwoDate @change="getDateChange" />
+          </div>
+        </div>
+      </vue-bottom-sheet>
       <Modal :isOpen="modalDetailOpen" @closeModal="modalDetailOpen = false">
         <DialogPanel
           class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
@@ -568,7 +611,7 @@
       class="px-5 pb-3 sticky z-30 bg-white shadow-custom pt-2 border-t border-black/10 bottom-0"
     >
       <div class="flex justify-between items-end">
-        <div>
+        <!-- <div>
           <div class="flex justify-start items-center gap-x-2">
             <p
               class="bg-main px-2 rounded-lg text-white text-xl"
@@ -601,41 +644,45 @@
             >
               +
             </p>
-            <!-- <p class="text-xs font-semibold">Choose pax</p> -->
           </div>
+        </div> -->
+        <div>
+          <p class="text-xs font-medium">starting from</p>
+          <p class="text-2xl font-semibold text-main pb-1" v-if="!choosePax">
+            {{ chooseData ? chooseData.room_price : detail?.lowest_room_price }}
+            thb
+          </p>
+          <!-- <p
+            class="text-lg font-semibold text-main"
+            v-if="choosePax && haveBreakfast"
+          >
+            {{
+              chooseData
+                ? chooseData.room_price * 1 + 800 * chooseCount
+                : chooseData.room_price
+            }}
+            thb
+          </p> -->
+          <!-- <p
+            class="text-lg font-semibold text-main"
+            v-if="choosePax && !haveBreakfast"
+          >
+            {{
+              chooseData
+                ? chooseData.room_price * chooseCount
+                : chooseData.room_price
+            }}
+            thb
+          </p> -->
         </div>
-        <p class="text-lg font-semibold text-main" v-if="!choosePax">
-          {{ chooseData ? chooseData.room_price : detail?.lowest_room_price }}
-          thb
-        </p>
-        <p
-          class="text-lg font-semibold text-main"
-          v-if="choosePax && haveBreakfast"
+        <!-- @click="openDetailModal" this is for talk to sale -->
+        <div
+          class="bg-main py-2 w-[200px] flex justify-center items-center gap-x-4 rounded-2xl text-center text-white text-sm"
+          @click="openOption"
         >
-          {{
-            chooseData
-              ? chooseData.room_price * 1 + 800 * chooseCount
-              : chooseData.room_price
-          }}
-          thb
-        </p>
-        <p
-          class="text-lg font-semibold text-main"
-          v-if="choosePax && !haveBreakfast"
-        >
-          {{
-            chooseData
-              ? chooseData.room_price * chooseCount
-              : chooseData.room_price
-          }}
-          thb
-        </p>
-      </div>
-      <div
-        class="bg-main py-2 mt-2 rounded-full text-center text-white text-sm"
-        @click="openDetailModal"
-      >
-        <p>talk to sales</p>
+          <ChevronDoubleUpIcon class="w-5 h-5" />
+          <p>Select Options</p>
+        </div>
       </div>
     </div>
   </div>
@@ -653,7 +700,11 @@ import {
   XMarkIcon,
   ChevronRightIcon,
 } from "@heroicons/vue/24/outline";
-import { StarIcon } from "@heroicons/vue/24/solid";
+import {
+  StarIcon,
+  ChevronDoubleUpIcon,
+  ArrowLongRightIcon,
+} from "@heroicons/vue/24/solid";
 // import locationMap from "../assets/web/pin.svg";
 import ShareIcon from "../assets/web/send.png";
 import Pin from "@/assets/s/pin 1 (1).png";
@@ -672,6 +723,8 @@ import RoomCart from "../components/LoadingCarts/RoomCart.vue";
 import SaleModalVue from "../components/cart/SaleModalVue.vue";
 import { useOrderVantourStore } from "../stores/orderVantour";
 import copy from "copy-to-clipboard";
+import HotelRoomCart from "@/components/LoadingCarts/HotelRoomCart.vue";
+import CalendarSelectTwoDate from "./CalendarSelectTwoDate.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -689,12 +742,27 @@ const { language } = storeToRefs(settingStore);
 const placeList = ref(null);
 
 const myBottomSheet = ref(null);
+const myBottomSheetOptions = ref(null);
+const openOption = () => {
+  myBottomSheetOptions.value.open();
+};
+const closeOption = () => {
+  myBottomSheetOptions.value.close();
+};
 const modalDetailOpen = ref(false);
 
-const openDetailModal = async () => {
-  await orderVantourStore.getHotelData();
-  modalDetailOpen.value = true;
+const myBottomSheetCalendar = ref(null);
+const openCalendar = () => {
+  myBottomSheetCalendar.value.open();
 };
+const closeCalendar = () => {
+  myBottomSheetCalendar.value.close();
+};
+
+// const openDetailModal = async () => {
+//   await orderVantourStore.getHotelData();
+//   modalDetailOpen.value = true;
+// };
 
 const copyDetail = async () => {
   let formattedOutput;
@@ -749,12 +817,12 @@ const chooseDataFunction = (data) => {
   haveBreakfast.value = chooseData.value.has_breakfast == 1 ? true : false;
 };
 
-const chooseCountMinus = () => {
-  chooseCount.value = chooseCount.value - 1;
-};
-const chooseCountPlus = () => {
-  chooseCount.value = chooseCount.value + 1;
-};
+// const chooseCountMinus = () => {
+//   chooseCount.value = chooseCount.value - 1;
+// };
+// const chooseCountPlus = () => {
+//   chooseCount.value = chooseCount.value + 1;
+// };
 
 const getRoomTypeCount = ref(0);
 const getRoomType = (rooms) => {
@@ -772,13 +840,13 @@ const getDetail = async (id) => {
   console.log("====================================");
   console.log(res);
   console.log("====================================");
-  if (res.data?.rooms.length > 0) {
-    chooseData.value = res.data.rooms[0];
-    haveBreakfast.value = chooseData.value.has_breakfast == 1 ? true : false;
-    if (chooseData.value) {
-      chooseCount.value = 0;
-    }
-  }
+  // if (res.data?.rooms.length > 0) {
+  //   chooseData.value = res.data.rooms[0];
+  //   haveBreakfast.value = chooseData.value.has_breakfast == 1 ? true : false;
+  //   if (chooseData.value) {
+  //     chooseCount.value = 0;
+  //   }
+  // }
 
   hasExtraRoom.value = res.data?.rooms?.some((room) => room.is_extra === 1);
   console.log("Has extra room:", hasExtraRoom.value);
@@ -866,6 +934,12 @@ const shareContent = () => {
 
 const currentURL = ref("");
 
+const getDateChange = async (data) => {
+  console.log(data, "this is calendar data");
+  await orderVantourStore.changeHotelStoreData(data);
+  closeCalendar();
+};
+
 onMounted(async () => {
   if (route.query.language) {
     await settingStore.changeLanguage(route.query.language);
@@ -873,6 +947,7 @@ onMounted(async () => {
   } else {
     await settingStore.getLanguage();
   }
+  await orderVantourStore.getHotelData();
   window.addEventListener("scroll", handleScroll);
   currentURL.value = window.location.href;
   await getDetail(route.params.id);
