@@ -1,17 +1,24 @@
 <template>
   <div class="relative h-screen">
-    <div class="absolute top-0 left-0 w-full h-full bg-black/80 z-50">
+    <div class="absolute top-0 left-0 w-full h-full bg-black/80 z-40">
+      <div
+        class="text-white pt-3 absolute top-0 left-0 pl-4 flex justify-start items-center gap-x-2"
+        @click="router.back()"
+      >
+        <ChevronLeftIcon class="w-5 h-5 text-white" />
+        back
+      </div>
       <div
         class="flex justify-center items-center text-white text-2xl font-medium h-full"
       >
-        still developing ...
+        comming soon ...
       </div>
     </div>
     <div
       class="flex justify-between sticky top-0 items-center bg-gradient-to-b to-main from-main/80 px-6 py-5 shadow-custom"
     >
       <ChevronLeftIcon class="w-5 h-5 text-white" @click="router.back()" />
-      <p class="text-white">Cart ( 5 items )</p>
+      <p class="text-white">Cart ( 0 items )</p>
       <p class="opacity-0">....</p>
     </div>
     <div class="px-6 pt-3 pb-20 divide-y divide-black/10">
