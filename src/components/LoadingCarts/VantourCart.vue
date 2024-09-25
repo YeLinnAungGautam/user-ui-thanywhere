@@ -65,7 +65,7 @@
           </p> -->
             <div class="flex justify-between items-center">
               <button class="text-main rounded-base text-xl font-semibold">
-                {{ i?.lowest_car_price }} thb
+                ฿ {{ i?.lowest_car_price }}
                 <span class="text-[11px] text-black/70"> / car</span>
               </button>
               <!-- <p

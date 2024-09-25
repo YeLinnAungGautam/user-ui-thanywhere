@@ -46,7 +46,7 @@
           {{ i?.lowest_car_price }}THB / <span class="text-[10px]">car</span>
         </button> -->
         <button class="text-main py-1 rounded-base text-lg font-semibold">
-          {{ i?.lowest_car_price }} thb
+          ฿ {{ i?.lowest_car_price }}
           <span class="text-[11px] text-black/70"> / car</span>
         </button>
       </div>

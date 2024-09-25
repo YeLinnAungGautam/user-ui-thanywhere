@@ -149,7 +149,7 @@
                       Extra Bed
                     </p>
                     <p class="text-xs font-medium" v-if="hasExtraRoom">
-                      + 0 thb per pax
+                      + 0 ฿ per pax
                     </p>
                     <p
                       class="text-xs font-medium text-red"
@@ -172,7 +172,7 @@
                       Breakfast : Adult
                     </p>
                     <p class="text-xs font-medium" v-if="haveBreakfast">
-                      + 800 thb per pax
+                      + 800 ฿ per pax
                     </p>
                   </div>
                 </div>
@@ -316,7 +316,7 @@
                     />
                   </div>
                   <div class="py-3 px-2">
-                    <p class="text-sm font-semibold line-clamp-2">
+                    <p class="text-sm font-semibold line-clamp-1">
                       {{ i?.name }}
                     </p>
                     <p class="text-[10px] text-black font-medium">
@@ -337,7 +337,7 @@
                       <p
                         class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
                       >
-                        {{ i.lowest_room_price }} THB
+                        ฿ {{ i.lowest_room_price }}
                       </p>
                     </div>
                   </div>
@@ -583,6 +583,7 @@
             <p class="col-span-2">{{ room_qty ? room_qty : "-" }} pax</p>
             <p class="">total amount :</p>
             <p class="col-span-2">
+              ฿
               {{
                 chooseData && choosePax
                   ? chooseData
@@ -590,7 +591,6 @@
                     : detail?.lowest_room_price
                   : chooseData.room_price
               }}
-              thb
             </p>
             <p class="">link :</p>
             <p class="col-span-2">{{ currentURL }}</p>
@@ -776,11 +776,11 @@ const copyDetail = async () => {
 📆 CheckOut Date: ${checkout_date?.value != null ? checkout_date.value : "-"}
 🔖 Breakfast: ${choosePax.value ? "YES" : "No"}
 👩‍🦰 Room Qty: ${room_qty.value ? room_qty.value : "-"} pax
-💰Total Amount: ${
+💰Total Amount: ฿${
     chooseData.value
       ? chooseData.value.room_price
       : detail?.value.lowest_room_price
-  } thb
+  }
 🌐 Web link : ${currentURL.value}
       `;
 

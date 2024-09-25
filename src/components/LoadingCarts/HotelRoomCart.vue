@@ -94,7 +94,7 @@
                 <div class="text-end">
                   <p class="text-[8px]">total amount</p>
                   <p class="font-semibold text-main text-lg">
-                    {{ detail?.room_price }} THB
+                    ฿ {{ detail?.room_price }}
                   </p>
                 </div>
               </div>

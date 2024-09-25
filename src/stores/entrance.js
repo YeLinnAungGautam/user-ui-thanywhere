@@ -15,7 +15,7 @@ export const useEntranceStore = defineStore("entrance", {
         },
         async getChangePage(url, params) {
             this.loading = true;
-            const response = await axios.get(url, {
+            const response = await axios.get(url + "&order_by=top_selling_products", {
                 params: params,
             });
             this.entrances = response.data;

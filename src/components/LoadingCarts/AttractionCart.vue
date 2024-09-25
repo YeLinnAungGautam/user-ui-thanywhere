@@ -73,7 +73,7 @@
               <button
                 class="text-main rounded-base text-xl font-semibold line-clamp-1"
               >
-                {{ i?.lowest_variation_price }} thb
+                ฿ {{ i?.lowest_variation_price }}
                 <span
                   class="text-[11px] line-through text-black/70"
                   v-if="
@@ -81,7 +81,7 @@
                     i?.lowest_walk_in_price != 0 &&
                     i?.lowest_walk_in_price != i?.lowest_variation_price
                   "
-                  >{{ i?.lowest_walk_in_price }}thb</span
+                  >฿ {{ i?.lowest_walk_in_price }}</span
                 >
               </button>
               <!-- <p

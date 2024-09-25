@@ -44,7 +44,7 @@
             class="text-lg font-semibold"
             :class="isActive ? 'text-white' : 'text-main'"
           >
-            {{ i?.room_price }}thb
+            ฿ {{ i?.room_price }}
             <span
               class="text-[10px] line-through text-black/50"
               v-if="
@@ -52,7 +52,7 @@
                 i?.owner_price != 0 &&
                 i?.owner_price != i?.room_price
               "
-              >{{ i?.owner_price }}thb</span
+              >฿{{ i?.owner_price }}</span
             >
           </button>
           <p
@@ -138,7 +138,7 @@
                 <div class="text-end">
                   <p class="text-[8px]">total amount</p>
                   <p class="font-semibold text-main text-lg">
-                    {{ detail?.room_price }} THB
+                    ฿ {{ detail?.room_price }}
                   </p>
                 </div>
               </div>

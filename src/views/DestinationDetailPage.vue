@@ -101,7 +101,7 @@
                     <p
                       class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
                     >
-                      {{ i.lowest_car_price }} THB
+                      ฿ {{ i.lowest_car_price }}
                     </p>
                   </div>
                 </div>

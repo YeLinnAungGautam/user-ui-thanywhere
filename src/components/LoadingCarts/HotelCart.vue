@@ -64,7 +64,7 @@
             <button
               class="text-main rounded-base text-lg line-clamp-1 font-semibold"
             >
-              {{ i?.lowest_room_price }}thb
+              ฿ {{ i?.lowest_room_price }}
               <span
                 class="text-[11px] line-through text-black/70"
                 v-if="
@@ -72,7 +72,7 @@
                   i?.lowest_walk_in_price != 0 &&
                   i?.lowest_walk_in_price != i?.lowest_room_price
                 "
-                >{{ i?.lowest_walk_in_price }}thb</span
+                >฿ {{ i?.lowest_walk_in_price }}</span
               >
             </button>
           </div>

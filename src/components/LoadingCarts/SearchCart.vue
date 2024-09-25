@@ -36,8 +36,8 @@
         <p
           class="text-sm font-semibold text-white bg-main px-3 py-1 rounded-lg inline-block"
         >
-          {{ price }}
-          <span :class="price == 'read about ' ? 'hidden' : ''">thb</span>
+          <span :class="price == 'read about ' ? 'hidden' : ''">฿</span
+          >{{ price }}
         </p>
       </div>
     </div>

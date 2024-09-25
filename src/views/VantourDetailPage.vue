@@ -163,7 +163,7 @@
 
                         <div class="text-center">
                           <p class="inline-block px-4 text-xl font-semibold">
-                            {{ i.price }} THB
+                            ฿ {{ i.price }}
                           </p>
                         </div>
                       </div>
@@ -186,7 +186,7 @@
                       <p class="text-xs font-medium whitespace-nowrap">
                         Private Tour (Without Tickets)
                       </p>
-                      <p class="text-xs font-medium">+ 0 thb per pax</p>
+                      <p class="text-xs font-medium">+ 0 ฿ per pax</p>
                     </div>
                     <div
                       :class="
@@ -203,7 +203,7 @@
                       <p class="text-xs font-medium">
                         +
                         {{ detail?.ticket_price ? detail?.ticket_price : "-" }}
-                        thb per pax
+                        ฿ per pax
                       </p>
                     </div>
                   </div>
@@ -413,7 +413,7 @@
                     <p
                       class="text-white bg-main inline-block px-4 text-sm font-semibold py-1 rounded-full"
                     >
-                      {{ i.lowest_car_price }} THB
+                      ฿ {{ i.lowest_car_price }}
                     </p>
                   </div>
                 </div>
@@ -459,7 +459,7 @@
                         detail?.ticket_price * chooseCount
                       : chooseData.price
                   }}
-                  thb
+                  ฿
                 </p>
                 <p class="">link :</p>
                 <p class="col-span-2">{{ currentURL }}</p>

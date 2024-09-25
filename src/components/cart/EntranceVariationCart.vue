@@ -96,7 +96,7 @@ const toggleShowMore = () => {
           <button
             class="text-main py-1 flex justify-start items-center gap-x-3 rounded-base text-base font-semibold"
           >
-            {{ data?.price }} thb
+            ฿ {{ data?.price }}
             <span
               class="text-[11px] line-through text-black/70"
               v-if="
@@ -104,7 +104,7 @@ const toggleShowMore = () => {
                 data?.owner_price != 0 &&
                 data?.owner_price != data?.price
               "
-              >{{ data?.owner_price }}thb</span
+              >฿ {{ data?.owner_price }}</span
             >
             <p
               v-if="percent != 0 && percent != NaN"

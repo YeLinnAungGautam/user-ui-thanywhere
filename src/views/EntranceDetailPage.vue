@@ -378,15 +378,15 @@
                     <div class="flex justify-end items-center gap-x-4">
                       <div class="text-end">
                         <p class="text-main font-semibold text-lg">
-                          {{ chooseData?.price }} thb
+                          ฿ {{ chooseData?.price }}
                         </p>
                         <p class="text-xs line-through">
+                          ฿
                           {{
                             chooseData?.owner_price
                               ? chooseData?.owner_price
                               : ""
                           }}
-                          thb
                         </p>
                       </div>
                       <div class="flex justify-end items-center">

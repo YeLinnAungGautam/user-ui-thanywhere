@@ -15,9 +15,11 @@ export const useVantourStore = defineStore("vantour", {
         },
         async getChangePage(url, params) {
             this.loading = true;
-            const response = await axios.get(url, {
-                params: params,
-            });
+            const response = await axios.get(
+                url + "order_by=top_selling_products&type=van_tour", {
+                    params: params,
+                }
+            );
             this.vantours = response.data;
             this.loading = false;
             return response.data;
