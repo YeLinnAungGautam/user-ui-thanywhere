@@ -169,7 +169,7 @@ const all = ref(false);
 const { hotels, loading } = storeToRefs(hotelStore);
 
 const changePage = async (url) => {
-  console.log(url);
+  console.log(url, "this is change page url");
   if (url != null) {
     let data;
     if (search.value != null && search.value != "") {
@@ -206,7 +206,7 @@ watch(bottomOfWindow, (newVal) => {
     let changePageCalled = false;
     if (newVal && !changePageCalled) {
       console.log("This is the bottom of the window");
-      if (hotels?.value?.meta?.current_page < hotels?.value?.meta?.last_page) {
+      if (hotels?.value?.meta?.current_page <= hotels?.value?.meta?.last_page) {
         changePageCalled = true; // Set the flag to true
         changePage(
           hotels?.value?.meta?.links[hotels?.value?.meta?.current_page + 1].url
