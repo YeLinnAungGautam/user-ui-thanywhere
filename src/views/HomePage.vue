@@ -205,14 +205,16 @@ onMounted(() => {
                   bringing you over 140 direct partners and counting.
                 </p>
               </div>
-              <div class="relative" @click="router.push('/search')">
-                <input
-                  type="search"
-                  name=""
-                  placeholder=" search for all products"
-                  class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
-                  id=""
-                />
+              <div class="relative">
+                <router-link to="/search">
+                  <input
+                    type="search"
+                    name=""
+                    placeholder=" search for all products"
+                    class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
+                    id=""
+                  />
+                </router-link>
                 <!-- <MagnifyingGlassIcon
                   class="w-5 h-5 absolute top-3.5 right-5 text-main"
                 /> -->
