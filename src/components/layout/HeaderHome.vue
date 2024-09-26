@@ -37,7 +37,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="w-full bg-gradient-to-b to-[#ff7116] from-[#e25800] shadow-custom-filter border-b border-background"
+    class="w-full bg-gradient-to-b to-[#ff8234] from-[#f05e00] shadow-custom-filter border-b border-background"
   >
     <div class="w-full pt-4 pb-6 relative z-10">
       <div
