@@ -36,7 +36,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full bg-gradient-to-b to-main from-main/60 rounded-b-[30px]">
+  <div
+    class="w-full bg-gradient-to-b to-[#ff7116] from-[#e25800] rounded-b-[30px] shadow-2xl"
+  >
     <div class="w-full pt-4 pb-6 relative z-10">
       <div
         class="flex justify-between items-center text-white px-6 pb-4"

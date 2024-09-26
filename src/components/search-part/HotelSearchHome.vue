@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-3">
-    <div class="relative" @click="openCity">
+    <div class="relative shadow-lg rounded-full" @click="openCity">
       <p
         class="w-full rounded-full bg-white pl-12 py-4 text-xs text-main focus:outline-none"
         :class="placefaltcondition ? 'text-red' : 'text-main'"
@@ -16,7 +16,7 @@
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
     <div class="grid grid-cols-2 gap-3">
-      <div class="relative" @click="open">
+      <div class="relative shadow-xl rounded-full" @click="open">
         <p
           class="w-full rounded-full bg-white pl-12 py-4 text-xs focus:outline-none"
           :class="pickupfaltcondition ? 'text-red' : 'text-main'"
@@ -31,7 +31,7 @@
         />
         <!-- <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" /> -->
       </div>
-      <div class="relative" @click="openOut">
+      <div class="relative shadow-lg rounded-full" @click="openOut">
         <p
           class="w-full rounded-full bg-white pl-12 py-4 text-xs focus:outline-none"
           :class="pickupfaltOutcondition ? 'text-red' : 'text-main'"
@@ -47,7 +47,7 @@
         <!-- <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" /> -->
       </div>
     </div>
-    <div class="relative">
+    <div class="relative shadow-lg rounded-full">
       <div
         class="w-full rounded-full bg-white flex flex-wrap justify-start items-center pl-12 py-4 text-xs text-main focus:outline-none"
       >
@@ -60,33 +60,33 @@
       />
       <PlusIcon
         @click="plusAction"
-        class="w-8 h-8 absolute top-2 right-3 bg-main/10 rounded-xl font-semibold p-1 text-main"
+        class="w-7 h-7 absolute top-2.5 shadow-lg right-3 bg-main rounded-full font-semibold p-1 text-white"
       />
       <MinusIcon
         @click="minusAction"
-        class="w-8 h-8 absolute top-2 bg-main/10 rounded-xl font-semibold right-[56px] text-main"
+        class="w-7 h-7 absolute top-2.5 shadow-lg right-[50px] bg-main rounded-full font-semibold p-1 text-white"
       />
     </div>
-    <div class="grid grid-cols-3 gap-3">
-      <div
+    <div class="gap-3 pb-3">
+      <!-- <div
         @click="clearFilterAction"
         class="w-full rounded-full relative bg-white/30 z-0 py-3 text-sm border border-white"
       >
         <p class="text-white text-center">clear</p>
-      </div>
+      </div> -->
       <div
         v-if="chooseCityId && dateSelected && dateOutSelected"
         @click="filteredHotel"
         class="w-full rounded-full relative col-span-2 z-0 py-3 text-sm border border-white"
       >
-        <p class="text-white text-center">explore</p>
+        <p class="text-white text-center">Explore</p>
       </div>
       <div
         v-if="!chooseCityId || !dateSelected || !dateOutSelected"
         @click="filteredError"
         class="w-full rounded-full relative col-span-2 z-0 py-3 text-sm border border-white"
       >
-        <p class="text-white text-center">explore</p>
+        <p class="text-white text-center">Explore</p>
       </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">

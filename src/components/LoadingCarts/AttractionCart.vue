@@ -62,13 +62,14 @@
             coming soon !
           </p>
 
-          <div class="absolute bottom-0 space-y-0.5">
+          <div class="absolute bottom-0 w-full space-y-0.5">
             <p class="text-xs font-medium pb-1">starting price</p>
             <!-- <p
               class="bg-main text-white text-sm font-semibold px-3 inline-block py-0.5 rounded-full"
             >
               {{ i?.lowest_variation_price }}THB
             </p> -->
+
             <div class="flex justify-between items-center">
               <button
                 class="text-main rounded-base text-xl font-semibold line-clamp-1"
@@ -84,11 +85,13 @@
                   >฿ {{ i?.lowest_walk_in_price }}</span
                 >
               </button>
-              <!-- <p
-                class="text-xs bg-main text-white rounded-full px-3 py-1 font-medium"
-              >
-                book
-              </p> -->
+              <div>
+                <p
+                  class="text-xs bg-main text-white rounded-full px-3 py-1 font-medium"
+                >
+                  book
+                </p>
+              </div>
             </div>
           </div>
         </div>

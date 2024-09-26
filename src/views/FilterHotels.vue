@@ -443,11 +443,12 @@ watch(
           >
             <p class="text-[10px] text-main font-semibold whitespace-nowrap">
               filter by
+              <span class="bg-main text-white px-1 rounded-full">3</span>
             </p>
             <ChevronDownIcon class="w-3 h-3 text-main" />
           </div>
         </div>
-        <div class="flex justify-start items-center flex-wrap gap-2 px-6">
+        <!-- <div class="flex justify-start items-center flex-wrap gap-2 px-6">
           <p
             class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
             v-if="searchCityName != 'null' && searchCityName != ''"
@@ -500,7 +501,7 @@ watch(
               </span>
             </p>
           </div>
-        </div>
+        </div> -->
         <div
           class="border mx-6 border-black/10 rounded-2xl shadow-sm bg-white p-2.5"
           v-for="i in hotelList ?? []"

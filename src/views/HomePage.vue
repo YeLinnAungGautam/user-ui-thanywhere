@@ -205,13 +205,13 @@ onMounted(() => {
                   bringing you over 140 direct partners and counting.
                 </p>
               </div>
-              <div class="relative">
+              <div class="relative shadow-lg rounded-full">
                 <router-link to="/search">
                   <input
                     type="search"
                     name=""
                     placeholder=" search for all products"
-                    class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
+                    class="w-full bg-white rounded-full px-6 py-4 text-xs text-main focus:outline-none"
                     id=""
                   />
                 </router-link>
