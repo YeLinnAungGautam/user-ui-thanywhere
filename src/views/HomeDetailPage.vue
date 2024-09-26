@@ -67,7 +67,7 @@
       </transition>
       <div class="relative" id="location">
         <div
-          class="bg-black w-[45px] rounded-lg h-[6px] z-30 mx-auto absolute -top-2 left-[45%]"
+          class="bg-black/80 w-[45px] rounded-lg h-[4px] mx-auto absolute -top-2 left-[45%]"
         ></div>
         <div class="bg-black/5 mb-4 space-y-6">
           <div class="space-y-4">

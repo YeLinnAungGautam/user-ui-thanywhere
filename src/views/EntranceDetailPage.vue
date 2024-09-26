@@ -61,7 +61,7 @@
 
       <div class="bg-black/5 relative">
         <div
-          class="bg-black w-[45px] rounded-lg h-[6px] mx-auto absolute -top-4 z-30 left-[45%]"
+          class="bg-black/80 w-[45px] rounded-lg h-[4px] mx-auto absolute -top-4 z-30 left-[45%]"
         ></div>
         <div class="mb-4 space-y-3" id="highlight">
           <div class="space-y-2 bg-white px-6 mt-2 pb-6">
@@ -105,15 +105,28 @@
             </div>
             <div class="space-y-3 pt-3 pb-2">
               <div
-                v-for="i in detail?.variations"
+                v-for="(i, index) in detail?.variations"
                 :key="i"
                 @click="chooseDataFunction(i)"
                 :class="i?.is_add_on != 1 ? '' : 'hidden'"
               >
-                <EntranceVariationCartVue :data="i" />
+                <EntranceVariationCartVue
+                  :data="i"
+                  :show="viewMoreTicket"
+                  :index="index"
+                />
               </div>
             </div>
-            <p class="text-center text-xs pt-3">view more tickets</p>
+            <p
+              class="text-center text-xs pt-3 flex justify-center items-center gap-x-2"
+              @click="viewMoreTicket = !viewMoreTicket"
+            >
+              view more tickets
+              <ChevronDownIcon
+                class="w-4 h-4"
+                v-if="!viewMoreTicket"
+              /><ChevronUpIcon class="w-4 h-4" v-if="viewMoreTicket" />
+            </p>
             <!-- <h1 class="font-semibold border-l-4 mb-4 border-main pl-3">
               Select Add On Options
             </h1>
@@ -228,7 +241,7 @@
             </div>
             <a
               href="#options"
-              class="bg-main rounded-full px-6 flex justify-center items-center gap-x-2 py-2.5 text-center text-white"
+              class="bg-main rounded-xl px-6 flex justify-center items-center gap-x-2 py-2.5 text-center text-white"
             >
               <ChevronDoubleUpIcon class="w-5 h-5" />
               Select Options
@@ -484,7 +497,11 @@ import { useSettingStore } from "../stores/setting";
 import { storeToRefs } from "pinia";
 import SaleModalVue from "../components/cart/SaleModalVue.vue";
 import MapImage from "../assets/s/pin 1 (1).png";
-import { MapPinIcon } from "@heroicons/vue/24/solid";
+import {
+  MapPinIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@heroicons/vue/24/solid";
 
 const route = useRoute();
 const router = useRouter();
@@ -595,6 +612,8 @@ const chooseDataFunction = (data) => {
 const viewDetailFunction = (id) => {
   router.push(`/home/attraction-detail/${id}`);
 };
+
+const viewMoreTicket = ref(false);
 
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);

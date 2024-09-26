@@ -1,11 +1,13 @@
 <script setup>
 import { StarIcon } from "@heroicons/vue/24/solid";
-import { defineProps, computed, ref } from "vue";
+import { defineProps, ref, computed } from "vue";
 // import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 // import ImageCarousel from "../hotelbookings/EntranceVariationImage.vue";
 
 const props = defineProps({
   data: Object,
+  show: Boolean,
+  index: Number,
 });
 
 const showMore = ref(false);
@@ -38,6 +40,23 @@ const toggleShowMore = () => {
   showMore.value = !showMore.value;
 };
 
+const showCart = () => {
+  console.log("====================================");
+  console.log(props.show, props.index);
+  console.log("====================================");
+  if (props.show) {
+    return true;
+  } else if (props.show == false) {
+    if (props.index < 2) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
+
 // const loading = ref(true);
 
 // const getstatus = (status) => {
@@ -47,7 +66,7 @@ const toggleShowMore = () => {
 </script>
 
 <template>
-  <div>
+  <div v-if="showCart()">
     <div
       class="bg-white shadow-custom relative rounded-3xl p-2 border border-black/5"
       v-show="!loading"
