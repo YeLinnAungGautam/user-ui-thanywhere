@@ -420,7 +420,7 @@ watch(hotels, async (newValue) => {
                 <div v-for="(c, index) in cities?.data" :key="c.id">
                   <p
                     v-if="index < 8 || all"
-                    class="border border-black/10 text-[12px] rounded-full px-4 py-2"
+                    class="border border-black/10 text-[12px] rounded-full px-4 py-1.5"
                     :class="filterId == c.id ? 'bg-main text-white' : ''"
                     @click="searchFunction(c)"
                   >
@@ -454,7 +454,7 @@ watch(hotels, async (newValue) => {
                   <div v-for="(c, index) in placeArray" :key="c">
                     <p
                       v-if="index < 8 || placeall"
-                      class="border border-black/10 text-[12px] rounded-full px-4 py-2"
+                      class="border border-black/10 text-[12px] rounded-full px-4 py-1.5"
                       :class="place == c ? 'bg-main text-white' : ''"
                       @click="place = c"
                     >

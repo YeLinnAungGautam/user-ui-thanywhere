@@ -73,7 +73,7 @@ watch(
       <div class="px-4 pt-2 pb-4 shadow-custom-input">
         <div class="relative z-10 w-full">
           <MagnifyingGlassIcon
-            class="w-6 h-6 absolute top-4 text-main left-3"
+            class="w-6 h-6 absolute top-2 text-main left-3"
           />
           <input
             type="search"
@@ -81,7 +81,7 @@ watch(
             v-model="search_by_name"
             @keyup.enter="goResultPage"
             placeholder=" search"
-            class="w-full rounded-full bg-black/5 pr-6 pl-12 py-5 text-xs text-main focus:outline-none"
+            class="w-full rounded-full bg-black/5 pr-6 pl-12 py-3 text-xs text-main focus:outline-none"
             id=""
           />
         </div>
