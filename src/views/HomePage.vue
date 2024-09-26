@@ -17,10 +17,10 @@ import { onMounted, ref } from "vue";
 import WhyChooseUsVue from "../components/home/WhyChooseUs.vue";
 import TranslationPageVue from "../views/TranslationPage.vue";
 import Modal from "../components/layout/Modal.vue";
-import facebook from "@/assets/icons8-facebook.svg";
-import viber from "@/assets/icons8-viber.svg";
-import phone from "@/assets/icons8-phone-1.svg";
-import chat from "@/assets/icons/chat_7324289.png";
+import facebook from "@/assets/Facebook icon.svg";
+import viber from "@/assets/viber.svg";
+import phone from "@/assets/phone icon.png";
+// import chat from "@/assets/icons/chat_7324289.png";
 import { useSettingStore } from "@/stores/setting";
 import { storeToRefs } from "pinia";
 
@@ -115,7 +115,7 @@ onMounted(() => {
       class="fixed flex flex-col space-y-2 justify-center items-end bottom-20 pr-4 right-0 z-40"
     >
       <!-- Social buttons -->
-      <transition-group name="fade" tag="div" class="space-y-1 pr-1">
+      <transition-group name="fade" tag="div" class="space-y-2 pr-2">
         <div
           v-if="showButtons"
           @click="facebookClickAction"
@@ -123,11 +123,11 @@ onMounted(() => {
           class="staggered-enter-active flex justify-end items-center space-x-2"
         >
           <p
-            class="px-4 text-main border border-main bg-white py-1 text-xs rounded-full shadow-2xl"
+            class="px-4 text-white border border-main bg-main font-semibold py-1 text-xs rounded-full shadow-2xl"
           >
             facebook
           </p>
-          <div class="w-12 bg-white rounded-xl">
+          <div class="w-10 rounded-xl">
             <img
               :src="facebook"
               class="w-14 h-auto object-cover"
@@ -142,11 +142,11 @@ onMounted(() => {
           key="viber"
         >
           <p
-            class="px-4 text-main border border-main bg-white py-1 text-xs rounded-full shadow-2xl"
+            class="px-4 text-white border border-main bg-main font-semibold py-1 text-xs rounded-full shadow-2xl"
           >
             viber
           </p>
-          <div class="w-12 bg-white rounded-xl">
+          <div class="w-10 rounded-xl">
             <img :src="viber" class="w-full h-auto object-cover" alt="viber" />
           </div>
         </div>
@@ -157,11 +157,11 @@ onMounted(() => {
           class="staggered-enter-active flex justify-end items-center space-x-2"
         >
           <p
-            class="px-4 text-main border border-main bg-white py-1 text-xs rounded-full shadow-2xl"
+            class="px-4 text-white border border-main bg-main font-semibold py-1 text-xs rounded-full shadow-2xl"
           >
             phone
           </p>
-          <div class="w-12 bg-white rounded-xl">
+          <div class="w-10 rounded-xl">
             <img :src="phone" class="w-full h-auto object-cover" alt="phone" />
           </div>
         </div>
@@ -169,12 +169,11 @@ onMounted(() => {
 
       <!-- Floating "+" button -->
       <div
-        class="bg-gradient-to-t to-[#ffd500] from-main text-white w-14 h-14 rounded-full shadow-lg flex justify-center items-center cursor-pointer"
+        class="bg-main text-white w-14 shadow-xl h-14 rounded-full flex justify-center items-center cursor-pointer"
         @click="toggleButtons"
       >
         <!-- Rotate the "+" when showButtons is true -->
         <p
-          v-if="showButtons"
           class="transform transition-transform text-3xl duration-500 ease-in-out"
           :style="{
             transform: showButtons ? 'rotate(45deg)' : 'rotate(0deg)',
@@ -182,7 +181,7 @@ onMounted(() => {
         >
           +
         </p>
-        <img
+        <!-- <img
           :src="chat"
           class="transform transition-transform text-3xl duration-500 ease-in-out"
           :style="{
@@ -190,7 +189,7 @@ onMounted(() => {
           }"
           alt=""
           v-if="!showButtons"
-        />
+        /> -->
       </div>
     </div>
     <div class="">

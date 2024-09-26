@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[600px] overflow-scroll">
+  <div class="h-auto">
     <div class="space-y-10 pt-10">
       <div
         v-for="d in data"

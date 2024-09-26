@@ -7,18 +7,18 @@
             :src="homeImage"
             alt=""
             class="w-5 h-5 mx-auto"
-            v-if="!route.path.includes('home') || !route.name == 'Home'"
+            v-if="!route.path.includes('home') && route.name != 'HomeDefault'"
           />
           <img
             :src="homeFillImage"
             alt=""
             class="w-5 h-5 mx-auto"
-            v-if="route.path.includes('home') || route.name == 'Home'"
+            v-if="route.path.includes('home') || route.name == 'HomeDefault'"
           />
           <p
             class="text-[10px] font-medium"
             :class="
-              route.name == 'Home' || route.path.includes('home')
+              route.name == 'HomeDefault' || route.path.includes('home')
                 ? 'text-main'
                 : 'text-black/80'
             "
@@ -139,8 +139,9 @@ const goProfile = () => {
 
 onMounted(async () => {
   await authStore.getAction();
+
   console.log("====================================");
-  console.log(user.value, token.value);
+  console.log(route.name, "this is route name in footer");
   console.log("====================================");
 });
 </script>

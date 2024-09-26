@@ -4,6 +4,7 @@ import {
   ChevronLeftIcon,
   ChevronDownIcon,
   XMarkIcon,
+  ChevronUpIcon,
 } from "@heroicons/vue/24/outline";
 import HotelCartVue from "../components/LoadingCarts/HotelCart.vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
@@ -601,6 +602,13 @@ watch(
                 </p>
               </div>
             </div>
+            <p
+              @click="all = !all"
+              class="font-semibold text-main text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-1"
+            >
+              {{ all ? "see less" : "see more" }}
+              <ChevronUpIcon class="w-3 h-3" />
+            </p>
           </div>
           <div class="space-y-3 pb-10">
             <div class="flex justify-between items-center">

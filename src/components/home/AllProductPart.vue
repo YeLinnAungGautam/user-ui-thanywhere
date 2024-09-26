@@ -6,7 +6,7 @@
     >
       <div class="space-y-2 w-[3.5rem] cursor-pointer ml-6" @click="hotelPage">
         <div
-          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-gradient-to-br to-main from-main/60 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <HomeModernIcon class="max-w-7 max-h-7 text-white" /> -->
           <!-- <img :src="hotel" alt="" class="w-6 h-6 mx-auto" /> -->
@@ -19,7 +19,7 @@
 
       <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="attractionPage">
         <div
-          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-gradient-to-br to-main from-main/60 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <CursorArrowRippleIcon class="max-w-7 max-h-7 text-white" /> -->
           <!-- <img :src="attraction" alt="" class="w-6 h-6 mx-auto" /> -->
@@ -31,7 +31,7 @@
       </div>
       <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="vantourPage">
         <div
-          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-gradient-to-br to-main from-main/60 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <TruckIcon class="max-w-7 max-h-7 text-white" /> -->
           <!-- <img :src="vantour" alt="" class="w-6 h-6 mx-auto" /> -->
@@ -43,7 +43,7 @@
       </div>
       <div class="space-y-2 w-[3.5rem] cursor-pointer" @click="destinationPage">
         <div
-          class="bg-gradient-to-br to-main from-main/40 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
+          class="bg-gradient-to-br to-main from-main/60 w-[3rem] p-3 rounded-full mx-auto overflow-hidden"
         >
           <!-- <PaperAirplaneIcon class="max-w-7 max-h-7 text-white" /> -->
           <!-- <img :src="attraction" alt="" class="w-6 h-6 mx-auto" /> -->

@@ -27,6 +27,7 @@ import { storeToRefs } from "pinia";
 import { onMounted, ref, watch } from "vue";
 import { useCityStore } from "../stores/city";
 import HotelSearchHomeVue from "../components/search-part/HotelSearchHome.vue";
+import { ChevronUpIcon } from "@heroicons/vue/24/outline";
 
 // const settingStore = useSettingStore();
 const hotelStore = useHotelStore();
@@ -430,13 +431,14 @@ watch(hotels, async (newValue) => {
                     {{ c?.name }}
                   </p>
                 </div>
-                <p
-                  @click="all = !all"
-                  class="border border-black/10 text-[10px] bg-black/10 rounded-xl px-4 py-1"
-                >
-                  {{ all ? "see less" : "see more" }}
-                </p>
               </div>
+              <p
+                @click="all = !all"
+                class="font-semibold text-main text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-1"
+              >
+                {{ all ? "see less" : "see more" }}
+                <ChevronUpIcon class="w-3 h-3" />
+              </p>
             </div>
             <div class="space-y-3 pb-10">
               <div class="flex justify-between items-center">
