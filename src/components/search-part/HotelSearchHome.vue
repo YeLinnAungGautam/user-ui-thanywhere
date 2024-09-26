@@ -121,19 +121,23 @@
     </vue-bottom-sheet>
 
     <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
-      <div class="font-poppins relative">
-        <div
+      <div class="font-poppins relative h-[100vh]">
+        <!-- <div
           class="bg-gradient-to-b to-main from-main/60 absolute top-0 right-0 w-full h-[300px] sm:h-[250px]"
-        ></div>
-        <div
-          class="flex justify-between items-center px-6 pt-2 pb-4 relative z-10"
-        >
-          <XMarkIcon class="w-5 h-5 text-white" @click="closeCity" />
-          <p class="text-white font-semibold text-base">Select a destination</p>
-          <p class="opacity-0">......</p>
+        ></div> -->
+        <div class="">
+          <div
+            class="flex justify-between items-center px-6 pt-2 pb-4 relative z-10"
+          >
+            <XMarkIcon class="w-5 h-5 text-black" @click="closeCity" />
+            <p class="text-balck font-semibold text-base">
+              Select a destination
+            </p>
+            <p class="opacity-0">......</p>
+          </div>
         </div>
-        <div class="rounded-xl">
-          <div class="h-[90vh]">
+        <div class="">
+          <div class="">
             <ChooseCityVue
               @changeCity="chooseCityChange"
               @clearChange="closeCityClean"

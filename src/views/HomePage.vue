@@ -12,7 +12,7 @@ import TopDestinationVue from "../components/home/TopDestinations.vue";
 import BestSellingVanTours from "../components/home/BestSellingVanTours.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
 // import ExporeAboutCityVue from "../components/home/ExporeAboutCity.vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import WhyChooseUsVue from "../components/home/WhyChooseUs.vue";
 import TranslationPageVue from "../views/TranslationPage.vue";
@@ -24,7 +24,7 @@ import phone from "@/assets/phone icon.png";
 import { useSettingStore } from "@/stores/setting";
 import { storeToRefs } from "pinia";
 
-const router = useRouter();
+// const router = useRouter();
 const route = useRoute();
 const settingStore = useSettingStore();
 const showProp = ref(false);
@@ -169,7 +169,7 @@ onMounted(() => {
 
       <!-- Floating "+" button -->
       <div
-        class="bg-main text-white w-14 shadow-xl h-14 rounded-full flex justify-center items-center cursor-pointer"
+        class="bg-main text-white shadow-custom-filter w-14 h-14 rounded-full flex justify-center items-center cursor-pointer"
         @click="toggleButtons"
       >
         <!-- Rotate the "+" when showButtons is true -->

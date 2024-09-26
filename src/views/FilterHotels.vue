@@ -573,22 +573,18 @@ watch(
       </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
-      <div class="font-poppins relative">
-        <div class="flex justify-between items-center px-6 pb-4">
+      <div class="font-poppins relative h-[100vh]">
+        <div
+          class="flex justify-between sticky top-0 bg-white border-b border-black/10 shadow-custom-filter items-center px-6 pb-4"
+        >
           <p class="opacity-0">........</p>
-          <p class="text-main text-base">filter</p>
+          <p class="text-main text-base">Filter</p>
           <XMarkIcon class="w-5 h-5" @click="close" />
         </div>
-        <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
-          <div class="space-y-3 pb-10">
+        <div class="p-4 ml-4 mr-4 rounded-xl divide-y divide-black/10">
+          <div class="space-y-3 pb-5">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">choose city</p>
-              <p
-                class="text-black text-[10px] cursor-pointer"
-                @click="all = !all"
-              >
-                {{ all ? "show less" : "show more" }}
-              </p>
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2">
               <div v-for="(c, index) in cities?.data" :key="c.id">
@@ -610,17 +606,10 @@ watch(
               <ChevronUpIcon class="w-3 h-3" />
             </p>
           </div>
-          <div class="space-y-3 pb-10">
+          <div class="space-y-3 pb-5 pt-5">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">choose place</p>
-              <div class="flex justify-end items-center gap-4">
-                <p
-                  class="text-black text-[10px] cursor-pointer"
-                  @click="placeall = !placeall"
-                >
-                  {{ placeall ? "show less" : "show more" }}
-                </p>
-              </div>
+              <div class="flex justify-end items-center gap-4"></div>
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2">
               <p
@@ -640,9 +629,17 @@ watch(
                 </p>
               </div>
             </div>
+            <p
+              v-if="placeArray.length != 0 && placeArray"
+              @click="placeall = !placeall"
+              class="font-semibold text-main text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-0.5"
+            >
+              {{ placeall ? "see less" : "see more" }}
+              <ChevronUpIcon class="w-3 h-3" />
+            </p>
           </div>
 
-          <div class="space-y-3 pb-4">
+          <div class="space-y-3 pb-5 pt-5">
             <div class="flex justify-between items-center">
               <p class="text-sm font-semibold">start rating</p>
               <ChevronUpIcon class="w-4 h-4" />
@@ -684,12 +681,6 @@ watch(
                 >
                   search
                 </p>
-                <p
-                  class="text-black text-[10px] cursor-pointer"
-                  @click="facall = !facall"
-                >
-                  {{ facall ? "show less" : "show more" }}
-                </p>
               </div>
             </div>
             <div class="grid grid-cols-1">
@@ -720,13 +711,20 @@ watch(
                   />
                 </div>
               </div>
+              <p
+                @click="facall = !facall"
+                class="font-semibold text-main text-[10px] pt-2 rounded-xl flex justify-start items-center gap-1 py-0.5"
+              >
+                {{ facall ? "see less" : "see more" }}
+                <ChevronUpIcon class="w-3 h-3" />
+              </p>
             </div>
           </div>
           <div class="space-y-3 overflow-hidden pb-8 pt-4">
             <div class="flex justify-between items-center pb-5">
               <p class="text-sm font-semibold">price range</p>
               <p
-                class="text-black px-3 py-1 relative z-20 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                class="text-black px-3 py-1 relative bg-black/10 rounded-3xl text-[10px] cursor-pointer"
                 @click="searchFunctionArray"
               >
                 search
@@ -757,23 +755,23 @@ watch(
                 {{ minPrice }} THB - {{ maxPrice }} THB
               </p> -->
               <div class="border border-black/10 w-[45%] rounded-2xl p-2">
-                <p class="text-[10px]">minimum</p>
+                <p class="text-[10px] pl-1">minimum</p>
                 <input
                   type="number"
                   name=""
                   v-model="minPrice"
-                  class="outline-none focus:outline-none ring-0 w-full"
+                  class="outline-none pl-1 focus:outline-none ring-0 w-full"
                   id=""
                 />
               </div>
               <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
               <div class="border border-black/10 w-[45%] rounded-2xl p-2">
-                <p class="text-[10px]">maximum</p>
+                <p class="text-[10px] pl-1">maximum</p>
                 <input
                   type="number"
                   name=""
                   v-model="maxPrice"
-                  class="outline-none focus:outline-none ring-0 w-full"
+                  class="outline-none pl-1 focus:outline-none ring-0 w-full"
                   id=""
                 />
               </div>
@@ -796,17 +794,17 @@ watch(
           </div> -->
         </div>
         <div
-          class="flex justify-between sticky bg-white px-4 bottom-0 gap-4 items-center py-4 border border-black/10"
+          class="flex justify-between sticky bg-white px-4 bottom-0 gap-4 items-center py-4 border border-black/10 shadow-custom-filter-bottom-sheet scroll-container"
         >
           <button
             @click="close"
-            class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
+            class="text-center border border-black/10 rounded-full py-2.5 w-[40%] text-sm text-main font-semibold"
           >
             clear
           </button>
           <button
             @click="filteredHotel"
-            class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
+            class="text-center border bg-main border-black/10 rounded-full py-2.5 w-[60%] text-sm text-white font-semibold"
           >
             see {{ count_filter }} hotels
           </button>

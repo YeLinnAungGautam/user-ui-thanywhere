@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch, defineEmits, computed } from "vue";
+import { onMounted, ref, watch, defineEmits } from "vue";
 import { useCityStore } from "../../stores/city";
 import { storeToRefs } from "pinia";
 // import vantourdb from "../assets/vantourdb";
@@ -25,7 +25,7 @@ const searchFunction = (data) => {
   closetype();
 };
 
-const emit = defineEmits();
+const emit = defineEmits(["changeCity", "clearChange"]);
 
 const closetype = () => {
   let data = {
@@ -67,13 +67,13 @@ watch(
 </script>
 
 <template>
-  <div class="relative h-[100%]">
-    <div class="relative px-4">
+  <div class="relative h-[100vh]">
+    <div class="relative">
       <!-- <div class="bg-main absolute top-0 left-0 w-full h-full"></div> -->
-      <div class="">
+      <div class="px-4 pt-2 pb-4 shadow-custom-input">
         <div class="relative z-10 w-full">
           <MagnifyingGlassIcon
-            class="w-6 h-6 absolute top-3 text-main left-3"
+            class="w-6 h-6 absolute top-4 text-main left-3"
           />
           <input
             type="search"
@@ -81,12 +81,12 @@ watch(
             v-model="search_by_name"
             @keyup.enter="goResultPage"
             placeholder=" search"
-            class="w-full rounded-full pr-6 pl-12 py-4 text-xs text-main focus:outline-none"
+            class="w-full rounded-full bg-black/5 pr-6 pl-12 py-5 text-xs text-main focus:outline-none"
             id=""
           />
         </div>
       </div>
-      <div class="pt-5 space-y-2 pr-2">
+      <!-- <div class="pt-5 space-y-2 pr-2">
         <div class="flex justify-between items-center">
           <p class="text-sm font-semibold text-white pb-2">
             most popular cities
@@ -111,11 +111,9 @@ watch(
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
-    <div
-      class="border shadow-custom border-black/10 bg-white rounded-2xl space-y-4 overflow-hidden p-4 h-[600px]"
-    >
+    <div class="bg-white rounded-2xl space-y-4 overflow-hidden p-4 h-[100vh]">
       <div
         class="flex justify-start items-center gap-4"
         v-for="c in searchList"
@@ -131,21 +129,24 @@ watch(
           <p class="text-lg text-main font-semibold mt-2">
             {{ lowercaseCity(c.name) }}
           </p>
-          <p class="text-xs text-main font-normal">
-            thailand <span class="">.</span> 20 van tours
-          </p>
+          <p class="text-xs text-main font-normal">thailand</p>
         </div>
       </div>
     </div>
     <div
-      class="flex sticky bottom-0 w-full z-20 bg-white justify-between gap-4 px-4 items-center py-4 border-t border-black/10"
+      class="flex fixed shadow-custom-filter-bottom-sheet bottom-0 w-full z-20 bg-white justify-between gap-4 px-4 items-center py-4 border-t border-black/10"
     >
-      <p class="text-main text-sm underline" @click="clearCity">Clear</p>
+      <p
+        class="text-main text-sm border border-black/10 rounded-full px-4 py-3 w-[30%] text-center"
+        @click="clearCity"
+      >
+        Clear
+      </p>
       <button
         @click="closetype"
-        class="text-center border bg-main border-black/10 rounded-full py-2 w-[40%] text-sm text-white font-semibold"
+        class="text-center border bg-main border-black/10 rounded-full py-3 w-[70%] text-sm text-white font-semibold"
       >
-        choose
+        Choose
       </button>
     </div>
   </div>

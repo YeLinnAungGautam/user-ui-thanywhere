@@ -137,7 +137,7 @@ const count_filter = ref(0);
 // const minRange = ref(0);
 // const maxRange = ref(15000);
 const minPrice = ref(0);
-const maxPrice = ref(15000);
+const maxPrice = ref(4500);
 const facilitiesArray = ref([]);
 
 const addNewFacility = (id) => {
@@ -403,28 +403,24 @@ watch(hotels, async (newValue) => {
       </div>
 
       <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
-        <div class="font-poppins relative">
-          <div class="flex justify-between items-center px-6 pb-4">
+        <div class="font-poppins relative h-[100vh]">
+          <div
+            class="flex justify-between sticky top-0 bg-white border-b border-black/10 shadow-custom-filter items-center px-6 pb-4"
+          >
             <p class="opacity-0">........</p>
-            <p class="text-main text-base">filter</p>
+            <p class="text-main text-base font-medium">Filter</p>
             <XMarkIcon class="w-5 h-5" @click="close" />
           </div>
-          <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
-            <div class="space-y-3 pb-10">
+          <div class="p-4 ml-4 mr-4 rounded-xl divide-y divide-black/10">
+            <div class="space-y-3 pb-5 pt-4">
               <div class="flex justify-between items-center">
-                <p class="text-sm font-semibold">choose city</p>
-                <p
-                  class="text-black text-[10px] cursor-pointer"
-                  @click="all = !all"
-                >
-                  {{ all ? "show less" : "show more" }}
-                </p>
+                <p class="text-base font-semibold">Choose City</p>
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2">
                 <div v-for="(c, index) in cities?.data" :key="c.id">
                   <p
                     v-if="index < 8 || all"
-                    class="border border-black/10 text-[10px] rounded-xl px-4 py-1"
+                    class="border border-black/10 text-[12px] rounded-full px-4 py-2"
                     :class="filterId == c.id ? 'bg-main text-white' : ''"
                     @click="searchFunction(c)"
                   >
@@ -434,30 +430,22 @@ watch(hotels, async (newValue) => {
               </div>
               <p
                 @click="all = !all"
-                class="font-semibold text-main text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-1"
+                class="font-semibold text-main text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-0.5"
               >
                 {{ all ? "see less" : "see more" }}
                 <ChevronUpIcon class="w-3 h-3" />
               </p>
             </div>
-            <div class="space-y-3 pb-10">
+            <div class="space-y-3 pb-5 pt-5">
               <div class="flex justify-between items-center">
-                <p class="text-sm font-semibold">choose place</p>
-                <div class="flex justify-end items-center gap-4">
-                  <p
-                    class="text-black text-[10px] cursor-pointer"
-                    @click="placeall = !placeall"
-                  >
-                    {{ placeall ? "show less" : "show more" }}
-                  </p>
-                </div>
+                <p class="text-base font-semibold">Area</p>
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2">
                 <p
                   v-if="placeArray.length == 0 || !placeArray"
-                  class="text-[9px] text-red"
+                  class="text-[12px] text-red"
                 >
-                  choose city first !
+                  Please choose a city first.
                 </p>
                 <div
                   class="flex justify-start items-center flex-wrap gap-1"
@@ -466,7 +454,7 @@ watch(hotels, async (newValue) => {
                   <div v-for="(c, index) in placeArray" :key="c">
                     <p
                       v-if="index < 8 || placeall"
-                      class="border border-black/10 text-[10px] rounded-xl px-4 py-1"
+                      class="border border-black/10 text-[12px] rounded-full px-4 py-2"
                       :class="place == c ? 'bg-main text-white' : ''"
                       @click="place = c"
                     >
@@ -474,18 +462,26 @@ watch(hotels, async (newValue) => {
                     </p>
                   </div>
                 </div>
-                <p
-                  v-show="placeArray.length != 0 && placeArray"
-                  @click="placeall = !placeall"
-                  class="border border-black/10 bg-black/10 text-[10px] rounded-xl px-4 py-1"
-                >
-                  {{ placeall ? "see less" : "see more" }}
-                </p>
               </div>
+              <!-- <p
+                v-show="placeArray.length != 0 && placeArray"
+                @click="placeall = !placeall"
+                class="border border-black/10 bg-black/10 text-[10px] rounded-xl px-4 py-1"
+              >
+                {{ placeall ? "see less" : "see more" }}
+              </p> -->
+              <p
+                v-if="placeArray.length != 0 && placeArray"
+                @click="placeall = !placeall"
+                class="font-semibold text-main text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-0.5"
+              >
+                {{ placeall ? "see less" : "see more" }}
+                <ChevronUpIcon class="w-3 h-3" />
+              </p>
             </div>
-            <div class="space-y-3 pb-4">
+            <div class="space-y-3 pb-5 pt-5">
               <div class="flex justify-between items-center">
-                <p class="text-sm font-semibold">start rating</p>
+                <p class="text-base font-semibold">Start Rating</p>
                 <ChevronUpIcon class="w-4 h-4" />
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2 mr-5">
@@ -510,7 +506,7 @@ watch(hotels, async (newValue) => {
             </div>
             <div class="pb-5 pt-5 space-y-4">
               <div class="flex justify-between items-center">
-                <p class="text-sm font-semibold">select facilities type</p>
+                <p class="text-base font-semibold">Select Facilities Type</p>
                 <div class="flex justify-end items-center gap-2">
                   <p
                     class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
@@ -524,12 +520,6 @@ watch(hotels, async (newValue) => {
                     @click="searchFunctionArray"
                   >
                     search
-                  </p>
-                  <p
-                    class="text-black text-[10px] cursor-pointer"
-                    @click="facall = !facall"
-                  >
-                    {{ facall ? "show less" : "show more" }}
                   </p>
                 </div>
               </div>
@@ -547,10 +537,10 @@ watch(hotels, async (newValue) => {
                     <img :src="i.image" class="w-8 h-8" alt="" />
                   </div> -->
                   <div
-                    v-if="index < 8 || facall"
-                    class="flex justify-between space-y-2 items-center"
+                    v-if="index < 5 || facall"
+                    class="flex justify-between space-y-5 items-center"
                   >
-                    <p class="text-xs text-black text-center">
+                    <p class="text-sm text-black text-center">
                       {{ i.name }}
                     </p>
                     <input
@@ -561,13 +551,26 @@ watch(hotels, async (newValue) => {
                     />
                   </div>
                 </div>
+                <!-- <p
+                  class="text-black text-[10px] cursor-pointer"
+                  @click="facall = !facall"
+                >
+                  {{ facall ? "show less" : "show more" }}
+                </p> -->
+                <p
+                  @click="facall = !facall"
+                  class="font-semibold text-main text-[10px] pt-2 rounded-xl flex justify-start items-center gap-1 py-0.5"
+                >
+                  {{ facall ? "see less" : "see more" }}
+                  <ChevronUpIcon class="w-3 h-3" />
+                </p>
               </div>
             </div>
             <div class="space-y-3 overflow-hidden pb-8 pt-4">
               <div class="flex justify-between items-center">
-                <p class="text-sm font-semibold">price range</p>
+                <p class="text-base font-semibold">Price Range</p>
                 <p
-                  class="text-black px-3 py-1 relative z-20 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
+                  class="text-black px-3 py-1 relative bg-black/10 rounded-3xl text-[10px] cursor-pointer"
                   @click="searchFunctionArray"
                 >
                   search
@@ -598,23 +601,23 @@ watch(hotels, async (newValue) => {
                   {{ minPrice }} THB - {{ maxPrice }} THB
                 </p> -->
                 <div class="border border-black/10 w-[45%] rounded-2xl p-2">
-                  <p class="text-[10px]">minimum</p>
+                  <p class="text-[10px] pl-1">minimum</p>
                   <input
                     type="number"
                     name=""
                     v-model="minPrice"
-                    class="outline-none focus:outline-none ring-0 w-full"
+                    class="outline-none focus:outline-none pl-1 ring-0 w-full"
                     id=""
                   />
                 </div>
                 <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
                 <div class="border border-black/10 w-[45%] rounded-2xl p-2">
-                  <p class="text-[10px]">maximum</p>
+                  <p class="text-[10px] pl-1">maximum</p>
                   <input
                     type="number"
                     name=""
                     v-model="maxPrice"
-                    class="outline-none focus:outline-none ring-0 w-full"
+                    class="outline-none focus:outline-none pl-1 ring-0 w-full"
                     id=""
                   />
                 </div>
@@ -622,17 +625,17 @@ watch(hotels, async (newValue) => {
             </div>
           </div>
           <div
-            class="flex justify-between sticky bg-white px-4 bottom-0 gap-4 items-center py-4 border border-black/10"
+            class="flex justify-between sticky w-full overflow-scrol scroll-container shadow-custom-filter-bottom-sheet bg-white px-4 bottom-0 gap-4 items-center py-4 border border-black/10"
           >
             <button
               @click="close"
-              class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
+              class="text-center border border-black/10 rounded-full py-2.5 w-[30%] text-sm text-main font-semibold"
             >
               clear
             </button>
             <button
               @click="filteredHotel"
-              class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
+              class="text-center border bg-main border-black/10 rounded-full py-2.5 w-[68%] text-sm text-white font-semibold"
             >
               see {{ count_filter }} hotels
             </button>

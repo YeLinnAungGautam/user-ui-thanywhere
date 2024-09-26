@@ -1,5 +1,7 @@
 <template>
-  <div class="w-full mx-auto bg-white border-t border-black/10">
+  <div
+    class="w-full mx-auto bg-white border-t shadow-custom-filter-bottom-sheet border-black/10"
+  >
     <div class="max-w-md px-8 py-2 mx-auto justify-center items-center flex">
       <div class="flex justify-between items-center w-full">
         <router-link to="/home" class="space-y-1">
