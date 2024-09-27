@@ -305,7 +305,7 @@ watch(vantours, async (newValue) => {
       <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
         <div class="font-poppins relative h-[100vh]">
           <div
-            class="flex justify-between sticky top-0 shadow-custom-filter items-center px-6 pb-4"
+            class="flex justify-between sticky bg-white top-0 shadow-custom-filter items-center px-6 pb-4"
           >
             <p class="opacity-0">........</p>
             <p class="text-main font-semibold text-base">Filter</p>
@@ -379,7 +379,7 @@ watch(vantours, async (newValue) => {
                 </div>
               </div>
             </div>
-            <div class="pt-4">
+            <div class="pt-4 pb-20">
               <p class="text-base font-semibold mb-2 pb-2">
                 Choose Price Range
               </p>

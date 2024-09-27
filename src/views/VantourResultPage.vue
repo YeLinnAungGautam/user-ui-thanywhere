@@ -426,7 +426,7 @@ watch(
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
       <div class="font-poppins relative h-[100vh]">
         <div
-          class="flex justify-between sticky top-0 shadow-custom-filter items-center px-6 pb-4"
+          class="flex justify-between bg-white sticky top-0 shadow-custom-filter items-center px-6 pb-4"
         >
           <p class="opacity-0">........</p>
           <p class="text-main text-base">filter</p>
@@ -500,7 +500,7 @@ watch(
               </div>
             </div>
           </div>
-          <div class="pt-4 pb-5">
+          <div class="pt-4 pb-20">
             <p class="text-base font-semibold mb-3">choose price range</p>
             <div class="flex justify-between items-center gap-2">
               <div class="border border-black/10 w-[45%] rounded-2xl p-2">
@@ -528,7 +528,7 @@ watch(
           </div>
 
           <div
-            class="flex justify-center fixed bottom-0 left-0 w-full gap-4 items-center pt-4 pb-6 px-4 shadow-custom-filter-bottom-sheet"
+            class="flex justify-center bg-white fixed bottom-0 left-0 w-full gap-4 items-center pt-4 pb-6 px-4 shadow-custom-filter-bottom-sheet"
           >
             <button
               @click="close"

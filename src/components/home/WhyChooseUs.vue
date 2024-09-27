@@ -17,7 +17,7 @@
             :src="i.image"
             class="h-auto"
             alt=""
-            :class="i.id == 3 || i.id == 5 ? 'w-[70px] mt-2.5' : 'w-[80px]'"
+            :class="i.id == 4 ? 'w-[90px]' : 'w-[80px]'"
           />
           <p class="text-[12px] font-semibold">{{ i.title }}</p>
           <p
@@ -45,6 +45,12 @@
             <p class="text-black text-sm font-medium" v-if="openPart == 2">
               Visit Our Offices
             </p>
+            <p class="text-black text-sm font-medium" v-if="openPart == 3">
+              Travel With Trust
+            </p>
+            <p class="text-black text-sm font-medium" v-if="openPart == 6">
+              Growing With You
+            </p>
             <XMarkIcon class="w-5 h-5" @click="close" />
           </div>
           <div
@@ -55,6 +61,12 @@
             </div>
             <div v-if="openPart == 2">
               <VisitOurOffice />
+            </div>
+            <div v-if="openPart == 3">
+              <TravelWithTrust />
+            </div>
+            <div v-if="openPart == 6">
+              <BookWithConfidence />
             </div>
           </div>
         </div>
@@ -67,7 +79,7 @@
 import image1 from "../../assets/s/discover thailand.svg";
 import image2 from "../../assets/s/get best prices.svg";
 import image3 from "../../assets/s/book with confidence.png";
-import image4 from "../../assets/s/travel with trust.svg";
+import image4 from "../../assets/trust.png";
 import image5 from "../../assets/s/growing with you.svg";
 import image6 from "../../assets/Trust_378x348.png";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
@@ -76,13 +88,24 @@ import BookWithConfidence from "./whybookInfo/BookWithConfidence.vue";
 import { ref } from "vue";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import VisitOurOffice from "./whybookInfo/VisitOurOffice.vue";
-
+import TravelWithTrust from "./whybookInfo/TravelWithTrust.vue";
+import { useRouter } from "vue-router";
 const myBottomSheet = ref(null);
 const openPart = ref("");
 
+const router = useRouter();
+
 const open = (id) => {
-  openPart.value = id;
-  myBottomSheet.value.open();
+  if (id != 4 && id != 5) {
+    openPart.value = id;
+    myBottomSheet.value.open();
+  }
+  if (id == 4) {
+    router.push("/home/destination");
+  }
+  if (id == 5) {
+    router.push("/search");
+  }
 };
 
 const close = () => {

@@ -296,29 +296,139 @@ watch(dests, async (newValue) => {
               </p>
             </div>
 
-            <div class="space-y-3 pb-8 pt-5">
-              <div class="pb-10 space-y-4">
-                <p class="text-base font-semibold">Select Activities Type</p>
-                <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                  <div
-                    class="px-2 py-2 space-y-1 w-[70px] mx-auto"
-                    v-for="(i, index) in activitydb"
-                    :key="index"
+            <div class="space-y-3 pb-20 pt-5">
+              <p class="text-base font-semibold">Choose Activities</p>
+              <div class="w-full">
+                <div
+                  class="flex justify-start items-center space-x-2 flex-wrap space-y-2"
+                >
+                  <p
+                    @click="category_id = ''"
+                    :class="
+                      category_id == ''
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
-                    <div class="flex justify-center items-center gap-1">
-                      <!-- <StarIcon class="w-10 h-10 text-main" /> -->
-                      <img :src="i.image" class="w-10 h-10" alt="" />
-                    </div>
-                    <p class="text-[8px] text-black/70 text-center">
-                      {{ i.name }}
-                    </p>
-                  </div>
+                    all
+                  </p>
+                  <p
+                    @click="category_id = 32"
+                    :class="
+                      category_id == 32
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    amusement park
+                  </p>
+                  <p
+                    @click="category_id = 40"
+                    :class="
+                      category_id == 40
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    dinner cruises
+                  </p>
+                  <p
+                    @click="category_id = 31"
+                    :class="
+                      category_id == 31
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    water parks
+                  </p>
+                  <p
+                    @click="category_id = 17"
+                    :class="
+                      category_id == 17
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    safari
+                  </p>
+                  <p
+                    @click="category_id = 16"
+                    :class="
+                      category_id == 16
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    museums
+                  </p>
+                  <p
+                    @click="category_id = 29"
+                    :class="
+                      category_id == 29
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    theme parks
+                  </p>
+                  <p
+                    @click="category_id = 54"
+                    :class="
+                      category_id == 54
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    buffet
+                  </p>
+                  <p
+                    @click="category_id = 42"
+                    :class="
+                      category_id == 42
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    island tours
+                  </p>
+                  <p
+                    @click="category_id = 39"
+                    :class="
+                      category_id == 39
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    shows
+                  </p>
+                  <p
+                    @click="category_id = 22"
+                    :class="
+                      category_id == 22
+                        ? 'border-main bg-main text-white'
+                        : 'border-black/10'
+                    "
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
+                  >
+                    skywalks
+                  </p>
                 </div>
               </div>
             </div>
 
             <div
-              class="flex fixed bottom-0 left-0 w-full shadow-custom-filter-bottom-sheet justify-between gap-4 items-center py-4 px-4"
+              class="flex fixed bottom-0 left-0 bg-white w-full shadow-custom-filter-bottom-sheet justify-between gap-4 items-center py-4 px-4"
             >
               <button
                 @click="close"

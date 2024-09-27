@@ -521,7 +521,7 @@ watch(entrances, async (newValue) => {
               <ChevronUpIcon class="w-3 h-3" />
             </p>
           </div>
-          <div class="space-y-3 pb-6 pt-5">
+          <div class="space-y-3 pb-20 pt-5">
             <p class="text-base font-semibold">Choose Activities</p>
             <div class="w-full">
               <div
