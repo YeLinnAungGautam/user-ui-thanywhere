@@ -175,12 +175,15 @@ watch(entrances, async (newValue) => {
           </p>
           <p class="text-xs">bangkok, pattaya, phuket, etc...</p>
         </div>
-        <div class="relative" @click="router.push('/home/attraction-search')">
+        <div
+          class="relative rounded-full pb-4"
+          @click="router.push('/home/attraction-search')"
+        >
           <input
             type="search"
             name=""
             placeholder=" where would you like to travel"
-            class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
+            class="w-full shadow-custom-input rounded-full px-6 py-4 text-xs text-main focus:outline-none"
             id=""
           />
 
@@ -194,8 +197,8 @@ watch(entrances, async (newValue) => {
     </HeaderHomeVue>
     <div class="h-auto pb-20 z-20 space-y-4 relative">
       <div
-        :class="isStickey ? 'shadow-custom' : ''"
-        class="sticky top-0 py-2 px-6 z-10 bg-background w-full"
+        :class="isStickey ? 'shadow-custom-filter' : ''"
+        class="sticky top-0 pt-2 px-6 z-10 bg-background w-full pb-4"
       >
         <div class="flex justify-between items-center">
           <h1 class="text-main font-semibold">attractions</h1>
@@ -218,7 +221,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == '' ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               all
             </p>
@@ -227,7 +230,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 32 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               amusement park
             </p>
@@ -236,7 +239,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 40 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               dinner cruises
             </p>
@@ -245,7 +248,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 31 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               water parks
             </p>
@@ -254,7 +257,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 17 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               safari
             </p>
@@ -263,7 +266,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 16 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               museums
             </p>
@@ -272,7 +275,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 29 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               theme parks
             </p>
@@ -281,7 +284,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 54 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               buffet
             </p>
@@ -290,7 +293,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 42 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               island tours
             </p>
@@ -299,7 +302,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 39 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               shows
             </p>
@@ -308,7 +311,7 @@ watch(entrances, async (newValue) => {
               :class="
                 category_id == 22 ? 'border-main text-main' : 'border-black/10'
               "
-              class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+              class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
             >
               skywalks
             </p>
@@ -377,26 +380,30 @@ watch(entrances, async (newValue) => {
         </div>
       </div>
       <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
-        <div class="font-poppins">
-          <div class="flex justify-between items-center px-6 pb-4">
+        <div class="font-poppins h-[100vh]">
+          <div
+            class="flex justify-between items-center shadow-custom-filter px-6 pb-4"
+          >
             <p class="opacity-0">........</p>
-            <p class="text-main text-base">filter</p>
+            <p class="text-main font-medium text-base">Filter</p>
             <XMarkIcon class="w-5 h-5" @click="close" />
           </div>
-          <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
-            <div class="space-y-3 pb-6">
+          <div
+            class="p-4 ml-4 mr-4 relative divide-y divide-black/10 rounded-xl"
+          >
+            <div class="space-y-3 pb-6 pt-4">
               <div class="flex justify-between items-center">
-                <p class="text-sm font-semibold">choose city</p>
+                <p class="text-base font-semibold">Choose City</p>
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2">
                 <div v-for="(c, index) in cities?.data" :key="c.id">
                   <p
                     v-if="index < 8 || all"
-                    class="px-4 py-1.5 text-[10px] rounded-full"
+                    class="border border-black/10 text-[12px] rounded-full px-4 py-1.5"
                     :class="
                       filterId == c.id
                         ? 'bg-main border font-semibold border-white  text-white'
-                        : 'bg-white text-black/80 border font-semibold  border-black/10'
+                        : 'bg-white text-black/60 border font-semibold  border-black/10'
                     "
                     @click="searchFunction(c)"
                   >
@@ -404,17 +411,24 @@ watch(entrances, async (newValue) => {
                   </p>
                 </div>
               </div>
-              <p
+              <!-- <p
                 class="text-black text-[10px] w-full border border-black/10 bg-black/10 py-1.5 rounded-full text-center cursor-pointer flex justify-center items-center gap-x-1"
                 @click="all = !all"
               >
                 {{ all ? "show less" : "show more" }}
                 <ChevronDownIcon class="w-4 h-4" v-if="!all" />
                 <ChevronUpIcon class="w-4 h-4" v-if="all" />
+              </p> -->
+              <p
+                @click="all = !all"
+                class="font-semibold text-main text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-0.5"
+              >
+                {{ all ? "see less" : "see more" }}
+                <ChevronUpIcon class="w-3 h-3" />
               </p>
             </div>
-            <div class="space-y-3 pb-6 h-[200px]">
-              <p class="text-sm font-semibold">choose activities</p>
+            <div class="space-y-3 pb-6 pt-5">
+              <p class="text-base font-semibold">Choose Activities</p>
               <div class="w-full">
                 <div
                   class="flex justify-start items-center space-x-2 flex-wrap space-y-2"
@@ -426,7 +440,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     all
                   </p>
@@ -437,7 +451,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     amusement park
                   </p>
@@ -448,7 +462,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     dinner cruises
                   </p>
@@ -459,7 +473,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     water parks
                   </p>
@@ -470,7 +484,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     safari
                   </p>
@@ -481,7 +495,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     museums
                   </p>
@@ -492,7 +506,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     theme parks
                   </p>
@@ -503,7 +517,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     buffet
                   </p>
@@ -514,7 +528,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     island tours
                   </p>
@@ -525,7 +539,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     shows
                   </p>
@@ -536,7 +550,7 @@ watch(entrances, async (newValue) => {
                         ? 'border-main bg-main text-white'
                         : 'border-black/10'
                     "
-                    class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                    class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                   >
                     skywalks
                   </p>
@@ -544,7 +558,9 @@ watch(entrances, async (newValue) => {
               </div>
             </div>
 
-            <div class="flex justify-between gap-4 items-center pt-4">
+            <div
+              class="flex justify-between fixed w-full overflow-scrol scroll-container shadow-custom-filter-bottom-sheet bg-white px-4 bottom-0 left-0 gap-4 items-center py-4 border border-black/10"
+            >
               <button
                 @click="close"
                 class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"

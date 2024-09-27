@@ -12,7 +12,7 @@ import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { useRouter, useRoute } from "vue-router";
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 // import { useCarStore } from "../stores/car";
@@ -173,6 +173,16 @@ const result_category = ref("");
 const result_category_array = ref("");
 const result_price_range = ref("");
 
+const filterCount = computed(() => {
+  let count = 0;
+  if (route.params.id != "null" && route.params.id) {
+    count++;
+  }
+  if (route.query.category_ids != "null" && route.query.category_ids) {
+    count++;
+  }
+  return count;
+});
 onMounted(async () => {
   if (route.query.search) {
     search.value = route.query.search ? route.query.search : "";
@@ -268,13 +278,13 @@ watch(
           <p class="text-white font-semibold">over {{ count }} vantours</p>
           <p class="opacity-0">..</p>
         </div>
-        <div class="relative w-full px-6">
+        <div class="relative w-full px-6 pb-4">
           <input
             type="text"
             v-model="search"
             name=""
             placeholder=" search"
-            class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
+            class="w-full rounded-full shadow-custom-input px-6 py-4 text-xs text-main focus:outline-none"
             id=""
           />
 
@@ -287,7 +297,7 @@ watch(
       </HeaderHome>
       <div class="space-y-4 relative pb-20">
         <div
-          :class="isStickey ? 'shadow-custom' : ''"
+          :class="isStickey ? 'shadow-custom-filter' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
         >
           <h1
@@ -314,11 +324,14 @@ watch(
           >
             <p class="text-[10px] text-main font-semibold whitespace-nowrap">
               filter by
+              <span class="bg-main text-white px-1 rounded-full">{{
+                filterCount
+              }}</span>
             </p>
             <ChevronDownIcon class="w-3 h-3 text-main" />
           </div>
         </div>
-        <div class="flex justify-start items-center flex-wrap gap-2 px-6">
+        <!-- <div class="flex justify-start items-center flex-wrap gap-2 px-6">
           <p
             class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
             v-if="searchCityName != 'null' && searchCityName != ''"
@@ -347,7 +360,7 @@ watch(
               </span>
             </p>
           </div>
-        </div>
+        </div> -->
         <div
           class="border border-black/10 rounded-2xl mx-6 shadow-sm bg-white p-2.5"
           v-for="i in vantoursList"
@@ -411,16 +424,18 @@ watch(
       </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
-      <div class="font-poppins">
-        <div class="flex justify-between items-center px-6 pb-4">
+      <div class="font-poppins relative h-[100vh]">
+        <div
+          class="flex justify-between sticky top-0 shadow-custom-filter items-center px-6 pb-4"
+        >
           <p class="opacity-0">........</p>
           <p class="text-main text-base">filter</p>
           <XMarkIcon class="w-5 h-5" @click="close" />
         </div>
-        <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
-          <div class="space-y-3">
+        <div class="p-4 ml-4 mr-4 rounded-xl divide-y divide-black/10">
+          <div class="space-y-3 pt-5 pb-4">
             <div class="flex justify-between items-center">
-              <p class="text-sm font-semibold">choose city</p>
+              <p class="text-base font-semibold">Choose City</p>
               <!-- <p
                 class="text-black text-[10px] cursor-pointer"
                 @click="all = !all"
@@ -433,11 +448,11 @@ watch(
                 <div v-for="(c, index) in cities?.data" :key="c.id">
                   <p
                     v-if="index < 8 || all"
-                    class="px-4 py-1.5 text-[10px] rounded-full"
+                    class="px-4 py-1.5 text-[12px] rounded-full"
                     :class="
                       filterId == c.id
                         ? 'bg-main border font-semibold border-white  text-white'
-                        : 'bg-white text-black/80 border font-semibold  border-black/10'
+                        : 'bg-white text-black/60 border font-semibold  border-black/10'
                     "
                     @click="searchFunction(c)"
                   >
@@ -446,18 +461,25 @@ watch(
                 </div>
               </div>
             </div>
-            <p
+            <!-- <p
               class="text-black text-[10px] w-full border border-black/10 bg-black/10 py-1.5 rounded-full text-center cursor-pointer flex justify-center items-center gap-x-1"
               @click="all = !all"
             >
               {{ all ? "show less" : "show more" }}
               <ChevronDownIcon class="w-4 h-4" v-if="!all" />
               <ChevronUpIcon class="w-4 h-4" v-if="all" />
+            </p> -->
+            <p
+              @click="all = !all"
+              class="font-semibold text-main text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-0.5"
+            >
+              {{ all ? "see less" : "see more" }}
+              <ChevronUpIcon class="w-3 h-3" />
             </p>
           </div>
 
-          <div class="space-y-3 pb-8 pt-4 h-[400px]">
-            <p class="text-sm font-semibold">choose activities</p>
+          <div class="space-y-3 pb-8 pt-4">
+            <p class="text-base font-semibold">Choose Activities</p>
             <div class="flex justify-start items-center gap-3 flex-wrap">
               <div
                 class="space-y-1"
@@ -466,58 +488,57 @@ watch(
                 @click="handleActivitySelect(i)"
               >
                 <div
-                  class="px-4 py-1.5 text-[10px] rounded-full"
+                  class="px-4 py-1.5 text-[12px] rounded-full"
                   :class="
                     isActive(i)
                       ? 'bg-main border font-semibold border-white  text-white'
-                      : ' bg-white text-black/80 border font-semibold  border-black/10'
+                      : ' bg-white text-black/60 border font-semibold  border-black/10'
                   "
                 >
                   {{ i.name }}
                 </div>
               </div>
             </div>
-            <div class="pt-4">
-              <p class="text-sm font-semibold mb-3">choose price range</p>
-              <div class="flex justify-between items-center gap-2">
-                <!-- <p class="text-xs text-black text-center">
-                  {{ minPrice }} THB - {{ maxPrice }} THB
-                </p> -->
-                <div class="border border-black/10 w-[45%] rounded-2xl p-2">
-                  <p class="text-[10px]">minimum</p>
-                  <input
-                    type="number"
-                    name=""
-                    v-model="minPrice"
-                    class="outline-none focus:outline-none ring-0 w-full"
-                    id=""
-                  />
-                </div>
-                <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
-                <div class="border border-black/10 w-[45%] rounded-2xl p-2">
-                  <p class="text-[10px]">maximum</p>
-                  <input
-                    type="number"
-                    name=""
-                    v-model="maxPrice"
-                    class="outline-none focus:outline-none ring-0 w-full"
-                    id=""
-                  />
-                </div>
+          </div>
+          <div class="pt-4 pb-5">
+            <p class="text-base font-semibold mb-3">choose price range</p>
+            <div class="flex justify-between items-center gap-2">
+              <div class="border border-black/10 w-[45%] rounded-2xl p-2">
+                <p class="text-[12px]">minimum</p>
+                <input
+                  type="number"
+                  name=""
+                  v-model="minPrice"
+                  class="outline-none focus:outline-none ring-0 w-full"
+                  id=""
+                />
+              </div>
+              <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
+              <div class="border border-black/10 w-[45%] rounded-2xl p-2">
+                <p class="text-[12px]">maximum</p>
+                <input
+                  type="number"
+                  name=""
+                  v-model="maxPrice"
+                  class="outline-none focus:outline-none ring-0 w-full"
+                  id=""
+                />
               </div>
             </div>
           </div>
 
-          <div class="flex justify-between gap-4 items-center pt-4">
+          <div
+            class="flex justify-center fixed bottom-0 left-0 w-full gap-4 items-center pt-4 pb-6 px-4 shadow-custom-filter-bottom-sheet"
+          >
             <button
               @click="close"
-              class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
+              class="text-center border border-black/10 rounded-full py-3 w-[40%] text-sm text-main font-semibold"
             >
               clear
             </button>
             <button
               @click="filteredHotel"
-              class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
+              class="text-center border bg-main border-black/10 rounded-full py-3 w-[60%] text-sm text-white font-semibold"
             >
               see {{ count_filter }} vantours
             </button>

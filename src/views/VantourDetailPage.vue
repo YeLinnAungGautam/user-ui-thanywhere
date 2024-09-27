@@ -29,7 +29,7 @@
       <transition name="fade">
         <div
           v-if="showDiv"
-          class="flex fixed shadow-custom top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll z-20 scroll-container border-b border-black/10"
+          class="flex fixed shadow-custom-filter w-full top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll z-20 scroll-container border-b border-black/10"
         >
           <a
             href="#destinations"

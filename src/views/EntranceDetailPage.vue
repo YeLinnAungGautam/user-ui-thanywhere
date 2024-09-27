@@ -26,7 +26,7 @@
       <transition name="fade">
         <div
           v-if="showDiv"
-          class="flex fixed shadow-custom top-0 py-3 bg-white w-full flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll z-20 scroll-container border-b border-black/10"
+          class="flex fixed shadow-custom-filter top-0 py-3 bg-white w-full flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll z-20 scroll-container border-b border-black/10"
         >
           <a
             href="#highlight"
@@ -230,7 +230,7 @@
           </div>
         </div>
         <div
-          class="bg-white py-3 fixed bottom-0 text-center border-t shadow-custom border-black/10 w-full right-0 text-sm"
+          class="bg-white py-3 fixed shadow-custom-filter-bottom-sheet bottom-0 text-center border-t shadow-custom border-black/10 w-full right-0 text-sm"
         >
           <div class="flex justify-between items-end px-6">
             <div class="space-y-2">
@@ -371,7 +371,9 @@
         <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
           <div class="font-poppins">
             <div class="h-[45vh]">
-              <div class="flex justify-between items-center px-6 pb-4">
+              <div
+                class="flex justify-between shadow-custom-filter items-center px-6 pb-4"
+              >
                 <p class="opacity-0">........</p>
                 <p>select options</p>
                 <XMarkIcon class="w-5 h-5" @click="close" />
@@ -434,7 +436,7 @@
                 </div>
               </div>
               <div
-                class="border-t border-black/10 mt-4 w-full fixed bottom-0 shadow-custom"
+                class="border-t border-black/10 mt-4 w-full fixed bottom-0 shadow-custom-filter-bottom-sheet"
               >
                 <div class="flex justify-between items-center px-8 pt-3">
                   <p class="text-sm">Total Amount</p>

@@ -31,12 +31,12 @@
           </div>
           <div class="flex justify-start gap-1 flex-wrap items-center">
             <p
-              class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
+              class="whitespace-nowrap text-[8px] flex justify-start items-center gap-x-1 py-0.5 rounded-md text-main"
               v-for="(a, index) in i?.cities"
               :key="a"
               :class="index > 2 ? 'hidden' : ''"
             >
-              {{ a.name }}
+              <img :src="Pin" class="w-3 h-3" alt="" /> {{ a.name }}
             </p>
             <p
               class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
@@ -151,6 +151,7 @@ import { HeartIcon } from "@heroicons/vue/24/outline";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
+import Pin from "@/assets/s/pin 1 (1).png";
 
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);

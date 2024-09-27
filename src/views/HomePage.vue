@@ -205,7 +205,7 @@ onMounted(() => {
                   bringing you over 140 direct partners and counting.
                 </p>
               </div>
-              <div class="relative shadow-lg rounded-full">
+              <div class="relative shadow-custom-input rounded-full">
                 <router-link to="/search">
                   <input
                     type="search"

@@ -37,32 +37,34 @@ onMounted(() => {
 
 <template>
   <div
-    class="w-full bg-gradient-to-b to-[#ff8234] from-[#f05e00] shadow-custom-filter border-b border-background"
+    class="w-full bg-gradient-to-b to-[#ff8234] from-[#f05e00] border-b border-background"
   >
     <div class="w-full pt-4 pb-6 relative z-10">
       <div
         class="flex justify-between items-center text-white px-6 pb-4"
         v-if="props.showTitle"
       >
-        <img :src="logoIcon" class="w-10 h-10" alt="" @click="goHomePage" />
-        <p class="font-semibold tracking-wide hidden sm:block text-lg">
-          THAILAND ANYWHERE
-        </p>
-        <p class="font-semibold tracking-wide sm:hidden block text-lg">
-          THANYWHERE
-        </p>
+        <div class="flex justify-start items-center gap-2">
+          <img :src="logoIcon" class="w-10 h-10" alt="" @click="goHomePage" />
+          <p class="font-semibold tracking-wide hidden sm:block text-lg">
+            THAILAND ANYWHERE
+          </p>
+          <p class="font-semibold tracking-wide sm:hidden block text-lg">
+            THANYWHERE
+          </p>
+        </div>
         <!-- <UserCircleIcon class="w-6 h-6 text-white" /> -->
-        <div class="flex justify-end items-center gap-3">
+        <div class="flex justify-end items-center gap-5">
           <div
             class="relative"
             @click="router.push('/home/booking/order/cart')"
           >
             <p
-              class="absolute -top-1 border border-white -right-2 bg-red/60 text-[10px] w-4 h-4 flex justify-center items-center rounded-full text-white"
+              class="absolute -top-1 border border-white -right-3 bg-red/60 text-[10px] w-4 h-4 flex justify-center items-center rounded-full text-white"
             >
               0
             </p>
-            <img :src="cartImage" class="w-6 h-6" alt="" />
+            <img :src="cartImage" class="w-5 h-5" alt="" />
           </div>
           <div
             @click="onBoradingShow = true"
@@ -89,7 +91,7 @@ onMounted(() => {
         <slot />
       </div>
       <div
-        class="absolute -bottom-5 bg-background h-[40px] rounded-full w-full"
+        class="absolute -bottom-5 bg-background h-[40px] shadow-custom-filter-bottom-sheet rounded-full w-full"
       ></div>
     </div>
     <Modal :isOpen="onBoradingShow" @closeModal="onBoradingShow = false">

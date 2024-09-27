@@ -175,7 +175,7 @@ onMounted(async () => {
               v-model="search"
               name=""
               placeholder=" search"
-              class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
+              class="w-full rounded-full shadow-custom-input px-6 py-4 text-xs text-main focus:outline-none"
               id=""
             />
 
@@ -188,7 +188,7 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-        <div class="pt-5 space-y-2">
+        <div class="pt-5 space-y-2 pb-4">
           <p class="text-sm font-semibold text-white pb-2">
             choose product type
           </p>
@@ -376,6 +376,7 @@ onMounted(async () => {
               :name="i?.name"
               :city_name="i?.city?.name"
               :price="i?.lowest_room_price"
+              :price_unit="i?.lowest_walk_in_price"
             />
           </div>
         </div>
@@ -398,6 +399,7 @@ onMounted(async () => {
               :name="i?.legal_name"
               :city_name="i?.cities"
               :price="i?.lowest_variation_price"
+              :price_unit="i?.lowest_walk_in_price"
             />
           </div>
         </div>
@@ -420,6 +422,7 @@ onMounted(async () => {
               :name="i?.name"
               :city_name="i?.cities"
               :price="i?.lowest_car_price"
+              :price_unit="i?.lowest_walk_in_price"
             />
           </div>
         </div>
@@ -443,6 +446,7 @@ onMounted(async () => {
               :name="i?.name"
               :city_name="i?.city?.name"
               :price="i?.lowest_room_price"
+              :price_unit="i?.lowest_walk_in_price"
             />
           </div>
         </div>
@@ -468,6 +472,7 @@ onMounted(async () => {
               :name="i?.legal_name"
               :city_name="i?.cities"
               :price="i?.lowest_variation_price"
+              :price_unit="i?.lowest_walk_in_price"
             />
           </div>
         </div>
@@ -493,6 +498,7 @@ onMounted(async () => {
               :name="i?.name"
               :city_name="i?.cities"
               :price="i?.lowest_car_price"
+              :price_unit="i?.lowest_walk_in_price"
             />
           </div>
         </div>

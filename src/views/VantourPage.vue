@@ -229,7 +229,7 @@ watch(vantours, async (newValue) => {
     </HeaderHomeVue>
     <div class="h-auto pb-20 z-20 space-y-4 relative">
       <div
-        :class="isStickey ? 'shadow-custom' : ''"
+        :class="isStickey ? 'shadow-custom-filter' : ''"
         class="flex justify-between items-center sticky top-0 py-2 px-6 z-10 bg-background w-full"
       >
         <h1 class="text-main font-semibold">van tours packages</h1>
@@ -303,16 +303,18 @@ watch(vantours, async (newValue) => {
         </div>
       </div>
       <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
-        <div class="font-poppins relative">
-          <div class="flex justify-between items-center px-6 pb-4">
+        <div class="font-poppins relative h-[100vh]">
+          <div
+            class="flex justify-between sticky top-0 shadow-custom-filter items-center px-6 pb-4"
+          >
             <p class="opacity-0">........</p>
-            <p class="text-main text-base">filter</p>
+            <p class="text-main font-semibold text-base">Filter</p>
             <XMarkIcon class="w-5 h-5" @click="close" />
           </div>
-          <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
-            <div class="space-y-3">
+          <div class="p-4 ml-4 mr-4 rounded-xl divide-y divide-black/10">
+            <div class="space-y-3 pt-5">
               <div class="flex justify-between items-center">
-                <p class="text-sm font-semibold">choose city</p>
+                <p class="text-base pb-2 font-semibold">Choose City</p>
                 <!-- <p
                   class="text-black text-[10px] cursor-pointer"
                   @click="all = !all"
@@ -325,11 +327,11 @@ watch(vantours, async (newValue) => {
                   <div v-for="(c, index) in cities?.data" :key="c.id">
                     <p
                       v-if="index < 8 || all"
-                      class="px-4 py-1.5 text-[10px] rounded-full"
+                      class="px-4 py-1.5 text-[12px] rounded-full"
                       :class="
                         filterId == c.id
                           ? 'bg-main border font-semibold border-white  text-white'
-                          : 'bg-white text-black/80 border font-semibold  border-black/10'
+                          : 'bg-white text-black/60 border font-semibold  border-black/10'
                       "
                       @click="searchFunction(c)"
                     >
@@ -338,18 +340,25 @@ watch(vantours, async (newValue) => {
                   </div>
                 </div>
               </div>
-              <p
+              <!-- <p
                 class="text-black text-[10px] w-full border border-black/10 bg-black/10 py-1.5 rounded-full text-center cursor-pointer flex justify-center items-center gap-x-1"
                 @click="all = !all"
               >
                 {{ all ? "show less" : "show more" }}
                 <ChevronDownIcon class="w-4 h-4" v-if="!all" />
                 <ChevronUpIcon class="w-4 h-4" v-if="all" />
+              </p> -->
+              <p
+                @click="all = !all"
+                class="font-semibold text-main pb-5 text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-0.5"
+              >
+                {{ all ? "see less" : "see more" }}
+                <ChevronUpIcon class="w-3 h-3" />
               </p>
             </div>
 
-            <div class="space-y-3 pb-8 pt-4 h-[400px]">
-              <p class="text-sm font-semibold">choose activities</p>
+            <div class="space-y-3 pb-8 pt-4">
+              <p class="text-base font-semibold">Choose Activities</p>
               <div class="flex justify-start items-center gap-3 flex-wrap">
                 <div
                   class="space-y-1"
@@ -358,61 +367,63 @@ watch(vantours, async (newValue) => {
                   @click="handleActivitySelect(i)"
                 >
                   <div
-                    class="px-4 py-1.5 text-[10px] rounded-full"
+                    class="px-4 py-1.5 text-[12px] rounded-full"
                     :class="
                       isActive(i)
                         ? 'bg-main border font-semibold border-white  text-white'
-                        : ' bg-white text-black/80 border font-semibold  border-black/10'
+                        : ' bg-white text-black/60 border font-semibold  border-black/10'
                     "
                   >
                     {{ i.name }}
                   </div>
                 </div>
               </div>
-              <div class="pt-4">
-                <p class="text-sm font-semibold mb-3">choose price range</p>
-                <div class="flex justify-between items-center gap-2">
-                  <!-- <p class="text-xs text-black text-center">
-                    {{ minPrice }} THB - {{ maxPrice }} THB
-                  </p> -->
-                  <div class="border border-black/10 w-[45%] rounded-2xl p-2">
-                    <p class="text-[10px]">minimum</p>
-                    <input
-                      type="number"
-                      name=""
-                      v-model="minPrice"
-                      class="outline-none focus:outline-none ring-0 w-full"
-                      id=""
-                    />
-                  </div>
-                  <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
-                  <div class="border border-black/10 w-[45%] rounded-2xl p-2">
-                    <p class="text-[10px]">maximum</p>
-                    <input
-                      type="number"
-                      name=""
-                      v-model="maxPrice"
-                      class="outline-none focus:outline-none ring-0 w-full"
-                      id=""
-                    />
-                  </div>
+            </div>
+            <div class="pt-4">
+              <p class="text-base font-semibold mb-2 pb-2">
+                Choose Price Range
+              </p>
+              <div class="flex justify-between items-center gap-2">
+                <!-- <p class="text-xs text-black text-center">
+                  {{ minPrice }} THB - {{ maxPrice }} THB
+                </p> -->
+                <div class="border border-black/10 w-[45%] rounded-2xl p-2">
+                  <p class="text-[12px]">minimum</p>
+                  <input
+                    type="number"
+                    name=""
+                    v-model="minPrice"
+                    class="outline-none focus:outline-none ring-0 w-full"
+                    id=""
+                  />
+                </div>
+                <p class="font-semibold h-0.5 w-[5%] bg-black/50"></p>
+                <div class="border border-black/10 w-[45%] rounded-2xl p-2">
+                  <p class="text-[12px]">maximum</p>
+                  <input
+                    type="number"
+                    name=""
+                    v-model="maxPrice"
+                    class="outline-none focus:outline-none ring-0 w-full"
+                    id=""
+                  />
                 </div>
               </div>
             </div>
           </div>
           <div
-            class="flex sticky bottom-0 w-full z-20 bg-white justify-between gap-4 px-4 items-center py-4"
+            class="flex fixed shadow-custom-filter-bottom-sheet bottom-0 w-full z-20 bg-white justify-between gap-4 px-4 items-center pb-4"
           >
             <div class="flex justify-between w-full gap-4 items-center pt-4">
               <button
                 @click="close"
-                class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
+                class="text-center border border-black/10 rounded-full py-3 w-[40%] text-sm text-main font-semibold"
               >
                 clear
               </button>
               <button
                 @click="filteredHotel"
-                class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
+                class="text-center border bg-main border-black/10 rounded-full py-3 w-[60%] text-sm text-white font-semibold"
               >
                 see {{ count_filter }} vantours
               </button>

@@ -318,7 +318,7 @@ watch(hotels, async (newValue) => {
       <!-- <HotelsGradesVue @Range="getRange" /> -->
       <div class="space-y-4 relative">
         <div
-          :class="isStickey ? 'shadow-custom' : ''"
+          :class="isStickey ? 'shadow-custom-filter' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
         >
           <h1 class="text-main font-semibold">direct partner hotels</h1>

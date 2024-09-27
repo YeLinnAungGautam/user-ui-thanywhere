@@ -12,7 +12,7 @@ import activitydb from "../assets/activitydb";
 import { useRouter, useRoute } from "vue-router";
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
 // import { useCarStore } from "../stores/car";
@@ -127,6 +127,17 @@ const searchFunction = (data) => {
   filterId.value = data.id;
 };
 
+const filterCount = computed(() => {
+  let count = 0;
+  if (filterId.value) {
+    count += 1;
+  }
+  if (search.value) {
+    count += 1;
+  }
+  return count;
+});
+
 onMounted(async () => {
   if (route.query.search) {
     search.value = route.query.search ? route.query.search : "";
@@ -204,13 +215,13 @@ watch(
           <p class="text-white font-semibold">over {{ count }} destinations</p>
           <p class="opacity-0">..</p>
         </div>
-        <div class="relative w-full px-6">
+        <div class="relative w-full px-6 pb-4">
           <input
             type="text"
             v-model="search"
             name=""
             placeholder=" search"
-            class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
+            class="w-full rounded-full shadow-custom-input px-6 py-4 text-xs text-main focus:outline-none"
             id=""
           />
 
@@ -223,7 +234,7 @@ watch(
       </HeaderHome>
       <div class="space-y-4 relative pb-20">
         <div
-          :class="isStickey ? 'shadow-custom' : ''"
+          :class="isStickey ? 'shadow-custom-filter' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
         >
           <h1
@@ -250,18 +261,21 @@ watch(
           >
             <p class="text-[10px] text-main font-semibold whitespace-nowrap">
               filter by
+              <span class="bg-main text-white px-1 rounded-full">{{
+                filterCount
+              }}</span>
             </p>
             <ChevronDownIcon class="w-3 h-3 text-main" />
           </div>
         </div>
-        <div class="flex justify-start items-center flex-wrap gap-2 px-6">
+        <!-- <div class="flex justify-start items-center flex-wrap gap-2 px-6">
           <p
             class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
             v-if="searchCityName != 'null' && searchCityName != ''"
           >
             {{ searchCityName }}
           </p>
-        </div>
+        </div> -->
         <div
           class="border border-black/10 mx-4 rounded-2xl shadow-sm bg-white p-2.5"
           v-for="i in destsList ?? []"
@@ -324,7 +338,7 @@ watch(
         </div>
       </div>
     </div>
-    <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
+    <!-- <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
       <div class="font-poppins">
         <div class="flex justify-between items-center px-6 pb-4">
           <p class="opacity-0">........</p>
@@ -368,7 +382,6 @@ watch(
                   :key="index"
                 >
                   <div class="flex justify-center items-center gap-1">
-                    <!-- <StarIcon class="w-10 h-10 text-main" /> -->
                     <img :src="i.image" class="w-10 h-10" alt="" />
                   </div>
                   <p class="text-[8px] text-black/70 text-center">
@@ -391,6 +404,86 @@ watch(
               class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
             >
               see {{ count_filter }} dests
+            </button>
+          </div>
+        </div>
+      </div>
+    </vue-bottom-sheet> -->
+    <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
+      <div class="font-poppins relative h-[100vh]">
+        <div
+          class="flex justify-between shadow-custom-filter items-center px-6 pb-4"
+        >
+          <p class="opacity-0">........</p>
+          <p class="text-main text-base font-semibold">Filter</p>
+          <XMarkIcon class="w-5 h-5" @click="close" />
+        </div>
+        <div class="p-4 ml-4 mr-4 divide-y divide-black/10">
+          <div class="space-y-3 pb-6 pt-4">
+            <div class="flex justify-between items-center">
+              <p class="text-base font-semibold">Choose City</p>
+            </div>
+            <div class="flex flex-wrap justify-start items-center gap-2">
+              <div class="flex flex-wrap justify-start items-center gap-2">
+                <div v-for="(c, index) in cities?.data" :key="c.id">
+                  <p
+                    v-if="index < 8 || all"
+                    class="border border-black/10 text-[12px] rounded-full px-4 py-2"
+                    :class="filterId == c.id ? 'bg-main text-white' : ''"
+                    @click="searchFunction(c)"
+                  >
+                    {{ c?.name }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p
+              class="text-[10px] text-main flex justify-start items-center gap-x-2 pl-2 cursor-pointer"
+              @click="all = !all"
+            >
+              {{ all ? "show less" : "show more" }}
+              <ChevronDownIcon
+                class="w-3 h-3"
+                :class="all ? 'rotate-180 transform duration-200' : ''"
+              />
+            </p>
+          </div>
+
+          <div class="space-y-3 pb-8 pt-5">
+            <div class="pb-10 space-y-4">
+              <p class="text-base font-semibold">Select Activities Type</p>
+              <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                <div
+                  class="px-2 py-2 space-y-1 w-[70px] mx-auto"
+                  v-for="(i, index) in activitydb"
+                  :key="index"
+                >
+                  <div class="flex justify-center items-center gap-1">
+                    <!-- <StarIcon class="w-10 h-10 text-main" /> -->
+                    <img :src="i.image" class="w-10 h-10" alt="" />
+                  </div>
+                  <p class="text-[8px] text-black/70 text-center">
+                    {{ i.name }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="flex fixed bottom-0 left-0 w-full shadow-custom-filter-bottom-sheet justify-between gap-4 items-center py-4 px-4"
+          >
+            <button
+              @click="close"
+              class="text-center border border-black/10 rounded-full py-3 w-[40%] text-sm text-main font-semibold"
+            >
+              clear
+            </button>
+            <button
+              @click="filteredHotel"
+              class="text-center border bg-main border-black/10 rounded-full py-3 w-[60%] text-sm text-white font-semibold"
+            >
+              see {{ count_filter }} destinations
             </button>
           </div>
         </div>

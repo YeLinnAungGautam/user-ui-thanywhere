@@ -162,12 +162,15 @@ watch(dests, async (newValue) => {
           </p>
           <p class="text-xs">bangkok, pattaya, phuket, etc...</p>
         </div>
-        <div class="relative" @click="router.push('/home/destination-search')">
+        <div
+          class="relative pb-4"
+          @click="router.push('/home/destination-search')"
+        >
           <input
             type="search"
             name=""
             placeholder=" where "
-            class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
+            class="w-full shadow-custom-input rounded-full px-6 py-4 text-xs text-main focus:outline-none"
             id=""
           />
 
@@ -179,10 +182,10 @@ watch(dests, async (newValue) => {
         </div>
       </div>
     </HeaderHomeVue>
-    <div class="h-auto pb-20 z-20 space-y-4 px-6 relative">
+    <div class="h-auto pb-20 z-20 space-y-4 relative">
       <div
-        :class="isStickey ? 'shadow-custom' : ''"
-        class="flex justify-between items-center sticky top-0 py-2 z-10 bg-background w-full"
+        :class="isStickey ? 'shadow-custom-filter' : ''"
+        class="flex justify-between items-center sticky px-6 top-0 py-2 z-10 bg-background w-full"
       >
         <h1 class="text-main font-semibold">read destinations</h1>
         <div
@@ -194,7 +197,7 @@ watch(dests, async (newValue) => {
         </div>
       </div>
       <div
-        class="border border-black/10 rounded-2xl shadow-sm bg-white p-2.5"
+        class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
         v-for="i in destsList ?? []"
         :key="i"
         @click="goDetialPage(i.id)"
@@ -254,29 +257,25 @@ watch(dests, async (newValue) => {
         </div>
       </div>
       <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
-        <div class="font-poppins">
-          <div class="flex justify-between items-center px-6 pb-4">
+        <div class="font-poppins relative h-[100vh]">
+          <div
+            class="flex justify-between shadow-custom-filter items-center px-6 pb-4"
+          >
             <p class="opacity-0">........</p>
-            <p class="text-main text-base">filter</p>
+            <p class="text-main text-base font-semibold">Filter</p>
             <XMarkIcon class="w-5 h-5" @click="close" />
           </div>
-          <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
-            <div class="space-y-3 pb-10">
+          <div class="p-4 ml-4 mr-4 divide-y divide-black/10">
+            <div class="space-y-3 pb-6 pt-4">
               <div class="flex justify-between items-center">
-                <p class="text-sm font-semibold">choose city</p>
-                <p
-                  class="text-black text-[10px] cursor-pointer"
-                  @click="all = !all"
-                >
-                  {{ all ? "show less" : "show more" }}
-                </p>
+                <p class="text-base font-semibold">Choose City</p>
               </div>
               <div class="flex flex-wrap justify-start items-center gap-2">
                 <div class="flex flex-wrap justify-start items-center gap-2">
                   <div v-for="(c, index) in cities?.data" :key="c.id">
                     <p
                       v-if="index < 8 || all"
-                      class="border border-black/60 text-[10px] rounded-lg px-4 py-1"
+                      class="border border-black/10 text-[12px] rounded-full px-4 py-2"
                       :class="filterId == c.id ? 'bg-main text-white' : ''"
                       @click="searchFunction(c)"
                     >
@@ -285,11 +284,21 @@ watch(dests, async (newValue) => {
                   </div>
                 </div>
               </div>
+              <p
+                class="text-[10px] text-main flex justify-start items-center gap-x-2 pl-2 cursor-pointer"
+                @click="all = !all"
+              >
+                {{ all ? "show less" : "show more" }}
+                <ChevronDownIcon
+                  class="w-3 h-3"
+                  :class="all ? 'rotate-180 transform duration-200' : ''"
+                />
+              </p>
             </div>
 
-            <div class="space-y-3 pb-8 pt-4">
+            <div class="space-y-3 pb-8 pt-5">
               <div class="pb-10 space-y-4">
-                <p class="text-sm font-semibold">select activities type</p>
+                <p class="text-base font-semibold">Select Activities Type</p>
                 <div class="grid grid-cols-4 sm:grid-cols-6 gap-2">
                   <div
                     class="px-2 py-2 space-y-1 w-[70px] mx-auto"
@@ -308,16 +317,18 @@ watch(dests, async (newValue) => {
               </div>
             </div>
 
-            <div class="flex justify-between gap-4 items-center pt-4">
+            <div
+              class="flex fixed bottom-0 left-0 w-full shadow-custom-filter-bottom-sheet justify-between gap-4 items-center py-4 px-4"
+            >
               <button
                 @click="close"
-                class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"
+                class="text-center border border-black/10 rounded-full py-3 w-[40%] text-sm text-main font-semibold"
               >
                 clear
               </button>
               <button
                 @click="filteredHotel"
-                class="text-center border bg-main border-black/10 rounded-full py-2 w-[60%] text-sm text-white font-semibold"
+                class="text-center border bg-main border-black/10 rounded-full py-3 w-[60%] text-sm text-white font-semibold"
               >
                 see {{ count_filter }} destinations
               </button>

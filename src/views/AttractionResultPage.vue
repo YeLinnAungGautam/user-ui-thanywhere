@@ -13,11 +13,11 @@ import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { useRouter, useRoute } from "vue-router";
 import HeaderHome from "../components/layout/HeaderHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import debounce from "lodash.debounce";
 import { useCityStore } from "../stores/city";
 import { storeToRefs } from "pinia";
-import activitydb from "../assets/activitydb";
+// import activitydb from "../assets/activitydb";
 import { useEntranceStore } from "../stores/entrance";
 import AttractionCart from "../components/LoadingCarts/AttractionCart.vue";
 import LoadingImageCover from "../assets/web/loadingImageCover.jpg";
@@ -172,6 +172,17 @@ watch(
   }, 500)
 );
 
+const filterCount = computed(() => {
+  let count = 0;
+  if (route.params.id != "null" && route.params.id) {
+    count++;
+  }
+  if (route.query.category_id != "null" && route.query.category_id) {
+    count++;
+  }
+  return count;
+});
+
 onMounted(async () => {
   // await settingStore.getLanguage();
   if (route.query.search) {
@@ -227,13 +238,13 @@ watch(entrances, async (newValue) => {
           <p class="text-white font-semibold">over {{ count }} attractions</p>
           <p class="opacity-0">..</p>
         </div>
-        <div class="relative w-full px-6">
+        <div class="relative w-full px-6 pb-4">
           <input
             type="text"
             v-model="search"
             name=""
             placeholder=" search"
-            class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
+            class="w-full rounded-full px-6 py-4 text-xs shadow-custom-input text-main focus:outline-none"
             id=""
           />
 
@@ -246,8 +257,8 @@ watch(entrances, async (newValue) => {
       </HeaderHome>
       <div class="space-y-4 relative pb-20">
         <div
-          :class="isStickey ? 'shadow-custom' : ''"
-          class="mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
+          :class="isStickey ? 'shadow-custom-filter ' : ''"
+          class="mb-2 sticky top-0 pt-2 px-6 pb-4 z-10 bg-background w-full"
         >
           <div class="flex justify-between items-center">
             <h1
@@ -274,6 +285,9 @@ watch(entrances, async (newValue) => {
             >
               <p class="text-[10px] text-main font-semibold whitespace-nowrap">
                 filter by
+                <span class="bg-main text-white px-1 rounded-full">{{
+                  filterCount
+                }}</span>
               </p>
               <ChevronDownIcon class="w-3 h-3 text-main" />
             </div>
@@ -289,7 +303,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 all
               </p>
@@ -300,7 +314,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 amusement park
               </p>
@@ -311,7 +325,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 dinner cruises
               </p>
@@ -322,7 +336,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 water parks
               </p>
@@ -333,7 +347,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 safari
               </p>
@@ -344,7 +358,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 museums
               </p>
@@ -355,7 +369,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 theme parks
               </p>
@@ -366,7 +380,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 buffet
               </p>
@@ -377,7 +391,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 island tours
               </p>
@@ -388,7 +402,7 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 shows
               </p>
@@ -399,21 +413,14 @@ watch(entrances, async (newValue) => {
                     ? 'border-main text-main'
                     : 'border-black/10'
                 "
-                class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
               >
                 skywalks
               </p>
             </div>
           </div>
         </div>
-        <div class="flex justify-start items-center flex-wrap gap-2 px-6">
-          <!-- <p
-            class="bg-black/5 px-3 py-0.5 rounded-md text-[10px]"
-            v-if="searchCityName != 'null' && searchCityName != ''"
-          >
-            {{ searchCityName }}
-          </p> -->
-        </div>
+
         <div
           class="border border-black/10 mx-6 rounded-2xl relative shadow-sm bg-white p-2.5"
           v-for="i in entrancesList"
@@ -477,26 +484,28 @@ watch(entrances, async (newValue) => {
       </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">
-      <div class="font-poppins">
-        <div class="flex justify-between items-center px-6 pb-4">
+      <div class="font-poppins h-[100vh]">
+        <div
+          class="flex justify-between items-center px-6 pb-4 shadow-custom-filter"
+        >
           <p class="opacity-0">........</p>
-          <p class="text-main text-base">filter</p>
+          <p class="text-main text-base font-semibold">Filter</p>
           <XMarkIcon class="w-5 h-5" @click="close" />
         </div>
-        <div class="border border-black/10 p-4 ml-4 mr-4 rounded-xl">
+        <div class="p-4 ml-4 mr-4 rounded-xl divide-y divide-black/10">
           <div class="space-y-3 pb-6">
             <div class="flex justify-between items-center">
-              <p class="text-sm font-semibold">choose city</p>
+              <p class="text-base font-semibold">Choose City</p>
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2">
               <div v-for="(c, index) in cities?.data" :key="c.id">
                 <p
                   v-if="index < 8 || all"
-                  class="px-4 py-1.5 text-[10px] rounded-full"
+                  class="border border-black/10 text-[12px] rounded-full px-4 py-1.5"
                   :class="
                     filterId == c.id
                       ? 'bg-main border font-semibold border-white  text-white'
-                      : 'bg-white text-black/80 border font-semibold  border-black/10'
+                      : 'bg-white text-black/60 border font-semibold  border-black/10'
                   "
                   @click="searchFunction(c)"
                 >
@@ -505,16 +514,15 @@ watch(entrances, async (newValue) => {
               </div>
             </div>
             <p
-              class="text-black text-[10px] w-full border border-black/10 bg-black/10 py-1.5 rounded-full text-center cursor-pointer flex justify-center items-center gap-x-1"
               @click="all = !all"
+              class="font-semibold text-main text-[10px] rounded-xl px-2 flex justify-start items-center gap-1 py-0.5"
             >
-              {{ all ? "show less" : "show more" }}
-              <ChevronDownIcon class="w-4 h-4" v-if="!all" />
-              <ChevronUpIcon class="w-4 h-4" v-if="all" />
+              {{ all ? "see less" : "see more" }}
+              <ChevronUpIcon class="w-3 h-3" />
             </p>
           </div>
-          <div class="space-y-3 pb-6 h-[200px]">
-            <p class="text-sm font-semibold">choose activities</p>
+          <div class="space-y-3 pb-6 pt-5">
+            <p class="text-base font-semibold">Choose Activities</p>
             <div class="w-full">
               <div
                 class="flex justify-start items-center space-x-2 flex-wrap space-y-2"
@@ -526,7 +534,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main text-main'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   all
                 </p>
@@ -537,7 +545,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   amusement park
                 </p>
@@ -548,7 +556,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   dinner cruises
                 </p>
@@ -559,7 +567,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   water parks
                 </p>
@@ -570,7 +578,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   safari
                 </p>
@@ -581,7 +589,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   museums
                 </p>
@@ -592,7 +600,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   theme parks
                 </p>
@@ -603,7 +611,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   buffet
                 </p>
@@ -614,7 +622,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   island tours
                 </p>
@@ -625,7 +633,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   shows
                 </p>
@@ -636,7 +644,7 @@ watch(entrances, async (newValue) => {
                       ? 'border-main bg-main text-white'
                       : 'border-black/10'
                   "
-                  class="whitespace-nowrap px-3 py-1.5 text-[10px] border border-black/10 rounded-full"
+                  class="whitespace-nowrap px-3 py-1.5 text-[12px] border border-black/10 rounded-full"
                 >
                   skywalks
                 </p>
@@ -644,7 +652,9 @@ watch(entrances, async (newValue) => {
             </div>
           </div>
 
-          <div class="flex justify-between gap-4 items-center pt-4">
+          <div
+            class="flex justify-between fixed w-full overflow-scrol scroll-container shadow-custom-filter-bottom-sheet bg-white px-4 bottom-0 left-0 gap-4 items-center py-4 border border-black/10"
+          >
             <button
               @click="close"
               class="text-center border border-black/10 rounded-full py-2 w-[40%] text-sm text-main font-semibold"

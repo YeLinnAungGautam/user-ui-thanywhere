@@ -26,7 +26,7 @@
       <transition name="fade">
         <div
           v-if="showDiv"
-          class="flex fixed shadow-custom z-30 top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll scroll-container border-b border-black/10"
+          class="flex fixed shadow-custom-filter w-full z-30 top-0 py-3 bg-white flex-1 justify-start space-x-4 px-5 items-center overflow-x-scroll scroll-container border-b border-black/10"
         >
           <a
             href="#location"
@@ -513,7 +513,9 @@
       <vue-bottom-sheet ref="myBottomSheetOptions" :max-height="1500">
         <div class="font-poppins">
           <div class="h-[85vh] w-[100%] overflow-hidden">
-            <div class="flex justify-between items-center px-6 pb-4">
+            <div
+              class="flex justify-between shadow-custom-filter items-center px-6 pb-4"
+            >
               <p class="opacity-0">........</p>
               <p class="text-black text-base font-medium">select options</p>
 
@@ -608,7 +610,7 @@
     </div>
     <div
       v-if="!loading"
-      class="px-5 pb-3 sticky z-30 bg-white shadow-custom pt-2 border-t border-black/10 bottom-0"
+      class="px-5 pb-3 sticky z-30 bg-white shadow-custom pt-2 shadow-custom-filter-bottom-sheet border-t border-black/10 bottom-0"
     >
       <div class="flex justify-between items-end">
         <!-- <div>

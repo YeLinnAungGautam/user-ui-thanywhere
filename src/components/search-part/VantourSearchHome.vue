@@ -2,7 +2,7 @@
   <div class="space-y-3">
     <div class="relative" @click="openCity">
       <p
-        class="w-full rounded-full bg-white pl-12 py-4 text-xs text-main focus:outline-none"
+        class="w-full rounded-full bg-white pl-12 py-4 shadow-custom-input text-xs text-main focus:outline-none"
         :class="placefaltcondition ? 'text-red' : 'text-main'"
       >
         {{ chooseCityName ? chooseCityName : placeholder }}
@@ -17,7 +17,7 @@
     </div>
     <div class="relative" @click="open">
       <p
-        class="w-full rounded-full bg-white pl-12 py-4 text-xs focus:outline-none"
+        class="w-full rounded-full bg-white pl-12 py-4 shadow-custom-input text-xs focus:outline-none"
         :class="pickupfaltcondition ? 'text-red' : 'text-main'"
       >
         {{ dateSelected ? dateSelected : placeholderPlaceholder }}
@@ -32,7 +32,7 @@
     </div>
     <div class="relative" @click="opentype">
       <div
-        class="w-full rounded-full bg-white flex flex-wrap justify-start items-center pl-12 py-4 text-xs text-main focus:outline-none"
+        class="w-full rounded-full bg-white flex flex-wrap justify-start items-center pl-12 py-4 shadow-custom-input text-xs text-main focus:outline-none"
       >
         <!-- {{ choose ? choose : "choose acitivity type" }} -->
         <p class=" " v-for="i in chooseType" :key="i.id">{{ i.name }} ,</p>
@@ -49,26 +49,26 @@
         class="w-5 h-5 absolute top-3.5 right-5 text-main"
       />
     </div>
-    <div class="grid grid-cols-3 gap-3">
-      <div
+    <div class="gap-3 pb-4">
+      <!-- <div
         @click="clearFilterAction"
         class="w-full rounded-full relative bg-white/30 z-0 py-3 text-sm border border-white"
       >
         <p class="text-white text-center">clear</p>
-      </div>
+      </div> -->
       <div
         v-if="chooseCityId && dateSelected"
         @click="filteredHotel"
-        class="w-full rounded-full relative col-span-2 z-0 py-3 text-sm border border-white"
+        class="w-full rounded-full shadow-custom-input relative col-span-2 z-0 py-3 text-sm border border-white"
       >
-        <p class="text-white text-center">explore</p>
+        <p class="text-white text-center">Explore</p>
       </div>
       <div
         v-if="!chooseCityId || !dateSelected"
         @click="filteredError"
-        class="w-full rounded-full relative col-span-2 z-0 py-3 text-sm border border-white"
+        class="w-full rounded-full shadow-custom-input relative col-span-2 z-0 py-3 text-sm border border-white"
       >
-        <p class="text-white text-center">explore</p>
+        <p class="text-white text-center">Explore</p>
       </div>
     </div>
     <vue-bottom-sheet ref="myBottomSheet" :max-height="1500">

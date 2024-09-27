@@ -1,7 +1,7 @@
 <template>
   <div class="pt-5">
     <div
-      class="flex justify-evenly items-center border-b border-black/10 gap-x-4 px-4 pb-6"
+      class="flex justify-evenly items-center border-b shadow-sm border-black/10 gap-x-4 px-4 pb-6"
     >
       <div
         class="px-4 py-2 rounded-xl space-y-1 w-[40%]"
@@ -122,102 +122,13 @@
     </div>
     <div class="max-w-md px-4 mx-auto sm:px-7 md:max-w-4xl md:px-6 pt-4">
       <div class="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
-        <div class="md:pr-14 pb-20">
-          <div class="flex items-center">
-            <h2 class="flex-auto font-semibold text-gray-900">
-              {{ format(secDayCurrentMonth, "MMMM yyyy") }}
-            </h2>
-            <button
-              type="button"
-              @click="previousMonth"
-              class="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-            >
-              <span class="sr-only">Previous month</span>
-              <ChevronLeftIcon class="w-5 h-5" aria-hidden="true" />
-            </button>
-            <button
-              @click="nextMonth"
-              type="button"
-              class="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-            >
-              <span class="sr-only">Next month</span>
-              <ChevronRightIcon class="w-5 h-5" aria-hidden="true" />
-            </button>
-          </div>
-          <div
-            class="grid grid-cols-7 mt-10 text-xs leading-6 text-center text-gray-500"
-          >
-            <div>S</div>
-            <div>M</div>
-            <div>T</div>
-            <div>W</div>
-            <div>T</div>
-            <div>F</div>
-            <div>S</div>
-          </div>
-          <div class="grid grid-cols-7 mt-2 text-sm">
-            <div
-              v-for="(day, dayIdx) in secDays"
-              :key="day.toString()"
-              :class="
-                classNames(
-                  dayIdx === 0 && colStartClasses[getDay(day)],
-                  'py-1.5'
-                )
-              "
-            >
-              <button
-                type="button"
-                @click="setSelectedDay(day)"
-                :class="
-                  classNames(
-                    isBetween(day, selectedDay, secSelectedDay) &&
-                      'bg-main text-white',
-                    isEqual(day, selectedDay) &&
-                      'bg-main text-white rounded-full',
-                    !isEqual(day, selectedDay) && isToday(day) && 'text-red',
-                    !isEqual(day, selectedDay) &&
-                      !isToday(day) &&
-                      isSameMonth(day, firstDayCurrentMonth) &&
-                      'text-gray-900',
-                    !isEqual(day, selectedDay) &&
-                      !isToday(day) &&
-                      !isSameMonth(day, firstDayCurrentMonth) &&
-                      'text-gray-400',
-                    isEqual(day, selectedDay) && isToday(day) && 'bg-red-500',
-                    isEqual(day, selectedDay) && !isToday(day) && 'bg-gray-900',
-                    !isEqual(day, selectedDay) && 'hover:bg-gray-200',
-                    (isEqual(day, selectedDay) || isToday(day)) &&
-                      'font-semibold',
-                    'mx-auto flex h-8 w-8 items-center justify-center rounded-full',
-                    isPastOrToday(day) && 'opacity-20'
-                  )
-                "
-                :disabled="isPastOrToday(day)"
-              >
-                <time :dateTime="format(day, 'yyyy-MM-dd')">
-                  {{ format(day, "d") }}
-                </time>
-              </button>
-
-              <div class="w-1 h-1 mx-auto mt-1">
-                <div
-                  v-if="
-                    meetings.some((meeting) =>
-                      isSameDay(parseISO(meeting.startDatetime), day)
-                    )
-                  "
-                  class="w-1 h-1 rounded-full bg-sky-500"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <section class="mt-12 md:mt-0 bottom-0 fixed w-[100%] left-0 bg-white">
+        <section
+          class="mt-12 md:mt-0 bottom-0 fixed w-[100%] shadow-custom-filter-bottom-sheet py-4 left-0 bg-white"
+        >
           <div class="px-4 pt-2">
             <button
               @click="goToMainPage"
-              class="text-center border-t w-full bg-main border-black/10 rounded-full py-2 text-sm text-white font-semibold"
+              class="text-center border-t w-full bg-main border-black/10 rounded-full py-4 text-sm text-white font-semibold"
             >
               choose ( {{ daysBetween(selectedDay, secSelectedDay) }} Nights )
             </button>
@@ -276,9 +187,9 @@ const currentMonth = ref(format(today, "MMM-yyyy"));
 const firstDayCurrentMonth = computed(() =>
   parse(currentMonth.value, "MMM-yyyy", new Date())
 );
-const secDayCurrentMonth = computed(() =>
-  add(firstDayCurrentMonth.value, { months: 1 })
-);
+// const secDayCurrentMonth = computed(() =>
+//   add(firstDayCurrentMonth.value, { months: 1 })
+// );
 
 // const isDayInSelectedRange = (day) => {
 //   if (selectedDay.value && secSelectedDay.value) {
@@ -297,12 +208,12 @@ const days = computed(() =>
   })
 );
 
-const secDays = computed(() =>
-  eachDayOfInterval({
-    start: secDayCurrentMonth.value,
-    end: endOfMonth(secDayCurrentMonth.value),
-  })
-);
+// const secDays = computed(() =>
+//   eachDayOfInterval({
+//     start: secDayCurrentMonth.value,
+//     end: endOfMonth(secDayCurrentMonth.value),
+//   })
+// );
 
 // Helper function to determine if a date is past or today
 function isPastOrToday(day) {

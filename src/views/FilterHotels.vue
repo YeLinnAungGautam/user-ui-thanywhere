@@ -250,6 +250,23 @@ const choosePlaceArray = (id) => {
   }
 };
 
+const filterCount = computed(() => {
+  let count = 0;
+  if (route.query.rating != "null" && route.query.rating) {
+    count++;
+  }
+  if (route.query.place != "null" && route.query.place) {
+    count++;
+  }
+  if (route.query.price && route.query.price != "null") {
+    count++;
+  }
+  if (route.query.facilities && route.query.facilities != "null") {
+    count++;
+  }
+  return count;
+});
+
 onMounted(async () => {
   if (route.query.search) {
     search.value = route.query.search ? route.query.search : "";
@@ -399,7 +416,7 @@ watch(
           <p class="text-white font-semibold">over {{ count }} hotels</p>
           <p class="opacity-0">..</p>
         </div>
-        <div class="relative w-full px-4">
+        <div class="relative w-full px-4 pb-4">
           <input
             type="text"
             v-model="search"
@@ -416,7 +433,7 @@ watch(
       </HeaderHome>
       <div class="space-y-4 pb-20 relative">
         <div
-          :class="isStickey ? 'shadow-custom' : ''"
+          :class="isStickey ? 'shadow-custom-filter' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
         >
           <h1
@@ -443,7 +460,9 @@ watch(
           >
             <p class="text-[10px] text-main font-semibold whitespace-nowrap">
               filter by
-              <span class="bg-main text-white px-1 rounded-full">3</span>
+              <span class="bg-main text-white px-1 rounded-full">{{
+                filterCount
+              }}</span>
             </p>
             <ChevronDownIcon class="w-3 h-3 text-main" />
           </div>
@@ -583,15 +602,15 @@ watch(
           <XMarkIcon class="w-5 h-5" @click="close" />
         </div>
         <div class="p-4 ml-4 mr-4 rounded-xl divide-y divide-black/10">
-          <div class="space-y-3 pb-5">
+          <div class="space-y-3 pb-5 pt-4">
             <div class="flex justify-between items-center">
-              <p class="text-sm font-semibold">choose city</p>
+              <p class="text-base font-semibold">Choose City</p>
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2">
               <div v-for="(c, index) in cities?.data" :key="c.id">
                 <p
                   v-if="index < 8 || all"
-                  class="border border-black/10 text-[10px] rounded-2xl px-4 py-1"
+                  class="border border-black/10 text-[12px] rounded-full px-4 py-1.5"
                   :class="filterId == c.id ? 'bg-main text-white' : ''"
                   @click="searchFunction(c)"
                 >
@@ -609,20 +628,20 @@ watch(
           </div>
           <div class="space-y-3 pb-5 pt-5">
             <div class="flex justify-between items-center">
-              <p class="text-sm font-semibold">choose place</p>
+              <p class="text-base font-semibold">Area</p>
               <div class="flex justify-end items-center gap-4"></div>
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2">
               <p
                 v-if="placeArray?.length == 0 || !placeArray"
-                class="text-[9px] text-red"
+                class="text-[12px] text-red"
               >
-                choose city first !
+                Please choose a city first.
               </p>
               <div v-for="(c, index) in placeArray" :key="c">
                 <p
                   v-if="index < 8 || placeall"
-                  class="border border-black/10 text-[10px] rounded-2xl px-4 py-1"
+                  class="border border-black/10 text-[12px] rounded-full px-4 py-1.5"
                   :class="place == c ? 'bg-main text-white' : ''"
                   @click="place = c"
                 >
@@ -642,7 +661,7 @@ watch(
 
           <div class="space-y-3 pb-5 pt-5">
             <div class="flex justify-between items-center">
-              <p class="text-sm font-semibold">start rating</p>
+              <p class="text-base font-semibold">Start Rating</p>
               <ChevronUpIcon class="w-4 h-4" />
             </div>
             <div class="flex flex-wrap justify-start items-center gap-2 mr-5">
@@ -667,7 +686,7 @@ watch(
           </div>
           <div class="pb-5 pt-5 space-y-4">
             <div class="flex justify-between items-center">
-              <p class="text-sm font-semibold">select facilities type</p>
+              <p class="text-base font-semibold">Select Facilities Type</p>
               <div class="flex justify-end items-center gap-2">
                 <p
                   class="text-black px-3 py-1 bg-black/10 rounded-3xl text-[10px] cursor-pointer"
@@ -699,9 +718,9 @@ watch(
                 </div> -->
                 <div
                   v-if="index < 8 || facall"
-                  class="flex justify-between space-y-2 items-center"
+                  class="flex justify-between space-y-5 items-center"
                 >
-                  <p class="text-xs text-black text-center">
+                  <p class="text-sm text-black text-center">
                     {{ i.name }}
                   </p>
                   <input
@@ -723,7 +742,7 @@ watch(
           </div>
           <div class="space-y-3 overflow-hidden pb-8 pt-4">
             <div class="flex justify-between items-center pb-5">
-              <p class="text-sm font-semibold">price range</p>
+              <p class="text-base font-semibold">Price Range</p>
               <p
                 class="text-black px-3 py-1 relative bg-black/10 rounded-3xl text-[10px] cursor-pointer"
                 @click="searchFunctionArray"
