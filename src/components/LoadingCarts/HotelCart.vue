@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="grid grid-cols-11 gap-3" v-show="imageLoaded">
-      <div class="w-full col-span-5 h-[180px] relative rounded-xl">
-        <div class="w-full h-[180px] relative rounded-xl overflow-hidden">
+    <div class="grid grid-cols-11 gap-x-6 pt-6 px-6" v-show="imageLoaded">
+      <div class="w-full col-span-5 h-[200px] relative">
+        <div class="w-full h-[200px] relative rounded-2xl overflow-hidden">
           <img
             :src="
               i?.images[0]?.image
@@ -43,17 +43,17 @@
               language == 'english' ? i.full_description_en : i.full_description
             "
           ></p>
-          <div class="absolute bottom-0 space-y-0.5">
-            <p class="text-[10px]">location area</p>
-            <div class="flex justify-start gap-2 items-center">
-              <div
-                class="text-[8px] flex justify-end text-main items-center gap-0.5 py-1"
-              >
-                <BuildingOffice2Icon class="w-2.5 h-2.5 text-main" />
-                <p>{{ i.place }}</p>
-              </div>
+          <p class="text-[10px] pt-2 text-main">location area</p>
+          <div class="flex justify-start gap-2 items-center">
+            <div
+              class="text-[8px] flex justify-end text-main items-center gap-0.5 py-1"
+            >
+              <BuildingOffice2Icon class="w-2.5 h-2.5" />
+              <p class="text-black/80">{{ i.place }}</p>
             </div>
-            <p class="text-xs font-medium pb-1 line-clamp-1">
+          </div>
+          <div class="pt-2">
+            <p class="text-xs font-medium pb-1 line-clamp-1 text-main">
               start price <span class="text-[8px]">/night</span>
             </p>
             <!-- <p
@@ -61,28 +61,33 @@
             >
               {{ i.lowest_room_price }} THB
             </p> -->
-            <button
-              class="text-main rounded-base text-lg line-clamp-1 font-semibold"
-            >
-              ฿ {{ i?.lowest_room_price }}
-              <span
-                class="text-[11px] line-through text-black/70"
-                v-if="
-                  i?.lowest_walk_in_price != 'null' &&
-                  i?.lowest_walk_in_price != 0 &&
-                  i?.lowest_walk_in_price != i?.lowest_room_price
-                "
-                >฿ {{ i?.lowest_walk_in_price }}</span
+            <div class="flex justify-between items-center">
+              <button
+                class="text-main rounded-base text-lg line-clamp-1 font-semibold"
               >
-            </button>
+                ฿ {{ i?.lowest_room_price }}
+                <span
+                  class="text-[11px] line-through text-black/70"
+                  v-if="
+                    i?.lowest_walk_in_price != 'null' &&
+                    i?.lowest_walk_in_price != 0 &&
+                    i?.lowest_walk_in_price != i?.lowest_room_price
+                  "
+                  >฿ {{ i?.lowest_walk_in_price }}</span
+                >
+              </button>
+              <div class="px-3 text-xs py-1.5 text-white bg-main rounded-full">
+                book
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div v-show="!imageLoaded" class="">
-      <div class="grid grid-cols-11 gap-3">
-        <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
+      <div class="grid grid-cols-11 gap-6 px-6">
+        <div class="w-full col-span-5 h-[200px] overflow-hidden rounded-2xl">
           <img
             :src="LoadingImageCover"
             class="w-full h-full object-cover opacity-30"

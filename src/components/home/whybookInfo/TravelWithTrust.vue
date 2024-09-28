@@ -1,9 +1,9 @@
 <template>
   <div class="space-y-4">
-    <h1 class="text-lg text-main font-medium">
+    <h1 class="font-semibold text-base text-main">
       Travel & Tours Licensed Company
     </h1>
-    <p class="text-base font-normal">
+    <p class="text-sm font-normal">
       Travel and tours licenses are essential for ensuring that our customers
       travel with <span class="text-main">peace of mind</span>. Thailand
       Anywhere is a licensed travel agency in Thailand since 2022 under our

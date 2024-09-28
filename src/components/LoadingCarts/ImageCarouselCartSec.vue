@@ -24,7 +24,7 @@
       <img
         :src="LoadingImageCover"
         :alt="loadingAlt"
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover opacity-30 animate-pulse"
       />
     </div>
   </div>

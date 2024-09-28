@@ -258,7 +258,7 @@ watch(entrances, async (newValue) => {
       <div class="space-y-4 relative pb-20">
         <div
           :class="isStickey ? 'shadow-custom-filter ' : ''"
-          class="mb-2 sticky top-0 pt-2 px-6 pb-4 z-10 bg-background w-full"
+          class="mb-2 sticky top-0 pt-2 px-6 space-y-2 pb-4 z-10 bg-background w-full"
         >
           <div class="flex justify-between items-center">
             <h1
@@ -421,21 +421,20 @@ watch(entrances, async (newValue) => {
           </div>
         </div>
 
-        <div
-          class="border border-black/10 mx-6 rounded-2xl relative shadow-sm bg-white p-2.5"
-          v-for="i in entrancesList"
-          :key="i"
-          @click="goDetialPage(i.id)"
-        >
-          <AttractionCart :i="i" />
+        <div class="space-y-4 divide-y-8 divide-black/5">
+          <div
+            class="bg-background"
+            v-for="(i, index) in entrancesList"
+            :key="index"
+            :class="index != 0 ? 'pt-6' : ''"
+            @click="goDetialPage(i.id)"
+          >
+            <AttractionCart :i="i" />
+          </div>
         </div>
         <div v-if="loading" class="space-y-4">
-          <div
-            v-for="a in 8"
-            :key="a"
-            class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
-          >
-            <div class="grid grid-cols-11 gap-3">
+          <div v-for="a in 8" :key="a" class="mx-6 rounded-2xl pb-2.5">
+            <div class="grid grid-cols-11 gap-6">
               <div
                 class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl"
               >

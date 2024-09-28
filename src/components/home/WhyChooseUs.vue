@@ -54,7 +54,7 @@
             <XMarkIcon class="w-5 h-5" @click="close" />
           </div>
           <div
-            class="border border-black/10 p-4 ml-4 mr-4 rounded-xl h-[90vh] overflow-scroll"
+            class="border border-black/10 p-4 ml-4 mr-4 rounded-xl min-h-[90vh]"
           >
             <div v-if="openPart == 1">
               <BookWithConfidence />
@@ -101,7 +101,7 @@ const open = (id) => {
     myBottomSheet.value.open();
   }
   if (id == 4) {
-    router.push("/home/destination");
+    router.push("/search");
   }
   if (id == 5) {
     router.push("/search");

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="grid grid-cols-11 gap-3" v-show="imageLoaded">
+    <div class="grid grid-cols-11 gap-6 px-6" v-show="imageLoaded">
       <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-xl">
         <img
           :src="
@@ -80,7 +80,7 @@
     </div>
 
     <div v-show="!imageLoaded" class="">
-      <div class="grid grid-cols-11 gap-3">
+      <div class="grid grid-cols-11 gap-6 px-6">
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
           <img
             :src="LoadingImageCover"

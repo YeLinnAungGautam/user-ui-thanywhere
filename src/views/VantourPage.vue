@@ -241,22 +241,21 @@ watch(vantours, async (newValue) => {
           <ChevronDownIcon class="w-3 h-3 text-main" />
         </div>
       </div>
-      <div
-        class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
-        v-for="i in destsList"
-        :key="i"
-        @click="goDetialPage(i.id)"
-      >
-        <!-- add cart -->
-        <VantourCart :i="i" />
+
+      <div class="space-y-6 divide-y-8 divide-black/5">
+        <div
+          class="bg-background"
+          v-for="(i, index) in destsList"
+          :key="index"
+          @click="goDetialPage(i.id)"
+          :class="index != 0 ? 'pt-6' : ''"
+        >
+          <VantourCart :i="i" />
+        </div>
       </div>
       <div v-if="loading" class="space-y-4">
-        <div
-          v-for="a in 8"
-          :key="a"
-          class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
-        >
-          <div class="grid grid-cols-11 gap-3">
+        <div v-for="a in 8" :key="a" class="mx-6 rounded-2xl pb-2.5">
+          <div class="grid grid-cols-11 gap-6">
             <div
               class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl"
             >

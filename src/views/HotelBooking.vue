@@ -118,16 +118,31 @@ const handleScroll = () => {
   }
 };
 
+const currentPage = ref(1);
+const searchHotelsWithPriceRange = async (type) => {
+  let data = {
+    price_range: type,
+    page: currentPage.value,
+  };
+  await hotelStore.getListAction(data);
+};
+
 watch(bottomOfWindow, (newVal) => {
   if (bottomOfWindow.value == true) {
     let changePageCalled = false;
     if (newVal && !changePageCalled) {
       console.log("This is the bottom of the window");
       if (hotels?.value?.meta?.current_page < hotels?.value?.meta?.last_page) {
+        currentPage.value++;
         changePageCalled = true; // Set the flag to true
-        changePage(
-          hotels?.value?.meta?.links[hotels?.value?.meta?.current_page + 1].url
-        );
+        if (type.value != "") {
+          searchHotelsWithPriceRange(type.value);
+        } else {
+          changePage(
+            hotels?.value?.meta?.links[hotels?.value?.meta?.current_page + 1]
+              .url
+          );
+        }
       }
     }
   }
@@ -214,6 +229,12 @@ const searchFunctionArray = async () => {
 
 const showSearch = ref(false);
 
+const getList = (data) => {
+  console.log(data, "this is data");
+  type.value = data;
+};
+const type = ref("");
+
 const searchFunction = (data) => {
   // console.log(data);
   city_name.value = data.name;
@@ -285,6 +306,19 @@ watch(hotels, async (newValue) => {
 
   console.log(hotelList.value, "this is add new");
 });
+
+watch(type, async (newValue) => {
+  if (newValue) {
+    hotelList.value = [];
+    currentPage.value = 1;
+    await hotelStore.getListAction({
+      price_range: newValue,
+    });
+    // hotelList.value = res.data;
+  }
+
+  console.log(hotelList.value, "this is add new");
+});
 </script>
 
 <template>
@@ -295,28 +329,13 @@ watch(hotels, async (newValue) => {
           <p class="text-base font-semibold tracking-wider">hotel bookings</p>
           <p class="text-xs">bangkok, pattaya, phuket, etc ...</p>
         </div>
-        <!-- <div class="relative">
-          <input
-            type="search"
-            @focus="router.push('/home/hotel-search')"
-            name=""
-            placeholder=" where would you like to stay"
-            class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
-            id=""
-          />
 
-          <img
-            :src="searchIcon"
-            class="w-5 h-5 absolute top-3.5 right-5 text-main"
-            alt=""
-          />
-        </div> -->
         <HotelSearchHomeVue />
       </div>
     </HeaderHomeVue>
     <div class="h-auto pb-20 z-20 relative">
       <!-- <HotelsGradesVue @Range="getRange" /> -->
-      <div class="space-y-4 relative">
+      <div class="space-y-1 relative">
         <div
           :class="isStickey ? 'shadow-custom-filter' : ''"
           class="flex justify-between items-center mb-2 sticky top-0 py-2 px-6 z-10 bg-background w-full"
@@ -332,12 +351,57 @@ watch(hotels, async (newValue) => {
         </div>
 
         <div
-          class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
-          v-for="i in hotelList ? hotelList : []"
-          :key="i"
-          @click="goDetialPage(i?.id)"
+          class="flex justify-start items-center overflow-x-scroll space-x-1.5 pt-1 px-6 scroll-container"
         >
-          <HotelCartVue :i="i" />
+          <p
+            @click="getList('0-1200')"
+            :class="
+              type == '0-1200' ? 'border-main text-main' : 'border-black/10'
+            "
+            class="whitespace-nowrap px-3 py-1.5 text-[10px] border rounded-full"
+          >
+            budget <span class="text-[8px]">( &lt; 1200)</span>
+          </p>
+          <p
+            @click="getList('1200-1800')"
+            :class="
+              type == '1200-1800' ? 'border-main text-main' : 'border-black/10'
+            "
+            class="whitespace-nowrap px-3 py-1.5 text-[10px] border rounded-full"
+          >
+            standard <span class="text-[8px]">(1200 - 1800)</span>
+          </p>
+          <p
+            @click="getList('1800-3000')"
+            :class="
+              type == '1800-3000' ? 'border-main text-main' : 'border-black/10'
+            "
+            class="whitespace-nowrap px-3 py-1.5 text-[10px] border rounded-full"
+          >
+            premium <span class="text-[8px]">(1800 - 3000)</span>
+          </p>
+          <p
+            @click="getList('3000-100000')"
+            :class="
+              type == '3000-100000'
+                ? 'border-main text-main'
+                : 'border-black/10'
+            "
+            class="whitespace-nowrap px-3 py-1.5 text-[10px] border rounded-full"
+          >
+            luxury <span class="text-[8px]">(3000+)</span>
+          </p>
+        </div>
+
+        <div class="space-y-6 divide-y-8 divide-black/5">
+          <div
+            class="bg-background"
+            v-for="i in hotelList ? hotelList : []"
+            :key="i"
+            @click="goDetialPage(i?.id)"
+          >
+            <HotelCartVue :i="i" />
+          </div>
         </div>
       </div>
       <!-- <div
@@ -349,15 +413,11 @@ watch(hotels, async (newValue) => {
         ></div>
         <img src="../assets/logo.png" class="rounded-full h-16 w-16" />
       </div> -->
-      <div v-if="loading" class="space-y-4">
-        <div
-          v-for="a in 8"
-          :key="a"
-          class="border border-black/10 mx-6 rounded-2xl shadow-sm bg-white p-2.5"
-        >
-          <div class="grid grid-cols-11 gap-3">
+      <div v-if="loading" class="space-y-4 pt-6">
+        <div v-for="a in 8" :key="a" class="mx-6 rounded-2xl py-2.5">
+          <div class="grid grid-cols-11 gap-6">
             <div
-              class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl"
+              class="w-full col-span-5 h-[200px] overflow-hidden rounded-2xl"
             >
               <img
                 :src="LoadingImageCover"
@@ -420,8 +480,10 @@ watch(hotels, async (newValue) => {
                 <div v-for="(c, index) in cities?.data" :key="c.id">
                   <p
                     v-if="index < 8 || all"
-                    class="border border-black/10 text-[12px] rounded-full px-4 py-1.5"
-                    :class="filterId == c.id ? 'bg-main text-white' : ''"
+                    class="border border-black/10 text-[12px] rounded-full px-4 py-1"
+                    :class="
+                      filterId == c.id ? 'bg-main text-white' : 'text-black/60'
+                    "
                     @click="searchFunction(c)"
                   >
                     {{ c?.name }}
@@ -454,8 +516,10 @@ watch(hotels, async (newValue) => {
                   <div v-for="(c, index) in placeArray" :key="c">
                     <p
                       v-if="index < 8 || placeall"
-                      class="border border-black/10 text-[12px] rounded-full px-4 py-1.5"
-                      :class="place == c ? 'bg-main text-white' : ''"
+                      class="border border-black/10 text-[12px] rounded-full px-4 py-1"
+                      :class="
+                        place == c ? 'bg-main text-white' : 'text-black/60'
+                      "
                       @click="place = c"
                     >
                       {{ c }}

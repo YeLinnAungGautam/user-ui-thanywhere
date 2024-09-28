@@ -1,6 +1,6 @@
 <template>
   <div class="h-auto">
-    <div class="space-y-10 pt-10">
+    <div class="space-y-10 pt-2">
       <div
         v-for="d in data"
         :key="d"
@@ -50,58 +50,86 @@
           <div
             class="border border-black/10 p-4 ml-4 mr-4 rounded-xl relative h-[90vh] overflow-scroll"
           >
-            <div
+            <!-- <div
               class="bg-gradient-to-tr absolute to-main from-main/20 w-[93%] h-[130px] rounded-2xl"
-            ></div>
-            <div
-              class="relative w-[150px] h-[150px] mt-8 overflow-hidden border bg-white border-main rounded-full mx-auto shadow-custom"
-            >
-              <img
-                :src="info?.image"
-                :alt="info?.name"
-                class="h-auto absolute w-full z-10 object-cover"
-              />
-              <img
-                :src="background"
-                class="absolute w-[300px] z-0 -bottom-4"
-                alt=""
-              />
+            ></div> -->
+            <div class="grid grid-cols-2 gap-x-4">
+              <div
+                class="w-[150px] relative h-[150px] overflow-hidden border bg-white border-main rounded-full mx-auto shadow-custom"
+              >
+                <img
+                  :src="info?.image"
+                  :alt="info?.name"
+                  class="h-auto absolute w-full z-10 object-cover"
+                />
+                <div
+                  class="absolute bottom-0 left-0 w-[150px] h-[150px] bg-gradient-to-tr from-main to-main/80"
+                ></div>
+                <!-- <img
+                  :src="background"
+                  class="absolute w-[300px] z-0 -bottom-4"
+                  alt=""
+                /> -->
+              </div>
+              <div class="space-y-2 pt-4">
+                <div>
+                  <p class="text-sm text-main">Name</p>
+                  <p class="text-sm">{{ info?.name }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-main">Position</p>
+                  <p class="text-sm">{{ info?.role }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-main">Experience</p>
+                  <p class="text-sm">8 + years</p>
+                </div>
+              </div>
             </div>
-            <div class="mt-4 px-4 divide-y divide-black/10">
-              <div class="flex justify-between items-center py-2">
+            <div
+              class="py-3 bg-main text-white mt-6 rounded-2xl shadow-custom-input text-center"
+            >
+              Talk to {{ info?.name }}
+            </div>
+            <div class="grid grid-cols-3 gap-4 py-6">
+              <div class="text-center">
+                <p class="font-semibold text-3xl text-main">2.2k +</p>
+                <p class="text-sm mr-12">Sales</p>
+              </div>
+              <div class="text-center">
+                <p class="font-semibold text-3xl text-main">3.2k +</p>
+                <p class="text-sm mr-2">Customers</p>
+              </div>
+              <div class="text-center">
+                <p class="font-semibold text-3xl text-main">85 +</p>
+                <p class="text-sm">Products</p>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <p>Specialization</p>
+              <div class="space-y-2">
                 <div class="flex justify-start items-center gap-x-2">
-                  <img :src="profileImage" class="w-8 h-8" alt="" />
-                  <p class="text-sm">role</p>
+                  <CheckBadgeIcon class="w-4 h-4 text-green" />
+                  <p class="text-sm">All-Inclusive Tours</p>
                 </div>
-                <p class="text-sm">{{ info?.role }}</p>
-              </div>
-              <div class="flex justify-between items-center py-2">
                 <div class="flex justify-start items-center gap-x-2">
-                  <img :src="callIcon" class="w-8 h-8" alt="" />
-                  <p class="text-sm">phone</p>
+                  <CheckBadgeIcon class="w-4 h-4 text-green" />
+
+                  <p class="text-sm">Company Trips</p>
                 </div>
-                <p class="text-sm">{{ info?.phone }}</p>
-              </div>
-              <div class="flex justify-between items-center py-2">
                 <div class="flex justify-start items-center gap-x-2">
-                  <img :src="viberIcon" class="w-8 h-8" alt="" />
-                  <p class="text-sm">viber</p>
+                  <CheckBadgeIcon class="w-4 h-4 text-green" />
+
+                  <p class="text-sm">50 pax plus trip planning</p>
                 </div>
-                <p class="text-sm">{{ info?.viber }}</p>
-              </div>
-              <div class="flex justify-between items-center py-2">
                 <div class="flex justify-start items-center gap-x-2">
-                  <img :src="whatsappIcon" class="w-8 h-8" alt="" />
-                  <p class="text-sm">whatsapp</p>
+                  <CheckBadgeIcon class="w-4 h-4 text-green" />
+
+                  <p class="text-sm">all inclusive customer tours</p>
                 </div>
-                <p class="text-sm">{{ info?.whatsApp }}</p>
               </div>
-              <div class="pt-4 text-sm">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Tenetur animi, illo dicta reprehenderit, culpa excepturi veniam
-                in maiores reiciendis laborum omnis, necessitatibus quis sit
-                quas consectetur. Quos accusamus excepturi tempore!
-              </div>
+              <p>Biography</p>
+              <p class="text-sm">coming soon ...</p>
             </div>
           </div>
         </div>
@@ -113,7 +141,7 @@
 <script setup>
 import data from "./db";
 import background from "../../assets/s/Background item.png";
-import { InformationCircleIcon } from "@heroicons/vue/24/solid";
+import { CheckBadgeIcon, InformationCircleIcon } from "@heroicons/vue/24/solid";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { ref } from "vue";

@@ -4,7 +4,7 @@ import { useCityStore } from "../../stores/city";
 import { storeToRefs } from "pinia";
 // import vantourdb from "../assets/vantourdb";
 import debounce from "lodash.debounce";
-import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 // import { MapPinIcon } from "@heroicons/vue/24/solid";
 import MapImage from "../../assets/s/pin 1 (1).png";
 
@@ -13,6 +13,12 @@ const cityStore = useCityStore();
 const { cities } = storeToRefs(cityStore);
 
 const all = ref(false);
+
+const clearSearch = () => {
+  search_by_name.value = "";
+  search.value = "";
+  searchId.value = null;
+};
 // const data = vantourdb;
 
 const search = ref("");
@@ -48,6 +54,7 @@ const lowercaseCity = (name) => {
 onMounted(async () => {
   await cityStore.getSimpleListAction();
   console.log(cities.value);
+  searchList.value = cities.value.data;
 });
 
 const searchList = ref(null);
@@ -73,15 +80,19 @@ watch(
       <div class="px-4 pt-2 pb-4 shadow-custom-input">
         <div class="relative z-10 w-full">
           <MagnifyingGlassIcon
-            class="w-6 h-6 absolute top-2 text-main left-3"
+            class="w-6 h-6 absolute top-3 text-main left-3"
+          />
+          <XMarkIcon
+            class="w-6 h-6 absolute top-3 text-main right-3"
+            @click="clearSearch()"
           />
           <input
-            type="search"
+            type="text"
             name=""
             v-model="search_by_name"
             @keyup.enter="goResultPage"
             placeholder=" search"
-            class="w-full rounded-full bg-black/5 pr-6 pl-12 py-3 text-xs text-main focus:outline-none"
+            class="w-full rounded-full bg-black/5 pr-6 pl-12 py-4 text-xs text-main focus:outline-none"
             id=""
           />
         </div>
@@ -113,7 +124,9 @@ watch(
         </div>
       </div> -->
     </div>
-    <div class="bg-white rounded-2xl space-y-4 overflow-hidden p-4 h-[100vh]">
+    <div
+      class="bg-white rounded-2xl space-y-6 pt-6 overflow-hidden px-4 pb-20 h-[100vh]"
+    >
       <div
         class="flex justify-start items-center gap-4"
         v-for="c in searchList"
@@ -126,7 +139,7 @@ watch(
         <!-- <MapPinIcon class="w-9 h-9 text-main ml-2" /> -->
         <img :src="MapImage" class="w-6 h-6 text-main ml-2" alt="" />
         <div>
-          <p class="text-lg text-main font-semibold mt-2">
+          <p class="text-base text-main font-semibold mt-2">
             {{ lowercaseCity(c.name) }}
           </p>
           <p class="text-xs text-main font-normal">thailand</p>

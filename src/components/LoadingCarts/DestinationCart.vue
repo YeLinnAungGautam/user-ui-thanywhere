@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="grid grid-cols-11 gap-3" v-show="imageLoaded">
+    <div class="grid grid-cols-11 gap-6 px-6" v-show="imageLoaded">
       <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-xl">
         <img
           :src="
@@ -23,8 +23,9 @@
           </div>
           <div class="flex justify-start gap-1 flex-wrap items-center">
             <p
-              class="whitespace-nowrap bg-black/10 text-[8px] px-1 py-0.5 rounded-md text-black/70"
+              class="whitespace-nowrap text-[8px] py-0.5 rounded-md text-main flex justify-start items-center gap-x-1"
             >
+              <img :src="PinImage" class="w-3 h-3" alt="" />
               {{ i?.city?.name }}
             </p>
           </div>
@@ -44,7 +45,7 @@
     </div>
 
     <div v-show="!imageLoaded" class="">
-      <div class="grid grid-cols-11 gap-3">
+      <div class="grid grid-cols-11 gap-6 px-6">
         <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-2xl">
           <img
             :src="LoadingImageCover"
@@ -95,6 +96,7 @@ import { ref, defineProps, onMounted } from "vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
+import PinImage from "../../assets/s/pin 1 (1).png";
 
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);

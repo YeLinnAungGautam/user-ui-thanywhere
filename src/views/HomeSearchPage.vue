@@ -194,21 +194,19 @@ onMounted(async () => {
           </p>
           <div class="flex justify-start items-center gap-2 flex-wrap">
             <p
-              class="px-4 py-1.5 text-xs rounded-full"
+              class="px-4 py-1.5 text-xs rounded-full shadow-custom-filter"
               :class="
-                type == 'hotel'
-                  ? 'bg-main text-white border border-white'
-                  : 'bg-white text-main'
+                type == 'hotel' ? 'bg-main text-white ' : 'bg-white text-main'
               "
               @click="type = 'hotel'"
             >
               hotels
             </p>
             <p
-              class="px-4 py-1.5 text-xs rounded-full"
+              class="px-4 py-1.5 text-xs rounded-full shadow-custom-filter"
               :class="
                 type == 'entrance'
-                  ? 'bg-main text-white border border-white'
+                  ? 'bg-main text-white '
                   : 'bg-white text-main'
               "
               @click="type = 'entrance'"
@@ -216,11 +214,9 @@ onMounted(async () => {
               entrance tickets
             </p>
             <p
-              class="px-4 py-1.5 text-xs rounded-full"
+              class="px-4 py-1.5 text-xs rounded-full shadow-custom-filter"
               :class="
-                type == 'vantour'
-                  ? 'bg-main text-white border border-white'
-                  : 'bg-white text-main'
+                type == 'vantour' ? 'bg-main text-white ' : 'bg-white text-main'
               "
               @click="type = 'vantour'"
             >
@@ -264,7 +260,7 @@ onMounted(async () => {
         </div>
       </div>
     </HeaderHome>
-    <div class="h-auto pb-20 pt-2 relative z-10 space-y-6">
+    <div class="h-auto pb-20 relative z-10 space-y-6 bg-background">
       <div
         class="flex flex-1 justify-start space-x-4 pr-4 items-center overflow-x-scroll scroll-container"
       >
@@ -400,6 +396,7 @@ onMounted(async () => {
               :city_name="i?.cities"
               :price="i?.lowest_variation_price"
               :price_unit="i?.lowest_walk_in_price"
+              :type="i?.categories"
             />
           </div>
         </div>
@@ -473,6 +470,7 @@ onMounted(async () => {
               :city_name="i?.cities"
               :price="i?.lowest_variation_price"
               :price_unit="i?.lowest_walk_in_price"
+              :type="i?.categories"
             />
           </div>
         </div>
