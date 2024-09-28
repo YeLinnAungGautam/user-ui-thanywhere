@@ -2,7 +2,7 @@
   <div>
     <div class="grid grid-cols-11 gap-6 px-6" v-show="imageLoaded">
       <div class="w-full col-span-5 h-[180px] overflow-hidden rounded-xl">
-        <img
+        <!-- <img
           :src="
             i?.feature_img
               ? i?.feature_img
@@ -11,7 +11,8 @@
           @load="onImageLoad"
           class="w-full h-full object-cover"
           alt=""
-        />
+        /> -->
+        <ImageCarouselForCart :data="images" :style="'h-[180px]'" />
       </div>
       <div class="col-span-6 relative">
         <div class="overflow-hidden space-y-1">
@@ -92,12 +93,12 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps, onMounted, watch } from "vue";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
 import PinImage from "../../assets/s/pin 1 (1).png";
-
+import ImageCarouselForCart from "./ImageCarouselForCart.vue";
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
 
@@ -105,15 +106,38 @@ const props = defineProps({
   i: Object,
 });
 
+const images = ref([]);
+const getImages = () => {
+  if (props.i?.feature_img) {
+    images.value.push(props.i?.feature_img);
+  }
+  if (props.i?.images) {
+    for (let a = 0; a < props.i?.images.length; a++) {
+      images.value.push(props.i?.images[a].image);
+    }
+  }
+  imageLoaded.value = true;
+};
+
 const imageLoaded = ref(false);
 
-const onImageLoad = () => {
-  imageLoaded.value = true;
-  // console.log("Image loaded");
-};
+// const onImageLoad = () => {
+//   imageLoaded.value = true;
+//   // console.log("Image loaded");
+// };
 
 onMounted(() => {
   // console.log(props.i, "this is i");
   settingStore.getLanguage();
 });
+
+watch(
+  () => props.i,
+  () => {
+    if (props.i) {
+      getImages();
+    }
+  },
+  { immediate: true }
+);
 </script>

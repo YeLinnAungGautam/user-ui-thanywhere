@@ -103,7 +103,7 @@ watch(
 
     if (!newValue || newValue.length === 0) {
       showImage.value = simple; // Set default image if data is undefined or empty
-      // console.log("hello");
+      console.log("hello");
     } else {
       showImage.value = newValue; // Set the image to the new value
     }

@@ -3,7 +3,7 @@
     <div class="grid grid-cols-11 gap-6 pb-2 px-6" v-show="imageLoaded">
       <div class="w-full col-span-5 h-[180px] relative rounded-xl">
         <div class="w-full h-[180px] overflow-hidden rounded-xl">
-          <img
+          <!-- <img
             :src="
               i?.cover_image
                 ? i?.cover_image
@@ -12,11 +12,12 @@
             @load="onImageLoad"
             class="w-full h-full object-cover"
             alt=""
-          />
+          /> -->
+          <ImageCarouselForCart :data="images" :style="'h-[180px]'" />
         </div>
         <p
           v-if="percent != 0 && percent != NaN"
-          class="text-xs bg-red/90 text-white rounded-full absolute -bottom-2 right-2 px-3 py-1 font-medium"
+          class="text-xs bg-red/70 text-white rounded-full absolute -bottom-2 right-2 px-3 py-1 font-medium"
         >
           {{ percent }}% OFF
         </p>
@@ -146,12 +147,13 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted, computed } from "vue";
+import { ref, defineProps, onMounted, computed, watch } from "vue";
 import { HeartIcon } from "@heroicons/vue/24/outline";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
 import Pin from "@/assets/s/pin 1 (1).png";
+import ImageCarouselForCart from "./ImageCarouselForCart.vue";
 
 const settingStore = useSettingStore();
 const { language } = storeToRefs(settingStore);
@@ -162,10 +164,10 @@ const props = defineProps({
 
 const imageLoaded = ref(false);
 
-const onImageLoad = () => {
-  imageLoaded.value = true;
-  // console.log("Image loaded");
-};
+// const onImageLoad = () => {
+//   imageLoaded.value = true;
+//   // console.log("Image loaded");
+// };
 
 const percent = computed(() => {
   if (
@@ -185,8 +187,29 @@ const percent = computed(() => {
   }
 });
 
+const images = ref([]);
+const getImages = () => {
+  images.value.push(props.i?.cover_image);
+  if (props.i?.images) {
+    for (let a = 0; a < props.i?.images.length; a++) {
+      images.value.push(props.i?.images[a].image);
+    }
+  }
+  imageLoaded.value = true;
+};
+
 onMounted(() => {
   // console.log(props.i, "this is i");
   settingStore.getLanguage();
 });
+
+watch(
+  () => props.i,
+  () => {
+    if (props.i) {
+      getImages();
+    }
+  },
+  { immediate: true }
+);
 </script>
