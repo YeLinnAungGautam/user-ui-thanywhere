@@ -24,8 +24,8 @@
       </div>
       <div class="col-span-6 relative">
         <HeartIcon class="w-4 h-4 absolute top-0 right-0 text-main" />
-        <div class="mr-6 overflow-hidden">
-          <p class="text-xs font-semibold text-main line-clamp-1">
+        <div class="overflow-hidden">
+          <p class="text-xs font-semibold pr-6 text-main line-clamp-1">
             {{ i.name }}
           </p>
           <div class="flex justify-between items-center">
@@ -62,9 +62,9 @@
             >
               {{ i.lowest_room_price }} THB
             </p> -->
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between flex-nowrap items-center">
               <button
-                class="text-main rounded-base text-lg line-clamp-1 font-semibold"
+                class="text-main rounded-base text-lg line-clamp-1 whitespace-nowrap font-semibold"
               >
                 ฿ {{ i?.lowest_room_price }}
                 <span
