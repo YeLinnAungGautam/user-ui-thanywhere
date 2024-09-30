@@ -7,7 +7,7 @@
     </transition>
     <div class="relative" v-if="!loading">
       <div class=" " :style="imageStyles">
-        <ImageCarousel :data="images" />
+        <ImageCarousel :data="images" @clickAction="clickAction" />
         <ChevronLeftIcon
           @click="router.push('/home/van-tour')"
           class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
@@ -712,6 +712,22 @@
         </div>
       </div>
     </vue-bottom-sheet>
+
+    <vue-bottom-sheet ref="myBottomSheetImage" :max-height="1500">
+      <div class="font-poppins">
+        <div class="h-[100vh]">
+          <div class="flex justify-between items-center px-6 pb-4">
+            <p class="opacity-0">........</p>
+            <p class="text-black text-base font-medium">Images Gallery</p>
+
+            <XMarkIcon class="w-5 h-5" @click="closeBottomSheetImage" />
+          </div>
+          <div class="h-[100vh] overflow-scroll">
+            <ImageGallery :data="hotelImagesData" />
+          </div>
+        </div>
+      </div>
+    </vue-bottom-sheet>
   </div>
 </template>
 
@@ -721,6 +737,7 @@ import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import TrueIcon from "../assets/s/circle.png";
 import CrossIcon from "../assets/s/close.png";
+import ImageGallery from "../components/hotelbookings/ImageGallery.vue";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -799,6 +816,7 @@ const openDetailModal = () => {
 const getDetail = async (id) => {
   loading.value = true;
   images.value = [];
+  hotelImagesData.value = [];
   const res = await vantourStore.getDetailAction(id);
   console.log("====================================");
   console.log(res);
@@ -827,6 +845,7 @@ const getDetail = async (id) => {
 
   await getRelative(res.data?.cities[0]?.id);
   loading.value = false;
+  getHotelImagesData(res.data);
 };
 
 const chooseDataFunction = (data) => {
@@ -983,6 +1002,79 @@ const confirmDetailAction = () => {
 };
 
 const currentURL = ref("");
+
+const myBottomSheetImage = ref(null);
+const openBottomSheetImage = () => {
+  myBottomSheetImage.value.open();
+};
+const closeBottomSheetImage = () => {
+  myBottomSheetImage.value.close();
+};
+const clickAction = (data) => {
+  console.log(data, "this is click action");
+  if (data == "clicked") {
+    openBottomSheetImage();
+  }
+};
+
+const hotelImagesData = ref([]);
+const getHotelImagesData = (data) => {
+  let dataImage = {
+    title: "",
+    images: [],
+  };
+  if (data.cover_image) {
+    dataImage.title = data.name;
+    dataImage.images = [
+      {
+        image: data.cover_image,
+      },
+    ];
+    hotelImagesData.value.push(dataImage);
+    dataImage = {
+      title: "",
+      images: [],
+    };
+  }
+  if (data.images.length > 0) {
+    const element = data.images;
+    dataImage.title = `${data.name} images`;
+    dataImage.images = element;
+    hotelImagesData.value.push(dataImage);
+    dataImage = {
+      title: "",
+      images: [],
+    };
+  }
+  if (data.destinations.length > 0) {
+    for (let i = 0; i < data.destinations.length; i++) {
+      const element = data.destinations[i];
+      if (element.feature_img) {
+        dataImage.title = `${element.name} `;
+        dataImage.images = [
+          {
+            image: element.feature_img,
+          },
+        ];
+        hotelImagesData.value.push(dataImage);
+        dataImage = {
+          title: "",
+          images: [],
+        };
+      }
+      if (element.images.length > 0) {
+        dataImage.title = `${element.name} images`;
+        dataImage.images = element.images;
+        hotelImagesData.value.push(dataImage);
+        dataImage = {
+          title: "",
+          images: [],
+        };
+      }
+    }
+  }
+  console.log(hotelImagesData.value, "this is attraction images data");
+};
 
 onMounted(async () => {
   if (route.query.language) {

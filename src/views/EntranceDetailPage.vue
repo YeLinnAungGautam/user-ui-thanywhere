@@ -7,7 +7,7 @@
     </transition>
     <div class="relative" v-if="!loading">
       <div :style="imageStyles">
-        <ImageCarousel :data="detail?.images" />
+        <ImageCarousel :data="detail?.images" @clickAction="clickAction" />
         <ChevronLeftIcon
           @click="router.push('/home/attraction')"
           class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
@@ -466,6 +466,21 @@
             </div>
           </div>
         </vue-bottom-sheet>
+        <vue-bottom-sheet ref="myBottomSheetImage" :max-height="1500">
+          <div class="font-poppins">
+            <div class="h-[100vh]">
+              <div class="flex justify-between items-center px-6 pb-4">
+                <p class="opacity-0">........</p>
+                <p class="text-black text-base font-medium">Images Gallery</p>
+
+                <XMarkIcon class="w-5 h-5" @click="closeBottomSheetImage" />
+              </div>
+              <div class="h-[100vh] overflow-scroll">
+                <ImageGallery :data="hotelImagesData" />
+              </div>
+            </div>
+          </div>
+        </vue-bottom-sheet>
       </div>
     </div>
   </div>
@@ -476,6 +491,7 @@ import { onMounted, ref, computed, onBeforeUnmount, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
+import ImageGallery from "../components/hotelbookings/ImageGallery.vue";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import {
   ChevronDoubleUpIcon,
@@ -516,6 +532,7 @@ const seeMoreShow = ref(false);
 
 const getDetail = async (id) => {
   loading.value = true;
+  hotelImagesData.value = [];
   const res = await entranceStore.getDetailAction(id);
   console.log("====================================");
   console.log(res);
@@ -529,6 +546,7 @@ const getDetail = async (id) => {
   console.log(attractionList.value, "this is attraction list");
   console.log("====================================");
   loading.value = false;
+  getHotelImagesData(res.data);
 };
 
 const shareContent = () => {
@@ -616,6 +634,52 @@ const viewDetailFunction = (id) => {
 };
 
 const viewMoreTicket = ref(false);
+
+const myBottomSheetImage = ref(null);
+const openBottomSheetImage = () => {
+  myBottomSheetImage.value.open();
+};
+const closeBottomSheetImage = () => {
+  myBottomSheetImage.value.close();
+};
+const clickAction = (data) => {
+  console.log(data, "this is click action");
+  if (data == "clicked") {
+    openBottomSheetImage();
+  }
+};
+
+const hotelImagesData = ref([]);
+const getHotelImagesData = (data) => {
+  let dataImage = {
+    title: "",
+    images: [],
+  };
+  if (data.cover_image) {
+    dataImage.title = data.name;
+    dataImage.images = [
+      {
+        image: data.cover_image,
+      },
+    ];
+    hotelImagesData.value.push(dataImage);
+    dataImage = {
+      title: "",
+      images: [],
+    };
+  }
+  if (data.images.length > 0) {
+    const element = data.images;
+    dataImage.title = `${data.name} images`;
+    dataImage.images = element;
+    hotelImagesData.value.push(dataImage);
+    dataImage = {
+      title: "",
+      images: [],
+    };
+  }
+  console.log(hotelImagesData.value, "this is attraction images data");
+};
 
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);

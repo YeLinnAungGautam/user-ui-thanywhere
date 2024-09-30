@@ -2,7 +2,11 @@
   <div class="relative overflow-hidden">
     <div class="relative">
       <carousel v-bind="settings" @slide-start="handleSlideStart">
-        <slide v-for="(slide, index) in showImage" :key="index">
+        <slide
+          v-for="(slide, index) in showImage"
+          :key="index"
+          @click="clickAction()"
+        >
           <div class="w-full h-full">
             <!-- <div class="w-full h-[420px] overflow-hidden">
               <img
@@ -53,6 +57,12 @@
           </div>
         </template>
       </carousel>
+      <div
+        class="absolute bottom-[40px] right-[20px] w-[60px] h-[30px] bg-black/70 rounded-full flex justify-center items-center text-white divide-x-2 divide-white/60"
+      >
+        <p class="px-2 text-sm">{{ currentIndex + 1 }}</p>
+        <p class="px-2 text-sm">{{ data?.length }}</p>
+      </div>
     </div>
     <div
       class="bg-white absolute -bottom-6 rounded-full h-[50px] w-full z-30"
@@ -64,7 +74,7 @@
 // import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide } from "vue3-carousel";
-import { onMounted, defineProps, ref, computed } from "vue";
+import { onMounted, defineProps, ref, computed, defineEmits } from "vue";
 import ImageCarouselCart from "../LoadingCarts/ImageCarouselCart.vue";
 // import homeGradesdb from "../../assets/homeGrades";
 
@@ -90,6 +100,12 @@ const handleSlideStart = (index) => {
 const props = defineProps({
   data: Array,
 });
+
+const emit = defineEmits(["clickAction"]);
+
+const clickAction = () => {
+  emit("clickAction", "clicked");
+};
 
 const visibleDots = computed(() => {
   const maxVisibleDots = 6;

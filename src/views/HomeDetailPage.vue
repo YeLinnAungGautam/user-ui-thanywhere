@@ -7,7 +7,7 @@
     </transition>
     <div class="relative" v-if="!loading">
       <div class="" :style="imageStyles">
-        <ImageCarousel :data="detail?.images" />
+        <ImageCarousel :data="detail?.images" @clickAction="clickAction" />
         <ChevronLeftIcon
           @click="router.push('/home/hotel-bookings')"
           class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
@@ -555,6 +555,21 @@
           </div>
         </div>
       </vue-bottom-sheet>
+      <vue-bottom-sheet ref="myBottomSheetImage" :max-height="1500">
+        <div class="font-poppins">
+          <div class="h-[100vh]">
+            <div class="flex justify-between items-center px-6 pb-4">
+              <p class="opacity-0">........</p>
+              <p class="text-black text-base font-medium">Images Gallery</p>
+
+              <XMarkIcon class="w-5 h-5" @click="closeBottomSheetImage" />
+            </div>
+            <div class="h-[100vh] overflow-scroll">
+              <ImageGallery :data="hotelImagesData" />
+            </div>
+          </div>
+        </div>
+      </vue-bottom-sheet>
       <Modal :isOpen="modalDetailOpen" @closeModal="modalDetailOpen = false">
         <DialogPanel
           class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
@@ -699,6 +714,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { useSettingStore } from "../stores/setting";
+import ImageGallery from "../components/hotelbookings/ImageGallery.vue";
 import {
   ChevronLeftIcon,
   HeartIcon,
@@ -841,17 +857,11 @@ const getRoomType = (rooms) => {
 const hasExtraRoom = ref(false);
 const getDetail = async (id) => {
   loading.value = true;
+  hotelImagesData.value = [];
   const res = await hotelStore.getDetailAction(id);
   console.log("====================================");
   console.log(res);
   console.log("====================================");
-  // if (res.data?.rooms.length > 0) {
-  //   chooseData.value = res.data.rooms[0];
-  //   haveBreakfast.value = chooseData.value.has_breakfast == 1 ? true : false;
-  //   if (chooseData.value) {
-  //     chooseCount.value = 0;
-  //   }
-  // }
 
   hasExtraRoom.value = res.data?.rooms?.some((room) => room.is_extra === 1);
   console.log("Has extra room:", hasExtraRoom.value);
@@ -861,6 +871,8 @@ const getDetail = async (id) => {
   const response = await hotelStore.getSimpleListAction({
     place: detail.value?.place,
   });
+
+  getHotelImagesData(res.data);
 
   console.log(response, "this is list");
   placeList.value = response.data;
@@ -943,6 +955,53 @@ const getDateChange = async (data) => {
   console.log(data, "this is calendar data");
   await orderVantourStore.changeHotelStoreData(data);
   closeCalendar();
+};
+
+// const bottomSheetImage = ref(null);
+const myBottomSheetImage = ref(null);
+const openBottomSheetImage = () => {
+  myBottomSheetImage.value.open();
+};
+const closeBottomSheetImage = () => {
+  myBottomSheetImage.value.close();
+};
+const clickAction = (data) => {
+  console.log(data, "this is click action");
+  if (data == "clicked") {
+    openBottomSheetImage();
+  }
+};
+
+const hotelImagesData = ref([]);
+const getHotelImagesData = (data) => {
+  let dataImage = {
+    title: "",
+    images: [],
+  };
+  if (data.images.length > 0) {
+    dataImage.title = data.name;
+    dataImage.images = data.images;
+    hotelImagesData.value.push(dataImage);
+    dataImage = {
+      title: "",
+      images: [],
+    };
+  }
+  if (data.rooms.length > 0) {
+    for (let i = 0; i < data.rooms.length; i++) {
+      if (data.rooms[i].is_extra != 1) {
+        const element = data.rooms[i];
+        dataImage.title = element.name;
+        dataImage.images = element.images;
+        hotelImagesData.value.push(dataImage);
+        dataImage = {
+          title: "",
+          images: [],
+        };
+      }
+    }
+  }
+  console.log(hotelImagesData.value, "this is hotel images data");
 };
 
 onMounted(async () => {
