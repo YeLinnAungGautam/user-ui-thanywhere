@@ -555,7 +555,7 @@
           </div>
         </div>
       </vue-bottom-sheet>
-      <vue-bottom-sheet ref="myBottomSheetImage" :max-height="1500">
+      <!-- <vue-bottom-sheet ref="myBottomSheetImage" :max-height="1500">
         <div class="font-poppins">
           <div class="h-[100vh]">
             <div class="flex justify-between items-center px-6 pb-4">
@@ -569,7 +569,7 @@
             </div>
           </div>
         </div>
-      </vue-bottom-sheet>
+      </vue-bottom-sheet> -->
       <Modal :isOpen="modalDetailOpen" @closeModal="modalDetailOpen = false">
         <DialogPanel
           class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
@@ -714,7 +714,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useHotelStore } from "../stores/hotel";
 import ImageCarousel from "../components/hotelbookings/ImageCarousel.vue";
 import { useSettingStore } from "../stores/setting";
-import ImageGallery from "../components/hotelbookings/ImageGallery.vue";
+// import ImageGallery from "../components/hotelbookings/ImageGallery.vue";
 import {
   ChevronLeftIcon,
   HeartIcon,
@@ -958,17 +958,22 @@ const getDateChange = async (data) => {
 };
 
 // const bottomSheetImage = ref(null);
-const myBottomSheetImage = ref(null);
-const openBottomSheetImage = () => {
-  myBottomSheetImage.value.open();
-};
-const closeBottomSheetImage = () => {
-  myBottomSheetImage.value.close();
-};
+// const myBottomSheetImage = ref(null);
+// const openBottomSheetImage = () => {
+//   myBottomSheetImage.value.open();
+// };
+// const closeBottomSheetImage = () => {
+//   myBottomSheetImage.value.close();
+// };
 const clickAction = (data) => {
   console.log(data, "this is click action");
   if (data == "clicked") {
-    openBottomSheetImage();
+    router.push({
+      name: "ImagesGallery",
+      query: {
+        data: encodeURIComponent(JSON.stringify(hotelImagesData.value)),
+      },
+    });
   }
 };
 

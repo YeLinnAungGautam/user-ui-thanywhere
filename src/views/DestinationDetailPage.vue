@@ -235,7 +235,7 @@
             </div>
           </DialogPanel>
         </Modal>
-        <vue-bottom-sheet ref="myBottomSheetImage" :max-height="1500">
+        <!-- <vue-bottom-sheet ref="myBottomSheetImage" :max-height="1500">
           <div class="font-poppins">
             <div class="h-[100vh]">
               <div class="flex justify-between items-center px-6 pb-4">
@@ -249,7 +249,7 @@
               </div>
             </div>
           </div>
-        </vue-bottom-sheet>
+        </vue-bottom-sheet> -->
       </div>
     </div>
   </div>
@@ -266,9 +266,9 @@ import {
 } from "@heroicons/vue/24/outline";
 // import logo from "../assets/logo.png";
 import ShareIcon from "../assets/web/send.png";
-import ImageGallery from "../components/hotelbookings/ImageGallery.vue";
-import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
-import "@webzlodimir/vue-bottom-sheet/dist/style.css";
+// import ImageGallery from "../components/hotelbookings/ImageGallery.vue";
+// import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
+// import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import LoadingPageVue from "../components/layout/LoadingPage.vue";
 import messengerIcon from "../assets/Booking icons/messenger.png";
 import viberIcon from "../assets/Booking icons/viber.png";
@@ -372,17 +372,22 @@ watch(
   }
 );
 
-const myBottomSheetImage = ref(null);
-const openBottomSheetImage = () => {
-  myBottomSheetImage.value.open();
-};
-const closeBottomSheetImage = () => {
-  myBottomSheetImage.value.close();
-};
+// const myBottomSheetImage = ref(null);
+// const openBottomSheetImage = () => {
+//   myBottomSheetImage.value.open();
+// };
+// const closeBottomSheetImage = () => {
+//   myBottomSheetImage.value.close();
+// };
 const clickAction = (data) => {
   console.log(data, "this is click action");
   if (data == "clicked") {
-    openBottomSheetImage();
+    router.push({
+      name: "ImagesGallery",
+      query: {
+        data: encodeURIComponent(JSON.stringify(hotelImagesData.value)),
+      },
+    });
   }
 };
 

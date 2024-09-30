@@ -1,8 +1,7 @@
 <template>
   <div class="pb-20">
     <div v-for="(item, index) in data" :key="index" class="space-y-6 pb-6 px-4">
-      <div class="text-sm font-semibold text-main flex items-center gap-x-2">
-        .
+      <div class="text-sm font-semibold text-black flex items-center gap-x-2">
         {{ item.title }}
       </div>
       <div class="flex flex-wrap gap-y-4">
