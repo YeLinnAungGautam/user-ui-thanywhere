@@ -100,14 +100,26 @@
                 <h1 class="font-semibold border-l-4 border-main pl-3">
                   Location
                 </h1>
-                <iframe
-                  :src="detail?.location_map"
-                  class="w-[100%] h-[200px] rounded-xl overflow-hidden"
-                  style="border: 0"
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
+                <div class="relative">
+                  <div
+                    v-if="!iframeLoaded"
+                    class="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-xl"
+                  >
+                    <div
+                      class="animate-spin rounded-full h-12 w-12 border-b-2 border-main"
+                    ></div>
+                  </div>
+                  <iframe
+                    ref="mapIframe"
+                    :src="detail?.location_map"
+                    class="w-[100%] h-[200px] rounded-xl overflow-hidden"
+                    style="border: 0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    @load="onIframeLoad"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
                 <p class="text-xs leading-5" id="options">
                   {{ detail?.location_map_title }}
                 </p>
@@ -149,7 +161,7 @@
                       Extra Bed
                     </p>
                     <p class="text-xs font-medium" v-if="hasExtraRoom">
-                      + 0 ฿ per pax
+                      + {{ extraRoomCost }} ฿ per pax
                     </p>
                     <p
                       class="text-xs font-medium text-red"
@@ -855,6 +867,8 @@ const getRoomType = (rooms) => {
 };
 
 const hasExtraRoom = ref(false);
+const extraRoomCost = ref(0);
+
 const getDetail = async (id) => {
   loading.value = true;
   hotelImagesData.value = [];
@@ -865,6 +879,15 @@ const getDetail = async (id) => {
 
   hasExtraRoom.value = res.data?.rooms?.some((room) => room.is_extra === 1);
   console.log("Has extra room:", hasExtraRoom.value);
+
+  if (hasExtraRoom.value) {
+    extraRoomCost.value = Math.max(
+      ...res.data?.rooms
+        ?.filter((room) => room.is_extra === 1)
+        .map((room) => room.room_price),
+      0
+    );
+  }
 
   getRoomType(res?.data?.rooms);
   detail.value = res.data;
@@ -923,6 +946,13 @@ const imageStyles = computed(() => {
     opacity: opacity,
   };
 });
+
+const mapIframe = ref(null);
+const iframeLoaded = ref(false);
+
+const onIframeLoad = () => {
+  iframeLoaded.value = true;
+};
 
 const tagsNum = ref(1);
 
