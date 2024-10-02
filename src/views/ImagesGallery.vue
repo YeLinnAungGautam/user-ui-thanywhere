@@ -15,6 +15,7 @@
     </div>
     <div v-for="(item, index) in data" :key="index" class="space-y-6 pt-4 pb-3">
       <div
+        :id="item.title"
         class="text-sm font-semibold text-black px-4 bg-white sticky top-[52px] py-2 flex items-center gap-x-2"
       >
         {{ item.title }}
@@ -33,7 +34,7 @@
 
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import ShareIcon from "../assets/web/send.png";
 
@@ -64,11 +65,27 @@ const shareContent = () => {
   }
 };
 
+const title = ref("");
+
+watch(
+  () => title.value,
+  (newTitle) => {
+    // Scroll to the element with the new title as id
+    setTimeout(() => {
+      const element = document.getElementById(newTitle);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 500);
+  }
+);
+
 onMounted(() => {
   const encodedData = route.query.data;
   if (encodedData) {
     const decodedData = decodeURIComponent(encodedData);
     data.value = JSON.parse(decodedData);
+    title.value = route.query.title ? route.query.title : "";
   }
 });
 </script>

@@ -9,20 +9,24 @@
       <div class=" " :style="imageStyles">
         <ImageCarousel :data="images" @clickAction="clickAction" />
         <ChevronLeftIcon
-          @click="router.push('/home/van-tour')"
-          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
+          @click="
+            router.push(
+              `/home/van-tour-result/${detail?.cities[0]?.id}/${detail?.cities[0]?.name}?category_ids=null`
+            )
+          "
+          class="bg-white rounded-full p-1.5 w-9 h-9 shadow-lg text-main z-20 absolute top-10 left-6"
         />
         <!-- <ArrowUpTrayIcon
-          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+          class="bg-white rounded-full p-1.5 w-9 h-9 shadow-lg text-main z-20 absolute top-10 right-[70px]"
         /> -->
         <div
           @click="shareContent"
-          class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+          class="bg-white rounded-full p-2 w-9 h-9 shadow-lg text-main z-20 absolute top-10 right-[70px]"
         >
           <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
         </div>
         <HeartIcon
-          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
+          class="bg-white rounded-full p-1.5 w-9 h-9 shadow-lg text-main z-20 absolute top-10 right-6"
         />
       </div>
 

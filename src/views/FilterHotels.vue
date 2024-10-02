@@ -514,7 +514,7 @@ watch(
           <input
             type="text"
             v-model="search"
-            placeholder=" search"
+            placeholder="Search by Hotel Name"
             class="w-full rounded-full px-6 py-4 text-xs text-main focus:outline-none"
           />
 

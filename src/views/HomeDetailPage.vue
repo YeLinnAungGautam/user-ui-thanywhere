@@ -9,17 +9,21 @@
       <div class="" :style="imageStyles">
         <ImageCarousel :data="detail?.images" @clickAction="clickAction" />
         <ChevronLeftIcon
-          @click="router.push('/home/hotel-bookings')"
-          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
+          @click="
+            router.push(
+              `/home/hotel-filter/${detail?.city?.id}/${detail?.city?.name}/?price=0-4500&rating=null&place=null&facilities=null&language=myanmar`
+            )
+          "
+          class="bg-white rounded-full p-1.5 w-9 h-9 shadow-lg text-main z-20 absolute top-10 left-6"
         />
         <div
           @click="shareContent"
-          class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+          class="bg-white rounded-full p-2 w-9 h-9 shadow-lg text-main z-20 absolute top-10 right-[70px]"
         >
           <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
         </div>
         <HeartIcon
-          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
+          class="bg-white rounded-full p-1.5 w-9 h-9 shadow-lg text-main z-20 absolute top-10 right-6"
         />
       </div>
 
@@ -91,7 +95,7 @@
                 >
                   <img :src="Pin" class="w-4 h-4" alt="" />
                   <p class="text-xs">
-                    {{ detail?.city?.name }} , {{ detail?.place }}
+                    {{ detail?.place }} , {{ detail?.city?.name }}
                   </p>
                 </div>
               </div>
@@ -103,7 +107,7 @@
                 <div class="relative">
                   <div
                     v-if="!iframeLoaded"
-                    class="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-xl"
+                    class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-xl"
                   >
                     <div
                       class="animate-spin rounded-full h-12 w-12 border-b-2 border-main"
@@ -547,8 +551,13 @@
                   change dates
                 </p>
               </div>
-              <div v-for="i in detail?.rooms" :key="i.id" class="pt-3">
-                <HotelRoomCart :data="i" v-if="i.is_extra != 1" />
+              <div v-for="i in selectRoomDataList" :key="i.id" class="pt-3">
+                <HotelRoomCart
+                  :data="i"
+                  v-if="i.is_extra != 1"
+                  @openImage="openImage"
+                  @booking="bookingAction"
+                />
               </div>
             </div>
           </div>
@@ -610,16 +619,10 @@
             <p class="col-span-2">{{ choosePax ? "YES" : "No" }}</p>
             <p class="">room qty :</p>
             <p class="col-span-2">{{ room_qty ? room_qty : "-" }} pax</p>
-            <p class="">total amount :</p>
+            <p class="">room price :</p>
             <p class="col-span-2">
               ฿
-              {{
-                chooseData && choosePax
-                  ? chooseData
-                    ? chooseData.room_price
-                    : detail?.lowest_room_price
-                  : chooseData.room_price
-              }}
+              {{ chooseData.room_price }}
             </p>
             <p class="">link :</p>
             <p class="col-span-2">{{ currentURL }}</p>
@@ -764,8 +767,7 @@ const router = useRouter();
 const hotelStore = useHotelStore();
 const settingStore = useSettingStore();
 const orderVantourStore = useOrderVantourStore();
-const { checkin_date, checkout_date, room_qty } =
-  storeToRefs(orderVantourStore);
+const { checkin_date, checkout_date } = storeToRefs(orderVantourStore);
 
 const detail = ref(null);
 const loading = ref(false);
@@ -777,6 +779,7 @@ const placeList = ref(null);
 const myBottomSheet = ref(null);
 const myBottomSheetOptions = ref(null);
 const openOption = () => {
+  chooseData.value = null;
   myBottomSheetOptions.value.open();
 };
 const closeOption = () => {
@@ -797,6 +800,7 @@ const closeCalendar = () => {
 //   modalDetailOpen.value = true;
 // };
 
+const room_qty = ref(1);
 const copyDetail = async () => {
   let formattedOutput;
   formattedOutput = `
@@ -806,11 +810,7 @@ const copyDetail = async () => {
 📆 CheckOut Date: ${checkout_date?.value != null ? checkout_date.value : "-"}
 🔖 Breakfast: ${choosePax.value ? "YES" : "No"}
 👩‍🦰 Room Qty: ${room_qty.value ? room_qty.value : "-"} pax
-💰Total Amount: ฿${
-    chooseData.value
-      ? chooseData.value.room_price
-      : detail?.value.lowest_room_price
-  }
+💰 Room Price: ฿${chooseData.value.room_price}
 🌐 Web link : ${currentURL.value}
       `;
 
@@ -848,7 +848,18 @@ const chooseDataFunction = (data) => {
   console.log("====================================");
   chooseCount.value = 0;
   haveBreakfast.value = chooseData.value.has_breakfast == 1 ? true : false;
+  myBottomSheetOptions.value.open();
 };
+
+const selectRoomDataList = computed(() => {
+  if (chooseData.value) {
+    return detail?.value?.rooms?.filter(
+      (room) => room.id == chooseData?.value.id
+    );
+  } else {
+    return detail?.value?.rooms;
+  }
+});
 
 // const chooseCountMinus = () => {
 //   chooseCount.value = chooseCount.value - 1;
@@ -1037,6 +1048,27 @@ const getHotelImagesData = (data) => {
     }
   }
   console.log(hotelImagesData.value, "this is hotel images data");
+};
+
+const openImage = (data) => {
+  console.log(data, "this is open image");
+  myBottomSheetOptions.value.close();
+
+  router.push({
+    name: "ImagesGallery",
+    query: {
+      data: encodeURIComponent(JSON.stringify(hotelImagesData.value)),
+      title: data,
+    },
+  });
+};
+
+const bookingAction = (data) => {
+  myBottomSheetOptions.value.close();
+  console.log(data, "this is booking action");
+  chooseData.value = data.choose;
+  room_qty.value = data.room_qty;
+  modalDetailOpen.value = true;
 };
 
 onMounted(async () => {

@@ -2,8 +2,7 @@
   <div>
     <div
       v-show="imageLoaded"
-      class="shadow rounded-2xl p-2 border border-black/5 max-w-[220px]"
-      :class="isActive ? 'bg-main' : 'bg-white'"
+      class="shadow rounded-2xl p-2 border border-black/5 max-w-[220px] bg-white"
     >
       <div class="w-[200px] h-[120px] relative">
         <div class="w-full h-full overflow-hidden rounded-xl relative">
@@ -32,18 +31,12 @@
         </p>
       </div>
       <div class="px-2 pb-2 pt-3 space-y-2">
-        <p
-          class="font-medium text-sm line-clamp-1"
-          :class="isActive ? 'text-white' : 'text-black'"
-        >
+        <p class="font-medium text-sm line-clamp-1 text-black">
           {{ i?.name }}
         </p>
 
         <div class="flex justify-between items-center">
-          <button
-            class="text-lg font-semibold"
-            :class="isActive ? 'text-white' : 'text-main'"
-          >
+          <button class="text-lg font-semibold text-main">
             ฿ {{ i?.room_price }}
             <span
               class="text-[10px] line-through text-black/50"
@@ -56,15 +49,9 @@
             >
           </button>
           <p
-            class="text-xs border rounded-full px-3 py-1 font-medium"
-            @click="openRoom(i.id)"
-            :class="
-              isActive
-                ? 'bg-main border-white text-white'
-                : 'bg-white border-black/10 text-black'
-            "
+            class="text-xs border rounded-full px-3 py-1 font-medium bg-white border-black/10 text-black"
           >
-            view
+            book
           </p>
         </div>
       </div>
@@ -96,7 +83,7 @@
       </div>
     </div>
 
-    <vue-bottom-sheet ref="myBottomSheetRoom" :max-height="1500">
+    <!-- <vue-bottom-sheet ref="myBottomSheetRoom" :max-height="1500">
       <div class="font-poppins">
         <div class="h-[90vh]">
           <div class="flex justify-between items-center px-6 pb-4">
@@ -146,22 +133,22 @@
           </div>
         </div>
       </div>
-    </vue-bottom-sheet>
+    </vue-bottom-sheet> -->
   </div>
 </template>
 
 <script setup>
 import { ref, defineProps, onMounted, computed } from "vue";
-import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
+// import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
-import { XMarkIcon } from "@heroicons/vue/24/outline";
+// import { XMarkIcon } from "@heroicons/vue/24/outline";
 import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
-import ImageCarousel from "../../components/hotelbookings/ImageCarouselRoom.vue";
+// import ImageCarousel from "../../components/hotelbookings/ImageCarouselRoom.vue";
 // import { storeToRefs } from "pinia";
 import { useSettingStore } from "../../stores/setting";
-import { useRoomStore } from "../../stores/room";
+// import { useRoomStore } from "../../stores/room";
 
-const roomStore = useRoomStore();
+// const roomStore = useRoomStore();
 const settingStore = useSettingStore();
 // const { language } = storeToRefs(settingStore);
 
@@ -177,25 +164,25 @@ const onImageLoad = () => {
   console.log("Image loaded");
 };
 
-const bathroom = [
-  { id: 1, name: "bathropes" },
-  { id: 2, name: "free toiletries" },
-  { id: 3, name: "hair dryer" },
-  { id: 4, name: "private bedroom" },
-  { id: 5, name: "rainfall showerhead" },
-  { id: 6, name: "shampoo" },
-  { id: 7, name: "shower" },
-  { id: 8, name: "slippers" },
-  { id: 9, name: "toothpaste" },
-  { id: 10, name: "toothbrush" },
-];
+// const bathroom = [
+//   { id: 1, name: "bathropes" },
+//   { id: 2, name: "free toiletries" },
+//   { id: 3, name: "hair dryer" },
+//   { id: 4, name: "private bedroom" },
+//   { id: 5, name: "rainfall showerhead" },
+//   { id: 6, name: "shampoo" },
+//   { id: 7, name: "shower" },
+//   { id: 8, name: "slippers" },
+//   { id: 9, name: "toothpaste" },
+//   { id: 10, name: "toothbrush" },
+// ];
 
-const food = [
-  { id: 1, name: "electric kettle" },
-  { id: 2, name: "free bottled water" },
-  { id: 3, name: "refrigerator" },
-  { id: 4, name: "hydrated drinks" },
-];
+// const food = [
+//   { id: 1, name: "electric kettle" },
+//   { id: 2, name: "free bottled water" },
+//   { id: 3, name: "refrigerator" },
+//   { id: 4, name: "hydrated drinks" },
+// ];
 
 const percent = computed(() => {
   if (
@@ -214,19 +201,19 @@ const percent = computed(() => {
   }
 });
 
-const myBottomSheetRoom = ref(null);
-const detail = ref(null);
-const openRoom = async (id) => {
-  const res = await roomStore.getDetailAction(id);
-  detail.value = res.data;
-  console.log("====================================");
-  console.log(detail.value);
-  console.log("====================================");
-  myBottomSheetRoom.value.open();
-};
-const closeRoom = () => {
-  myBottomSheetRoom.value.close();
-};
+// const myBottomSheetRoom = ref(null);
+// const detail = ref(null);
+// const openRoom = async (id) => {
+//   const res = await roomStore.getDetailAction(id);
+//   detail.value = res.data;
+//   console.log("====================================");
+//   console.log(detail.value);
+//   console.log("====================================");
+//   myBottomSheetRoom.value.open();
+// };
+// const closeRoom = () => {
+//   myBottomSheetRoom.value.close();
+// };
 
 onMounted(() => {
   // console.log(props.i, "this is i");

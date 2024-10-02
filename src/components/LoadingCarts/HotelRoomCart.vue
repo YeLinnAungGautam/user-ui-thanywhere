@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="space-y-2">
-      <div class="w-full h-[190px] p overflow-hidden">
+      <div class="w-full h-[190px] p overflow-hidden" @click="clickAction()">
         <ImageCarouselForCart :data="images" :style="'h-[190px]'" />
       </div>
       <div class="flex justify-between items-center gap-x-2 px-4">
@@ -39,6 +39,7 @@
           /></span>
         </p>
         <p
+          @click="bookingAction"
           class="border border-black/10 text-sm bg-main text-white text-center w-full rounded-r-3xl py-2"
         >
           Book now
@@ -53,9 +54,9 @@
     <vue-bottom-sheet ref="myBottomSheetRoom" :max-height="1500">
       <div class="font-poppins">
         <div class="h-[90vh]">
-          <div class="flex justify-between items-center px-6 pb-4">
+          <div class="flex justify-between gap-x-2 items-center px-6 pb-4">
             <p class="text-base font-medium">{{ detail?.name }}</p>
-            <XMarkIcon class="w-5 h-5" @click="closeRoom" />
+            <XMarkIcon class="w-8 h-8" @click="closeRoom" />
           </div>
           <div class="ml-4 mr-4 rounded-xl h-[85vh] overflow-scroll">
             <div class="w-full h-[220px] p overflow-hidden">
@@ -140,7 +141,7 @@
 
 <script setup>
 import ImageCarouselForCart from "./ImageCarouselForCart.vue";
-import { defineProps, onMounted, ref } from "vue";
+import { defineProps, onMounted, ref, defineEmits } from "vue";
 import {
   UserIcon,
   ArrowsPointingInIcon,
@@ -156,6 +157,12 @@ const roomStore = useRoomStore();
 const props = defineProps({
   data: Object,
 });
+
+const emit = defineEmits(["openImage", "booking"]);
+
+const clickAction = () => {
+  emit("openImage", props.data.name);
+};
 
 const images = ref([]);
 const roomCount = ref(1);
@@ -209,6 +216,17 @@ const getImages = () => {
       images.value.push(props.data?.images[a].image);
     }
   }
+};
+
+const bookingAction = () => {
+  let data = {
+    room_qty: roomCount.value,
+    amount: props?.data?.room_price,
+    total_amount: props?.data?.room_price * roomCount.value,
+    room_name: props?.data?.name,
+    choose: props?.data,
+  };
+  emit("booking", data);
 };
 
 onMounted(() => {

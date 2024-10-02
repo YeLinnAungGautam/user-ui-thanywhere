@@ -130,10 +130,10 @@
         </div>
       </div>
     </vue-bottom-sheet>
-    <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
+    <!-- <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
       <div class="font-poppins relative">
         <div
-          class="bg-gradient-to-b to-main from-main/60 absolute top-0 right-0 w-full h-[600px]"
+          class="bg-gradient-to-b to-main from-main/80 absolute top-0 right-0 w-full h-[600px]"
         ></div>
         <div
           class="flex justify-between items-center px-6 pt-2 pb-4 relative z-10"
@@ -144,6 +144,32 @@
         </div>
         <div class="rounded-xl">
           <div class="h-[90vh]">
+            <ChooseCityVue
+              @changeCity="chooseCityChange"
+              @clearChange="closeCityClean"
+            />
+          </div>
+        </div>
+      </div>
+    </vue-bottom-sheet> -->
+    <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
+      <div class="font-poppins relative h-[100vh]">
+        <!-- <div
+          class="bg-gradient-to-b to-main from-main/60 absolute top-0 right-0 w-full h-[300px] sm:h-[250px]"
+        ></div> -->
+        <div class="">
+          <div
+            class="flex justify-between items-center px-6 pt-2 pb-4 relative z-10"
+          >
+            <XMarkIcon class="w-5 h-5 text-black" @click="closeCity" />
+            <p class="text-balck font-semibold text-base">
+              Select a destination
+            </p>
+            <p class="opacity-0">......</p>
+          </div>
+        </div>
+        <div class="">
+          <div class="">
             <ChooseCityVue
               @changeCity="chooseCityChange"
               @clearChange="closeCityClean"
@@ -173,6 +199,7 @@ import CalendarImage from "../../assets/s/calendar_833593 1.png";
 import AttractionImage from "../../assets/s/attractions.png";
 import { useOrderVantourStore } from "../../stores/orderVantour";
 import { storeToRefs } from "pinia";
+import { format } from "date-fns";
 
 // const router = useRouter();
 const orderVantourStore = useOrderVantourStore();
@@ -205,8 +232,8 @@ const openCity = () => {
 const closeCity = () => {
   myBottomSheetCity.value.close();
 };
-const chooseCityName = ref("");
-const chooseCityId = ref("");
+const chooseCityName = ref("Bangkok");
+const chooseCityId = ref("2");
 const closeCityClean = () => {
   chooseCityName.value = "";
   chooseCityId.value = "";
@@ -329,7 +356,9 @@ const clearFilterAction = async () => {
 
 onMounted(async () => {
   await orderVantourStore.getVantourData();
-  dateSelected.value = pickup_date.value;
+  dateSelected.value = pickup_date.value
+    ? pickup_date.value
+    : format(new Date().toISOString().split("T")[0], "yyyy-MM-dd");
 });
 </script>
 

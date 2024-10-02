@@ -2,6 +2,7 @@
 import HeaderHomeVue from "../components/layout/HeaderHome.vue";
 import Layout from "../components/layout/LayoutHome.vue";
 import searchIcon from "../assets/icons/Search Bar Icons & Headline icons/search bar search icon.svg";
+import AttractionSearchHome from "../components/search-part/AttractionSearchHome.vue";
 import { useRouter } from "vue-router";
 
 import {
@@ -175,7 +176,7 @@ watch(entrances, async (newValue) => {
           </p>
           <p class="text-xs">bangkok, pattaya, phuket, etc...</p>
         </div>
-        <div
+        <!-- <div
           class="relative rounded-full pb-4"
           @click="router.push('/home/attraction-search')"
         >
@@ -192,7 +193,8 @@ watch(entrances, async (newValue) => {
             class="w-5 h-5 absolute top-3.5 right-5 text-main"
             alt=""
           />
-        </div>
+        </div> -->
+        <AttractionSearchHome />
       </div>
     </HeaderHomeVue>
     <div class="h-auto pb-20 z-20 space-y-4 relative">

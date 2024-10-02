@@ -58,11 +58,11 @@
         </template>
       </carousel>
       <div
-        class="absolute bottom-[40px] right-[20px] w-[60px] h-[25px] bg-black/40 rounded-lg flex justify-center items-center text-white"
+        class="absolute bottom-[40px] right-[20px] w-[50px] h-auto bg-black/50 rounded-lg flex justify-center items-center text-white"
       >
-        <p class="px-2 text-xs">{{ currentIndex + 1 }}</p>
+        <p class="px-1.5 py-1 text-xs">{{ currentIndex + 1 }}</p>
         <p class="text-xs">/</p>
-        <p class="px-2 text-xs">{{ data?.length }}</p>
+        <p class="px-1.5 py-1 text-xs">{{ data?.length }}</p>
       </div>
     </div>
     <div

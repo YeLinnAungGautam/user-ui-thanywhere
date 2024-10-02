@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-3">
-    <div class="relative shadow-custom-input rounded-full" @click="openCity">
+    <div class="relative" @click="openCity">
       <p
-        class="w-full rounded-full bg-white pl-12 py-4 text-xs text-main focus:outline-none"
+        class="w-full rounded-full bg-white pl-12 py-4 shadow-custom-input text-xs text-main focus:outline-none"
         :class="placefaltcondition ? 'text-red' : 'text-main'"
       >
         {{ chooseCityName ? chooseCityName : placeholder }}
@@ -15,59 +15,41 @@
       />
       <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
     </div>
-    <div class="grid grid-cols-2 gap-3">
-      <div class="relative shadow-custom-input rounded-full" @click="open">
-        <p
-          class="w-full rounded-full bg-white pl-12 py-4 text-xs focus:outline-none"
-          :class="pickupfaltcondition ? 'text-red' : 'text-main'"
-        >
-          {{ dateSelected ? dateSelected : placeholderPlaceholder }}
-        </p>
-        <!-- <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
-        <img
-          :src="CalendarImage"
-          class="w-4 h-4 absolute top-3.5 left-5 text-main"
-          alt=""
-        />
-        <!-- <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" /> -->
-      </div>
-      <div class="relative shadow-custom-input rounded-full" @click="openOut">
-        <p
-          class="w-full rounded-full bg-white pl-12 py-4 text-xs focus:outline-none"
-          :class="pickupfaltOutcondition ? 'text-red' : 'text-main'"
-        >
-          {{ dateOutSelected ? dateOutSelected : placeholderPlaceOutholder }}
-        </p>
-        <!-- <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
-        <img
-          :src="CalendarImage"
-          class="w-4 h-4 absolute top-3.5 left-5 text-main"
-          alt=""
-        />
-        <!-- <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" /> -->
-      </div>
-    </div>
-    <div class="relative shadow-custom-input rounded-full">
-      <div
-        class="w-full rounded-full bg-white flex flex-wrap justify-start items-center pl-12 py-4 text-xs text-main focus:outline-none"
+    <div class="relative" @click="open">
+      <p
+        class="w-full rounded-full bg-white pl-12 py-4 shadow-custom-input text-xs focus:outline-none"
+        :class="pickupfaltcondition ? 'text-red' : 'text-main'"
       >
-        {{ totalRoom }} room
+        {{ dateSelected ? dateSelected : placeholderPlaceholder }}
+      </p>
+      <!-- <ClockIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
+      <img
+        :src="CalendarImage"
+        class="w-4 h-4 absolute top-3.5 left-5 text-main"
+        alt=""
+      />
+      <ChevronRightIcon class="w-5 h-5 absolute top-3.5 right-5 text-main" />
+    </div>
+    <div class="relative" @click="opentype">
+      <div
+        class="w-full rounded-full bg-white flex flex-wrap justify-start items-center pl-12 py-4 shadow-custom-input text-xs text-main focus:outline-none"
+      >
+        <!-- {{ choose ? choose : "choose acitivity type" }} -->
+        <p class=" " v-for="i in chooseType" :key="i.id">{{ i.name }} ,</p>
+        <p v-if="chooseType.length == 0">choose acitivity type</p>
       </div>
+      <!-- <SparklesIcon class="w-5 h-5 absolute top-3.5 left-5 text-main" /> -->
       <img
         :src="AttractionImage"
         class="w-4 h-4 absolute top-3.5 left-5 text-main"
         alt=""
       />
-      <PlusIcon
-        @click="plusAction"
-        class="w-7 h-7 absolute top-2.5 shadow-lg right-3 bg-main rounded-full font-semibold p-1 text-white"
-      />
-      <MinusIcon
-        @click="minusAction"
-        class="w-7 h-7 absolute top-2.5 shadow-lg right-[50px] bg-main rounded-full font-semibold p-1 text-white"
+      <ChevronRightIcon
+        v-if="chooseType.length == 0"
+        class="w-5 h-5 absolute top-3.5 right-5 text-main"
       />
     </div>
-    <div class="gap-3 pb-3">
+    <div class="gap-3 pb-4">
       <!-- <div
         @click="clearFilterAction"
         class="w-full rounded-full relative bg-white/30 z-0 py-3 text-sm border border-white"
@@ -75,16 +57,16 @@
         <p class="text-white text-center">clear</p>
       </div> -->
       <div
-        v-if="chooseCityId && dateSelected && dateOutSelected"
+        v-if="chooseCityId && dateSelected"
         @click="filteredHotel"
-        class="w-full rounded-full relative shadow-custom-input col-span-2 z-0 py-3 text-sm border border-white"
+        class="w-full rounded-full shadow-custom-input relative col-span-2 z-0 py-3 text-sm border border-white"
       >
         <p class="text-white text-center">Explore</p>
       </div>
       <div
-        v-if="!chooseCityId || !dateSelected || !dateOutSelected"
+        v-if="!chooseCityId || !dateSelected"
         @click="filteredError"
-        class="w-full rounded-full relative col-span-2 shadow-custom-input z-0 py-3 text-sm border border-white"
+        class="w-full rounded-full shadow-custom-input relative col-span-2 z-0 py-3 text-sm border border-white"
       >
         <p class="text-white text-center">Explore</p>
       </div>
@@ -93,7 +75,7 @@
       <div class="font-poppins">
         <div class="flex justify-between items-center px-6 pb-4">
           <XMarkIcon class="w-5 h-5" @click="close" />
-          <p class="text-black font-semibold text-base">Pick a Check in Date</p>
+          <p class="text-black font-semibold text-base">Pick a Date</p>
           <p class="opacity-0">......</p>
         </div>
         <div class="overflow-hidden ml-4 mr-4 rounded-xl">
@@ -103,23 +85,73 @@
         </div>
       </div>
     </vue-bottom-sheet>
-    <vue-bottom-sheet ref="myBottomSheetOut" :max-height="1500">
+    <vue-bottom-sheet ref="myBottomSheetType" :max-height="1500">
       <div class="font-poppins">
         <div class="flex justify-between items-center px-6 pb-4">
-          <XMarkIcon class="w-5 h-5" @click="closeOut" />
-          <p class="text-black font-semibold text-base">
-            Pick a Check out Date
-          </p>
+          <XMarkIcon class="w-5 h-5" @click="closetype" />
+          <p class="text-black font-semibold text-base">Select activity type</p>
           <p class="opacity-0">......</p>
         </div>
-        <div class="overflow-hidden ml-4 mr-4 rounded-xl">
-          <div class="h-auto font-poppins">
-            <AboutPageVue @change="chooseOutCalendar" />
+        <div class="ml-4 mr-4 rounded-xl">
+          <div class="h-[400px]">
+            <div class="flex justify-start items-center gap-3 flex-wrap">
+              <div
+                class="space-y-1"
+                v-for="(i, index) in activitydb"
+                :key="index"
+                @click="handleActivitySelect(i)"
+              >
+                <div
+                  class="px-4 py-1.5 text-[12px] rounded-full"
+                  :class="
+                    isActive(i)
+                      ? 'bg-main border font-semibold border-white  text-white'
+                      : ' bg-white text-black/80 border   border-black/10'
+                  "
+                >
+                  {{ i.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex justify-between gap-4 px-4 items-center py-4 border-t border-black/10"
+          >
+            <p class="text-main text-sm underline" @click="closetypeClean">
+              Clear
+            </p>
+            <button
+              @click="closetype"
+              class="text-center border bg-main border-black/10 rounded-full py-2 w-[40%] text-sm text-white font-semibold"
+            >
+              choose
+            </button>
           </div>
         </div>
       </div>
     </vue-bottom-sheet>
-
+    <!-- <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
+      <div class="font-poppins relative">
+        <div
+          class="bg-gradient-to-b to-main from-main/80 absolute top-0 right-0 w-full h-[600px]"
+        ></div>
+        <div
+          class="flex justify-between items-center px-6 pt-2 pb-4 relative z-10"
+        >
+          <XMarkIcon class="w-5 h-5 text-white" @click="closeCity" />
+          <p class="text-white font-semibold text-base">Select a destination</p>
+          <p class="opacity-0">......</p>
+        </div>
+        <div class="rounded-xl">
+          <div class="h-[90vh]">
+            <ChooseCityVue
+              @changeCity="chooseCityChange"
+              @clearChange="closeCityClean"
+            />
+          </div>
+        </div>
+      </div>
+    </vue-bottom-sheet> -->
     <vue-bottom-sheet ref="myBottomSheetCity" :max-height="5000">
       <div class="font-poppins relative h-[100vh]">
         <!-- <div
@@ -151,27 +183,27 @@
 
 <script setup>
 import { ChevronRightIcon } from "@heroicons/vue/24/outline";
-import { XMarkIcon, PlusIcon, MinusIcon } from "@heroicons/vue/24/solid";
+import { XMarkIcon } from "@heroicons/vue/24/solid";
 // import { useRouter } from "vue-router";
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 // import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import activitydb from "../../assets/attractiondb";
 import AboutPageVue from "../../views/AboutPage.vue";
 import ChooseCityVue from "./VantourSearchCityHome.vue";
 import { useRouter } from "vue-router";
 import MapImage from "../../assets/s/pin 1 (1).png";
 import CalendarImage from "../../assets/s/calendar_833593 1.png";
-import AttractionImage from "../../assets/s/Group 533.png";
+import AttractionImage from "../../assets/s/attractions.png";
 import { useOrderVantourStore } from "../../stores/orderVantour";
 import { storeToRefs } from "pinia";
 import { format } from "date-fns";
 
-const router = useRouter();
+// const router = useRouter();
 const orderVantourStore = useOrderVantourStore();
-const { checkin_date, checkout_date, room_qty } =
-  storeToRefs(orderVantourStore);
+const { attraction_date } = storeToRefs(orderVantourStore);
 
 const myBottomSheet = ref(null);
 const open = () => {
@@ -181,22 +213,16 @@ const close = () => {
   myBottomSheet.value.close();
 };
 
-const myBottomSheetOut = ref(null);
-const openOut = () => {
-  myBottomSheetOut.value.open();
+const myBottomSheetType = ref(null);
+const opentype = () => {
+  myBottomSheetType.value.open();
 };
-const closeOut = () => {
-  myBottomSheetOut.value.close();
+const closetype = () => {
+  myBottomSheetType.value.close();
 };
-
-const totalRoom = ref(1);
-const plusAction = () => {
-  totalRoom.value++;
-};
-const minusAction = () => {
-  if (totalRoom.value > 1) {
-    totalRoom.value--;
-  }
+const closetypeClean = () => {
+  chooseType.value = [];
+  myBottomSheetType.value.close();
 };
 
 const myBottomSheetCity = ref(null);
@@ -222,7 +248,7 @@ const chooseCityChange = (data) => {
   myBottomSheetCity.value.close();
 };
 
-// const router = useRouter();
+const router = useRouter();
 
 // const format = (date) => {
 //   const day = date.getDate();
@@ -233,64 +259,73 @@ const chooseCityChange = (data) => {
 // };
 
 const filteredHotel = async () => {
-  let data = {
-    checkin_date: dateSelected.value,
-    checkout_date: dateOutSelected.value,
-    room_qty: totalRoom.value,
-  };
-  const res = await orderVantourStore.changeHotelStoreData(data);
+  const res = await orderVantourStore.changeStoreData({
+    attraction_date: dateSelected.value,
+  });
+  console.log(res);
+
   if (res == "success") {
     router.push({
-      name: "FilteredHotelBookings",
+      name: "HomeAttractionResult",
       params: {
-        id: chooseCityId.value ? chooseCityId.value : "null",
-        name: chooseCityName.value ? chooseCityName.value : "null",
+        id: chooseCityId.value ? chooseCityId.value : null,
+        name: chooseCityName.value ? chooseCityName.value : null,
       },
       query: {
-        price: "null",
-        rating: "null",
-        place: "null",
-        facilities: "null",
+        category_ids:
+          chooseType.value.length > 0
+            ? chooseType.value.map((item) => item.id).join(",")
+            : "null",
       },
     });
   }
 };
 
 const placeholder = ref("choose your destination * ");
-const placeholderPlaceholder = ref("checkin date");
-const placeholderPlaceOutholder = ref("checkout date");
+const placeholderPlaceholder = ref("pick a date of travel * ");
 const placefaltcondition = ref(false);
 const pickupfaltcondition = ref(false);
-const pickupfaltOutcondition = ref(false);
 const filteredError = () => {
   console.log("====================================");
   console.log("hello");
   placeholder.value = "choose your destination * (required)";
-  placeholderPlaceholder.value = "checkin date";
-  placeholderPlaceOutholder.value = "checkin date";
-
+  placeholderPlaceholder.value = "pick a date of travel * (required)";
   if (!chooseCityName.value) {
     placefaltcondition.value = true;
   }
   if (!dateSelected.value) {
     pickupfaltcondition.value = true;
   }
-  if (!dateOutSelected.value) {
-    pickupfaltOutcondition.value = true;
-  }
 
   console.log("====================================");
 };
 
-const clearFilterAction = async () => {
-  await orderVantourStore.removeHotelData();
-  dateSelected.value = "";
-  dateOutSelected.value = "";
-  totalRoom.value = 1;
+const dateSelected = ref("");
+
+const chooseType = ref([]);
+
+const handleActivitySelect = (activity) => {
+  // Check if the activity with the given id already exists in the array
+  const index = chooseType.value.findIndex((item) => item.id === activity.id);
+
+  if (index !== -1) {
+    // If it exists (index is not -1), remove it from the array
+    chooseType.value.splice(index, 1);
+  } else {
+    // If it doesn't exist, add it to the array
+    chooseType.value.push(activity);
+  }
+
+  console.log(chooseType.value);
 };
 
-const dateSelected = ref("");
-const dateOutSelected = ref("");
+// const chooseTypeLetter = computed(() => {
+//   if (chooseType.value.length > 0) {
+//     return chooseType.value.join(", ");
+//   } else {
+//     return "";
+//   }
+// });
 
 const changesFromCalendar = (data) => {
   console.log("====================================");
@@ -300,25 +335,30 @@ const changesFromCalendar = (data) => {
   console.log("====================================");
 };
 
-const chooseOutCalendar = (data) => {
-  console.log("====================================");
-  console.log(data);
-  dateOutSelected.value = data;
-  closeOut();
-  console.log("====================================");
+const isActive = (activity) => {
+  // Loop through each item in the chooseType.value array
+  for (let index = 0; index < chooseType.value.length; index++) {
+    // Check if the current item's id matches the activity's id
+    if (chooseType.value[index].id === activity.id) {
+      return true; // Return true if a match is found
+    }
+  }
+  return false; // Return false if no matches are found
+};
+
+const clearFilterAction = async () => {
+  await orderVantourStore.removeAttractionData();
+  chooseType.value = [];
+  chooseCityName.value = "";
+  chooseCityId.value = "";
+  dateSelected.value = "";
 };
 
 onMounted(async () => {
-  await orderVantourStore.getHotelData();
-  dateSelected.value = checkin_date.value;
-  dateOutSelected.value = checkout_date.value;
-  totalRoom.value = room_qty.value ? room_qty.value : 1;
-  // date selected auto today and next 2 days format MMM dd, yyyy
-  const today = new Date();
-  const next2Days = new Date(today);
-  next2Days.setDate(today.getDate() + 2);
-  dateSelected.value = format(today, "MMM dd, yyyy");
-  dateOutSelected.value = format(next2Days, "MMM dd, yyyy");
+  await orderVantourStore.getAttractionData();
+  dateSelected.value = attraction_date.value
+    ? attraction_date.value
+    : format(new Date().toISOString().split("T")[0], "yyyy-MM-dd");
 });
 </script>
 

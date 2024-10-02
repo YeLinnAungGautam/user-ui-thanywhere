@@ -3,19 +3,22 @@
     <div
       class="flex justify-between items-center sticky top-0 z-10 py-2 bg-background"
     >
-      <h1 class="text-main font-semibold px-6">
-        stays in bangkok
-        <span
+      <div
+        class="text-main font-semibold flex justify-start items-center flex-nowrap line-clamp-1 pl-6"
+      >
+        <p class="whitespace-nowrap">stays in bangkok</p>
+        <p
           v-if="choosePlace"
-          class="px-2 py-0.5 ml-2 text-[10px] bg-black/10 text-black/80 font-medium rounded-xl"
-          >{{ choosePlace }}</span
+          class="px-2 py-0.5 mx-2 text-[10px] bg-black/10 text-black/80 font-medium rounded-xl whitespace-nowrap line-clamp-1"
         >
-      </h1>
+          {{ choosePlace }}
+        </p>
+      </div>
       <div
         @click="showModal = !showModal"
         class="text-[10px] font-semibold text-main cursor-pointer flex justify-end items-center gap-1 mr-6"
       >
-        <p>filter place</p>
+        <p class="whitespace-nowrap line-clamp-1">filter place</p>
         <ChevronDownIcon class="w-3 h-3" />
       </div>
     </div>
@@ -59,7 +62,7 @@
     </div>
     <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
-      v-if="lists.length == 0"
+      v-if="loading"
     >
       <div v-for="a in 8" :key="a">
         <!-- v-if="lists.length == 0" -->
@@ -101,8 +104,14 @@
       </div>
     </div>
     <div
+      v-if="lists.length == 0 && !loading"
+      class="flex flex-1 justify-center space-x-3 mt-3 py-20 items-center overflow-x-scroll scroll-container"
+    >
+      <img :src="issue" class="w-10 h-10" alt="" />
+    </div>
+    <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 px-6 mt-4"
-      v-if="lists.length > 0"
+      v-if="lists.length > 0 && !loading"
     >
       <div
         class="bg-white shadow-sm rounded-2xl mb-2 border border-black/10"
@@ -187,6 +196,7 @@ import LoadingImageCover from "../../assets/web/loadingImageCover.jpg";
 import StayInBangkokCart from "../../components/LoadingCarts/StayInBangkokCart.vue";
 import { storeToRefs } from "pinia";
 import Modal from "./ShowModal.vue";
+import issue from "@/assets/no-connection.png";
 
 // const data = ref(null);
 const settingStore = useSettingStore();
@@ -212,8 +222,11 @@ const goMore = () => {
 
 const type = ref("0-1200");
 
+const loading = ref(false);
+
 const getList = async (a) => {
   console.log(a, "this is type");
+  loading.value = true;
   lists.value = [];
   type.value = a;
   let data = {
@@ -227,6 +240,7 @@ const getList = async (a) => {
   const res = await hotelStore.getListAction(data);
   lists.value = res.data;
   console.log(lists.value, "this is stay in bangkkok");
+  loading.value = false;
 };
 
 const placeList = ref([
@@ -296,6 +310,7 @@ const filteredCities = computed(() => {
 
 const chooseAction = async () => {
   if (choosePlace.value != "") {
+    loading.value = true;
     lists.value = [];
     const res = await hotelStore.getListAction({
       limit: 8,
@@ -304,7 +319,9 @@ const chooseAction = async () => {
     });
     lists.value = res.data;
     showModal.value = false;
+    loading.value = false;
   } else {
+    loading.value = true;
     lists.value = [];
     const res = await hotelStore.getListAction({
       limit: 8,
@@ -313,11 +330,13 @@ const chooseAction = async () => {
     });
     lists.value = res.data;
     showModal.value = false;
+    loading.value = false;
   }
 };
 
 onMounted(async () => {
   lists.value = [];
+  loading.value = true;
   // data.value = stayinbangkok;
   let data = {
     city_id: 2,
@@ -330,5 +349,6 @@ onMounted(async () => {
   const res = await hotelStore.getListAction(data);
 
   lists.value = res.data;
+  loading.value = false;
 });
 </script>

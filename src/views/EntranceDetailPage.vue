@@ -9,17 +9,21 @@
       <div :style="imageStyles">
         <ImageCarousel :data="detail?.images" @clickAction="clickAction" />
         <ChevronLeftIcon
-          @click="router.push('/home/attraction')"
-          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 left-6"
+          @click="
+            router.push(
+              `/home/attraction-result/${detail?.cities[0]?.id}/${detail?.cities[0]?.name}`
+            )
+          "
+          class="bg-white rounded-full p-1.5 w-9 h-9 text-main shadow-lg z-20 absolute top-10 left-6"
         />
         <div
           @click="shareContent"
-          class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 absolute top-10 right-[70px]"
+          class="bg-white rounded-full p-2 w-9 h-9 text-main z-20 shadow-lg absolute top-10 right-[70px]"
         >
           <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
         </div>
         <HeartIcon
-          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 absolute top-10 right-6"
+          class="bg-white rounded-full p-1.5 w-9 h-9 text-main z-20 shadow-lg absolute top-10 right-6"
         />
       </div>
 
@@ -323,6 +327,50 @@
             </div>
           </DialogPanel>
         </Modal>
+        <Modal :isOpen="modalDetailOpen" @closeModal="modalDetailOpen = false">
+          <DialogPanel
+            class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+          >
+            <DialogTitle
+              as="div"
+              class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
+            >
+              <p class="opacity-0">...</p>
+              <p class="text-sm font-medium text-main">check your detail</p>
+              <XMarkIcon
+                class="w-5 h-5 text-main"
+                @click="modalDetailOpen = false"
+              />
+            </DialogTitle>
+            <div class="grid grid-cols-3 gap-2 text-xs">
+              <p class="">attraction name :</p>
+              <p class="col-span-2">{{ detail?.name }}</p>
+              <p class="">attraction type :</p>
+              <p class="col-span-2">{{ chooseData.name }}</p>
+              <p class="">attraction date :</p>
+              <p class="col-span-2">{{ attraction_date }}</p>
+              <p class="">att-ticket qty :</p>
+              <p class="col-span-2">
+                {{ chooseCount ? chooseCount : "-" }} pax
+              </p>
+              <p class="">att-ticket price :</p>
+              <p class="col-span-2">
+                ฿
+                {{ chooseData.price }}
+              </p>
+              <p class="">link :</p>
+              <p class="col-span-2">{{ currentURL }}</p>
+            </div>
+            <div class="pt-6">
+              <button
+                class="w-full text-sm rounded-full text-white bg-main py-2 px-4 font-medium"
+                @click="confirmDetailAction"
+              >
+                confirm & copy detail
+              </button>
+            </div>
+          </DialogPanel>
+        </Modal>
         <Modal :isOpen="viberModalOpen" @closeModal="viberModalCloseFunction">
           <DialogPanel
             class="w-full font-poppins max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
@@ -505,8 +553,12 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@heroicons/vue/24/solid";
+import { useOrderVantourStore } from "../stores/orderVantour";
+import copy from "copy-to-clipboard";
 
 const route = useRoute();
+const orderStore = useOrderVantourStore();
+const { attraction_date } = storeToRefs(orderStore);
 const router = useRouter();
 const entranceStore = useEntranceStore();
 const settingStore = useSettingStore();
@@ -627,6 +679,7 @@ const viewMoreTicket = ref(false);
 // const closeBottomSheetImage = () => {
 //   myBottomSheetImage.value.close();
 // };
+
 const clickAction = (data) => {
   console.log(data, "this is click action");
   if (data == "clicked") {
@@ -671,6 +724,39 @@ const getHotelImagesData = (data) => {
   console.log(hotelImagesData.value, "this is attraction images data");
 };
 
+const modalDetailOpen = ref(false);
+const currentURL = ref("");
+
+const copyDetail = async () => {
+  let formattedOutput;
+  formattedOutput = `
+🌇 Attraction Name: ${detail?.value.name}
+🏠 Attraction type: ${chooseData?.value.name}
+📆 Attraction Date: ${
+    attraction_date?.value != null ? attraction_date.value : "-"
+  }
+👩‍🦰 Ticket Qty: ${chooseCount.value ? chooseCount.value : "-"} pax
+💰 Ticket Price: ฿${chooseData.value.price}
+🌐 Web link : ${currentURL.value}
+      `;
+
+  copy(formattedOutput);
+};
+
+const confirmDetailAction = () => {
+  copyDetail();
+  console.log("====================================");
+  console.log("copy");
+  console.log("====================================");
+  modalDetailOpen.value = false;
+  modalOpen.value = true;
+};
+
+const openDetailModal = () => {
+  myBottomSheet.value.close();
+  modalDetailOpen.value = true;
+};
+
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
   if (route.query.language) {
@@ -681,6 +767,8 @@ onMounted(async () => {
   }
   console.log("route.params.id", route.params.id);
   await getDetail(route.params.id);
+  await orderStore.getAttractionData();
+  currentURL.value = window.location.href;
 });
 watch(
   () => route.params.id,
