@@ -32,7 +32,7 @@ router.beforeEach((to, from, next) => {
   const language = getLanguage(); // Get language from localStorage
 
   // Add language query if it's missing
-  if (!to.query.language) {
+  if (!to.query.language && to.name !== "PrivacyPolicy") {
     next({
       ...to,
       query: {
