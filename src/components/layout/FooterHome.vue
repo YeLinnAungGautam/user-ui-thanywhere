@@ -68,10 +68,25 @@
           />
           <p class="text-[10px] font-medium text-black/80">cart</p>
         </router-link>
-        <div class="space-y-1">
+        <!-- <div class="space-y-1">
           <img :src="tripsImage" alt="" class="w-5 h-5 mx-auto" />
           <p class="text-[10px] font-medium text-black/80">trips</p>
-        </div>
+        </div> -->
+        <router-link to="/home/trip" class="space-y-1 relative">
+          <img
+            :src="tripsImage"
+            alt=""
+            v-if="!route.path.includes('trip') || !route.name == 'TripPage'"
+            class="w-5 h-5 mx-auto"
+          />
+          <img
+            :src="tripsFillImage"
+            alt=""
+            class="w-5 h-5 mx-auto"
+            v-if="route.path.includes('trip') || route.name == 'TripPage'"
+          />
+          <p class="text-[10px] font-medium text-black/80">trips</p>
+        </router-link>
         <!-- <div class="space-y-1">
           <img :src="profileImage" alt="" class="w-5 h-5 mx-auto" />
           <p class="text-[10px] font-medium text-black/80">account</p>
@@ -114,7 +129,7 @@ import tripsImage from "../../assets/icons/Navigation bar icons/no filled icons/
 import profileImage from "../../assets/icons/Navigation bar icons/no filled icons/profile icon no filled.svg";
 import homeFillImage from "../../assets/icons/Navigation bar icons/filled icons/home icon filled.svg";
 // import searchFillImage from "../../assets/icons/Navigation bar icons/filled icons/search icon filled.svg";
-// import tripsFillImage from "../../assets/icons/Navigation bar icons/filled icons/trips icon filled.svg";
+import tripsFillImage from "../../assets/icons/Navigation bar icons/filled icons/trips icon filled.svg";
 // import wishlistsFillImage from "../../assets/icons/Navigation bar icons/filled icons/wishlists icon filled.svg";
 import profileFillImage from "../../assets/icons/Navigation bar icons/filled icons/profile icon filled.svg";
 import cartImageFill from "@/assets/shopping-cart (2).png";
