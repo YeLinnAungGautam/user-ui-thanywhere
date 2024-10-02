@@ -1,11 +1,11 @@
 <template>
-  <div class="h-[400px] overflow-scroll">
-    <div class="space-y-10 pt-10">
+  <div class="h-[400px] overflow-scroll z-20 relative" ref="scrollContainer">
+    <div class="space-y-10 pt-5">
       <div
         v-for="d in data"
         :key="d"
         @click="clickFunction(d)"
-        class="gap-2 flex justify-between items-center border bg-main/5 border-main rounded-2xl px-4 py-4 shadow-md"
+        class="gap-2 flex justify-between items-center border bg-main/5 border-main rounded-2xl pl-2 mr-3 py-4 shadow-md"
         :class="{
           'flex-row-reverse': d.id % 2 === 0,
           'flex-row': d.id % 2 !== 0,
@@ -38,13 +38,27 @@
         </div>
       </div>
     </div>
+
+    <div
+      class="fixed z-30 top-1/2 right-0.5 transform -translate-y-1/2 flex flex-col space-y-2"
+    >
+      <button @click="scrollUp" class="bg-main text-white px-1.5 py-1 rounded">
+        ↑
+      </button>
+      <button
+        @click="scrollDown"
+        class="bg-main text-white px-1.5 py-1 rounded"
+      >
+        ↓
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
 import data from "./db";
 import background from "../../assets/s/Background item.png";
-import { defineProps, onMounted } from "vue";
+import { defineProps, onMounted, ref } from "vue";
 
 const props = defineProps({
   type: String,
@@ -134,6 +148,26 @@ const clickFunction = (item) => {
   } else if (props.type === "phone" && item.phone) {
     // Encode the phone number to ensure it's URL-safe
     window.open(`tel:${item.phone}`, "_self");
+  }
+};
+
+const scrollContainer = ref(null);
+
+const scrollUp = () => {
+  if (scrollContainer.value) {
+    scrollContainer.value.scrollTo({
+      top: scrollContainer.value.scrollTop - 100,
+      behavior: "smooth",
+    });
+  }
+};
+
+const scrollDown = () => {
+  if (scrollContainer.value) {
+    scrollContainer.value.scrollTo({
+      top: scrollContainer.value.scrollTop + 100,
+      behavior: "smooth",
+    });
   }
 };
 

@@ -23,7 +23,9 @@
             <XMarkIcon class="w-5 h-5" />
           </p>
         </div> -->
-        <div class="flex h-500 mt-[10%] justify-center p-4 text-center">
+        <div
+          class="flex h-500 overflow-scroll mt-[10%] justify-center p-4 text-center"
+        >
           <TransitionChild
             as="template"
             enter="duration-300 ease-out"
