@@ -72,7 +72,7 @@
           <img :src="tripsImage" alt="" class="w-5 h-5 mx-auto" />
           <p class="text-[10px] font-medium text-black/80">trips</p>
         </div> -->
-        <router-link to="/home/trip" class="space-y-1 relative">
+        <router-link to="/booking/part/trip" class="space-y-1 relative">
           <img
             :src="tripsImage"
             alt=""
@@ -140,7 +140,7 @@ import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 
 const authStore = useAuthStore();
-const { user, token } = storeToRefs(authStore);
+const { token } = storeToRefs(authStore);
 const route = useRoute();
 const router = useRouter();
 

@@ -26,6 +26,17 @@
             {{ user?.name }}
           </p>
           <div
+            @click="copyAction(user?.unique_key)"
+            class="flex justify-around py-2 rounded-lg items-center gap-2 mx-4 border border-black/5 shadow-custom"
+          >
+            <p class="text-center text-sm w-[80%] line-clamp-1 font-medium">
+              {{ user?.unique_key }}
+            </p>
+            <button class="bg-main px-2 py-1 text-xs text-white rounded-lg">
+              copy
+            </button>
+          </div>
+          <div
             class="mx-4 p-4 rounded-xl shadow-custom divide-y divide-black/10"
           >
             <div
@@ -119,10 +130,12 @@ import {
 import { useAuthStore } from "../stores/auth";
 import { storeToRefs } from "pinia";
 import { onMounted, ref } from "vue";
+import { useToast } from "vue-toastification";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
+const toast = useToast();
 
 const logoutAction = () => {
   const res = authStore.logoutAction();
@@ -145,6 +158,11 @@ const getActionCheck = async () => {
   if (res == "fail") {
     router.push("/home");
   }
+};
+
+const copyAction = (text) => {
+  navigator.clipboard.writeText(text);
+  toast.success("copied");
 };
 
 onMounted(async () => {
