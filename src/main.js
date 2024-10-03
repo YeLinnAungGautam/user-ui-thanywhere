@@ -44,16 +44,35 @@ if ("serviceWorker" in navigator) {
 // Add this function to show the update notification
 function showUpdateNotification() {
     const toast = useToast();
-    const message = "A new version is available. Click here to update.";
-    toast.warning(message, {
+    const message =
+        "အပ်ဒိတ်အသစ် ရရှိနိုင်ပါပြီ။ ဒီနေရာကို နှိပ်ပြီး update လုပ်ပါ။";
+    const toastId = toast.warning(message, {
         timeout: false,
         closeOnClick: false,
         draggable: false,
         closeButton: true,
         onClick: () => {
+            // Local Storage မှာ update လုပ်နေကြောင်း မှတ်သားထားပါ
+            localStorage.setItem("updating", "true");
             window.location.reload();
         },
     });
+
+    // toastId ကို Local Storage မှာ သိမ်းထားပါ
+    localStorage.setItem("updateToastId", toastId);
+}
+
+// ဒီ function အသစ်ကို ထည့်ပါ
+function checkAndCloseUpdateNotification() {
+    const wasUpdating = localStorage.getItem("updating");
+    const toastId = localStorage.getItem("updateToastId");
+
+    if (wasUpdating === "true" && toastId) {
+        const toast = useToast();
+        toast.dismiss(toastId);
+        localStorage.removeItem("updating");
+        localStorage.removeItem("updateToastId");
+    }
 }
 
 const options = {
@@ -81,4 +100,6 @@ setInterval(() => {
             type: "CHECK_FOR_UPDATE",
         });
     }
+    checkAndCloseUpdateNotification();
 }, 60 * 60 * 1000); // Check every hour
+checkAndCloseUpdateNotification();
