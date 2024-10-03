@@ -30,11 +30,38 @@ export default defineConfig({
         ],
       },
       workbox: {
-        // Workbox options for more advanced caching strategies
         cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/api\.your-domain\.com\//,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "api-cache",
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24, // 1 day
+              },
+            },
+          },
+        ],
       },
+      // Add this to exclude certain files from being cached
+      globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      globIgnores: ["**/node_modules/**/*", "**/sw.js", "**/workbox-*.js"],
     }),
   ],
+
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].[hash].js`,
+        chunkFileNames: `assets/[name].[hash].js`,
+        assetFileNames: `assets/[name].[hash].[ext]`,
+      },
+    },
+  },
 
   assetsInclude: ["**/*.JPG"],
   resolve: {
