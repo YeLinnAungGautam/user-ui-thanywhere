@@ -4,10 +4,10 @@
       <router-view />
     </transition>
 
-    <!-- <div v-if="showUpdateNotification" class="update-notification">
+    <div v-if="showUpdateNotification" class="update-notification">
       A new version is available. Please
       <button @click="refreshApp">reload</button> the page.
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -38,28 +38,35 @@ router.beforeEach((to, from, next) => {
 const checkForUpdates = () => {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.ready.then((registration) => {
-      registration.update();
-      registration.addEventListener("updatefound", () => {
-        const newWorker = registration.installing;
-        newWorker.addEventListener("statechange", () => {
-          if (
-            newWorker.state === "installed" &&
-            navigator.serviceWorker.controller
-          ) {
-            showUpdateNotification.value = true;
-          }
+      registration.update().then(() => {
+        registration.addEventListener("updatefound", () => {
+          const newWorker = registration.installing;
+          newWorker.addEventListener("statechange", () => {
+            if (newWorker.state === "activated") {
+              clearCaches().then(() => {
+                showUpdateNotification.value = true;
+              });
+            }
+          });
         });
       });
     });
   }
 };
 
-// const refreshApp = () => {
-//   window.location.reload();
-// };
+const clearCaches = async () => {
+  const cacheNames = await caches.keys();
+  await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
+};
+
+const refreshApp = () => {
+  showUpdateNotification.value = false;
+  window.location.reload();
+};
 
 onMounted(() => {
   checkForUpdates();
+  setInterval(checkForUpdates, 15 * 60 * 1000);
 });
 </script>
 
