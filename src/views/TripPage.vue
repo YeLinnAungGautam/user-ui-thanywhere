@@ -18,7 +18,7 @@
         >
           <div class="text-center">
             Please <span class="text-main mx-2 underline">login</span> first (
-            testing cache again)
+            testing cache )
             <p class="text-sm">for view your trip details and receipt</p>
           </div>
         </div>

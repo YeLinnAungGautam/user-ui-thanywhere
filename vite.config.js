@@ -30,28 +30,23 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,png,svg}"],
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
           {
-            urlPattern: ({ request }) =>
-              request.destination === "document" ||
-              request.destination === "script" ||
-              request.destination === "style",
-            handler: "NetworkFirst", // Ensures fresh content by fetching from the network first
+            urlPattern: /^https:\/\/api\.your-domain\.com\//,
+            handler: "NetworkFirst",
             options: {
-              cacheName: "app-cache",
+              cacheName: "api-cache",
               expiration: {
-                maxEntries: 50, // Optional: limit the number of cache entries
-                maxAgeSeconds: 24 * 60 * 60, // Optional: set max cache age to one day
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24, // 1 day
               },
             },
           },
         ],
-        cleanupOutdatedCaches: true, // Automatically cleans up outdated caches
-        skipWaiting: true, // Forces the new service worker to take control immediately
-        clientsClaim: true, // Allows the service worker to control all clients as soon as it is activated
       },
-      injectRegister: "auto",
       // Add this to exclude certain files from being cached
       globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
       globIgnores: ["**/node_modules/**/*", "**/sw.js", "**/workbox-*.js"],
