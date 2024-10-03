@@ -35,28 +35,46 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-const checkForUpdates = () => {
+const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.ready.then((registration) => {
-      registration.update().then(() => {
-        registration.addEventListener("updatefound", () => {
-          const newWorker = registration.installing;
-          newWorker.addEventListener("statechange", () => {
-            if (newWorker.state === "activated") {
-              clearCaches().then(() => {
-                showUpdateNotification.value = true;
-              });
+    try {
+      const registration = await navigator.serviceWorker.register(
+        "/service-worker.js"
+      );
+      console.log("Service worker registered:", registration);
+
+      registration.addEventListener("updatefound", () => {
+        const newWorker = registration.installing;
+        console.log("New service worker found:", newWorker);
+
+        newWorker.addEventListener("statechange", () => {
+          console.log("Service worker state changed:", newWorker.state);
+          if (newWorker.state === "installed") {
+            if (navigator.serviceWorker.controller) {
+              console.log("New content is available; please refresh.");
+              showUpdateNotification.value = true;
+            } else {
+              console.log("Content is cached for offline use.");
             }
-          });
+          }
         });
       });
-    });
+    } catch (error) {
+      console.error("Service worker registration failed:", error);
+    }
   }
 };
 
-const clearCaches = async () => {
-  const cacheNames = await caches.keys();
-  await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
+const checkForUpdates = async () => {
+  if ("serviceWorker" in navigator) {
+    const registration = await navigator.serviceWorker.ready;
+    try {
+      await registration.update();
+      console.log("Service worker updated");
+    } catch (error) {
+      console.error("Service worker update failed:", error);
+    }
+  }
 };
 
 const refreshApp = () => {
@@ -65,7 +83,8 @@ const refreshApp = () => {
 };
 
 onMounted(() => {
-  checkForUpdates();
+  registerServiceWorker();
+  // Check for updates every 15 minutes
   setInterval(checkForUpdates, 15 * 60 * 1000);
 });
 </script>
