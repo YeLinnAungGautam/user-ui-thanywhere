@@ -31,7 +31,7 @@ export default defineConfig({
       },
       workbox: {
         // Workbox options for more advanced caching strategies
-        skipWaiting: true,
+        cleanupOutdatedCaches: true,
       },
     }),
   ],
