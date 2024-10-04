@@ -23,7 +23,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { registerSW } from "virtual:pwa-register";
+// import { registerSW } from "virtual:pwa-register";
 
 const transitionName = ref("slide-left"); // Default transition
 const router = useRouter();
@@ -45,23 +45,23 @@ router.beforeEach((to, from, next) => {
 });
 
 // Listen to route changes to adjust the transition direction
-const updateSW = registerSW({
-  immediate: true,
-  onNeedRefresh() {
-    showUpdateNotification.value = true;
-  },
-  onOfflineReady() {
-    console.log("Content is cached for offline use.");
-  },
-});
+// const updateSW = registerSW({
+//   immediate: true,
+//   onNeedRefresh() {
+//     showUpdateNotification.value = true;
+//   },
+//   onOfflineReady() {
+//     console.log("Content is cached for offline use.");
+//   },
+// });
 
-const refreshApp = () => {
-  updateSW(true);
-  showUpdateNotification.value = false;
-};
+// const refreshApp = () => {
+//   updateSW(true);
+//   showUpdateNotification.value = false;
+// };
 
 onMounted(() => {
-  setInterval(() => updateSW(true), 15 * 60 * 1000);
+  // setInterval(() => updateSW(true), 15 * 60 * 1000);
 });
 </script>
 
