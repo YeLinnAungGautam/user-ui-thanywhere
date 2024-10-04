@@ -5,7 +5,7 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
     plugins: [vue()],
 
-    assetsInclude: ["**/*.JPG"],
+    assetsInclude: ["**/*.JPG", "**/*.png", "**/*.svg", "**/*.webp", "**/*.jpg"],
     resolve: {
         alias: {
             "@": fileURLToPath(new URL("./src",
