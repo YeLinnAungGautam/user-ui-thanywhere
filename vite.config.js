@@ -8,7 +8,7 @@ export default defineConfig({
         vue(),
         VitePWA({
             registerType: "autoUpdate",
-            strategies: "injectManifest",
+            strategy: "injectManifest", // Updated this line
             srcDir: "src",
             filename: "sw.js",
             manifest: {
@@ -49,7 +49,6 @@ export default defineConfig({
                 globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
                 globIgnores: ["**/node_modules/**/*", "**/sw.js", "**/workbox-*.js"],
             },
-            // Add this to exclude certain files from being cached
         }),
     ],
 
