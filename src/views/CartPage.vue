@@ -1,29 +1,46 @@
 <template>
-  <Layout>
-    <div class="relative h-screen">
+  <div class="relative h-screen">
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-main/10 z-40"
+      v-if="!loginState"
+    >
       <div
-        class="absolute top-0 left-0 w-full h-full bg-main/10 z-40"
-        v-if="!loginState"
+        class="text-black pt-3 absolute top-0 left-0 pl-4 flex justify-start items-center gap-x-2"
+        @click="router.back()"
       >
-        <div
-          class="text-black pt-3 absolute top-0 left-0 pl-4 flex justify-start items-center gap-x-2"
-          @click="router.back()"
-        >
-          <ChevronLeftIcon class="w-5 h-5 text-black" />
-          back
-        </div>
-        <div
-          @click="router.push('/account/login')"
-          class="flex justify-center items-center text-black text-2xl font-medium h-full"
-        >
-          <div class="text-center">
-            Please <span class="text-main mx-2 underline">login</span> first
-            <p class="text-sm">for add items to cart</p>
-          </div>
+        <ChevronLeftIcon class="w-5 h-5 text-black" />
+        back
+      </div>
+      <div
+        @click="router.push('/account/login')"
+        class="flex justify-center items-center text-black text-2xl font-medium h-full"
+      >
+        <div class="text-center">
+          Please <span class="text-main mx-2 underline">login</span> first
+          <p class="text-sm">for add items to cart</p>
         </div>
       </div>
+    </div>
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-main/10 z-40"
+      v-if="loginState"
+    >
+      <div
+        class="text-black pt-3 absolute top-0 left-0 pl-4 flex justify-start items-center gap-x-2"
+        @click="router.back()"
+      >
+        <ChevronLeftIcon class="w-5 h-5 text-black" />
+        back
+      </div>
+      <div
+        @click="router.push('/account/login')"
+        class="flex justify-center items-center text-black text-2xl font-medium h-full"
+      >
+        <div class="text-center">coming soon ...</div>
+      </div>
+    </div>
 
-      <div v-if="loginState">
+    <!-- <div v-if="loginState">
         <div
           class="flex justify-between sticky top-0 items-center bg-gradient-to-b to-main from-main/80 px-6 py-5 shadow-custom"
         >
@@ -79,9 +96,8 @@
             Book now
           </div>
         </div>
-      </div>
-    </div>
-  </Layout>
+      </div> -->
+  </div>
 </template>
 
 <script setup>
@@ -92,7 +108,6 @@ import {
 } from "@heroicons/vue/24/outline";
 import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
-import Layout from "../components/layout/LayoutHome.vue";
 
 const router = useRouter();
 const loginState = ref(false);
