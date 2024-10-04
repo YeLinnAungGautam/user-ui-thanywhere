@@ -44,21 +44,44 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-// Listen to route changes to adjust the transition direction
-// const updateSW = registerSW({
-//   immediate: true,
-//   onNeedRefresh() {
-//     showUpdateNotification.value = true;
-//   },
-//   onOfflineReady() {
-//     console.log("Content is cached for offline use.");
-//   },
-// });
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .getRegistrations()
+    .then((registrations) => {
+      // Replace this with the scope of your PWA service worker, if known
+      const pwaServiceWorkerScope = "/"; // Adjust as needed
 
-// const refreshApp = () => {
-//   updateSW(true);
-//   showUpdateNotification.value = false;
-// };
+      // Filter and unregister the service worker for the specified scope
+      registrations.forEach((registration) => {
+        if (registration.scope === pwaServiceWorkerScope) {
+          registration.unregister().then(() => {
+            console.log(
+              `Service worker for scope ${registration.scope} unregistered.`
+            );
+          });
+        }
+      });
+
+      // Clear caches
+      return caches.keys();
+    })
+    .then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          return caches.delete(cacheName);
+        })
+      );
+    })
+    .then(() => {
+      console.log("Caches cleared successfully");
+    })
+    .catch((error) => {
+      console.error(
+        "Service worker unregistration or cache clearing failed:",
+        error
+      );
+    });
+}
 
 onMounted(() => {
   // setInterval(() => updateSW(true), 15 * 60 * 1000);

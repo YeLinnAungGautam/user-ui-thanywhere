@@ -17,7 +17,7 @@
       >
         <div class="text-center">
           Please <span class="text-main mx-2 underline">login</span> first
-          <p class="text-sm">for add items to cart</p>
+          <p class="text-sm">for add items to cart.</p>
         </div>
       </div>
     </div>
