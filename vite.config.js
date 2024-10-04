@@ -8,6 +8,9 @@ export default defineConfig({
         vue(),
         VitePWA({
             registerType: "autoUpdate",
+            strategies: "injectManifest",
+            srcDir: "src",
+            filename: "sw.js",
             manifest: {
                 name: "Thanywhere.com",
                 short_name: "thanywhere",
@@ -43,10 +46,10 @@ export default defineConfig({
                         },
                     },
                 }, ],
+                globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+                globIgnores: ["**/node_modules/**/*", "**/sw.js", "**/workbox-*.js"],
             },
             // Add this to exclude certain files from being cached
-            globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-            globIgnores: ["**/node_modules/**/*", "**/sw.js", "**/workbox-*.js"],
         }),
     ],
 
