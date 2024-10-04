@@ -1,11 +1,15 @@
 <template>
-  <div class="h-[400px] overflow-scroll z-20 relative" ref="scrollContainer">
+  <div
+    class="h-[500px] overflow-scroll z-20 relative"
+    ref="scrollContainer"
+    @scroll="updateScrollPosition"
+  >
     <div class="space-y-10 pt-5">
       <div
         v-for="d in data"
         :key="d"
         @click="clickFunction(d)"
-        class="gap-2 flex justify-between items-center border bg-main/5 border-main rounded-2xl pl-2 mr-3 py-4 shadow-md"
+        class="gap-2 flex justify-between items-center border bg-main/5 border-main rounded-2xl pl-2 mr-1 py-4 shadow-md"
         :class="{
           'flex-row-reverse': d.id % 2 === 0,
           'flex-row': d.id % 2 !== 0,
@@ -40,17 +44,21 @@
     </div>
 
     <div
-      class="fixed z-30 top-1/2 right-0.5 transform -translate-y-1/2 flex flex-col space-y-2"
+      class="fixed z-30 right-0.5 transform cursor-pointer"
+      :style="{ top: `${buttonPosition}px` }"
+      @mouseenter="isHovering = true"
+      @mouseleave="isHovering = false"
+      @mousedown="startDrag"
+      @touchstart="startDrag"
     >
-      <button @click="scrollUp" class="bg-main text-white px-1.5 py-1 rounded">
-        ↑
-      </button>
-      <button
-        @click="scrollDown"
-        class="bg-main text-white px-1.5 py-1 rounded"
+      <div
+        :class="[
+          'bg-main text-white px-1 py-4 rounded',
+          { 'bg-orange-500': isHovering },
+        ]"
       >
-        ↓
-      </button>
+        ⋮
+      </div>
     </div>
   </div>
 </template>
@@ -63,6 +71,24 @@ import { defineProps, onMounted, ref } from "vue";
 const props = defineProps({
   type: String,
 });
+
+const buttonPosition = ref(100); // Reactive property for button position
+const isHovering = ref(false); // Reactive property for hover state
+const scrollContainer = ref(null);
+let isDragging = false;
+let startY = 0;
+let scrollStartPosition = 0;
+
+// Initialize button position to the top of the container (0px)
+const initButtonPosition = () => {
+  buttonPosition.value = 100; // Start at 0px
+};
+
+const updateScrollPosition = () => {
+  // Update button position based on the scroll position
+  // Set minimum position if desired; otherwise, it can go up to 0px
+  buttonPosition.value = Math.max(100, scrollContainer.value.scrollTop); // Button starts at 0px
+};
 
 const clickFunction = (item) => {
   console.log("====================================");
@@ -87,47 +113,6 @@ const clickFunction = (item) => {
     }
 
     alert("Message copied to clipboard. Paste it into Viber manually.");
-
-    // const myHeaders = new Headers();
-    // myHeaders.append(
-    //   "Authorization",
-    //   "App 4eef2d3514a785edd29ce2dd2a51fb25-c95144c7-a6f0-48f2-8fb9-edcc676a6e17"
-    // );
-    // myHeaders.append("Content-Type", "application/json");
-    // myHeaders.append("Accept", "application/json");
-
-    // const raw = JSON.stringify({
-    //   messages: [
-    //     {
-    //       sender: "DemoCompany",
-    //       destinations: [{ to: "66994533971" }], // Phone number of the recipient
-    //       content: {
-    //         text: "Hello, this is testing order message", // Viber message
-    //         type: "TEXT",
-    //       },
-    //       smsFailover: {
-    //         sender: "09664023249", // Sender of the SMS failover
-    //         text: "Failover message text", // SMS message content
-    //         validityPeriod: {
-    //           amount: 2, // Time period for SMS to be valid
-    //           timeUnit: "HOURS", // Unit of time for the validity period
-    //         },
-    //       },
-    //     },
-    //   ],
-    // });
-
-    // const requestOptions = {
-    //   method: "POST",
-    //   headers: myHeaders,
-    //   body: raw,
-    //   redirect: "follow",
-    // };
-
-    // fetch("https://g96z6e.api.infobip.com/viber/2/messages", requestOptions)
-    //   .then((response) => response.text())
-    //   .then((result) => console.log(result))
-    //   .catch((error) => console.error(error));
   } else if (props.type === "whatsapp" && item.whatsApp) {
     // Encode the phone number to ensure it's URL-safe
     const phoneNumber = encodeURIComponent(item.whatsApp);
@@ -151,29 +136,47 @@ const clickFunction = (item) => {
   }
 };
 
-const scrollContainer = ref(null);
+const startDrag = (event) => {
+  isDragging = true;
+  startY =
+    event.type === "mousedown" ? event.clientY : event.touches[0].clientY;
+  scrollStartPosition = scrollContainer.value.scrollTop;
 
-const scrollUp = () => {
-  if (scrollContainer.value) {
-    scrollContainer.value.scrollTo({
-      top: scrollContainer.value.scrollTop - 100,
-      behavior: "smooth",
-    });
-  }
+  document.addEventListener("mousemove", drag);
+  document.addEventListener("touchmove", drag);
+  document.addEventListener("mouseup", stopDrag);
+  document.addEventListener("touchend", stopDrag);
 };
 
-const scrollDown = () => {
-  if (scrollContainer.value) {
-    scrollContainer.value.scrollTo({
-      top: scrollContainer.value.scrollTop + 100,
-      behavior: "smooth",
-    });
-  }
+const drag = (event) => {
+  if (!isDragging) return;
+
+  const currentY =
+    event.type === "mousemove" ? event.clientY : event.touches[0].clientY;
+  const deltaY = startY - currentY;
+  scrollContainer.value.scrollTop = scrollStartPosition + deltaY;
+
+  // Update button position during dragging
+  updateScrollPosition();
+};
+
+const stopDrag = () => {
+  isDragging = false;
+  document.removeEventListener("mousemove", drag);
+  document.removeEventListener("touchmove", drag);
+  document.removeEventListener("mouseup", stopDrag);
+  document.removeEventListener("touchend", stopDrag);
 };
 
 onMounted(() => {
-  console.log("====================================");
-  console.log(props.type, "this is type");
-  console.log("====================================");
+  // Set initial button position after mounting
+  initButtonPosition();
+  updateScrollPosition(); // Ensure correct position at start
 });
 </script>
+
+<style>
+.bg-orange-500 {
+  background-color: orange; /* Change this to your desired hover color */
+}
+</style>
