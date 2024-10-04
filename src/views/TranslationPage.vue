@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import LanguageImage from "../assets/onboarding screns/Language screen.jpg";
+import LanguageImage from "../assets/Language_screen.jpg";
 import English from "../assets/onboarding screns/english.png";
 import Myanmar from "../assets/onboarding screns/myanmar.png";
 import logo from "@/assets/logo.png";
