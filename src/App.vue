@@ -1,25 +1,34 @@
 <template>
   <div class="font-poppins">
+    <div
+      v-if="showUpdateNotification"
+      class="flex justify-between items-center p-4 bg-white shadow-lg"
+    >
+      <p class="text-xs text-gray-500">
+        A new version is available. Please reload the page.
+      </p>
+      <button
+        @click="refreshApp"
+        class="text-xs text-white bg-main rounded-md px-2 py-1"
+      >
+        reload
+      </button>
+    </div>
     <transition :name="transitionName" mode="out-in">
       <router-view />
     </transition>
-
-    <div v-if="showUpdateNotification" class="update-notification">
-      A new version is available. Please
-      <button @click="refreshApp">reload</button> the page.
-    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+// import { registerSW } from "virtual:pwa-register";
 
 const transitionName = ref("slide-left"); // Default transition
 const router = useRouter();
 const showUpdateNotification = ref(false);
 
-// Listen to route changes to adjust the transition direction
 router.beforeEach((to, from, next) => {
   if (to.path === "/") {
     transitionName.value = ""; // No animation for root path
@@ -35,75 +44,29 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-const registerServiceWorker = async () => {
-  if ("serviceWorker" in navigator) {
-    try {
-      const registration = await navigator.serviceWorker.register(
-        "/service-worker.js"
-      );
-      console.log("Service worker registered:", registration);
+// Listen to route changes to adjust the transition direction
+// const updateSW = registerSW({
+//   immediate: true,
+//   onNeedRefresh() {
+//     showUpdateNotification.value = true;
+//   },
+//   onOfflineReady() {
+//     console.log("Content is cached for offline use.");
+//   },
+// });
 
-      registration.addEventListener("updatefound", () => {
-        const newWorker = registration.installing;
-        console.log("New service worker found:", newWorker);
-
-        newWorker.addEventListener("statechange", () => {
-          console.log("Service worker state changed:", newWorker.state);
-          if (newWorker.state === "installed") {
-            if (navigator.serviceWorker.controller) {
-              console.log("New content is available; please refresh.");
-              showUpdateNotification.value = true;
-            } else {
-              console.log("Content is cached for offline use.");
-            }
-          }
-        });
-      });
-    } catch (error) {
-      console.error("Service worker registration failed:", error);
-    }
-  }
-};
-
-const checkForUpdates = async () => {
-  if ("serviceWorker" in navigator) {
-    const registration = await navigator.serviceWorker.ready;
-    try {
-      await registration.update();
-      console.log("Service worker updated");
-    } catch (error) {
-      console.error("Service worker update failed:", error);
-    }
-  }
-};
-
-const refreshApp = () => {
-  showUpdateNotification.value = false;
-  window.location.reload();
-};
+// const refreshApp = () => {
+//   updateSW(true);
+//   showUpdateNotification.value = false;
+// };
 
 onMounted(() => {
-  registerServiceWorker();
-  // Check for updates every 15 minutes
-  setInterval(checkForUpdates, 15 * 60 * 1000);
+  // setInterval(() => updateSW(true), 15 * 60 * 1000);
 });
 </script>
 
 <style>
 /* Update notification style */
-.update-notification {
-  background: #ff6500;
-  padding: 10px;
-  text-align: center;
-  position: fixed;
-  bottom: 20px;
-  color: white;
-  left: 50%;
-  width: 90%;
-  transform: translateX(-50%);
-  border-radius: 5px;
-  z-index: 1000;
-}
 
 /* Slide left transition effect */
 .slide-left-enter-active,

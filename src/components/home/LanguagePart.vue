@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import LanguageImage from "../../assets/onboarding screns/Language screen.jpg";
+import LanguageImage from "../../assets/lanuagescreen.jpg";
 import English from "../../assets/onboarding screns/english.png";
 import Myanmar from "../../assets/onboarding screns/myanmar.png";
 import { ref, defineEmits, onMounted } from "vue";
@@ -102,7 +102,7 @@ const handleLanguageChange = (language) => {
   chooseLanguage.value = language;
 };
 
-const emit = defineEmits();
+const emit = defineEmits("change");
 
 const choose = () => {
   settingStore.changeLanguage(chooseLanguage.value);

@@ -93,25 +93,25 @@
 </template>
 
 <script setup>
-import LanguageImage from "../assets/onboarding screns/Language screen.jpg";
+import LanguageImage from "@/assets/languagescreen.jpg";
 import English from "../assets/onboarding screns/english.png";
 import Myanmar from "../assets/onboarding screns/myanmar.png";
 import logo from "@/assets/logo.png";
 import { ref, onMounted, defineEmits } from "vue";
 import { useSettingStore } from "../stores/setting";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 
 const chooseLanguage = ref("");
 const settingStore = useSettingStore();
-const router = useRouter();
+// const router = useRouter();
 const { language } = storeToRefs(settingStore);
 
 const handleLanguageChange = (language) => {
   chooseLanguage.value = language;
 };
 
-const emit = defineEmits();
+const emit = defineEmits("change");
 
 const choose = () => {
   settingStore.changeLanguage(chooseLanguage.value);

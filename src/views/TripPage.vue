@@ -18,7 +18,6 @@
         >
           <div class="text-center">
             Please <span class="text-main mx-2 underline">login</span> first
-            .reload
             <p class="text-sm">for view your trip details and receipt</p>
           </div>
         </div>
