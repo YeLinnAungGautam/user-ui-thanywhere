@@ -11,7 +11,7 @@
         <ChevronLeftIcon
           @click="
             router.push(
-              `/home/attraction-result/${detail?.cities[0]?.id}/${detail?.cities[0]?.name}`
+              `/v2/home/attraction-result/${detail?.cities[0]?.id}/${detail?.cities[0]?.name}`
             )
           "
           class="bg-white rounded-full p-1.5 w-9 h-9 text-main shadow-lg z-20 absolute top-10 left-6"
@@ -667,7 +667,7 @@ const chooseDataFunction = (data) => {
 };
 
 const viewDetailFunction = (id) => {
-  router.push(`/home/attraction-detail/${id}`);
+  router.push(`/v2/home/attraction-detail/${id}`);
 };
 
 const viewMoreTicket = ref(false);

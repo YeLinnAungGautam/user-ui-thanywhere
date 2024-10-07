@@ -11,7 +11,7 @@
         <ChevronLeftIcon
           @click="
             router.push(
-              `/home/van-tour-result/${detail?.cities[0]?.id}/${detail?.cities[0]?.name}?category_ids=null`
+              `/v2/home/van-tour-result/${detail?.cities[0]?.id}/${detail?.cities[0]?.name}?category_ids=null`
             )
           "
           class="bg-white rounded-full p-1.5 w-9 h-9 shadow-lg text-main z-20 absolute top-10 left-6"

@@ -46,7 +46,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const goResultPage = (id, name) => {
-  router.push(`/home/destination-result/${id}/${name}`);
+  router.push(`/v2/home/destination-result/${id}/${name}`);
 };
 
 const settings = {

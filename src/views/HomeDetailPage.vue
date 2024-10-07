@@ -11,7 +11,7 @@
         <ChevronLeftIcon
           @click="
             router.push(
-              `/home/hotel-filter/${detail?.city?.id}/${detail?.city?.name}/?price=0-4500&rating=null&place=null&facilities=null&language=myanmar`
+              `/v2/home/hotel-filter/${detail?.city?.id}/${detail?.city?.name}/?price=0-4500&rating=null&place=null&facilities=null&language=myanmar`
             )
           "
           class="bg-white rounded-full p-1.5 w-9 h-9 shadow-lg text-main z-20 absolute top-10 left-6"

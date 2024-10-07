@@ -71,7 +71,7 @@
       </div>
     </div>
     <div
-      @click="router.push('/home/destination')"
+      @click="router.push('/v2/home/destination')"
       class="text-[10px] font-semibold text-main flex justify-center mt-2 items-center gap-1 border border-black/10 mx-6 py-2 rounded-xl"
     >
       <p class="whitespace-nowrap">see more</p>

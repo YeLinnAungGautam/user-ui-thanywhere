@@ -96,21 +96,21 @@ import AllProductCart from "../../components/LoadingCarts/AllProductCart.vue";
 const router = useRouter();
 
 const hotelPage = () => {
-  router.push("/home/hotel-bookings");
+  router.push("/v2/home/hotel-bookings");
 };
 const vantourPage = () => {
-  router.push("/home/van-tour");
+  router.push("/v2/home/van-tour");
 };
 const attractionPage = () => {
-  router.push("/home/attraction");
+  router.push("/v2/home/attraction");
 };
 // const inclusivePage = () => {
-//   router.push("/home/inclusive");
+//   router.push("/v2/home/inclusive");
 // };
 // const airlinePage = () => {
-//   router.push("/home/airline");
+//   router.push("/v2/home/airline");
 // };
 const destinationPage = () => {
-  router.push("/home/destination");
+  router.push("/v2/home/destination");
 };
 </script>
