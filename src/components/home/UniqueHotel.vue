@@ -136,7 +136,7 @@ const goDetialPage = (id) => {
 };
 
 const goMore = () => {
-  router.push(`/v2/home/hotel-filter/2/Bangkok`);
+  router.push(`/home/hotel-filter/2/Bangkok`);
 };
 
 onMounted(async () => {

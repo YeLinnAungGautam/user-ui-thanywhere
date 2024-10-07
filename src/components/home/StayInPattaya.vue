@@ -217,7 +217,7 @@ const loading = ref(false);
 
 const goMore = () => {
   router.push(
-    `/v2/home/hotel-filter/2/Bangkok/?price=null&rating=null&place=null&facilities=null&search=`
+    `/home/hotel-filter/2/Bangkok/?price=null&rating=null&place=null&facilities=null&search=`
   );
 };
 

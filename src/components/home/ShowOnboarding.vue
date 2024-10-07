@@ -175,11 +175,11 @@ const perPage = () => {
 };
 
 const customPageChange = () => {
-  router.push("/v2/home");
+  router.push("/home");
 };
 
 const loginPageChange = () => {
-  router.push("/v2/home");
+  router.push("/home");
 };
 
 const imageLoaded = ref(0);

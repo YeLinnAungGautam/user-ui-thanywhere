@@ -364,7 +364,7 @@ onMounted(async () => {
             v-for="i in searchLists"
             :key="i"
             @click="
-              router.push(`/v2/home/detail/` + i.id + `?language=${language}`)
+              router.push(`/home/detail/` + i.id + `?language=${language}`)
             "
           >
             <SearchCart
@@ -386,7 +386,7 @@ onMounted(async () => {
             :key="i"
             @click="
               router.push(
-                `/v2/home/attraction-detail/` + i.id + `?language=${language}`
+                `/home/attraction-detail/` + i.id + `?language=${language}`
               )
             "
           >
@@ -410,7 +410,7 @@ onMounted(async () => {
             :key="i"
             @click="
               router.push(
-                `/v2/home/van-tour-detail/` + i.id + `?language=${language}`
+                `/home/van-tour-detail/` + i.id + `?language=${language}`
               )
             "
           >
@@ -435,7 +435,7 @@ onMounted(async () => {
             v-for="i in searchLists"
             :key="i"
             @click="
-              router.push(`/v2/home/detail/` + i.id + `?language=${language}`)
+              router.push(`/home/detail/` + i.id + `?language=${language}`)
             "
           >
             <SearchCart
@@ -460,7 +460,7 @@ onMounted(async () => {
             :key="i"
             @click="
               router.push(
-                `/v2/home/attraction-detail/` + i.id + `?language=${language}`
+                `/home/attraction-detail/` + i.id + `?language=${language}`
               )
             "
           >
@@ -487,7 +487,7 @@ onMounted(async () => {
             :key="i"
             @click="
               router.push(
-                `/v2/home/van-tour-detail/` + i.id + `?language=${language}`
+                `/home/van-tour-detail/` + i.id + `?language=${language}`
               )
             "
           >

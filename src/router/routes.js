@@ -41,368 +41,254 @@ import ImagesGalleryVue from "../views/ImagesGallery.vue";
 // import VantourHomeSearchVue from "../components/search-part/VantourSearchCityHome.vue";
 import PrivacyPolicyPage from "../views/PrivacyPolicy.vue";
 import TripPage from "../views/TripPage.vue";
-const routes = [
-  {
-    path: "/privacy-policy",
-    name: "PrivacyPolicy",
-    component: PrivacyPolicyPage,
-  },
-  {
-    path: "/web",
-    redirect: "/v2/web",
-  },
-  {
-    path: "/v2/web",
-    name: "WebVersionHomePage",
-    component: WebVersionHomePage,
-    meta: {
-      guest: true,
+const routes = [{
+        path: "/privacy-policy",
+        name: "PrivacyPolicy",
+        component: PrivacyPolicyPage,
     },
-  },
-  {
-    path: "/translationPage",
-    redirect: "/v2/translationPage",
-  },
-  {
-    path: "/v2/translationPage",
-    name: "TranslationPage",
-    component: TranslationPage,
-  },
-  {
-    path: "/account/login",
-    redirect: "/v2/account/login",
-  },
-  {
-    path: "/v2/account/login",
-    name: "LoginVuePage",
-    component: LoginVuePage,
-  },
-  {
-    path: "/account/profile",
-    redirect: "/v2/account/profile",
-  },
-  {
-    path: "/v2/account/profile",
-    name: "ProfileVuePage",
-    component: ProfileVuePage,
-  },
-  {
-    path: "/account/profile/update",
-    redirect: "/v2/account/profile/update",
-  },
-  {
-    path: "/v2/account/profile/update",
-    name: "ProfileUpdateVuePage",
-    component: ProfileUpdateVuePage,
-  },
-  {
-    path: "/account/signup",
-    redirect: "/v2/account/signup",
-  },
-  {
-    path: "/v2/account/signup",
-    name: "SignUpVuePage",
-    component: SignUpVuePage,
-  },
-  {
-    path: "/",
-    redirect: "/v2/",
-  },
-  {
-    path: "/v2/",
-    name: "HomeDefault",
-    component: Home,
-  },
-  {
-    path: "/home",
-    redirect: "/v2/home",
-  },
-  {
-    path: "/v2/home",
-    name: "Home",
-    component: Home,
-  },
-  {
-    path: "/home/hotel-bookings",
-    redirect: "/v2/home/hotel-bookings",
-  },
-  {
-    path: "/v2/home/hotel-bookings",
-    name: "HotelBookings",
-    component: HotelBookingsVue,
-  },
-  {
-    path: "/home/hotel-filter/:id/:name/",
-    redirect: "/v2/home/hotel-filter/:id/:name/",
-  },
-  {
-    path: "/v2/home/hotel-filter/:id/:name/",
-    name: "FilteredHotelBookings",
-    component: FilteredHotelBookingsVue,
-  },
-  {
-    path: "/home/hotel-search",
-    redirect: "/v2/home/hotel-search",
-  },
-  {
-    path: "/v2/home/hotel-search",
-    name: "HomeHotelSearch",
-    component: HomeHotelSearchVue,
-  },
-  {
-    path: "/search",
-    redirect: "/v2/search",
-  },
-  {
-    path: "/v2/search",
-    name: "HomeSearch",
-    component: HomeSearchVue,
-  },
-  {
-    path: "/home/detail/:id",
-    redirect: "/v2/home/detail/:id",
-  },
-  {
-    path: "/v2/home/detail/:id",
-    name: "HomeDetail",
-    component: HomeDetailVue,
-  },
-  {
-    path: "/home/detail/room/:id",
-    redirect: "/v2/home/detail/room/:id",
-  },
-  {
-    path: "/v2/home/detail/room/:id",
-    name: "HomeRoomDetail",
-    component: HomeRoomDetailVue,
-  },
-  {
-    path: "/home/van-tour",
-    redirect: "/v2/home/van-tour",
-  },
-  {
-    path: "/v2/home/van-tour",
-    name: "HomeVantour",
-    component: HomeVantourVue,
-  },
-  {
-    path: "/home/van-tour-search",
-    redirect: "/v2/home/van-tour-search",
-  },
-  {
-    path: "/v2/home/van-tour-search",
-    name: "HomeVantourSearch",
-    component: HomeVantourSearchVue,
-  },
-  {
-    path: "/home/van-tour-result/:id/:name",
-    redirect: "/v2/home/van-tour-result/:id/:name",
-  },
-  {
-    path: "/v2/home/van-tour-result/:id/:name",
-    name: "HomeVantourResult",
-    component: HomeVantourResultVue,
-  },
-  {
-    path: "/home/van-tour-detail/:id",
-    redirect: "/v2/home/van-tour-detail/:id",
-  },
-  {
-    path: "/v2/home/van-tour-detail/:id",
-    name: "HomeVantourDetail",
-    component: HomeVantourDetailVue,
-  },
-  {
-    path: "/home/attraction",
-    redirect: "/v2/home/attraction",
-  },
-  {
-    path: "/v2/home/attraction",
-    name: "HomeAttraction",
-    component: HomeAttractionVue,
-  },
-  {
-    path: "/home/attraction-search",
-    redirect: "/v2/home/attraction-search",
-  },
-  {
-    path: "/v2/home/attraction-search",
-    name: "HomeAttractionSearch",
-    component: HomeAttractionSearchVue,
-  },
-  {
-    path: "/home/attraction-result/:id/:name",
-    redirect: "/v2/home/attraction-result/:id/:name",
-  },
-  {
-    path: "/v2/home/attraction-result/:id/:name",
-    name: "HomeAttractionResult",
-    component: HomeAttractionResultVue,
-  },
-  {
-    path: "/home/attraction-detail/:id",
-    redirect: "/v2/home/attraction-detail/:id",
-  },
-  {
-    path: "/v2/home/attraction-detail/:id",
-    name: "HomeAttractionDetail",
-    component: HomeAttractionDetailVue,
-  },
-  {
-    path: "/home/inclusive",
-    redirect: "/v2/home/inclusive",
-  },
-  {
-    path: "/v2/home/inclusive",
-    name: "HomeInclusive",
-    component: HomeInclusiveVue,
-  },
-  {
-    path: "/home/inclusive-search",
-    redirect: "/v2/home/inclusive-search",
-  },
-  {
-    path: "/v2/home/inclusive-search",
-    name: "HomeInclusiveSearch",
-    component: HomeInclusiveSearchVue,
-  },
-  {
-    path: "/home/inclusive-result",
-    redirect: "/v2/home/inclusive-result",
-  },
-  {
-    path: "/v2/home/inclusive-result",
-    name: "HomeInclusiveResult",
-    component: HomeInclusiveResultVue,
-  },
-  {
-    path: "/home/airline",
-    redirect: "/v2/home/airline",
-  },
-  {
-    path: "/v2/home/airline",
-    name: "HomeAirLine",
-    component: HomeAirLineVue,
-  },
-  {
-    path: "/home/airline-search",
-    redirect: "/v2/home/airline-search",
-  },
-  {
-    path: "/v2/home/airline-search",
-    name: "HomeAirLineSearch",
-    component: HomeAirLineSearchVue,
-  },
-  {
-    path: "/home/airline-result",
-    redirect: "/v2/home/airline-result",
-  },
-  {
-    path: "/v2/home/airline-result",
-    name: "HomeAirLineResult",
-    component: HomeAirLineResultVue,
-  },
-  {
-    path: "/home/destination",
-    redirect: "/v2/home/destination",
-  },
-  {
-    path: "/v2/home/destination",
-    name: "HomeDestination",
-    component: HomeDestinationVue,
-  },
-  {
-    path: "/home/destination-search",
-    redirect: "/v2/home/destination-search",
-  },
-  {
-    path: "/v2/home/destination-search",
-    name: "HomeDestinationSearch",
-    component: HomeDestinationSearchVue,
-  },
-  {
-    path: "/home/destination-detail/:id",
-    redirect: "/v2/home/destination-detail/:id",
-  },
-  {
-    path: "/v2/home/destination-detail/:id",
-    name: "HomeDestinationDetail",
-    component: HomeDestinationDetailVue,
-  },
-  {
-    path: "/home/destination-result/:id/:name",
-    redirect: "/v2/home/destination-result/:id/:name",
-  },
-  {
-    path: "/v2/home/destination-result/:id/:name",
-    name: "HomeDestinationResult",
-    component: HomeDestinationResultVue,
-  },
-  {
-    path: "/home/booking/order/cart",
-    redirect: "/v2/home/booking/order/cart",
-  },
-  {
-    path: "/v2/home/booking/order/cart",
-    name: "HomeCartPage",
-    component: HomeCartPageVue,
-  },
-  {
-    path: "/home/booking/order/cart/complete",
-    redirect: "/v2/home/booking/order/cart/complete",
-  },
-  {
-    path: "/v2/home/booking/order/cart/complete",
-    name: "HomeCompletePage",
-    component: HomeCompletePageVue,
-  },
-  {
-    path: "/home/booking/order/cart/complete/payment",
-    redirect: "/v2/home/booking/order/cart/complete/payment",
-  },
-  {
-    path: "/v2/home/booking/order/cart/complete/payment",
-    name: "HomePaymentBookingPage",
-    component: HomePaymentBookingPageVue,
-  },
-  {
-    path: "/booking/part/trip",
-    redirect: "/v2/booking/part/trip",
-  },
-  {
-    path: "/v2/booking/part/trip",
-    name: "TripPage",
-    component: TripPage,
-  },
-  {
-    path: "/home/packages/detail/images-gallery",
-    redirect: "/v2/home/packages/detail/images-gallery",
-  },
-  {
-    path: "/v2/home/packages/detail/images-gallery",
-    name: "ImagesGallery",
-    component: ImagesGalleryVue,
-  },
-  // {
-  //   path: "/v2/home/van-tour-detail/pages/pickup",
-  //   name: "VantourPickup",
-  //   component: VantourPickupVue,
-  // },
-  // {
-  //   path: "/v2/home/van-tour-detail/pages/booktour",
-  //   name: "VantourBookTour",
-  //   component: VantourBookTourVue,
-  // },
-  // {
-  //   path: "/v2/home/van-tour-detail/pages/makepayment",
-  //   name: "VantourMakePayment",
-  //   component: VantourMakePaymentVue,
-  // },
-  // {
-  //   path: "/v2/home/van-tour-detail/pages/conformation",
-  //   name: "VantourConformation",
-  //   component: VantourConformationVue,
-  // },
+    {
+        path: "/web",
+        name: "WebVersionHomePage",
+        component: WebVersionHomePage,
+        meta: {
+            guest: true,
+        },
+    },
+
+    {
+        path: "/translationPage",
+        name: "TranslationPage",
+        component: TranslationPage,
+    },
+
+    {
+        path: "/account/login",
+        name: "LoginVuePage",
+        component: LoginVuePage,
+    },
+
+    {
+        path: "/account/profile",
+        name: "ProfileVuePage",
+        component: ProfileVuePage,
+    },
+
+    {
+        path: "/account/profile/update",
+        name: "ProfileUpdateVuePage",
+        component: ProfileUpdateVuePage,
+    },
+
+    {
+        path: "/account/signup",
+        name: "SignUpVuePage",
+        component: SignUpVuePage,
+    },
+
+    {
+        path: "/",
+        name: "HomeDefault",
+        component: Home,
+    },
+
+    {
+        path: "/home",
+        name: "Home",
+        component: Home,
+    },
+
+    {
+        path: "/home/hotel-bookings",
+        name: "HotelBookings",
+        component: HotelBookingsVue,
+    },
+
+    {
+        path: "/home/hotel-filter/:id/:name/",
+        name: "FilteredHotelBookings",
+        component: FilteredHotelBookingsVue,
+    },
+
+    {
+        path: "/home/hotel-search",
+        name: "HomeHotelSearch",
+        component: HomeHotelSearchVue,
+    },
+
+    {
+        path: "/search",
+        name: "HomeSearch",
+        component: HomeSearchVue,
+    },
+
+    {
+        path: "/home/detail/:id",
+        name: "HomeDetail",
+        component: HomeDetailVue,
+    },
+
+    {
+        path: "/home/detail/room/:id",
+        name: "HomeRoomDetail",
+        component: HomeRoomDetailVue,
+    },
+
+    {
+        path: "/home/van-tour",
+        name: "HomeVantour",
+        component: HomeVantourVue,
+    },
+
+    {
+        path: "/home/van-tour-search",
+        name: "HomeVantourSearch",
+        component: HomeVantourSearchVue,
+    },
+
+    {
+        path: "/home/van-tour-result/:id/:name",
+        name: "HomeVantourResult",
+        component: HomeVantourResultVue,
+    },
+
+    {
+        path: "/home/van-tour-detail/:id",
+        name: "HomeVantourDetail",
+        component: HomeVantourDetailVue,
+    },
+
+    {
+        path: "/home/attraction",
+        name: "HomeAttraction",
+        component: HomeAttractionVue,
+    },
+
+    {
+        path: "/home/attraction-search",
+        name: "HomeAttractionSearch",
+        component: HomeAttractionSearchVue,
+    },
+
+    {
+        path: "/home/attraction-result/:id/:name",
+        name: "HomeAttractionResult",
+        component: HomeAttractionResultVue,
+    },
+
+    {
+        path: "/home/attraction-detail/:id",
+        name: "HomeAttractionDetail",
+        component: HomeAttractionDetailVue,
+    },
+
+    {
+        path: "/home/inclusive",
+        name: "HomeInclusive",
+        component: HomeInclusiveVue,
+    },
+
+    {
+        path: "/home/inclusive-search",
+        name: "HomeInclusiveSearch",
+        component: HomeInclusiveSearchVue,
+    },
+
+    {
+        path: "/home/inclusive-result",
+        name: "HomeInclusiveResult",
+        component: HomeInclusiveResultVue,
+    },
+
+    {
+        path: "/home/airline",
+        name: "HomeAirLine",
+        component: HomeAirLineVue,
+    },
+
+    {
+        path: "/home/airline-search",
+        name: "HomeAirLineSearch",
+        component: HomeAirLineSearchVue,
+    },
+
+    {
+        path: "/home/airline-result",
+        name: "HomeAirLineResult",
+        component: HomeAirLineResultVue,
+    },
+
+    {
+        path: "/home/destination",
+        name: "HomeDestination",
+        component: HomeDestinationVue,
+    },
+
+    {
+        path: "/home/destination-search",
+        name: "HomeDestinationSearch",
+        component: HomeDestinationSearchVue,
+    },
+
+    {
+        path: "/home/destination-detail/:id",
+        name: "HomeDestinationDetail",
+        component: HomeDestinationDetailVue,
+    },
+
+    {
+        path: "/home/destination-result/:id/:name",
+        name: "HomeDestinationResult",
+        component: HomeDestinationResultVue,
+    },
+
+    {
+        path: "/home/booking/order/cart",
+        name: "HomeCartPage",
+        component: HomeCartPageVue,
+    },
+
+    {
+        path: "/home/booking/order/cart/complete",
+        name: "HomeCompletePage",
+        component: HomeCompletePageVue,
+    },
+
+    {
+        path: "/home/booking/order/cart/complete/payment",
+        name: "HomePaymentBookingPage",
+        component: HomePaymentBookingPageVue,
+    },
+
+    {
+        path: "/booking/part/trip",
+        name: "TripPage",
+        component: TripPage,
+    },
+    {
+        path: "/home/packages/detail/images-gallery",
+        name: "ImagesGallery",
+        component: ImagesGalleryVue,
+    },
+    // {
+    //   path: "/home/van-tour-detail/pages/pickup",
+    //   name: "VantourPickup",
+    //   component: VantourPickupVue,
+    // },
+    // {
+    //   path: "/home/van-tour-detail/pages/booktour",
+    //   name: "VantourBookTour",
+    //   component: VantourBookTourVue,
+    // },
+    // {
+    //   path: "/home/van-tour-detail/pages/makepayment",
+    //   name: "VantourMakePayment",
+    //   component: VantourMakePaymentVue,
+    // },
+    // {
+    //   path: "/home/van-tour-detail/pages/conformation",
+    //   name: "VantourConformation",
+    //   component: VantourConformationVue,
+    // },
 ];
 
 export default routes;
