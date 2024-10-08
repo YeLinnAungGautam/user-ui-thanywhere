@@ -22,18 +22,6 @@ const options = {
     timeout: 1500,
 };
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for (let registration of registrations) {
-        registration.unregister().then(function(boolean) {
-          console.log('Service Worker unregistered:', boolean);
-        });
-      }
-    }).catch(function(error) {
-      console.log('Service Worker unregistration failed:', error);
-    });
-  }
-
 // ... rest of the existing code ...
 
 const app = createApp(App);
