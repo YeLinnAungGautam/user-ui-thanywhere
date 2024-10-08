@@ -4,18 +4,6 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
     plugins: [vue()],
-    build: {
-        rollupOptions: {
-            output: {
-                chunkFileNames: "js/[name].[hash].js",
-                entryFileNames: "js/[name].[hash].js",
-                assetFileNames: "assets/[name].[hash].[ext]",
-            },
-        },
-    },
-    define: {
-        "process.env.VERSION": JSON.stringify("1.0.1"),
-    },
 
     assetsInclude: ["**/*.JPG", "**/*.png", "**/*.svg", "**/*.webp", "**/*.jpg"],
     resolve: {
