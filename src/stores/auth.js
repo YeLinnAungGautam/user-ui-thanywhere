@@ -93,9 +93,11 @@ export const useAuthStore = defineStore("auth", {
 
         async logoutAction() {
             this.loading = true;
-            const res = await axios.post(
-                "https://api-blog.thanywhere.com/api/logout"
-            );
+            let res = await axios.post("https://api-blog.thanywhere.com/api/logout", {
+                headers: {
+                    Authorization: `Bearer ${this.token}`, // Include the token here
+                },
+            });
             console.log("====================================");
             console.log(res, "this is logout");
             console.log("====================================");

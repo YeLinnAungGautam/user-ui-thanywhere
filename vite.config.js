@@ -13,6 +13,9 @@ export default defineConfig({
             },
         },
     },
+    define: {
+        "process.env.VERSION": JSON.stringify("1.0.1"),
+    },
 
     assetsInclude: ["**/*.JPG", "**/*.png", "**/*.svg", "**/*.webp", "**/*.jpg"],
     resolve: {

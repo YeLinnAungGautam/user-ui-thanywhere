@@ -140,8 +140,10 @@ const toast = useToast();
 const logoutAction = () => {
   const res = authStore.logoutAction();
   if (res) {
+    toast.warning("logout success");
     router.push("/home");
   }
+  // toast.warning("logout success");
 };
 
 const profile = ref("");
