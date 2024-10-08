@@ -12,13 +12,4 @@ export default defineConfig({
                 import.meta.url)),
         },
     },
-
-    server: {
-        hmr: {
-          overlay: false,
-        },
-        headers: {
-          'Cache-Control': 'no-store',
-        },
-    }
 });
