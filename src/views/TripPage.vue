@@ -17,7 +17,7 @@
           class="flex justify-center items-center text-black text-2xl font-medium h-full"
         >
           <div class="text-center">
-            Please <span class="text-main mx-2 underline">login</span> frist.
+            Please <span class="text-main mx-2 underline">login</span> first.
             <p class="text-sm">for view your trip details and receipt</p>
           </div>
         </div>
@@ -118,12 +118,12 @@
 </template>
 
 <script setup>
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/24/outline";
-import { useRouter } from "vue-router";
-import { onMounted, ref } from "vue";
-import { useBookingStore } from "@/stores/booking";
-import { storeToRefs } from "pinia";
 import logo from "@/assets/logo.png";
+import { useBookingStore } from "@/stores/booking";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/24/outline";
+import { storeToRefs } from "pinia";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import Layout from "../components/layout/LayoutHome.vue";
 const router = useRouter();
 
