@@ -93,14 +93,20 @@ export const useAuthStore = defineStore("auth", {
 
         async logoutAction() {
             this.loading = true;
-            let res = await axios.post("https://api-blog.thanywhere.com/api/logout", {
-                headers: {
-                    Authorization: `Bearer ${this.token}`, // Include the token here
-                },
-            });
-            console.log("====================================");
-            console.log(res, "this is logout");
-            console.log("====================================");
+            this.token = localStorage.getItem("thany_token");
+            if (this.token) {
+                let res = await axios.post(
+                    "https://api-blog.thanywhere.com/api/logout", {
+                        headers: {
+                            Authorization: `Bearer ${this.token}`, // Include the token here
+                        },
+                    }
+                );
+                console.log("====================================");
+                console.log(res, "this is logout");
+                console.log("====================================");
+            }
+
             this.user = null;
             this.token = null;
             localStorage.removeItem("user");

@@ -149,6 +149,7 @@ const logoutAction = () => {
 const profile = ref("");
 
 const getActionCheck = async () => {
+  // window.location.reload();
   const res = await authStore.getAction();
   (profile.value =
     user.value?.profile == `https://api-blog.thanywhere.com/storage/images/`
@@ -168,6 +169,7 @@ const copyAction = (text) => {
 };
 
 onMounted(async () => {
+  // window.location.reload();
   await getActionCheck();
   // console.log(user.value.first_name);
 });
