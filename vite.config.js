@@ -1,6 +1,6 @@
+import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
     plugins: [vue()],
@@ -12,4 +12,13 @@ export default defineConfig({
                 import.meta.url)),
         },
     },
+
+    server: {
+        hmr: {
+          overlay: false,
+        },
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+    }
 });
