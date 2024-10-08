@@ -11,6 +11,7 @@ export default defineConfig({
                 entryFileNames: "js/[name].[hash].js",
                 assetFileNames: "assets/[name].[hash].[ext]",
             },
+            external: ["vue-toastification"],
         },
     },
     define: {
