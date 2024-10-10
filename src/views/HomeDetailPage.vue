@@ -644,11 +644,11 @@
       </Modal>
       <Modal :isOpen="openVideo" @closeModal="openVideo = false">
         <DialogPanel
-          class="w-full font-poppins max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+          class="w-full font-poppins max-w-lg transform overflow-hidden rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all"
         >
           <DialogTitle
             as="div"
-            class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
+            class="text-lg flex justify-between items-center font-medium leading-6 pt-3 text-gray-900 mb-5"
           >
             <p class="opacity-0">...</p>
             <p class="text-sm font-medium text-main">
@@ -659,7 +659,7 @@
 
           <div>
             <iframe
-              class="w-full"
+              class="w-full rounded-xl"
               height="415"
               :src="youtubeLink"
               title="YouTube video player"
