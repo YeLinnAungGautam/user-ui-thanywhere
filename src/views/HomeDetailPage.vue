@@ -18,13 +18,18 @@
         />
         <div
           @click="shareContent"
-          class="bg-white rounded-full p-2 w-9 h-9 shadow-lg text-main z-20 absolute top-10 right-[70px]"
+          class="bg-white rounded-full p-2 w-9 h-9 shadow-lg text-main z-20 absolute top-10 right-6"
         >
           <img :src="ShareIcon" class="w-full h-full object-cover" alt="" />
         </div>
-        <HeartIcon
-          class="bg-white rounded-full p-1.5 w-9 h-9 shadow-lg text-main z-20 absolute top-10 right-6"
-        />
+        <div
+          v-if="detail?.youtube_link != null && detail?.youtube_link.length > 0"
+          @click="openVideo = true"
+          class="flex justify-center items-center gap-1 pl-1 pr-2 bg-white rounded-full shadow-lg text-main z-20 absolute top-10 right-[70px]"
+        >
+          <PlayIcon class="w-9 h-9 py-1" />
+          <p class="text-xs">see video</p>
+        </div>
       </div>
 
       <transition name="fade">
@@ -637,6 +642,34 @@
           </div>
         </DialogPanel>
       </Modal>
+      <Modal :isOpen="openVideo" @closeModal="openVideo = false">
+        <DialogPanel
+          class="w-full font-poppins max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+        >
+          <DialogTitle
+            as="div"
+            class="text-lg flex justify-between items-center font-medium leading-6 text-gray-900 mb-5"
+          >
+            <p class="opacity-0">...</p>
+            <p class="text-sm font-medium text-main">
+              {{ detail?.name }} video
+            </p>
+            <XMarkIcon class="w-5 h-5 text-main" @click="openVideo = false" />
+          </DialogTitle>
+
+          <div>
+            <iframe
+              class="w-full"
+              height="415"
+              :src="youtubeLink"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </DialogPanel>
+      </Modal>
     </div>
     <div
       v-if="!loading"
@@ -735,6 +768,8 @@ import {
   HeartIcon,
   XMarkIcon,
   ChevronRightIcon,
+  PlayCircleIcon,
+  PlayIcon,
 } from "@heroicons/vue/24/outline";
 import {
   StarIcon,
@@ -786,6 +821,20 @@ const closeOption = () => {
   myBottomSheetOptions.value.close();
 };
 const modalDetailOpen = ref(false);
+
+const openVideo = ref(false);
+
+const youtubeLink = computed(() => {
+  if (detail?.value.youtube_link != null) {
+    if (language.value == "english") {
+      return `https://www.youtube.com/embed/${detail?.value.youtube_link[0]?.en_link}`;
+    } else {
+      return `https://www.youtube.com/embed/${detail?.value.youtube_link[0]?.mm_link}`;
+    }
+  } else {
+    return "empty";
+  }
+});
 
 const myBottomSheetCalendar = ref(null);
 const openCalendar = () => {
