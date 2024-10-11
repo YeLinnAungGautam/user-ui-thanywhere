@@ -27,7 +27,7 @@
           @click="openVideo = true"
           class="flex justify-center items-center gap-1 pl-1 pr-2 bg-white rounded-full shadow-lg text-main z-20 absolute top-10 right-[70px]"
         >
-          <PlayIcon class="w-9 h-9 py-1" />
+          <PlayIcon class="w-8 h-8 py-1" />
           <p class="text-xs">see video</p>
         </div>
       </div>

@@ -81,6 +81,7 @@
                   </div>
                   <div class="flex justify-start items-center pt-2">
                     <button
+                      @click="goToDetailPage(b)"
                       class="border border-black font-medium cursor-pointer px-2 py-1 rounded-lg"
                     >
                       Review Order
@@ -143,6 +144,14 @@ const getBookingList = async () => {
     await bookingStore.getListAction();
     console.log(bookings.value, "this is booking list");
   }
+};
+
+const goToDetailPage = (d) => {
+  router.push({
+    name: "TripDetailPage",
+    params: { id: d?.crm_id },
+    query: { data: encodeURIComponent(JSON.stringify(d?.items)) },
+  });
 };
 
 onMounted(async () => {

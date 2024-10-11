@@ -1,11 +1,11 @@
 <template>
   <div class="font-poppins">
-    <div
+    <!-- <div
       v-if="showUpdateNotification"
       class="flex justify-between items-center p-4 bg-white shadow-lg"
     >
       <p class="text-xs text-gray-500">
-        A new version is available. Please reload the page.
+        A new version is available. Please reload.
       </p>
       <button
         @click="refreshApp"
@@ -13,7 +13,7 @@
       >
         reload
       </button>
-    </div>
+    </div> -->
     <transition :name="transitionName" mode="out-in">
       <router-view />
     </transition>
@@ -27,7 +27,8 @@ import { useRouter } from "vue-router";
 
 const transitionName = ref("slide-left"); // Default transition
 const router = useRouter();
-const showUpdateNotification = ref(false);
+// const route = useRoute();
+// const showUpdateNotification = ref(false);
 
 router.beforeEach((to, from, next) => {
   if (to.path === "/") {
@@ -41,6 +42,7 @@ router.beforeEach((to, from, next) => {
     // Determine transition direction
     transitionName.value = toDepth > fromDepth ? "slide-left" : "slide-right";
   }
+  // checkVersion();
   next();
 });
 
@@ -83,8 +85,21 @@ if ("serviceWorker" in navigator) {
     });
 }
 
+// const checkVersion = () => {
+//   let version = localStorage.getItem("version") || "1.0.0";
+//   console.log(route.query.ver, version);
+
+//   showUpdateNotification.value = route.query?.ver !== version;
+// };
+
+// const refreshApp = () => {
+//   localStorage.setItem("version", route.query?.ver);
+//   showUpdateNotification.value = false; // Reset notification before reload
+//   window.location.reload();
+// };
+
 onMounted(() => {
-  // setInterval(() => updateSW(true), 15 * 60 * 1000);
+  // checkVersion();
 });
 </script>
 
