@@ -13,8 +13,8 @@
             :alt="d.name"
             class="h-auto absolute -bottom-[36px] z-10 object-cover rounded-lg"
             :class="{
-              'w-[100px]': d.id == 1,
-              '-left-1 w-[80px]': d.id == 1,
+              'w-[120px]': d.id == 1,
+              '-left-1 w-[90px]': d.id == 1,
               'w-[68px]': d.id == 2,
               'w-[80px]': d.id !== 1 && d.id !== 2,
             }"
@@ -22,7 +22,7 @@
           <img
             :src="background"
             :class="{
-              'left-2': d.id == 1,
+              'left-0': d.id == 1,
               '-left-2': d.id == 7,
               '': d.id !== 1 && d.id !== 7,
             }"
