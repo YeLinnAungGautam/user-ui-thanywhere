@@ -80,6 +80,16 @@
               </div>
               <ChevronRightIcon class="w-5 h-5" />
             </div>
+            <div
+              class="flex justify-between items-center py-2"
+              @click="deleteAction"
+            >
+              <div class="flex justify-start items-center gap-2">
+                <ArrowRightStartOnRectangleIcon class="w-5 h-5" />
+                <p class="text-xs">delete account</p>
+              </div>
+              <ChevronRightIcon class="w-5 h-5" />
+            </div>
           </div>
           <div
             class="mx-4 p-4 rounded-xl shadow-custom divide-y divide-black/10"
@@ -144,6 +154,14 @@ const logoutAction = () => {
     router.push("/home");
   }
   // toast.warning("logout success");
+};
+
+const deleteAction = async () => {
+  const res = await authStore.deleteAccountPermanent();
+  if (res) {
+    toast.warning("delete success");
+    router.push("/home");
+  }
 };
 
 const profile = ref("");
