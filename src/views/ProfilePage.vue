@@ -19,7 +19,10 @@
             <div
               class="w-8 h-8 flex justify-center items-center bg-main rounded-full absolute bottom-2 right-0"
             >
-              <PencilSquareIcon class="w-6 h-6 text-white" />
+              <PencilSquareIcon
+                class="w-6 h-6 text-white"
+                @click="router.push('/account/profile/update')"
+              />
             </div>
           </div>
           <p class="text-center text-lg text-main font-semibold">
@@ -80,16 +83,6 @@
               </div>
               <ChevronRightIcon class="w-5 h-5" />
             </div>
-            <div
-              class="flex justify-between items-center py-2"
-              @click="deleteAction"
-            >
-              <div class="flex justify-start items-center gap-2">
-                <ArrowRightStartOnRectangleIcon class="w-5 h-5" />
-                <p class="text-xs">delete account</p>
-              </div>
-              <ChevronRightIcon class="w-5 h-5" />
-            </div>
           </div>
           <div
             class="mx-4 p-4 rounded-xl shadow-custom divide-y divide-black/10"
@@ -115,6 +108,16 @@
               </div>
               <ChevronRightIcon class="w-5 h-5" />
             </div>
+            <div
+              class="flex justify-between items-center py-2"
+              @click="deleteAction"
+            >
+              <div class="flex justify-start items-center gap-2">
+                <TrashIcon class="w-5 h-5 text-red" />
+                <p class="text-xs text-red">delete account</p>
+              </div>
+              <ChevronRightIcon class="w-5 h-5" />
+            </div>
           </div>
         </div>
       </div>
@@ -136,6 +139,7 @@ import {
   LockClosedIcon,
   ExclamationTriangleIcon,
   NewspaperIcon,
+  TrashIcon,
 } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "../stores/auth";
 import { storeToRefs } from "pinia";

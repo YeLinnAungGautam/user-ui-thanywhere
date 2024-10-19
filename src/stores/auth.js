@@ -85,9 +85,18 @@ export const useAuthStore = defineStore("auth", {
       this.loading = true;
       let token = localStorage.getItem("thany_token");
       if (token) {
-        const res = await axios.post(
+        // const res = await axios.post(
+        //   "https://api-blog.thanywhere.com/api/profile",
+        //   params
+        // );
+        let res = await axios.post(
           "https://api-blog.thanywhere.com/api/profile",
-          params
+          params,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`, // Include the token here
+            },
+          }
         );
         this.loading = false;
         return res;
