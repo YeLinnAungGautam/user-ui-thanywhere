@@ -23,14 +23,14 @@
         </div>
       </div>
       <div
-        class="absolute top-0 left-0 w-full h-screen bg-main/10 z-40"
+        class="absolute top-0 left-0 w-full h-screen bg-main z-40"
         v-if="loginState && loading"
       >
         <div
           class="flex justify-center items-center text-black font-medium h-full"
         >
           <img :src="logo" alt="" class="w-10 h-10" />
-          <div class="text-center text-sm">loading ...</div>
+          <div class="text-center text-sm text-white">loading ...</div>
         </div>
       </div>
       <div v-if="loginState && !loading">

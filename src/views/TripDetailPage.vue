@@ -44,105 +44,7 @@
         <p class="px-5 pt-3 text-sm">Upcoming bookings</p>
         <div class="px-5 pt-3 pb-20">
           <div class="pb-3 pt-1" v-for="b in data ? data : []" :key="b.id">
-            <div class="bg-white rounded-lg shadow-custom">
-              <div
-                class="flex justify-between items-center border-b border-black/10 px-3 pt-2 rounded-t-xl pb-2"
-                :class="
-                  b?.status == 'fully_paid' ? 'bg-green/30' : 'bg-main/30'
-                "
-              >
-                <div class="flex justify-end items-center gap-x-2">
-                  <p
-                    class="text-sm font-medium text-green"
-                    v-if="b?.status == 'fully_paid'"
-                  >
-                    Booking Confirm
-                  </p>
-                  <p
-                    class="text-sm font-medium text-main"
-                    v-if="b?.status != 'fully_paid'"
-                  >
-                    Booking Pending
-                  </p>
-                </div>
-                <p
-                  class="font-semibold text-lg"
-                  :class="
-                    b?.status == 'fully_paid' ? 'text-green' : 'text-main'
-                  "
-                >
-                  ฿ {{ b?.selling_price }}
-                </p>
-              </div>
-              <div class="grid grid-cols-3 pt-3 gap-4 text-xs p-3">
-                <div class="w-full h-[100px] overflow-hidden rounded-lg">
-                  <img
-                    v-if="b?.product?.images?.length > 0 || b?.product?.images"
-                    :src="
-                      b?.product?.images[0]?.image
-                        ? b?.product?.images[0].image
-                        : 'https://api-blog.thanywhere.com/storage/images/1712124148_51925_1.jpg'
-                    "
-                    alt=""
-                    class="w-full h-full object-cover"
-                  />
-                  <img
-                    v-if="
-                      b?.product?.images?.length == 0 || !b?.product?.images
-                    "
-                    src="https://d3lcr32v2pp4l1.cloudfront.net/Pictures/1024x536/4/9/4/74494_thai-airways-747_60990.jpg"
-                    alt=""
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                <div class="col-span-2 space-y-1">
-                  <p class="text-main text-sm line-clamp-1 font-semibold">
-                    {{ b?.product?.name }}
-                  </p>
-                  <p v-if="b?.car != null">{{ b?.car?.name }}</p>
-                  <p v-if="b?.variation != null">{{ b?.variation?.name }}</p>
-                  <p v-if="b?.room != null">{{ b?.room?.name }}</p>
-                  <p v-if="b?.ticket != null">{{ b?.ticket?.price }}</p>
-
-                  <p
-                    class="line-clamp-1 bg-black/5 inline-block px-2 py-0.5 rounded-lg"
-                  >
-                    {{ b?.service_date }}
-                  </p>
-                  <p class="line-clamp-1">quantity : {{ b?.quantity }}</p>
-                  <!-- <div class="flex justify-start gap-x-2 items-center">
-                    <p class="font-semibold text-xl">฿ {{ b?.sub_total }}</p>
-                    <p class="underline">{{ b?.payment_status }}</p>
-                  </div> -->
-                  <!-- <div class="flex justify-start items-center pt-2">
-                    <button
-                      class="border border-black font-medium cursor-pointer px-2 py-1 rounded-lg"
-                    >
-                      Review Order
-                    </button>
-                  </div> -->
-                </div>
-                <div>
-                  <div class="flex justify-start gap-x-2 items-center">
-                    <button
-                      class="border border-black font-medium cursor-pointer px-2 py-1 rounded-lg"
-                    >
-                      Reciept
-                    </button>
-                    <button
-                      class="border border-black font-medium cursor-pointer px-2 py-1 rounded-lg"
-                    >
-                      Comfirmation
-                    </button>
-                    <button
-                      class="border border-black font-medium cursor-pointer px-2 py-1 rounded-lg"
-                    >
-                      Detail
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TripCartPage :data="b" />
           </div>
         </div>
       </div>
@@ -158,6 +60,7 @@ import { ChevronLeftIcon } from "@heroicons/vue/24/outline";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Layout from "../components/layout/LayoutHome.vue";
+import TripCartPage from "@/components/cart/TripCartPage.vue";
 const router = useRouter();
 const route = useRoute();
 
