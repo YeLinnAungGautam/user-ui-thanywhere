@@ -38,10 +38,6 @@ const open = () => {
   myBottomSheet.value.open();
 };
 
-// const openBottomSheet = async () => {
-//   open();
-// };
-
 const close = () => {
   myBottomSheet.value.close();
 };
@@ -124,10 +120,12 @@ watch(bottomOfWindow, (newVal) => {
     let changePageCalled = false;
     if (newVal && !changePageCalled) {
       console.log("This is the bottom of the window");
+
       if (
         vantours?.value?.meta?.current_page < vantours?.value?.meta?.last_page
       ) {
         changePageCalled = true; // Set the flag to true
+
         changePage(
           vantours?.value?.meta?.links[vantours?.value?.meta?.current_page + 1]
             .url
