@@ -88,7 +88,10 @@
             class="mx-4 p-4 rounded-xl shadow-custom divide-y divide-black/10"
           >
             <div class="flex justify-between items-center py-2">
-              <div class="flex justify-start items-center gap-2">
+              <div
+                class="flex justify-start items-center gap-2"
+                @click="router.push('/account/profile/security')"
+              >
                 <LockClosedIcon class="w-5 h-5" />
                 <p class="text-xs">security & privacy</p>
               </div>
@@ -108,7 +111,7 @@
               </div>
               <ChevronRightIcon class="w-5 h-5" />
             </div>
-            <div
+            <!-- <div
               class="flex justify-between items-center py-2"
               @click="deleteAction"
             >
@@ -117,7 +120,7 @@
                 <p class="text-xs text-red">delete account</p>
               </div>
               <ChevronRightIcon class="w-5 h-5" />
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -139,7 +142,6 @@ import {
   LockClosedIcon,
   ExclamationTriangleIcon,
   NewspaperIcon,
-  TrashIcon,
 } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "../stores/auth";
 import { storeToRefs } from "pinia";
@@ -160,13 +162,13 @@ const logoutAction = () => {
   // toast.warning("logout success");
 };
 
-const deleteAction = async () => {
-  const res = await authStore.deleteAccountPermanent();
-  if (res) {
-    toast.warning("delete success");
-    router.push("/home");
-  }
-};
+// const deleteAction = async () => {
+//   const res = await authStore.deleteAccountPermanent();
+//   if (res) {
+//     toast.warning("delete success");
+//     router.push("/home");
+//   }
+// };
 
 const profile = ref("");
 
