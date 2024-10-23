@@ -5,8 +5,8 @@
         class="flex justify-between items-center border-b border-black/10 px-3 pt-2 rounded-t-xl pb-2 bg-white"
       >
         <div class="flex justify-end items-center gap-x-2">
-          <p class="text-sm font-medium" v-if="data?.payment_status">
-            {{ data?.payment_status.replace("_", " ") }}
+          <p class="text-sm font-medium" v-if="data?.booking?.payment_status">
+            {{ data?.booking?.payment_status.replace("_", " ") }}
           </p>
         </div>
         <p

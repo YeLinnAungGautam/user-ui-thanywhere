@@ -146,7 +146,6 @@ const goToDetailPage = (d) => {
   router.push({
     name: "TripDetailPage",
     params: { id: d?.crm_id },
-    query: { data: encodeURIComponent(JSON.stringify(d?.items)) },
   });
 };
 

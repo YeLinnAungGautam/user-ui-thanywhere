@@ -43,7 +43,7 @@
         </div>
         <p class="px-5 pt-3 text-sm">Upcoming bookings</p>
         <div class="px-5 pt-3 pb-20">
-          <div class="pb-3 pt-1" v-for="b in data ? data : []" :key="b.id">
+          <div class="pb-3 pt-1" v-for="b in data ? data : []" :key="b?.id">
             <TripCartPage
               :data="b"
               v-if="b?.product_type != 'App\\Models\\InclusiveProduct'"
@@ -64,12 +64,14 @@ import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Layout from "../components/layout/LayoutHome.vue";
 import TripCartPage from "@/components/cart/TripCartPage.vue";
+import { useBookingStore } from "@/stores/booking";
+import { storeToRefs } from "pinia";
 const router = useRouter();
 const route = useRoute();
 
 const loginState = ref(false);
-// const bookingStore = useBookingStore();
-// const { bookings, loading } = storeToRefs(bookingStore);
+const bookingStore = useBookingStore();
+const { bookings, loading } = storeToRefs(bookingStore);
 
 const checkLoginState = async () => {
   let token = localStorage.getItem("thany_token");
@@ -78,15 +80,26 @@ const checkLoginState = async () => {
   }
 };
 
-const data = ref("");
+const data = ref(null);
+
+const getBookingList = async () => {
+  if (loginState.value) {
+    await bookingStore.getListAction();
+    console.log(bookings.value, "this is booking list");
+    for (let index = 0; index < bookings?.value.data.length; index++) {
+      if (bookings.value.data[index].crm_id == route.params.id) {
+        data.value = bookings.value.data[index].items;
+      }
+    }
+    console.log("====================================");
+    console.log(data.value, "this is value");
+    console.log("====================================");
+  }
+};
 
 onMounted(async () => {
   checkLoginState();
-  const encodedData = route.query.data;
-  if (encodedData) {
-    const decodedData = decodeURIComponent(encodedData);
-    data.value = JSON.parse(decodedData);
-  }
+  await getBookingList();
   console.log(route.params.id, data.value, "this is props");
 });
 </script>
