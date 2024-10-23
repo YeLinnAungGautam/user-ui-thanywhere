@@ -44,7 +44,10 @@
         <p class="px-5 pt-3 text-sm">Upcoming bookings</p>
         <div class="px-5 pt-3 pb-20">
           <div class="pb-3 pt-1" v-for="b in data ? data : []" :key="b.id">
-            <TripCartPage :data="b" />
+            <TripCartPage
+              :data="b"
+              v-if="b?.product_type != 'App\\Models\\InclusiveProduct'"
+            />
           </div>
         </div>
       </div>

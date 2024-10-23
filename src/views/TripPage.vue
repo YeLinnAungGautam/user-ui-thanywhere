@@ -53,18 +53,10 @@
               >
                 <p class="font-semibold text-lg">{{ b?.crm_id }}</p>
                 <div class="flex justify-end items-center gap-x-2">
-                  <p
-                    class="text-sm font-medium text-green"
-                    v-if="b?.status == 'fully_paid'"
-                  >
-                    Booking Completed
+                  <p class="text-sm font-medium text-black">
+                    {{ b?.payment_status.replace("_", " ") }}
                   </p>
-                  <p
-                    class="text-sm font-medium text-main"
-                    v-if="b?.status != 'fully_paid'"
-                  >
-                    Booking Pending
-                  </p>
+
                   <ChevronRightIcon class="w-4 h-4 text-main" />
                 </div>
               </div>
@@ -77,7 +69,9 @@
                   </p>
                   <div class="flex justify-start gap-x-2 items-center">
                     <p class="font-semibold text-xl">฿ {{ b?.sub_total }}</p>
-                    <p class="underline">{{ b?.payment_status }}</p>
+                    <p class="underline">
+                      {{ b?.payment_status.replace("_", " ") }}
+                    </p>
                   </div>
                   <div class="flex justify-start items-center pt-2">
                     <button
@@ -99,7 +93,9 @@
             </div>
           </div>
         </div>
-        <div class="space-y-3 bg-white p-4 rounded-lg shadow-custom mx-5">
+        <div
+          class="space-y-3 bg-white px-4 py-4 mb-[100px] rounded-lg shadow-custom mx-5"
+        >
           <div class="flex justify-between items-center">
             <p class="text-sm">Connect Manual Sales to Trips</p>
             <ChevronRightIcon class="w-4 h-4 text-black" />

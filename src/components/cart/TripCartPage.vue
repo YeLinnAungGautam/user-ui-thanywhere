@@ -2,26 +2,16 @@
   <div>
     <div class="bg-white rounded-lg shadow-custom">
       <div
-        class="flex justify-between items-center border-b border-black/10 px-3 pt-2 rounded-t-xl pb-2"
-        :class="data?.status == 'fully_paid' ? 'bg-green/30' : 'bg-main/30'"
+        class="flex justify-between items-center border-b border-black/10 px-3 pt-2 rounded-t-xl pb-2 bg-white"
       >
         <div class="flex justify-end items-center gap-x-2">
-          <p
-            class="text-sm font-medium text-green"
-            v-if="data?.status == 'fully_paid'"
-          >
-            Booking Confirm
-          </p>
-          <p
-            class="text-sm font-medium text-main"
-            v-if="data?.status != 'fully_paid'"
-          >
-            Booking Pending
+          <p class="text-sm font-medium" v-if="data?.payment_status">
+            {{ data?.payment_status.replace("_", " ") }}
           </p>
         </div>
         <p
-          class="font-semibold text-lg"
-          :class="data?.status == 'fully_paid' ? 'text-green' : 'text-main'"
+          class="font-semibold text-lg text-main"
+          v-if="data?.booking?.is_inclusive != 1"
         >
           ฿ {{ data?.amount }}
         </p>
